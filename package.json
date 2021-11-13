@@ -13,7 +13,9 @@
     "*"
   ],
   "main": "./out/extension.js",
+
   "contributes": {
+
     "commands": [
       {
         "command": "motionbuilder.execute",
@@ -26,12 +28,30 @@
         "category": "MotionBuilder"
       }
     ],
-    "keybindings" : [
+    
+    "keybindings": [
       {
         "command": "motionbuilder.execute",
         "key": "ctrl+enter"
       }
+    ],
+    
+    "configuration": [
+      {
+        "title": "MotionBuilder",
+        "motionbuilder.execute.showOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "Display the output log when something is executed"
+        },
+        "motionbuilder.execute.clearOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "Clear output each time somethings new is executed."
+        }
+      }
     ]
+
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -55,6 +75,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "telnet-client": "^1.4.10"
+    "telnet-client": "^1.4.10",
+    "telnet-stream": "^1.0.5"
   }
 }
