@@ -1,31 +1,23 @@
 import * as vscode from 'vscode';
-
 import * as net from 'net';
 
-// import { TelnetSocket } from "telnet-stream";
 
 const DEFAULT_IP = '127.0.0.1';
 const DEFAULT_PORT = 4242;
 
 let gOutputChannel: vscode.OutputChannel;
-let gSocket: net.Socket;
+let gSocket: net.Socket | null;
 
 
-function getOutputChannel(bEnsure = true) {
-    if (!gOutputChannel && bEnsure) {
+function getOutputChannel(bEnsureChannelExists = true) {
+    if (!gOutputChannel && bEnsureChannelExists) {
         gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
     }
     return gOutputChannel;
 }
 
 
-function handleResponse(recivedString: string) {
-    let match = recivedString.match(/(>>>([^]*)>>>)/);
-    if (!match) {
-        return;
-    }
-
-    let response = match[0].trim().slice(3, -3).trim();
+function handleResponse(response: string) {
     response = response.replace(/\n\r/g, "\n");
 
     const outputChannel = getOutputChannel();
@@ -43,27 +35,45 @@ async function getSocket() {
         return gSocket;
     }
 
-    const socket = net.createConnection(DEFAULT_PORT, DEFAULT_IP);
+    gSocket = net.createConnection(DEFAULT_PORT, DEFAULT_IP);
 
-    socket.on('error', (e) => {
-        console.error(e);
-        socket.destroy();
-    });
-
-    let fullResponse = "";
-
-    socket.on("data", function (buffer) {
-        fullResponse += buffer.toString("utf8");
-        console.log("fullResponse: " + fullResponse);
-        return;
-        if (fullResponse.match(/(>>>([^]*)>>>)/)) {
-            //socket.destroy();
-            handleResponse(fullResponse);
+    gSocket.on('error', (e) => {
+        // TODO: option to show a more detailed error log
+        vscode.window.showErrorMessage(`Failed to connect to MotionBuilder.`);
+        if (gSocket) {
+            gSocket.destroy();
         }
     });
 
 
-    return socket;
+    let bSocketEstablished = false;
+    gSocket.on("data", function (buffer) {
+        let dataRecived = buffer.toString("utf8");
+
+        if (!bSocketEstablished) {
+            if (!dataRecived.includes(">>>")) {
+                return;
+            }
+
+            bSocketEstablished = true;
+            dataRecived = dataRecived.split(">>>", 1)[1];
+            if (!dataRecived) {
+                return;
+            }
+
+        }
+
+        dataRecived = dataRecived.trim();
+        /* If we want to remove the '>>>' logged in output
+        if (dataRecived.endsWith(">>>")) {
+            dataRecived = dataRecived.slice(0, -3).trimEnd();
+        }
+        */
+
+        handleResponse(dataRecived);
+    });
+
+    return gSocket;
 }
 
 
@@ -73,15 +83,20 @@ async function getSocket() {
  * @param command The command to run
  */
 export async function runCommand(command: string) {
-    const outputChannel = getOutputChannel(false);
 
     // TODO: this should be an option
-    if (outputChannel) {
-        outputChannel.clear();
+    if (false) {
+        const outputChannel = getOutputChannel(false);
+        if (outputChannel) {
+            outputChannel.clear();
+        }
     }
 
     const socket = await getSocket();
-    
+    if (!socket) {
+        return;
+    }
+
     // Send the commmand
     socket.write(command);
 }
