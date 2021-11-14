@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import * as net from 'net';
+import { ECONNRESET } from 'constants';
 
 
 const DEFAULT_IP = '127.0.0.1';
 const DEFAULT_PORT = 4242;
 
 let gOutputChannel: vscode.OutputChannel;
-let gSocket: net.Socket | null;
+let gSocket: net.Socket | undefined;
 
 
 function getOutputChannel(bEnsureChannelExists = true) {
@@ -30,7 +31,9 @@ function handleResponse(response: string) {
 
 
 async function getSocket() {
-    if (gSocket) {
+    if (gSocket !== undefined) {
+        console.log("RETURNING GLOBAL SOCKET");
+        console.log("gSocket: " + gSocket);
         // TODO: Validate connection, otherwise try to re-connect
         return gSocket;
     }
@@ -38,8 +41,23 @@ async function getSocket() {
     gSocket = net.createConnection(DEFAULT_PORT, DEFAULT_IP);
 
     gSocket.on('error', (e) => {
-        // TODO: option to show a more detailed error log
-        vscode.window.showErrorMessage(`Failed to connect to MotionBuilder.`);
+        if (e.message.includes("ECONNRESET")) {
+            // Connection interupted. MotionBuilder was most likely closed
+        }
+
+        else if (e.message.includes("ECONNREFUSED")) {
+            // Failed to connect
+            // TODO: Should probably link to a trouble-shooting page.
+            vscode.window.showErrorMessage(`Failed to connect to MotionBuilder.`);
+        }
+        
+        else {
+            // Something has gone wrong, print error
+            // TODO: option to show a more detailed error log
+            vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.stack}`);
+            console.log(e.stack);
+        }
+        
         if (gSocket) {
             gSocket.destroy();
         }
@@ -71,6 +89,10 @@ async function getSocket() {
         */
 
         handleResponse(dataRecived);
+    });
+
+    gSocket.on('close', (h: any | undefined) => {
+        gSocket = undefined;
     });
 
     return gSocket;
