@@ -2,14 +2,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as execute from "./execute_script";
-import * as child_process from "child_process";
+import * as documentation from "./documentation";
 import * as path from "path";
 
-const MOBU_DOCS_URL = "https://download.autodesk.com/us/motionbuilder/sdk-documentation/";
 
 // TODO: Features:
 // * Autocompletion setup when installed (add extra path)
-// * TelNet -> RunInMotionBuilder
 
 
 // this method is called when your extension is activated
@@ -38,7 +36,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.openDocumentation', () => {
 			// for now, just open the docs in the browser
-			child_process.exec(`start ${MOBU_DOCS_URL}`);
+			documentation.openPage();
+			
+			//child_process.exec(`start ${MOBU_DOCS_URL}`);
 		})
 	);
 
