@@ -2,10 +2,14 @@
 {
     "files.exclude": {
         "out": true,
-        "node_modules": true
+        "node_modules": true,
+        "**/**.vsix": true
     },
     "search.exclude": {
-        "out": true // set this to false to include "out" folder in search results
+        "**/**.py": true,
+        "**/**.json": true,
+        "media/**": true,
+        "**/**ignore": true,
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off"

@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as https from 'https';
 import * as path from 'path';
-import * as fs from 'fs';
 import * as os from "os";
+import * as fs from 'fs';
 
 import * as child_process from "child_process";
 

@@ -2,7 +2,7 @@
   "name": "motionbuilder",
   "displayName": "MotionBuilder",
   "description": "General improvements when writing code for Autodesk MotionBuilder. Auto-completion, Run code in MotionBuilder & browse the documentation with ease.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "icon": "media/mobu-icon.png",
   "engines": {
     "vscode": "^1.62.0"

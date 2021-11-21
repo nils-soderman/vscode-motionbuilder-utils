@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
-import * as motionBuilderConsole from './motionbuilder-console';
-import * as fs from "fs";
-import * as os from "os";
+
 import * as path from "path";
+import * as os from "os";
+import * as fs from "fs";
+
+import * as motionBuilderConsole from './motionbuilder-console';
 
 
 function saveTempFile(text: string) {

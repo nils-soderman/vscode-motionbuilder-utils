@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-import * as documentation from "./documentation";
 import * as autocompletion from "./auto-completion";
+import * as documentation from "./documentation";
 import * as execute from "./execute_script";
 
 

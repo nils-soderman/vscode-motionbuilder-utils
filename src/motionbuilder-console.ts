@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as net from 'net';
-import { ECONNRESET } from 'constants';
 
 
 const DEFAULT_IP = '127.0.0.1';
