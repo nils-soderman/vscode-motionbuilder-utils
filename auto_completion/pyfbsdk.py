@@ -1,3 +1,7 @@
+# Custom Additions
+def ShowTool(tool):
+    pass
+
 """
 pyfbsdk
 """

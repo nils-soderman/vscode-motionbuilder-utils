@@ -32,9 +32,7 @@ function handleResponse(response: string) {
 
 async function getSocket() {
     if (gSocket !== undefined) {
-        console.log("RETURNING GLOBAL SOCKET");
-        console.log("gSocket: " + gSocket);
-        // TODO: Validate connection, otherwise try to re-connect
+        // TODO: Validate connection, may not be needed. As if we drop connection we now set gSocket to be undefined
         return gSocket;
     }
 
