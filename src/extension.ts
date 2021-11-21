@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 import * as autocompletion from "./auto-completion";
 import * as documentation from "./documentation";
-import * as execute from "./execute_script";
+import * as execute from "./execute-script";
 
 
 export function activate(context: vscode.ExtensionContext) {

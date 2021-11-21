@@ -1,4 +1,4 @@
-# MotionBuilder (VSCode Extention)
+# MotionBuilder Utils (VSCode Extention)
 
 <b>
 Please Note: This extention is currently in early development!
@@ -6,7 +6,7 @@ Please Note: This extention is currently in early development!
 
 <br>
 
-Improvements for writing code/scripts for MotionBuilder.
+Editor features to assist when writing Python code for Autodesk MotionBuilder.
 
 
 
@@ -41,6 +41,6 @@ If you have any questions, feature requests or run into any bugs, don't hesitate
 [Twitter](https://twitter.com/nilssoderman "@nilssoderman")<br>
 [Bug report](https://github.com/nils-soderman/vscode-motionbuilder/issues "Report a bug on the GitHub repository")
 
-
 <br><br>
-*This extention is not associated with Autodesk or MotionBuilder in any way. This is fully developed as a third-party extension.
+
+<i>*This extention is not associated with Autodesk or MotionBuilder in any way. This is fully developed as a third-party extension.</i>
