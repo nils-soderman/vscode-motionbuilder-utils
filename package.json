@@ -1,5 +1,6 @@
 {
   "name": "mobu-utils",
+  "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder. Auto-completion, Run code in MotionBuilder & browse the documentation with ease.",
   "keywords": ["motionbuilder", "mobu", "python", "dcc", "autodesk"],
