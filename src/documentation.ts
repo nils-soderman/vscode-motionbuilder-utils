@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
 import * as https from 'https';
 import * as path from 'path';
-import * as os from "os";
 import * as fs from 'fs';
 
 import * as child_process from "child_process";
+
+import * as utils from './utils';
 
 
 const MOBU_DOCS_URL = "https://download.autodesk.com/us/motionbuilder/sdk-documentation/";
@@ -14,14 +15,6 @@ function parseJsonFile(type: string) {
     const filepath = path.join(__dirname, "..", "documentation", `${type}.json`);
     const fileContent = fs.readFileSync(filepath);
     return JSON.parse(fileContent.toString());
-}
-
-
-// TODO: this function is now in 2 places
-function saveTempFile(filename: string, text: string,) {
-    const filepath = path.join(os.tmpdir(), filename);
-    fs.writeFileSync(filepath, text);
-    return filepath;
 }
 
 
@@ -43,7 +36,7 @@ function openExampleInVSCode(url: string) {
             }
             filename += ".py";
 
-            const filepath = saveTempFile(filename, content);
+            const filepath = utils.saveTempFile(filename, content);
 
             const openPath = vscode.Uri.file(filepath);
             vscode.workspace.openTextDocument(openPath).then(doc => {

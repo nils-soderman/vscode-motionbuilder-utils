@@ -1,21 +1,13 @@
 import * as vscode from 'vscode';
 
-import * as path from "path";
-import * as os from "os";
-import * as fs from "fs";
-
 import * as motionBuilderConsole from './motionbuilder-console';
+import * as utils from './utils';
 
 
-function saveTempFile(text: string) {
-    const filepath = path.join(os.tmpdir(), "VSCode-MotionBuilder-Exec");
-    fs.writeFileSync(filepath, text);
-    return filepath;
-}
+const TEMP_FILENAME = "VSCode-MotionBuilder-Exec";
 
 
 export async function execute() {
-
     if (!vscode.window.activeTextEditor?.document) {
         return;
     }
@@ -30,13 +22,13 @@ export async function execute() {
     }
 
     if (selectionText) {
-        fileToExecute = saveTempFile(selectionText);
+        fileToExecute = utils.saveTempFile(TEMP_FILENAME, selectionText);
     }
     else if (vscode.window.activeTextEditor.document.isDirty) {
         // File is dirty, save a copy in temp
-        fileToExecute = saveTempFile(vscode.window.activeTextEditor.document.getText());
+        fileToExecute = utils.saveTempFile(TEMP_FILENAME, vscode.window.activeTextEditor.document.getText());
     }
-    else {
+        else {
         fileToExecute = vscode.window.activeTextEditor.document.uri.fsPath;
     }
 
