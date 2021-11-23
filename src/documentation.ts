@@ -6,7 +6,9 @@ import * as fs from 'fs';
 
 import * as child_process from "child_process";
 
+
 const MOBU_DOCS_URL = "https://download.autodesk.com/us/motionbuilder/sdk-documentation/";
+
 
 function parseJsonFile(type: string) {
     const filepath = path.join(__dirname, "..", "documentation", `${type}.json`);
@@ -14,12 +16,14 @@ function parseJsonFile(type: string) {
     return JSON.parse(fileContent.toString());
 }
 
+
 // TODO: this function is now in 2 places
 function saveTempFile(filename: string, text: string,) {
     const filepath = path.join(os.tmpdir(), filename);
     fs.writeFileSync(filepath, text);
     return filepath;
 }
+
 
 function openExampleInVSCode(url: string) {
     https.get(url, (res) => {
@@ -74,7 +78,8 @@ async function browseDocumentation(types: string[]) {
 
     const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
 
-    if (relativeURL.startsWith("SDKSamples")) {
+    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
+    if (relativeURL.startsWith("SDKSamples") && mobuConfig.get("documentation.openExamplesInEditor")) {
         // Open in VSCode
         openExampleInVSCode(MOBU_DOCS_URL + relativeURL);
     }
@@ -84,21 +89,26 @@ async function browseDocumentation(types: string[]) {
     }
 }
 
+
 export async function browseExamples() {
     browseDocumentation(["examples"]);
 }
+
 
 export async function browsePython() {
     browseDocumentation(["python"]);
 }
 
+
 export async function browseC() {
     browseDocumentation(["c"]);
 }
 
+
 export async function browseGuide() {
     browseDocumentation(["guide"]);
 }
+
 
 export async function browseFullDocumentation() {
     browseDocumentation(["guide", "c", "python", "examples"]);

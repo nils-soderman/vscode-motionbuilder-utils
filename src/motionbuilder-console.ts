@@ -24,8 +24,11 @@ function handleResponse(response: string) {
 
     outputChannel.appendLine(response);
 
-    // TODO: this should be an option
-    outputChannel.show(true);
+    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
+    if (mobuConfig.get("execute.showOutput")) {
+        outputChannel.show(true);
+    }
+
 }
 
 
@@ -47,14 +50,14 @@ async function getSocket() {
             // TODO: Should probably link to a trouble-shooting page.
             vscode.window.showErrorMessage(`Failed to connect to MotionBuilder.`);
         }
-        
+
         else {
             // Something has gone wrong, print error
             // TODO: option to show a more detailed error log
             vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.stack}`);
             console.log(e.stack);
         }
-        
+
         if (gSocket) {
             gSocket.destroy();
         }
@@ -96,15 +99,14 @@ async function getSocket() {
 }
 
 
-
 /**
  * 
  * @param command The command to run
  */
 export async function runCommand(command: string) {
 
-    // TODO: this should be an option
-    if (false) {
+    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
+    if (mobuConfig.get("execute.clearOutput")) {
         const outputChannel = getOutputChannel(false);
         if (outputChannel) {
             outputChannel.clear();

@@ -7,8 +7,11 @@ import * as execute from "./execute-script";
 
 export function activate(context: vscode.ExtensionContext) {
 
-	// Make sure auto-completion is setup
-	autocompletion.setupAutocompletion();
+	const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
+    if (mobuConfig.get("motionbuilder.autocompletion.patchOnActivated")) {
+		// Make sure auto-completion is setup
+		autocompletion.setupAutocompletion();
+	}
 
 	
 	// -------------------------------

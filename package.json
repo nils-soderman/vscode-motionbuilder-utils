@@ -3,33 +3,36 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder. Auto-completion, Run code in MotionBuilder & browse the documentation with ease.",
-  "keywords": ["motionbuilder", "mobu", "python", "dcc", "autodesk"],
+  "keywords": [
+    "motionbuilder",
+    "mobu",
+    "python",
+    "dcc",
+    "autodesk"
+  ],
   "icon": "media/mobu-icon.png",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.62.0"
   },
   "author": {
-		"name": "Nils Söderman",
+    "name": "Nils Söderman",
     "url": "https://nilssoderman.com"
-	},
+  },
   "repository": {
-		"type": "git",
-		"url": "https://github.com/nils-soderman/vscode-motionbuilder"
-	},
-	"bugs": {
-		"url": "https://github.com/nils-soderman/vscode-motionbuilder/issues"
-	},
+    "type": "git",
+    "url": "https://github.com/nils-soderman/vscode-motionbuilder"
+  },
+  "bugs": {
+    "url": "https://github.com/nils-soderman/vscode-motionbuilder/issues"
+  },
   "categories": [
     "Other"
   ],
-
-
   "activationEvents": [
     "*"
   ],
   "main": "./out/extension.js",
-
   "contributes": {
     "commands": [
       {
@@ -37,7 +40,6 @@
         "title": "Execute",
         "category": "MotionBuilder"
       },
-
       {
         "command": "motionbuilder.browseDocumentation",
         "title": "Browse Documentation",
@@ -59,13 +61,11 @@
         "category": "MotionBuilder"
       }
     ],
-    
     "keybindings": [
       {
         "command": "motionbuilder.execute",
         "key": "ctrl+enter"
       },
-
       {
         "command": "motionbuilder.browseDocumentationFull"
       },
@@ -80,25 +80,33 @@
         "key": "ctrl+f1"
       }
     ],
-    
-
-    
     "configuration": [
       {
-        "title": "MotionBuilder",
-        "motionbuilder.execute.showOutput": {
-          "type": "boolean",
-          "default": true,
-          "description": "Display the output log when something is executed"
-        },
-        "motionbuilder.execute.clearOutput": {
-          "type": "boolean",
-          "default": true,
-          "description": "Clear output each time somethings new is executed."
+        "title": "MotionBuilder Utils",
+        "properties": {
+          "motionbuilder.execute.showOutput": {
+            "type": "boolean",
+            "default": true,
+            "description": "Display the output log when something is executed"
+          },
+          "motionbuilder.execute.clearOutput": {
+            "type": "boolean",
+            "default": true,
+            "description": "Clear output each time somethings new is executed."
+          },
+          "motionbuilder.documentation.openExamplesInEditor": {
+            "type": "boolean",
+            "default": true,
+            "description": "Open up the examples files in editor, instead of the web-browser."
+          },
+          "motionbuilder.autocompletion.patchOnActivated": {
+            "type": "boolean",
+            "default": true,
+            "description": "Patch auto-completion when extention is activated."
+          }
         }
       }
     ]
-
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
