@@ -91,7 +91,7 @@
           },
           "motionbuilder.execute.clearOutput": {
             "type": "boolean",
-            "default": true,
+            "default": false,
             "description": "Clear output each time somethings new is executed."
           },
           "motionbuilder.documentation.openExamplesInEditor": {
