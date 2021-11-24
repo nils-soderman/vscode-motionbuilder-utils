@@ -77,8 +77,7 @@ async function browseDocumentation(types: string[]) {
 
     const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
 
-    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
-    if (relativeURL.startsWith("SDKSamples") && mobuConfig.get("documentation.openExamplesInEditor")) {
+    if (relativeURL.startsWith("SDKSamples") && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
         openExampleInVSCode(MOBU_DOCS_URL + relativeURL);
     }

@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import * as path from 'path';
 import * as os from "os";
 import * as fs from 'fs';
@@ -33,4 +34,9 @@ export function cleanupTempFiles() {
 export function readJson(filepath: string) {
     const fileContent = fs.readFileSync(filepath);
     return JSON.parse(fileContent.toString());
+}
+
+
+export function getExtensionConfig() {
+    return vscode.workspace.getConfiguration("motionbuilder");
 }

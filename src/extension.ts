@@ -8,8 +8,7 @@ import * as utils from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
-    if (mobuConfig.get("motionbuilder.autocompletion.patchOnActivated")) {
+    if (utils.getExtensionConfig().get("autocompletion.patchOnActivated")) {
 		// Make sure auto-completion is setup
 		autocompletion.setupAutocompletion();
 	}

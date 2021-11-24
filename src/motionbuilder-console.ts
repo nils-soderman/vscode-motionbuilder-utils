@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import * as net from 'net';
 
+import * as utils from './utils';
+
 
 const DEFAULT_IP = '127.0.0.1';
 const DEFAULT_PORT = 4242;
@@ -24,8 +26,7 @@ function handleResponse(response: string) {
 
     outputChannel.appendLine(response);
 
-    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
-    if (mobuConfig.get("execute.showOutput")) {
+    if (utils.getExtensionConfig().get("execute.showOutput")) {
         outputChannel.show(true);
     }
 
@@ -105,8 +106,7 @@ async function getSocket() {
  */
 export async function runCommand(command: string) {
 
-    const mobuConfig = vscode.workspace.getConfiguration("motionbuilder");
-    if (mobuConfig.get("execute.clearOutput")) {
+    if (utils.getExtensionConfig().get("execute.clearOutput")) {
         const outputChannel = getOutputChannel(false);
         if (outputChannel) {
             outputChannel.clear();
