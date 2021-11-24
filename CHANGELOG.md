@@ -2,11 +2,12 @@
 
 
 ## [0.1.1]
-*(23-11-2021)*
+*(24-11-2021)*
 
 - Changed extention activation event to be `onStartupFinished`
-- `motionbuilder.execute` hotkey now has context requirements of `"editorTextFocus && editorLangId == python"`
 - All temp files are now placed inside a folder 'VSCode-MotionBuilder-Utils'
+- Clean up temp files/folder when deactivated
+- `motionbuilder.execute` hotkey now has context requirements of `"editorTextFocus && editorLangId == python"`
 - Added Configurations:
     - `execute.showOutput`: Open up the output log when executing code from the Editor
     - `execute.clearOutput`: Clear output log each time code is executed

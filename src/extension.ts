@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as autocompletion from "./auto-completion";
 import * as documentation from "./documentation";
 import * as execute from "./execute-script";
+import * as utils from './utils';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -48,4 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 
-export function deactivate() { }
+export function deactivate() { 
+	// Remove all temp files created by this extension
+	utils.cleanupTempFiles();
+}
