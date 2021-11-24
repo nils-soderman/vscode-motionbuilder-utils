@@ -10,11 +10,17 @@ import * as utils from './utils';
 
 const MOBU_DOCS_URL = "https://download.autodesk.com/us/motionbuilder/sdk-documentation/";
 
+const FDOCTYPE = {
+    c: "c",
+    example: "examples",
+    guide: "guide",
+    python: "python"
+};
 
-function parseJsonFile(type: string) {
+
+function parseDocumentation(type: string) {
     const filepath = path.join(__dirname, "..", "documentation", `${type}.json`);
-    const fileContent = fs.readFileSync(filepath);
-    return JSON.parse(fileContent.toString());
+    return utils.readJson(filepath);
 }
 
 
@@ -51,7 +57,7 @@ function openExampleInVSCode(url: string) {
 async function browseDocumentation(types: string[]) {
     let items: any = {};
     for (const type of types) {
-        let itemsToAppend = parseJsonFile(type);
+        let itemsToAppend = parseDocumentation(type);
         if (types.length > 1) {
             const prefix = `${type[0].toUpperCase() + type.slice(1)}: `;
             for (const [key, value] of Object.entries(itemsToAppend)) {
@@ -84,32 +90,25 @@ async function browseDocumentation(types: string[]) {
 
 
 export async function browseExamples() {
-    browseDocumentation(["examples"]);
+    return browseDocumentation([FDOCTYPE.example]);
 }
 
 
 export async function browsePython() {
-    browseDocumentation(["python"]);
+    return browseDocumentation([FDOCTYPE.python]);
 }
 
 
 export async function browseC() {
-    browseDocumentation(["c"]);
+    return browseDocumentation([FDOCTYPE.c]);
 }
 
 
 export async function browseGuide() {
-    browseDocumentation(["guide"]);
+    return browseDocumentation([FDOCTYPE.guide]);
 }
 
 
 export async function browseFullDocumentation() {
-    browseDocumentation(["guide", "c", "python", "examples"]);
-}
-
-
-// TODO: Custom, allow user to select what types to browse in user settings
-export async function browseCustomDocumentation() {
-    const types: string[] = [];
-    browseDocumentation(types);
+    return browseDocumentation([FDOCTYPE.guide, FDOCTYPE.c, FDOCTYPE.python, FDOCTYPE.example]);
 }

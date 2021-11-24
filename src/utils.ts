@@ -16,3 +16,9 @@ export function getExtentionTempDir() {
     }
     return tempDir;
 }
+
+
+export function readJson(filepath: string) {
+    const fileContent = fs.readFileSync(filepath);
+    return JSON.parse(fileContent.toString());
+}
