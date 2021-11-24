@@ -10,6 +10,7 @@
     "dcc",
     "autodesk"
   ],
+  "qna": "marketplace",
   "icon": "media/mobu-icon.png",
   "version": "0.1.1",
   "engines": {
@@ -30,7 +31,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -64,7 +65,8 @@
     "keybindings": [
       {
         "command": "motionbuilder.execute",
-        "key": "ctrl+enter"
+        "key": "ctrl+enter",
+        "when": "editorTextFocus && editorLangId == python"
       },
       {
         "command": "motionbuilder.browseDocumentationFull"
