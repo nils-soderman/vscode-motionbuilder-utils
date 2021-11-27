@@ -1,4 +1,4 @@
-# MotionBuilder Utils (VSCode Extention)
+# MotionBuilder Utils (VSCode)
 
 <b>
 Please Note: This extention is currently in early development!
@@ -8,26 +8,25 @@ Please Note: This extention is currently in early development!
 
 Editor features to assist when writing Python code for Autodesk MotionBuilder.
 
----
-
-## Features
-
 <br>
 
-### Run code in MotionBuilder directly from the editor
+# Features
+
+## Run code in MotionBuilder directly from the editor
 
 You no longer need to leave the editor to execute code inside of MotionBuilder.
 Now VSCode can act just like MotionBuilder's Python Editor.
 
-With the command: `MotionBuilder: Execute` <br> or using the Hotkey (default mapping: <kbd>Ctrl</kbd> + <kbd>Enter</kbd>).
+![execute code in MB demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-exec.gif?raw=true)
 
-The selected text will be executed in MotionBuilder & the output will be printed in VSCode.
+Command: `MotionBuilder: Execute` <br>
+Keyboard Shortcut: <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
 
-If nothing is selected when running the command the entire document will be executed.
+The selected text will be executed, if nothing is selected the entire document will be executed.
 
 <br>
 
-### Auto-Completion
+## Auto-Completion
 
 This extention automatically sets up Python auto-completion for the MotionBuilder sdk.
 
@@ -35,27 +34,31 @@ This assumes PyLance is installed as it'll add an additional path to `python.ana
 
 <br>
 
-### Browse the Documentation
+## Browse the Documentation
 
-Quickly search through the documentation from within the editor, and open the page in a new web-browser tab.
+Quickly search through the official sdk documentation from within the editor, and open the page in a new web-browser tab.
 
-Command: `MotionBuilder: Browse Documentation`
+![Browse docs demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-docs.gif?raw=true)
 
-Default hotkey mapping to browse the python docs: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
+Commands: 
+- `MotionBuilder: Browse Documentation`
+- `MotionBuilder: Browse Documentation (Python)`
+- `MotionBuilder: Browse Documentation (Examples)`
+- `MotionBuilder: Browse Documentation (C++)`
 
-<br>
-
----
+Keyboard Shortcut _(to browse the Python docs)_: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
 
-## Contact
+<br><br>
+
+# Contact
 
 If you have any questions, feature requests or run into any bugs, don't hesitate to get in contact with me:
 
 [Personal Website](https://nilssoderman.com)<br>
 [Twitter](https://twitter.com/nilssoderman "@nilssoderman")<br>
-[Bug report](https://github.com/nils-soderman/vscode-motionbuilder/issues "Report a bug on the GitHub repository")
+[Report an issue](https://github.com/nils-soderman/vscode-motionbuilder/issues "Report a bug on the GitHub repository")
 
-<br><br>
+<br>
 
-<i>*This extention is not associated with Autodesk or MotionBuilder in any way. This is fully developed as a third-party extension.</i>
+<i>*This extention is not associated with Autodesk or MotionBuilder in any way. This is a third-party extension.</i>
