@@ -7,7 +7,7 @@ pyfbsdk
 """
 def FBAdd(pResult,pV1,pV2):
     """
-    Add two vectors together (<b>pResult</b> = <b>pV1</b> <b>+</b> <b>pV2</b>)
+    Add two vectors together (pResult = pV1 + pV2)
 
     pResult : Resulting vector. 
     pV1 : 1st vector. 
@@ -577,7 +577,7 @@ def FBLength(pV):
     Get the length of a vector.
 
     pV : Vector to calculate length for. 
-    return : Length of vector <b>pV</b>. 
+    return : Length of vector pV. 
     """
     pass
 
@@ -792,7 +792,7 @@ def FBModelTransactionEnd():
 
 def FBMult(pResult,pV1,pV2):
     """
-    Multiply <b>pV2</b> from <b>pV1</b> (<b>pResult</b> = <b>pV1</b> <b>*</b> <b>pV2</b>)
+    Multiply pV2 from pV1 (pResult = pV1 * pV2)
 
     pResult : Resulting vector. 
     pV1 : 1st vector. 
@@ -944,7 +944,7 @@ def FBPreventUIUpdateIsOn():
 
 def FBQAdd(pResult,pQ1,pQ2):
     """
-    Add two quaternions together (<b>pResult</b> = <b>pQ1</b> <b>+</b> <b>pQ2</b>)
+    Add two quaternions together (pResult = pQ1 + pQ2)
 
     pResult : Resulting quaternion. 
     pQ1 : 1st quaternion. 
@@ -967,13 +967,13 @@ def FBQLength(pQ):
     Get the length of a quaternion.
 
     pQ : Quaternion to calculate length for. 
-    return : Length of quaternion <b>pQ</b>. 
+    return : Length of quaternion pQ. 
     """
     pass
 
 def FBQMult(pResult,pQ1,pQ2):
     """
-    Multiply <b>pQ2</b> from <b>pQ1</b> (<b>pResult</b> = <b>pQ1</b> <b>*</b> <b>pQ2</b>)
+    Multiply pQ2 from pQ1 (pResult = pQ1 * pQ2)
 
     pResult : Resulting quaternion. 
     pQ1 : 1st quaternion. 
@@ -993,7 +993,7 @@ def FBQMult(pResult,pQ1,pQ2):
 
 def FBQSub(pResult,pQ1,pQ2):
     """
-    Subtract <b>pQ2</b> from <b>pQ1</b> (<b>pResult</b> = <b>pQ1</b> <b>-</b> <b>pQ2</b>)
+    Subtract pQ2 from pQ1 (pResult = pQ1 - pQ2)
 
     pResult : Resulting quaternion. 
     pQ1 : 1st quaternion. 
@@ -1132,7 +1132,7 @@ def FBSleep(MilliSeconds):
 
 def FBSub(pResult,pV1,pV2):
     """
-    Subtract <b>pV2</b> from <b>pV1</b> (<b>pResult</b> = <b>pV1</b> <b>-</b> <b>pV2</b>)
+    Subtract pV2 from pV1 (pResult = pV1 - pV2)
 
     pResult : Resulting vector. 
     pV1 : 1st vector. 
@@ -1247,7 +1247,7 @@ def FBMessageBoxWithCheck(pBoxTitle,pMessage,pButton1Str,pButton2Str,pButton3Str
 def FBMessageBoxGetUserValue(pBoxTitle,pMessage,pValue,pValueType,pButton1Str,pButton2Str,pButton3Str,pDefaultButton):
     """
     Dialog popup box to get user input.
-    Opens a message box, with up to three buttons, asking the user to enter data. The type of data to be entered is specified by the <b>pValue</b> and <b>pValueType</b> parameters.
+    Opens a message box, with up to three buttons, asking the user to enter data. The type of data to be entered is specified by the pValue and pValueType parameters.
 
     pBoxTitle : Title of message box. 
     pMessage : Message to place in box. 
@@ -1311,10 +1311,10 @@ class FBAddRegionParam (object):
         """
         pass
 
-    mPos=property(doc="<b>Read Property:</b> Offset in pixel according depending on the use of FBAddRegionParam (X, Y, W or H).         ")
-    mType=property(doc="<b>Read Property:</b> Type of Attachment.         ")
-    mRelative=property(doc="<b>Read Property:</b> Name of Region to attach relative to.         ")
-    mMult=property(doc="<b>Read Property:</b> Multiplier of relative value.         ")
+    mPos=property(doc="Read Property: Offset in pixel according depending on the use of FBAddRegionParam (X, Y, W or H).         ")
+    mType=property(doc="Read Property: Type of Attachment.         ")
+    mRelative=property(doc="Read Property: Name of Region to attach relative to.         ")
+    mMult=property(doc="Read Property: Multiplier of relative value.         ")
     pass
 
 class FBAudioRenderOptions (object):
@@ -1329,11 +1329,11 @@ class FBAudioRenderOptions (object):
         """
         pass
 
-    BitDepthMode=property(doc="<b>Property:</b> Bit depth for one sample of audio. 8, 16 and 24 bits available for audio render, 16 bits default.          ")
-    ChannelMode=property(doc="<b>Property:</b> Audio render channel number, 1 for Mono(left channel right channel render mixed to one channel), 2 for Stereo(left channel right channel render separately).          ")
-    OutputFileName=property(doc="<b>Property:</b> Audio Render destination file.          ")
-    RateMode=property(doc="<b>Property:</b> Rate mode for number of samples per second. 44100 hz default,8000, 11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000 available for audio render.          ")
-    TimeSpan=property(doc="<b>Property:</b> Start and stop selection time to render.          ")
+    BitDepthMode=property(doc="Property: Bit depth for one sample of audio. 8, 16 and 24 bits available for audio render, 16 bits default.          ")
+    ChannelMode=property(doc="Property: Audio render channel number, 1 for Mono(left channel right channel render mixed to one channel), 2 for Stereo(left channel right channel render separately).          ")
+    OutputFileName=property(doc="Property: Audio Render destination file.          ")
+    RateMode=property(doc="Property: Rate mode for number of samples per second. 44100 hz default,8000, 11025,12000,16000,22050,24000,32000,44100,48000,64000,88200,96000 available for audio render.          ")
+    TimeSpan=property(doc="Property: Start and stop selection time to render.          ")
     pass
 
 class FBBatchOptions (object):
@@ -1348,26 +1348,26 @@ class FBBatchOptions (object):
         """
         pass
 
-    InputFileFormat=property(doc="<b>Read Write Property:</b> File format of the input files.         ")
-    OutputFileFormat=property(doc="<b>Read Write Property:</b> File format of the output files.         ")
-    ProcessType=property(doc="<b>Read Write Property:</b> What process should be done? Load, Save or Both.         ")
-    InputDirectory=property(doc="<b>Read Write Property:</b> The directory containning the input files.         ")
-    OutputDirectory=property(doc="<b>Read Write Property:</b> The directory containning the output files.         ")
-    SkeletonFile=property(doc="<b>Read Write Property:</b> The Skeleton file (for Acclaim AMC files).         ")
-    Character=property(doc="<b>Read Write Property:</b> The character to receive the animation.         ")
-    StartAnimationAtZero=property(doc="<b>Read Write Property:</b> Set the time of all loaded files to 0.         ")
-    FrameAnimation=property(doc="<b>Read Write Property:</b> Set timeline start and end time to corespond with the start and end of animation.         ")
-    OverwriteScaling=property(doc="<b>Read Write Property:</b> Set the scaling to a default setting of 1.0.         ")
-    KeepDummyBones=property(doc="<b>Read Write Property:</b> To keep dummy bones.         ")
-    WriteRate=property(doc="<b>Read Write Property:</b> Write frame rate in Acclaim AMC files.         ")
-    WriteTranslation=property(doc="<b>Read Write Property:</b> Write translation animation data included with Acclaim AMC files.         ")
-    PlotToCharacter=property(doc="<b>Read Write Property:</b> To plot the animation on the character.         ")
-    PlotToControlSet=property(doc="<b>Read Write Property:</b> To plot the animation on the control set.         ")
-    UseSingleTake=property(doc="<b>Read Write Property:</b> Use only one take to convert all files.         ")
-    UseBatchSuffix=property(doc="<b>Read Write Property:</b> Add a batch suffix to the name of the files.         ")
-    KeepCharacterConstraint=property(doc="<b>Read Write Property:</b> To keep the character constaint when saving.         ")
-    OnTakeExistAction=property(doc="<b>Read Write Property:</b> Action to perform when a take already exist while in a batch process.         ")
-    OnContainsBatchTakesAction=property(doc="<b>Read Write Property:</b> Action to perform when a scene already contains batch takes while in a batch process.         ")
+    InputFileFormat=property(doc="Read Write Property: File format of the input files.         ")
+    OutputFileFormat=property(doc="Read Write Property: File format of the output files.         ")
+    ProcessType=property(doc="Read Write Property: What process should be done? Load, Save or Both.         ")
+    InputDirectory=property(doc="Read Write Property: The directory containning the input files.         ")
+    OutputDirectory=property(doc="Read Write Property: The directory containning the output files.         ")
+    SkeletonFile=property(doc="Read Write Property: The Skeleton file (for Acclaim AMC files).         ")
+    Character=property(doc="Read Write Property: The character to receive the animation.         ")
+    StartAnimationAtZero=property(doc="Read Write Property: Set the time of all loaded files to 0.         ")
+    FrameAnimation=property(doc="Read Write Property: Set timeline start and end time to corespond with the start and end of animation.         ")
+    OverwriteScaling=property(doc="Read Write Property: Set the scaling to a default setting of 1.0.         ")
+    KeepDummyBones=property(doc="Read Write Property: To keep dummy bones.         ")
+    WriteRate=property(doc="Read Write Property: Write frame rate in Acclaim AMC files.         ")
+    WriteTranslation=property(doc="Read Write Property: Write translation animation data included with Acclaim AMC files.         ")
+    PlotToCharacter=property(doc="Read Write Property: To plot the animation on the character.         ")
+    PlotToControlSet=property(doc="Read Write Property: To plot the animation on the control set.         ")
+    UseSingleTake=property(doc="Read Write Property: Use only one take to convert all files.         ")
+    UseBatchSuffix=property(doc="Read Write Property: Add a batch suffix to the name of the files.         ")
+    KeepCharacterConstraint=property(doc="Read Write Property: To keep the character constaint when saving.         ")
+    OnTakeExistAction=property(doc="Read Write Property: Action to perform when a take already exist while in a batch process.         ")
+    OnContainsBatchTakesAction=property(doc="Read Write Property: Action to perform when a scene already contains batch takes while in a batch process.         ")
     pass
 
 class FBCallback (object):
@@ -1375,9 +1375,9 @@ class FBCallback (object):
     This class is used for the internal callback framework and is not meant to be used by clients.     
         
     """
-    Wrapper=property(doc="<b>Read Property:</b> Pyfbsdk Wrapper that is the owner of the callback.         ")
-    EventType=property(doc="<b>Read Property:</b> Event type to which this callback is connected.         ")
-    Callback=property(doc="<b>Read Property:</b> Python callback that will called when the FBCallback is executed.         ")
+    Wrapper=property(doc="Read Property: Pyfbsdk Wrapper that is the owner of the callback.         ")
+    EventType=property(doc="Read Property: Event type to which this callback is connected.         ")
+    Callback=property(doc="Read Property: Python callback that will called when the FBCallback is executed.         ")
     pass
 
 class FBCharacterPoseOptions (object):
@@ -1458,9 +1458,9 @@ class FBCharacterSolver (object):
         """
         pass
 
-    ExtraFK=property(doc="<b>Read Property:</b> List of Extra FK in character         ")
-    ExtraBones=property(doc="<b>Read Property:</b> List of Extra Bones in character         ")
-    Source=property(doc="<b>Read Write Property:</b> Source character when doing a character retarget.          ")
+    ExtraFK=property(doc="Read Property: List of Extra FK in character         ")
+    ExtraBones=property(doc="Read Property: List of Extra Bones in character         ")
+    Source=property(doc="Read Write Property: Source character when doing a character retarget.          ")
     pass
 
 class FBColor (object):
@@ -1799,7 +1799,7 @@ class FBConfigFile (object):
         pItemName : Name of the item. 
         pValue : Reference the the string that will contain the value of the item. If the item is not found in the file, it will be added with the initial value in this string. 
         pComment : Optional parameter that can be used to add a comment. 
-        return : <b>true</b> if the value was found or added, or false if the item was not found and could not be added to the file. 
+        return : true if the value was found or added, or false if the item was not found and could not be added to the file. 
         """
         pass
 
@@ -1812,7 +1812,7 @@ class FBConfigFile (object):
         pItemName : Name of the item. 
         pValue : Value assigned to the item. 
         pComment : Optional parameter that can be used to add a comment. 
-        return : <b>true</b> if the item was written to the config file, <b>false</b> otherwise. 
+        return : true if the item was written to the config file, false otherwise. 
         """
         pass
 
@@ -1827,7 +1827,7 @@ class FBConstraintInfo (object):
         """
         Was a 'snap' requested?
 
-        return : <b>true</b> if 'snap' was requeststed. 
+        return : true if 'snap' was requeststed. 
         """
         pass
 
@@ -1835,7 +1835,7 @@ class FBConstraintInfo (object):
         """
         Was a 'zero' requested?
 
-        return : <b>true</b> if 'zero' was requeststed. 
+        return : true if 'zero' was requeststed. 
         """
         pass
 
@@ -1906,7 +1906,7 @@ class FBConstraintRelation (object):
         """
         pass
 
-    Boxes=property(doc="<b>List:</b> Boxes used in this constraint.          ")
+    Boxes=property(doc="List: Boxes used in this constraint.          ")
     pass
 
 class FBConstructionOperation (object):
@@ -2028,7 +2028,7 @@ class FBDeviceNotifyInfo (object):
         """
         Return the wanted timer sync count (internal or external)
 
-        return : sync count or <b>-1</b> if no sync is present 
+        return : sync count or -1 if no sync is present 
         """
         pass
 
@@ -2107,7 +2107,7 @@ class FBEvaluateInfo (object):
         """
         Return the wanted timer sync count (internal or external).
 
-        return : sync count or <b>-1</b> if no sync is present 
+        return : sync count or -1 if no sync is present 
         """
         pass
 
@@ -2123,7 +2123,7 @@ class FBEvaluateInfo (object):
         """
         Return the wanted timer sync count (internal or external).
 
-        return : sync count or <b>-1</b> if no sync is present 
+        return : sync count or -1 if no sync is present 
         """
         pass
 
@@ -2139,7 +2139,7 @@ class FBEvaluateInfo (object):
         """
         Is local time stopped? (ie: no animation).
 
-        return : <b>true</b> if local time is stopped. 
+        return : true if local time is stopped. 
         """
         pass
 
@@ -2159,7 +2159,7 @@ class FBEvent (object):
         """
         pass
 
-    Type=property(doc="<b>Read Only Property:</b> Type of event.          ")
+    Type=property(doc="Read Only Property: Type of event.          ")
     pass
 
 class FBEventDragAndDrop (object):
@@ -2201,10 +2201,10 @@ class FBEventDragAndDrop (object):
 
     def Get(self,pIndex):
         """
-        Get the FBComponent specified by <b>pIndex</b> from the Drag and Drop list.
+        Get the FBComponent specified by pIndex from the Drag and Drop list.
 
         pIndex : Index in list where to get FBComponent. 
-        return : Handle to FBComponent in list at <b>pIndex</b>. 
+        return : Handle to FBComponent in list at pIndex. 
         """
         pass
 
@@ -2216,11 +2216,11 @@ class FBEventDragAndDrop (object):
         """
         pass
 
-    Components=property(doc="<b>Read Property:</b> List of components drop. (it acces the same data as FBEventDragAndDrop.Get)         ")
-    Data=property(doc="<b>Property:</b> User specified reference. (for example, FBSpread:row)          ")
-    PosX=property(doc="<b>Property:</b> X position of mouse.          ")
-    PosY=property(doc="<b>Property:</b> Y position of mouse.          ")
-    State=property(doc="<b>Property:</b> Drag and drop sub-event.          ")
+    Components=property(doc="Read Property: List of components drop. (it acces the same data as FBEventDragAndDrop.Get)         ")
+    Data=property(doc="Property: User specified reference. (for example, FBSpread:row)          ")
+    PosX=property(doc="Property: X position of mouse.          ")
+    PosY=property(doc="Property: Y position of mouse.          ")
+    State=property(doc="Property: Drag and drop sub-event.          ")
     pass
 
 class FBEventName (object):
@@ -2282,27 +2282,27 @@ class FBFCurveKey (object):
         """
         pass
 
-    Bias=property(doc="<b>Read Write Property:</b> Bias (TCB).          ")
-    Continuity=property(doc="<b>Read Write Property:</b> Continuity (TCB).          ")
-    ExtrapolationMode=property(doc="<b>Read Write Property:</b> Extrapolation mode          ")
-    Interpolation=property(doc="<b>Read Write Property:</b> Type of interpolation.          ")
-    LeftBezierTangent=property(doc="<b>Read Write Property:</b> Left bezier tangent          ")
-    LeftDerivative=property(doc="<b>Read Write Property:</b> Left derivative, in units/seconds.          ")
-    LeftTangentWeight=property(doc="<b>Read Write Property:</b> Left tangent weight          ")
-    MarkedForManipulation=property(doc="<b>Read Write Property:</b> Is the key marked for manipulation.          ")
-    RightBezierTangent=property(doc="<b>Read Write Property:</b> Right bezier tangent          ")
-    RightDerivative=property(doc="<b>Read Write Property:</b> Right derivative, in units/seconds.          ")
-    RightTangentWeight=property(doc="<b>Read Write Property:</b> Right tangent weight          ")
-    Selected=property(doc="<b>Read Write Property:</b> Is the key selected.          ")
-    TangentBreak=property(doc="<b>Read Write Property:</b> Tangent's break status          ")
-    TangentClampMode=property(doc="<b>Read Write Property:</b> Tangent's clamp method.          ")
-    TangentConstantMode=property(doc="<b>Read Write Property:</b> Tangent's constant mode          ")
-    TangentCustomIndex=property(doc="<b>Read Write Property:</b> Tangent's custom index          ")
-    TangentMode=property(doc="<b>Read Write Property:</b> Tangent calculation method.          ")
-    TangentWeightMode=property(doc="<b>Read Write Property:</b> Tangent's weight mode. Setting the value for LeftTangentWeight/RightTangentWeight will also activate the weight for that part. Please see the note provided with FBTangentWeightMode for the left weight of a key.          ")
-    Tension=property(doc="<b>Read Write Property:</b> Tension (TCB).          ")
-    Time=property(doc="<b>Read Write Property:</b> Time of key.          ")
-    Value=property(doc="<b>Read Write Property:</b> Value of Key          ")
+    Bias=property(doc="Read Write Property: Bias (TCB).          ")
+    Continuity=property(doc="Read Write Property: Continuity (TCB).          ")
+    ExtrapolationMode=property(doc="Read Write Property: Extrapolation mode          ")
+    Interpolation=property(doc="Read Write Property: Type of interpolation.          ")
+    LeftBezierTangent=property(doc="Read Write Property: Left bezier tangent          ")
+    LeftDerivative=property(doc="Read Write Property: Left derivative, in units/seconds.          ")
+    LeftTangentWeight=property(doc="Read Write Property: Left tangent weight          ")
+    MarkedForManipulation=property(doc="Read Write Property: Is the key marked for manipulation.          ")
+    RightBezierTangent=property(doc="Read Write Property: Right bezier tangent          ")
+    RightDerivative=property(doc="Read Write Property: Right derivative, in units/seconds.          ")
+    RightTangentWeight=property(doc="Read Write Property: Right tangent weight          ")
+    Selected=property(doc="Read Write Property: Is the key selected.          ")
+    TangentBreak=property(doc="Read Write Property: Tangent's break status          ")
+    TangentClampMode=property(doc="Read Write Property: Tangent's clamp method.          ")
+    TangentConstantMode=property(doc="Read Write Property: Tangent's constant mode          ")
+    TangentCustomIndex=property(doc="Read Write Property: Tangent's custom index          ")
+    TangentMode=property(doc="Read Write Property: Tangent calculation method.          ")
+    TangentWeightMode=property(doc="Read Write Property: Tangent's weight mode. Setting the value for LeftTangentWeight/RightTangentWeight will also activate the weight for that part. Please see the note provided with FBTangentWeightMode for the left weight of a key.          ")
+    Tension=property(doc="Read Write Property: Tension (TCB).          ")
+    Time=property(doc="Read Write Property: Time of key.          ")
+    Value=property(doc="Read Write Property: Value of Key          ")
     pass
 
 class FBFilterManager (object):
@@ -2790,18 +2790,18 @@ class FBPlotOptions (object):
         """
         pass
 
-    PlotAllTakes=property(doc="<b>Read Write Property:</b> Should we plot all takes?         ")
-    PlotOnFrame=property(doc="<b>Read Write Property:</b> Should we plot on frame?         ")
-    PlotPeriod=property(doc="<b>Read Write Property:</b> The plot period (1/fps).         ")
-    RotationFilterToApply=property(doc="<b>Read Write Property:</b> The rotation filter to apply.         ")
-    UseConstantKeyReducer=property(doc="<b>Read Write Property:</b> Should we use a constant key reducer with the filter?         ")
-    ConstantKeyReducerKeepOneKey=property(doc="<b>Read Write Property:</b> Should the constant key reducer keep at least one key?         ")
-    PlotTranslationOnRootOnly=property(doc="<b>Read Write Property:</b> Should we plot the translation on root only?         ")
-    PreciseTimeDiscontinuities=property(doc="<b>Read Write Property:</b> Should we use precise time discontinuities?         ")
-    PlotLockedProperties=property(doc="<b>Read Write Property:</b> Should we plot locked properties?         ")
-    PlotTangentMode=property(doc="<b>Read Write Property:</b> The tangent mode for plotted curve.         ")
-    PlotAuxEffectors=property(doc="<b>Read Write Property:</b> Should we plot aux effectors?         ")
-    EvaluateDeformation=property(doc="<b>Read Write Property:</b> Should we evaluate deformation while plotting? This is useful when there is a dependency with the deformation. Disabled by default.         ")
+    PlotAllTakes=property(doc="Read Write Property: Should we plot all takes?         ")
+    PlotOnFrame=property(doc="Read Write Property: Should we plot on frame?         ")
+    PlotPeriod=property(doc="Read Write Property: The plot period (1/fps).         ")
+    RotationFilterToApply=property(doc="Read Write Property: The rotation filter to apply.         ")
+    UseConstantKeyReducer=property(doc="Read Write Property: Should we use a constant key reducer with the filter?         ")
+    ConstantKeyReducerKeepOneKey=property(doc="Read Write Property: Should the constant key reducer keep at least one key?         ")
+    PlotTranslationOnRootOnly=property(doc="Read Write Property: Should we plot the translation on root only?         ")
+    PreciseTimeDiscontinuities=property(doc="Read Write Property: Should we use precise time discontinuities?         ")
+    PlotLockedProperties=property(doc="Read Write Property: Should we plot locked properties?         ")
+    PlotTangentMode=property(doc="Read Write Property: The tangent mode for plotted curve.         ")
+    PlotAuxEffectors=property(doc="Read Write Property: Should we plot aux effectors?         ")
+    EvaluateDeformation=property(doc="Read Write Property: Should we evaluate deformation while plotting? This is useful when there is a dependency with the deformation. Disabled by default.         ")
     pass
 
 class FBPlug (object):
@@ -2946,7 +2946,7 @@ class FBProperty (object):
         """
         AllowsLocking.
 
-        return : <b>true</b> if property can be locked 
+        return : true if property can be locked 
         """
         pass
 
@@ -3054,7 +3054,7 @@ class FBProperty (object):
         """
         HasSomethingLocked.
 
-        return : <b>true</b> if property or any of its members is locked 
+        return : true if property or any of its members is locked 
         """
         pass
 
@@ -3072,7 +3072,7 @@ class FBProperty (object):
         """
         Verify if property is of this type.
 
-        return : <b>true</b> if property is of type. 
+        return : true if property is of type. 
         """
         pass
 
@@ -3080,7 +3080,7 @@ class FBProperty (object):
         """
         IsLocked.
 
-        return : <b>true</b> if property is locked 
+        return : true if property is locked 
         """
         pass
 
@@ -3088,7 +3088,7 @@ class FBProperty (object):
         """
         Indicate if maximum value clamping will be applied on user input value.
 
-        return : <b>true</b> if property the value will be clamped to a maximum value. 
+        return : true if property the value will be clamped to a maximum value. 
         """
         pass
 
@@ -3097,7 +3097,7 @@ class FBProperty (object):
         IsMemberLocked.
 
         pIndex : Index of the sub-member of the property to check. 
-        return : <b>true</b> if property sub-member is locked 
+        return : true if property sub-member is locked 
         """
         pass
 
@@ -3105,7 +3105,7 @@ class FBProperty (object):
         """
         Indicate if minimum value clamping will be applied on user input value.
 
-        return : <b>true</b> if property the value will be clamped to a minimum value. 
+        return : true if property the value will be clamped to a minimum value. 
         """
         pass
 
@@ -3120,7 +3120,7 @@ class FBProperty (object):
         """
         Is property read-only?
 
-        return : <b>true</b> if property is read-only. 
+        return : true if property is read-only. 
         """
         pass
 
@@ -3215,8 +3215,8 @@ class FBProperty (object):
         """
         pass
 
-    Name=property(doc="<b>Read Property:</b> The property's name.         ")
-    Data=property(doc="<b>Read Write Property:</b> The property data value. Type of this depends on the subclass of FBProperty (ex: in a FBPropertyInt, Data is of type int).         ")
+    Name=property(doc="Read Property: The property's name.         ")
+    Data=property(doc="Read Write Property: The property data value. Type of this depends on the subclass of FBProperty (ex: in a FBPropertyInt, Data is of type int).         ")
     pass
 
 class FBPropertyList (object):
@@ -3272,7 +3272,7 @@ class FBPropertyListManipulator (object):
 class FBPropertyListMarkerSegment (object):
     """
     b>PropertyList: MarkerSet.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListMarkerSegment(self):
         """
@@ -3344,7 +3344,7 @@ class FBPropertyListRigidBodyMarkers (object):
 class FBPropertyListTreeNode (object):
     """
     PropertyList of nodes in the tree view.b>PropertyList: UserObject.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListTreeNode(self):
         """
@@ -3479,7 +3479,7 @@ class FBPythonWrapper (object):
     Base class of FBPlug in Python.     
     This class act as a bridge between the ORSDK C++ world and the Python world. Since each Python objects wrap a ORSDK object we need a way to notify Python if the ORSDK object is destroyed.OnUnbind is used in this way: it notifies the user when the wrapped ORSDK objects is destroyed.     
     """
-    OnUnbind=property(doc="<b>Event:</b> Will notifier the user when the corresponding ORSDK objects is unbound from the PythonObject.         ")
+    OnUnbind=property(doc="Event: Will notifier the user when the corresponding ORSDK objects is unbound from the PythonObject.         ")
     pass
 
 class FBRenderOptions (object):
@@ -3551,7 +3551,7 @@ class FBScrollBox (object):
         """
         pass
 
-    Content=property(doc="<b>Read Property:</b> an empty layout in which you can add scrollable content.         ")
+    Content=property(doc="Read Property: an empty layout in which you can add scrollable content.         ")
     pass
 
 class FBShaderManager (object):
@@ -3653,8 +3653,8 @@ class FBShaderModelInfo (object):
         """
         pass
 
-    Model_Version=property(doc="<b>Read Write Property:</b> Shader version informations         ")
-    Model=property(doc="<b>Read Write Property:</b> Shader mModel         ")
+    Model_Version=property(doc="Read Write Property: Shader version informations         ")
+    Model=property(doc="Read Write Property: Shader mModel         ")
     pass
 
 class FBSkeletonState (object):
@@ -3741,39 +3741,39 @@ class FBStringList (object):
 
     def Find(self,pRef):
         """
-        Find the index where <b>pRef</b> is stored.
+        Find the index where pRef is stored.
 
         pRef : Reference to look for. 
-        return : Index at which <b>pRef</b> can be found. 
+        return : Index at which pRef can be found. 
         """
         pass
 
     def Find(self,pString,pCaseSensitive,pStartWith):
         """
-        Find the index with the string <b>pString</b> (or start with <b>pString</b>)
+        Find the index with the string pString (or start with pString)
 
         pString : String to search for. 
         pCaseSensitive : true if considering case. 
         pStartWith : true if to find the index of the string which start with pString. 
-        return : Index where <b>S</b> is stored. 
+        return : Index where S is stored. 
         """
         pass
 
     def GetAt(self,pIndex):
         """
-        Get the string at <b>pIndex</b>.
+        Get the string at pIndex.
 
         pIndex : Index to get string at. 
-        return : String at <b>pIndex</b>. 
+        return : String at pIndex. 
         """
         pass
 
     def GetReferenceAt(self,pIndex):
         """
-        Get the reference store with the string at <b>pIndex</b>.
+        Get the reference store with the string at pIndex.
 
         pIndex : Index to get reference at. 
-        return : Reference stored with value at <b>pIndex</b>. 
+        return : Reference stored with value at pIndex. 
         """
         pass
 
@@ -3782,13 +3782,13 @@ class FBStringList (object):
         Get the index of a string.
 
         S : String to look for. 
-        return : Index where string <b>S</b> was found. 
+        return : Index where string S was found. 
         """
         pass
 
     def InsertAt(self,pIndex,S,pRef):
         """
-        Insert an entry at <b>pIndex</b>.
+        Insert an entry at pIndex.
 
         pIndex : Index where item is to be inserted. 
         S : String to insert. 
@@ -3807,7 +3807,7 @@ class FBStringList (object):
 
     def RemoveAt(self,pIndex):
         """
-        Remove an entry at <b>pIndex</b>.
+        Remove an entry at pIndex.
 
         pIndex : Index where item is to be removed from. 
         """
@@ -3815,19 +3815,19 @@ class FBStringList (object):
 
     def SetAt(self,pIndex,pString):
         """
-        Set the string at <b>pIndex</b>.
+        Set the string at pIndex.
 
         pIndex : Index where string is to be set. 
-        pString : String to set value at <b>pIndex</b> with. 
+        pString : String to set value at pIndex with. 
         """
         pass
 
     def SetReferenceAt(self,pIndex,pRef):
         """
-        Set the reference stored with the string at <b>pIndex</b>.
+        Set the reference stored with the string at pIndex.
 
         pIndex : Index to store reference at. 
-        pRef : Reference to store at <b>pIndex</b>. 
+        pRef : Reference to store at pIndex. 
         """
         pass
 
@@ -3978,43 +3978,43 @@ The Python sample FBSystemEvents.py shows how to register a callback to FBSystem
     Takes=property(doc="        ")
     Lights=property(doc="        ")
     Devices=property(doc="        ")
-    ApplicationPath=property(doc="<b>Read Only Property:</b> Location where the application is installed.          ")
-    AreMessageBoxesSuspended=property(doc="<b>Read Only Property:</b> While true, the system is suspending the messages boxes that would normally be displayed.          ")
-    AssetManager=property(doc="<b>Read Only Property:</b> Current asset manager.          ")
-    AudioInputs=property(doc="<b>List:</b> Available audio inputs.          ")
-    AudioOutputs=property(doc="<b>List:</b> Available audio outputs.          ")
-    BuildId=property(doc="<b>Read Only Property:</b> Unique build Id string.          ")
-    BuildVersion=property(doc="<b>Read Only Property:</b> Unique build version string. The format of the build version information is: Major.Minor.Revision.BuildNumber. All sub-parts of the build version string are containing only numeric characters.          ")
-    ComputerName=property(doc="<b>Read Only Property:</b> Computer name. See sample: ShowMachineNameAndCameraNamePlusResolution.py.         ")
+    ApplicationPath=property(doc="Read Only Property: Location where the application is installed.          ")
+    AreMessageBoxesSuspended=property(doc="Read Only Property: While true, the system is suspending the messages boxes that would normally be displayed.          ")
+    AssetManager=property(doc="Read Only Property: Current asset manager.          ")
+    AudioInputs=property(doc="List: Available audio inputs.          ")
+    AudioOutputs=property(doc="List: Available audio outputs.          ")
+    BuildId=property(doc="Read Only Property: Unique build Id string.          ")
+    BuildVersion=property(doc="Read Only Property: Unique build version string. The format of the build version information is: Major.Minor.Revision.BuildNumber. All sub-parts of the build version string are containing only numeric characters.          ")
+    ComputerName=property(doc="Read Only Property: Computer name. See sample: ShowMachineNameAndCameraNamePlusResolution.py.         ")
     ConfigPath=property(doc="        ")
-    ConstructionHistory=property(doc="<b>Read Only Property:</b> Construction History.          ")
-    CurrentTake=property(doc="<b>Read Write Property:</b> Current take. See samples: GoToNextTake.py,         ")
-    DesktopSize=property(doc="<b>Read Only Property:</b> The width and height of the desktop.          ")
-    FrameRate=property(doc="<b>Read Only Property:</b> The frame rate of the viewer.          ")
-    FullScreenViewer=property(doc="<b>Read Write Property:</b> Indicates that the viewer is in full screen mode.          ")
-    LocalTime=property(doc="<b>Read Only Property:</b> Local time in take.          ")
-    Manipulators=property(doc="<b>List:</b> of manipulators.          ")
-    OnConnectionDataNotify=property(doc="<b>Event:</b> A data event occurred between objects in the system.          ")
-    OnConnectionKeyingNotify=property(doc="<b>Event:</b> A keying event occurred when objects are being keyed.          ")
-    OnConnectionNotify=property(doc="<b>Event:</b> A connection event occurred between objects in the system. See sample: FBSystemEvents.py.         ")
-    OnConnectionStateNotify=property(doc="<b>Event:</b> A state change event occurred between objects in the system.          ")
-    OnUIIdle=property(doc="<b>Event:</b> User-interface idle event. Useful callback for less frequent GUI refresh and etc. lightweight tasks (occur once per several frames).          ")
-    OnVideoFrameRendering=property(doc="<b>Event:</b> A video frame rendering event occurred when the scene is being off-line rendered into video files.          ")
-    PathImages=property(doc="<b>Read Only Property:</b> Path to images.          ")
-    PathMeshs=property(doc="<b>Read Only Property:</b> Path to meshes          ")
-    ProcessMemory=property(doc="<b>Read Only Property:</b> The size (MB) of process's working set memory.          ")
-    ProcessMemoryPeak=property(doc="<b>Read Only Property:</b> The size (MB) of process's peak memory.          ")
-    PythonVersion=property(doc="<b>Read Only Property:</b> The Python interpreter version being used. The value is either 27 or 37.          ")
-    Renderer=property(doc="<b>Read Only Property:</b> Default renderer.          ")
-    RootModel=property(doc="<b>Read Only Property:</b> Root model.          ")
-    Scene=property(doc="<b>Read Only Property:</b> Scene.          ")
-    SceneRootModel=property(doc="<b>Read Only Property:</b> Scene root model.          ")
-    SuspendMessageBoxes=property(doc="<b>Read Write Property:</b> While true, all the message boxes, that would normally be displayed, are suspended.          ")
-    SystemTime=property(doc="<b>Read Only Property:</b> System time.          ")
+    ConstructionHistory=property(doc="Read Only Property: Construction History.          ")
+    CurrentTake=property(doc="Read Write Property: Current take. See samples: GoToNextTake.py,         ")
+    DesktopSize=property(doc="Read Only Property: The width and height of the desktop.          ")
+    FrameRate=property(doc="Read Only Property: The frame rate of the viewer.          ")
+    FullScreenViewer=property(doc="Read Write Property: Indicates that the viewer is in full screen mode.          ")
+    LocalTime=property(doc="Read Only Property: Local time in take.          ")
+    Manipulators=property(doc="List: of manipulators.          ")
+    OnConnectionDataNotify=property(doc="Event: A data event occurred between objects in the system.          ")
+    OnConnectionKeyingNotify=property(doc="Event: A keying event occurred when objects are being keyed.          ")
+    OnConnectionNotify=property(doc="Event: A connection event occurred between objects in the system. See sample: FBSystemEvents.py.         ")
+    OnConnectionStateNotify=property(doc="Event: A state change event occurred between objects in the system.          ")
+    OnUIIdle=property(doc="Event: User-interface idle event. Useful callback for less frequent GUI refresh and etc. lightweight tasks (occur once per several frames).          ")
+    OnVideoFrameRendering=property(doc="Event: A video frame rendering event occurred when the scene is being off-line rendered into video files.          ")
+    PathImages=property(doc="Read Only Property: Path to images.          ")
+    PathMeshs=property(doc="Read Only Property: Path to meshes          ")
+    ProcessMemory=property(doc="Read Only Property: The size (MB) of process's working set memory.          ")
+    ProcessMemoryPeak=property(doc="Read Only Property: The size (MB) of process's peak memory.          ")
+    PythonVersion=property(doc="Read Only Property: The Python interpreter version being used. The value is either 27 or 37.          ")
+    Renderer=property(doc="Read Only Property: Default renderer.          ")
+    RootModel=property(doc="Read Only Property: Root model.          ")
+    Scene=property(doc="Read Only Property: Scene.          ")
+    SceneRootModel=property(doc="Read Only Property: Scene root model.          ")
+    SuspendMessageBoxes=property(doc="Read Write Property: While true, all the message boxes, that would normally be displayed, are suspended.          ")
+    SystemTime=property(doc="Read Only Property: System time.          ")
     UserConfigPath=property(doc="        ")
-    Version=property(doc="<b>Read Only Property:</b> Application version.          ")
-    VideoInputs=property(doc="<b>List:</b> Available video inputs.          ")
-    VideoOutputs=property(doc="<b>List:</b> Available video outputs.          ")
+    Version=property(doc="Read Only Property: Application version.          ")
+    VideoInputs=property(doc="List: Available video inputs.          ")
+    VideoOutputs=property(doc="List: Available video outputs.          ")
     pass
 
 class FBTime (object):
@@ -4274,7 +4274,7 @@ class FBTimeSpan (object):
         """
         Get the unsigned duration value of a timespan.
 
-        return : <b>Unsigned</b> duration of the timespan. 
+        return : Unsigned duration of the timespan. 
         """
         pass
 
@@ -4282,7 +4282,7 @@ class FBTimeSpan (object):
         """
         Get the signed duration value of a timespan.
 
-        return : <b>Signed</b> duration of the timespan. 
+        return : Signed duration of the timespan. 
         """
         pass
 
@@ -4654,7 +4654,7 @@ class FBVideoCodecManager (object):
         """
         pass
 
-    VideoCodecMode=property(doc="<b>Read Write Property:</b> This decide how the system behaves when ask to render a file (codec dialog, uncompress, use default codec)         ")
+    VideoCodecMode=property(doc="Read Write Property: This decide how the system behaves when ask to render a file (codec dialog, uncompress, use default codec)         ")
     pass
 
 class FBVideoGrabOptions (object):
@@ -4662,20 +4662,20 @@ class FBVideoGrabOptions (object):
     Video Grabbing Options.     
     Contain options to control how the grabbing process will occur.     
     """
-    TimeSpan=property(doc="<b>Read Write Property:</b> Start and stop selection time to grab.         ")
-    TimeSteps=property(doc="<b>Read Write Property:</b> Time step length between each grab.         ")
-    CameraResolution=property(doc="<b>Read Write Property:</b> Camera Resolution.         ")
-    BitsPerPixel=property(doc="<b>Read Write Property:</b> Video grab color depth.         ")
-    FieldMode=property(doc="<b>Read Write Property:</b> Video grab field mode.         ")
-    ViewingMode=property(doc="<b>Read Write Property:</b> Video grab viewing mode.         ")
-    OutputFileName=property(doc="<b>Read Write Property:</b> Grabbing destination file.         ")
-    ShowSafeArea=property(doc="<b>Read Write Property:</b> If true, display safe area.         ")
-    ShowTimeCode=property(doc="<b>Read Write Property:</b> If true, display time code information.         ")
-    ShowCameraLabel=property(doc="<b>Read Write Property:</b> If true, display camera label information.         ")
-    AntiAliasing=property(doc="<b>Read Write Property:</b> If true, video frames will be anti-aliased.         ")
-    RenderAudio=property(doc="<b>Read Write Property:</b> If true and there's audio in the scene, render the audio as well.         ")
-    AudioRenderFormat=property(doc="<b>Read Write Property:</b> Audio render format.         ")
-    StillImageCompression=property(doc="<b>Property:</b> Compression ratio for image(jpg) 0-100 where 0=Greatest compression, 100=Least Compression.         ")
+    TimeSpan=property(doc="Read Write Property: Start and stop selection time to grab.         ")
+    TimeSteps=property(doc="Read Write Property: Time step length between each grab.         ")
+    CameraResolution=property(doc="Read Write Property: Camera Resolution.         ")
+    BitsPerPixel=property(doc="Read Write Property: Video grab color depth.         ")
+    FieldMode=property(doc="Read Write Property: Video grab field mode.         ")
+    ViewingMode=property(doc="Read Write Property: Video grab viewing mode.         ")
+    OutputFileName=property(doc="Read Write Property: Grabbing destination file.         ")
+    ShowSafeArea=property(doc="Read Write Property: If true, display safe area.         ")
+    ShowTimeCode=property(doc="Read Write Property: If true, display time code information.         ")
+    ShowCameraLabel=property(doc="Read Write Property: If true, display camera label information.         ")
+    AntiAliasing=property(doc="Read Write Property: If true, video frames will be anti-aliased.         ")
+    RenderAudio=property(doc="Read Write Property: If true and there's audio in the scene, render the audio as well.         ")
+    AudioRenderFormat=property(doc="Read Write Property: Audio render format.         ")
+    StillImageCompression=property(doc="Property: Compression ratio for image(jpg) 0-100 where 0=Greatest compression, 100=Least Compression.         ")
     AudioOutputLocation=property(doc="Audio output location when rendering using a video format (for still image formats & SWF (Flash) format, the audio is always rendered in a standalone file).         ")
     AudioUseCustomStandaloneFileName=property(doc="If true and if the audio is rendered in a standalone output file, the audio file is generated at the file location specified by mAudioCustomStandaloneFileName, otherwise the audio file is generated in the same directory as the rendered images/video files based on their names.         ")
     AudioCustomStandaloneFileName=property(doc="Destination for the custom audio standalone file, if mAudioUseCustomStandaloneFileName is set to true.         ")
@@ -4723,12 +4723,12 @@ class FBViewingOptions (object):
         """
         pass
 
-    DisplayMode=property(doc="<b>Read Write Property:</b> Current Shading mode         ")
-    DisplayWhat=property(doc="<b>Read Write Property:</b> current display mask.         ")
-    PickingMode=property(doc="<b>Read Write Property:</b> Reference to the current picking mode.         ")
-    ShowTimeCode=property(doc="<b>Read Write Property:</b> Show Time Code when rendering.         ")
-    ShowSafeArea=property(doc="<b>Read Write Property:</b> Show Safe Area when rendering.         ")
-    ShowCameraLabel=property(doc="<b>Read Write Property:</b> Show Camera Label when rendering.         ")
+    DisplayMode=property(doc="Read Write Property: Current Shading mode         ")
+    DisplayWhat=property(doc="Read Write Property: current display mask.         ")
+    PickingMode=property(doc="Read Write Property: Reference to the current picking mode.         ")
+    ShowTimeCode=property(doc="Read Write Property: Show Time Code when rendering.         ")
+    ShowSafeArea=property(doc="Read Write Property: Show Safe Area when rendering.         ")
+    ShowCameraLabel=property(doc="Read Write Property: Show Camera Label when rendering.         ")
     pass
 
 class FBVisualComponent (object):
@@ -4748,8 +4748,8 @@ class FBVisualComponent (object):
         Add a child component.
 
         pChild : Visual component to add as a child. 
-        pId : User reference number to associate with <b>pChild</b>(default=0). 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        pId : User reference number to associate with pChild(default=0). 
+        return : Operation was successful (true or false). 
         """
         pass
 
@@ -4774,7 +4774,7 @@ class FBVisualComponent (object):
         """
         Is component a view?
 
-        return : <b>true</b> if component is a view. 
+        return : true if component is a view. 
         """
         pass
 
@@ -4782,7 +4782,7 @@ class FBVisualComponent (object):
         """
         Refresh component.
 
-        pNow : Refresh immediately if <b>true</b> (default = <b>false</b>). 
+        pNow : Refresh immediately if true (default = false). 
         """
         pass
 
@@ -4805,44 +4805,44 @@ class FBVisualComponent (object):
         """
         pass
 
-    RegionName=property(doc="<b>Read Write Property:</b> Region name.         ")
-    RegionOffsetX=property(doc="<b>Read Write Property:</b> Region X offset.         ")
-    RegionOffsetY=property(doc="<b>Read Write Property:</b> Region Y offset.         ")
-    RegionOffsetWidth=property(doc="<b>Read Write Property:</b> Region width offset.         ")
-    RegionOffsetHeight=property(doc="<b>Read Write Property:</b> Region height offset.         ")
-    RegionRatioX=property(doc="<b>Read Write Property:</b> Ratio for X attachment.         ")
-    RegionRatioY=property(doc="<b>Read Write Property:</b> Ratio for Y attachment.         ")
-    RegionRatioWidth=property(doc="<b>Read Write Property:</b> Ratio for Width attachment.         ")
-    RegionRatioHeight=property(doc="<b>Read Write Property:</b> Ratio for Height attachment.          ")
-    RegionAttachTypeX=property(doc="<b>Read Write Property:</b> X Attachment type.         ")
-    RegionAttachTypeY=property(doc="<b>Read Write Property:</b> Y Attachment type.         ")
-    RegionAttachTypeWidth=property(doc="<b>Read Write Property:</b> Width Attachment type.         ")
-    RegionAttachTypeHeight=property(doc="<b>Read Write Property:</b> Height Attachment type.         ")
-    RegionAttachToX=property(doc="<b>Read Write Property</b> X Attachment source.         ")
-    RegionAttachToY=property(doc="<b>Read Write Property:</b> Y Attachment source.         ")
-    RegionAttachToWidth=property(doc="<b>Read Write Property:</b> Width Attachment source.         ")
-    RegionAttachToHeight=property(doc="<b>Read Write Property:</b> Height Attachment source.          ")
-    RegionPosMaxX=property(doc="<b>Read Write Property:</b> Region X position Max         ")
-    RegionPosMinX=property(doc="<b>Read Write Property:</b> Region X position Min         ")
-    RegionPosMaxY=property(doc="<b>Read Write Property:</b> Region Y position Max         ")
-    RegionPosMinY=property(doc="<b>Read Write Property:</b> Region Y position Min         ")
-    BorderCaption=property(doc="<b>Read Write Property:</b> Caption to display in border.         ")
-    BorderShowCaption=property(doc="<b>Read Write Property:</b> Show caption?         ")
-    BorderStyle=property(doc="<b>Read Write Property:</b> Style of border.         ")
-    BorderInSet=property(doc="<b>Read Write Property:</b> Is border inset?         ")
-    BorderWidth=property(doc="<b>Read Write Property:</b> Width of border.         ")
-    BorderSpacing=property(doc="<b>Read Write Property:</b> Spacing of border.         ")
-    BorderMaxAngle=property(doc="<b>Read Write Property:</b> Max angle for rounding.         ")
-    BorderCornerRadius=property(doc="<b>Read Write Property:</b> Corner radius (rounded).          ")
-    Caption=property(doc="<b>Property:</b> Widget caption.          ")
-    Enabled=property(doc="<b>Read Write Property:</b> Is visual enabled?          ")
-    Height=property(doc="<b>Read Write Property:</b> Height.          ")
-    Hint=property(doc="<b>Read Write Property:</b> Hint to show.          ")
-    Left=property(doc="<b>Read Write Property:</b> Left coordinate.          ")
-    ReadOnly=property(doc="<b>Read Write Property:</b> Is visual component read only?          ")
-    Top=property(doc="<b>Read Write Property:</b> Top coordinate.          ")
-    Visible=property(doc="<b>Read Write Property:</b> Is visual component visible?          ")
-    Width=property(doc="<b>Read Write Property:</b> Width.          ")
+    RegionName=property(doc="Read Write Property: Region name.         ")
+    RegionOffsetX=property(doc="Read Write Property: Region X offset.         ")
+    RegionOffsetY=property(doc="Read Write Property: Region Y offset.         ")
+    RegionOffsetWidth=property(doc="Read Write Property: Region width offset.         ")
+    RegionOffsetHeight=property(doc="Read Write Property: Region height offset.         ")
+    RegionRatioX=property(doc="Read Write Property: Ratio for X attachment.         ")
+    RegionRatioY=property(doc="Read Write Property: Ratio for Y attachment.         ")
+    RegionRatioWidth=property(doc="Read Write Property: Ratio for Width attachment.         ")
+    RegionRatioHeight=property(doc="Read Write Property: Ratio for Height attachment.          ")
+    RegionAttachTypeX=property(doc="Read Write Property: X Attachment type.         ")
+    RegionAttachTypeY=property(doc="Read Write Property: Y Attachment type.         ")
+    RegionAttachTypeWidth=property(doc="Read Write Property: Width Attachment type.         ")
+    RegionAttachTypeHeight=property(doc="Read Write Property: Height Attachment type.         ")
+    RegionAttachToX=property(doc="Read Write Property X Attachment source.         ")
+    RegionAttachToY=property(doc="Read Write Property: Y Attachment source.         ")
+    RegionAttachToWidth=property(doc="Read Write Property: Width Attachment source.         ")
+    RegionAttachToHeight=property(doc="Read Write Property: Height Attachment source.          ")
+    RegionPosMaxX=property(doc="Read Write Property: Region X position Max         ")
+    RegionPosMinX=property(doc="Read Write Property: Region X position Min         ")
+    RegionPosMaxY=property(doc="Read Write Property: Region Y position Max         ")
+    RegionPosMinY=property(doc="Read Write Property: Region Y position Min         ")
+    BorderCaption=property(doc="Read Write Property: Caption to display in border.         ")
+    BorderShowCaption=property(doc="Read Write Property: Show caption?         ")
+    BorderStyle=property(doc="Read Write Property: Style of border.         ")
+    BorderInSet=property(doc="Read Write Property: Is border inset?         ")
+    BorderWidth=property(doc="Read Write Property: Width of border.         ")
+    BorderSpacing=property(doc="Read Write Property: Spacing of border.         ")
+    BorderMaxAngle=property(doc="Read Write Property: Max angle for rounding.         ")
+    BorderCornerRadius=property(doc="Read Write Property: Corner radius (rounded).          ")
+    Caption=property(doc="Property: Widget caption.          ")
+    Enabled=property(doc="Read Write Property: Is visual enabled?          ")
+    Height=property(doc="Read Write Property: Height.          ")
+    Hint=property(doc="Read Write Property: Hint to show.          ")
+    Left=property(doc="Read Write Property: Left coordinate.          ")
+    ReadOnly=property(doc="Read Write Property: Is visual component read only?          ")
+    Top=property(doc="Read Write Property: Top coordinate.          ")
+    Visible=property(doc="Read Write Property: Is visual component visible?          ")
+    Width=property(doc="Read Write Property: Width.          ")
     pass
 
 class FBAccessMode (Enumeration):
@@ -5452,18 +5452,18 @@ class FBButton (FBVisualComponent):
 
     def SetStateColor(self,pState,pColor):
         """
-        Returns whether or not the item <b>pIndex</b> is currently selected.
+        Returns whether or not the item pIndex is currently selected.
 
         pState : The state to be set. 
         pColor : The desired color vector. 
         """
         pass
 
-    Justify=property(doc="<b>Read Write Property:</b> Current state of button.          ")
-    Look=property(doc="<b>Read Write Property:</b> Current state of button.          ")
-    OnClick=property(doc="<b>Event:</b> Button clicked.          ")
-    State=property(doc="<b>Read Write Property:</b> Current state of button.          ")
-    Style=property(doc="<b>Read Write Property:</b> Button style.          ")
+    Justify=property(doc="Read Write Property: Current state of button.          ")
+    Look=property(doc="Read Write Property: Current state of button.          ")
+    OnClick=property(doc="Event: Button clicked.          ")
+    State=property(doc="Read Write Property: Current state of button.          ")
+    Style=property(doc="Read Write Property: Button style.          ")
     pass
 
 class FBButtonLook (Enumeration):
@@ -6056,12 +6056,12 @@ class FBComponent (FBPlug):
         """
         pass
 
-    Components=property(doc="<b>List:</b> List of components.          ")
-    LongName=property(doc="<b>Read Write Property:</b> Name and namespace for object.          ")
-    Name=property(doc="<b>Read Write Property:</b> Unique name of object. See sample: RemoveSuffixFromNameOfSceneElements.py.         ")
-    Parents=property(doc="<b>List:</b> Parents.          ")
-    PropertyList=property(doc="<b>Read Only Property:</b> Manages all of the properties for the component.          ")
-    Selected=property(doc="<b>Read Write Property:</b> Selected property.          ")
+    Components=property(doc="List: List of components.          ")
+    LongName=property(doc="Read Write Property: Name and namespace for object.          ")
+    Name=property(doc="Read Write Property: Unique name of object. See sample: RemoveSuffixFromNameOfSceneElements.py.         ")
+    Parents=property(doc="List: Parents.          ")
+    PropertyList=property(doc="Read Only Property: Manages all of the properties for the component.          ")
+    Selected=property(doc="Read Write Property: Selected property.          ")
     TypeInfo=property(doc="Contains the Type information of the object.          ")
     pass
 
@@ -6319,9 +6319,9 @@ class FBEdit (FBVisualComponent):
         """
         pass
 
-    OnChange=property(doc="<b>Event:</b> Text changed.          ")
-    PasswordMode=property(doc="<b>Read Write Property:</b> Set password mode for this edit box.          ")
-    Text=property(doc="<b>Read Write Property:</b> Text displayed.          ")
+    OnChange=property(doc="Event: Text changed.          ")
+    PasswordMode=property(doc="Read Write Property: Set password mode for this edit box.          ")
+    Text=property(doc="Read Write Property: Text displayed.          ")
     pass
 
 class FBEditColor (FBVisualComponent):
@@ -6336,9 +6336,9 @@ class FBEditColor (FBVisualComponent):
         """
         pass
 
-    ColorMode=property(doc="<b>Read Write Property:</b> 3 for RGB, 4 for RGBA (Default = 3)          ")
-    OnChange=property(doc="<b>Event:</b> Color changed.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current value of color.          ")
+    ColorMode=property(doc="Read Write Property: 3 for RGB, 4 for RGBA (Default = 3)          ")
+    OnChange=property(doc="Event: Color changed.          ")
+    Value=property(doc="Read Write Property: Current value of color.          ")
     pass
 
 class FBEditNumber (FBVisualComponent):
@@ -6353,13 +6353,13 @@ class FBEditNumber (FBVisualComponent):
         """
         pass
 
-    LargeStep=property(doc="<b>Read Write Property:</b> Large step value.          ")
-    Max=property(doc="<b>Read Write Property:</b> Maximum value.          ")
-    Min=property(doc="<b>Read Write Property:</b> Minimum value.          ")
-    OnChange=property(doc="<b>Event:</b> Number changed.          ")
-    Precision=property(doc="<b>Read Write Property:</b> Precision of value.          ")
-    SmallStep=property(doc="<b>Read Write Property:</b> Small step value.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current value.          ")
+    LargeStep=property(doc="Read Write Property: Large step value.          ")
+    Max=property(doc="Read Write Property: Maximum value.          ")
+    Min=property(doc="Read Write Property: Minimum value.          ")
+    OnChange=property(doc="Event: Number changed.          ")
+    Precision=property(doc="Read Write Property: Precision of value.          ")
+    SmallStep=property(doc="Read Write Property: Small step value.          ")
+    Value=property(doc="Read Write Property: Current value.          ")
     pass
 
 class FBEditProperty (FBVisualComponent):
@@ -6393,12 +6393,12 @@ See sample: PropertyDrop.py.
         """
         pass
 
-    LargeInc=property(doc="<b>Read Write Property:</b> Indicate the large increment applied when click-draging on the property value (usually left-click-dragging)          ")
-    Precision=property(doc="<b>Read Write Property:</b> Used to specify the width and precision of the value shown. A value of 7.2 indicates to show at minimum 7 numbers, with 2 decimals.          ")
-    Property=property(doc="<b>Read Write Property:</b> Property to edit. Set to NULL to disable.          ")
-    SliderMax=property(doc="<b>Read Write Property:</b> Should the property be editable using a slider, set the maximum value atainable with the slider.          ")
-    SliderMin=property(doc="<b>Read Write Property:</b> Should the property be editable using a slider, set the minimum value atainable with the slider.          ")
-    SmallInc=property(doc="<b>Read Write Property:</b> Indicate the small increment applied when click-draging on the property value (usually right-click-dragging)          ")
+    LargeInc=property(doc="Read Write Property: Indicate the large increment applied when click-draging on the property value (usually left-click-dragging)          ")
+    Precision=property(doc="Read Write Property: Used to specify the width and precision of the value shown. A value of 7.2 indicates to show at minimum 7 numbers, with 2 decimals.          ")
+    Property=property(doc="Read Write Property: Property to edit. Set to NULL to disable.          ")
+    SliderMax=property(doc="Read Write Property: Should the property be editable using a slider, set the maximum value atainable with the slider.          ")
+    SliderMin=property(doc="Read Write Property: Should the property be editable using a slider, set the minimum value atainable with the slider.          ")
+    SmallInc=property(doc="Read Write Property: Indicate the small increment applied when click-draging on the property value (usually right-click-dragging)          ")
     pass
 
 class FBEditPropertyModern (FBVisualComponent):
@@ -6422,12 +6422,12 @@ class FBEditPropertyModern (FBVisualComponent):
         """
         pass
 
-    LargeInc=property(doc="<b>Read Write Property:</b> Indicate the large increment applied when click-draging on the property value (usually left-click-dragging)          ")
-    Precision=property(doc="<b>Read Write Property:</b> Used to specify the width and precision of the value shown. A value of 7.2 indicates to show at minimum 7 numbers, with 2 decimals.          ")
-    Property=property(doc="<b>Read Write Property:</b> Property to edit. Set to NULL to disable.          ")
-    SliderMax=property(doc="<b>Read Write Property:</b> Should the property be editable using a slider, set the maximum value atainable with the slider.          ")
-    SliderMin=property(doc="<b>Read Write Property:</b> Should the property be editable using a slider, set the minimum value atainable with the slider.          ")
-    SmallInc=property(doc="<b>Read Write Property:</b> Indicate the small increment applied when click-draging on the property value (usually right-click-dragging)          ")
+    LargeInc=property(doc="Read Write Property: Indicate the large increment applied when click-draging on the property value (usually left-click-dragging)          ")
+    Precision=property(doc="Read Write Property: Used to specify the width and precision of the value shown. A value of 7.2 indicates to show at minimum 7 numbers, with 2 decimals.          ")
+    Property=property(doc="Read Write Property: Property to edit. Set to NULL to disable.          ")
+    SliderMax=property(doc="Read Write Property: Should the property be editable using a slider, set the maximum value atainable with the slider.          ")
+    SliderMin=property(doc="Read Write Property: Should the property be editable using a slider, set the minimum value atainable with the slider.          ")
+    SmallInc=property(doc="Read Write Property: Indicate the small increment applied when click-draging on the property value (usually right-click-dragging)          ")
     pass
 
 class FBEditTimeCode (FBVisualComponent):
@@ -6442,8 +6442,8 @@ class FBEditTimeCode (FBVisualComponent):
         """
         pass
 
-    OnChange=property(doc="<b>Event:</b> Timecode changed.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current timecode value.          ")
+    OnChange=property(doc="Event: Timecode changed.          ")
+    Value=property(doc="Read Write Property: Current timecode value.          ")
     pass
 
 class FBEditVector (FBVisualComponent):
@@ -6458,8 +6458,8 @@ class FBEditVector (FBVisualComponent):
         """
         pass
 
-    OnChange=property(doc="<b>Event:</b> Vector value changed.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current value of vector.          ")
+    OnChange=property(doc="Event: Vector value changed.          ")
+    Value=property(doc="Read Write Property: Current value of vector.          ")
     pass
 
 class FBEffectorId (Enumeration):
@@ -6562,7 +6562,7 @@ class FBEventActivate (FBEvent):
         """
         pass
 
-    Data=property(doc="<b>Read Write Property:</b> Generic data of event.          ")
+    Data=property(doc="Read Write Property: Generic data of event.          ")
     pass
 
 class FBEventAnimationNodeType (Enumeration):
@@ -6588,7 +6588,7 @@ class FBEventClipChange (FBEvent):
         """
         pass
 
-    Type=property(doc="<b>Read Only Property:</b> Type of event.          ")
+    Type=property(doc="Read Only Property: Type of event.          ")
     pass
 
 class FBEventConnectionDataNotify (FBEvent):
@@ -6604,8 +6604,8 @@ class FBEventConnectionDataNotify (FBEvent):
         """
         pass
 
-    Action=property(doc="<b>Read Only Property:</b> Connection's action performed.          ")
-    Plug=property(doc="<b>Read Only Property:</b> The plug involved in the action.          ")
+    Action=property(doc="Read Only Property: Connection's action performed.          ")
+    Plug=property(doc="Read Only Property: The plug involved in the action.          ")
     pass
 
 class FBEventConnectionKeyingNotify (FBEvent):
@@ -6636,12 +6636,12 @@ class FBEventConnectionNotify (FBEvent):
         """
         pass
 
-    Action=property(doc="<b>Read Only Property:</b> Connection's action performed.          ")
-    ConnectionType=property(doc="<b>Read Only Property:</b> Connection's type.          ")
-    DstPlug=property(doc="<b>Read Only Property:</b> The destination plug involved in the action.          ")
-    NewPlug=property(doc="<b>Read Only Property:</b> New plug created by the action. (Mostly used by merge/replace)          ")
-    SrcIndex=property(doc="<b>Read Only Property:</b> Index of the source in the destination component.          ")
-    SrcPlug=property(doc="<b>Read Only Property:</b> The source plug involved in the action.          ")
+    Action=property(doc="Read Only Property: Connection's action performed.          ")
+    ConnectionType=property(doc="Read Only Property: Connection's type.          ")
+    DstPlug=property(doc="Read Only Property: The destination plug involved in the action.          ")
+    NewPlug=property(doc="Read Only Property: New plug created by the action. (Mostly used by merge/replace)          ")
+    SrcIndex=property(doc="Read Only Property: Index of the source in the destination component.          ")
+    SrcPlug=property(doc="Read Only Property: The source plug involved in the action.          ")
     pass
 
 class FBEventConnectionStateNotify (FBEvent):
@@ -6657,8 +6657,8 @@ class FBEventConnectionStateNotify (FBEvent):
         """
         pass
 
-    Action=property(doc="<b>Read Only Property:</b> Connection's action performed.          ")
-    Plug=property(doc="<b>Read Only Property:</b> The plug involved in the action.          ")
+    Action=property(doc="Read Only Property: Connection's action performed.          ")
+    Plug=property(doc="Read Only Property: The plug involved in the action.          ")
     pass
 
 class FBEventDblClick (FBEvent):
@@ -6674,7 +6674,7 @@ class FBEventDblClick (FBEvent):
         """
         pass
 
-    Selection=property(doc="<b>Read Only Property:</b> Id of selection.          ")
+    Selection=property(doc="Read Only Property: Id of selection.          ")
     pass
 
 class FBEventEvalGlobalCallback (FBEvent):
@@ -6720,8 +6720,8 @@ class FBEventFileChange (FBEvent):
         """
         pass
 
-    Path=property(doc="<b>Read Only Property:</b> The path of changed file.          ")
-    Type=property(doc="<b>Read Only Property:</b> Type of file change event.          ")
+    Path=property(doc="Read Only Property: The path of changed file.          ")
+    Type=property(doc="Read Only Property: Type of file change event.          ")
     pass
 
 class FBEventInput (FBEvent):
@@ -6737,12 +6737,12 @@ class FBEventInput (FBEvent):
         """
         pass
 
-    InputType=property(doc="<b>Read Only Property:</b> Input type.          ")
-    Key=property(doc="<b>Read Only Property:</b> Input key.          ")
-    KeyState=property(doc="<b>Read Only Property:</b> State of key.          ")
-    MouseButton=property(doc="<b>Read Only Property:</b> Mouse Button.          ")
-    X=property(doc="<b>Read Only Property:</b> Mouse X Position.          ")
-    Y=property(doc="<b>Read Only Property:</b> Mouse Y Position.          ")
+    InputType=property(doc="Read Only Property: Input type.          ")
+    Key=property(doc="Read Only Property: Input key.          ")
+    KeyState=property(doc="Read Only Property: State of key.          ")
+    MouseButton=property(doc="Read Only Property: Mouse Button.          ")
+    X=property(doc="Read Only Property: Mouse X Position.          ")
+    Y=property(doc="Read Only Property: Mouse Y Position.          ")
     pass
 
 class FBEventMenu (FBEvent):
@@ -6758,8 +6758,8 @@ class FBEventMenu (FBEvent):
         """
         pass
 
-    Id=property(doc="<b>Read Write Property:</b> Id number for menu item.          ")
-    Name=property(doc="<b>Read Write Property:</b> Name of menu item.          ")
+    Id=property(doc="Read Write Property: Id number for menu item.          ")
+    Name=property(doc="Read Write Property: Name of menu item.          ")
     pass
 
 class FBEventOverrideFileOpen (FBEvent):
@@ -6775,8 +6775,8 @@ class FBEventOverrideFileOpen (FBEvent):
         """
         pass
 
-    FilePath=property(doc="<b>Read Only Property:</b> Path to the file that will be opened/merged.          ")
-    WillOverride=property(doc="<b>Read Write Property:</b> Set to true for handling the file load, false by default. If the return value is false, MotionBuilder will proceed with the normal file open/merge process.          ")
+    FilePath=property(doc="Read Only Property: Path to the file that will be opened/merged.          ")
+    WillOverride=property(doc="Read Write Property: Set to true for handling the file load, false by default. If the return value is false, MotionBuilder will proceed with the normal file open/merge process.          ")
     pass
 
 class FBEventPlayerControlChange (FBEvent):
@@ -6792,7 +6792,7 @@ class FBEventPlayerControlChange (FBEvent):
         """
         pass
 
-    Type=property(doc="<b>Read Only Property:</b> Type of event.          ")
+    Type=property(doc="Read Only Property: Type of event.          ")
     pass
 
 class FBEventResize (FBEvent):
@@ -6808,8 +6808,8 @@ class FBEventResize (FBEvent):
         """
         pass
 
-    Height=property(doc="<b>Property:</b> New Height of the window.          ")
-    Width=property(doc="<b>Property:</b> New Width of the window.          ")
+    Height=property(doc="Property: New Height of the window.          ")
+    Width=property(doc="Property: New Width of the window.          ")
     pass
 
 class FBEventSceneChange (FBEvent):
@@ -6825,9 +6825,9 @@ class FBEventSceneChange (FBEvent):
         """
         pass
 
-    ChildComponent=property(doc="<b>Read Only Property:</b> Child component of the event.          ")
-    Component=property(doc="<b>Read Only Property:</b> Modified component          ")
-    Type=property(doc="<b>Read Only Property:</b> Type of selection event.          ")
+    ChildComponent=property(doc="Read Only Property: Child component of the event.          ")
+    Component=property(doc="Read Only Property: Modified component          ")
+    Type=property(doc="Read Only Property: Type of selection event.          ")
     pass
 
 class FBEventShow (FBEvent):
@@ -6843,7 +6843,7 @@ class FBEventShow (FBEvent):
         """
         pass
 
-    Shown=property(doc="<b>Read Only Property:</b> Was layer just shown?          ")
+    Shown=property(doc="Read Only Property: Was layer just shown?          ")
     pass
 
 class FBEventSpread (FBEvent):
@@ -6859,9 +6859,9 @@ class FBEventSpread (FBEvent):
         """
         pass
 
-    Action=property(doc="<b>Read Only Property:</b> Action associated to the spread event.          ")
-    Column=property(doc="<b>Read Only Property:</b> Column of event.          ")
-    Row=property(doc="<b>Read Only Property:</b> Row of event.          ")
+    Action=property(doc="Read Only Property: Action associated to the spread event.          ")
+    Column=property(doc="Read Only Property: Column of event.          ")
+    Row=property(doc="Read Only Property: Row of event.          ")
     pass
 
 class FBEventTakeChange (FBEvent):
@@ -6877,8 +6877,8 @@ class FBEventTakeChange (FBEvent):
         """
         pass
 
-    Take=property(doc="<b>Read Only Property:</b> The take modified.          ")
-    Type=property(doc="<b>Read Only Property:</b> Type of take change event.          ")
+    Take=property(doc="Read Only Property: The take modified.          ")
+    Type=property(doc="Read Only Property: Type of take change event.          ")
     pass
 
 class FBEventTransaction (FBEvent):
@@ -6894,7 +6894,7 @@ class FBEventTransaction (FBEvent):
         """
         pass
 
-    IsBeginTransaction=property(doc="<b>Read Only Property:</b> Tells if the transaction is at begin.          ")
+    IsBeginTransaction=property(doc="Read Only Property: Tells if the transaction is at begin.          ")
     pass
 
 class FBEventTree (FBEvent):
@@ -6910,8 +6910,8 @@ class FBEventTree (FBEvent):
         """
         pass
 
-    TreeNode=property(doc="<b>Read Write Property:</b> Tree node.          ")
-    Why=property(doc="<b>Read Write Property:</b> Reason of the event.          ")
+    TreeNode=property(doc="Read Write Property: Tree node.          ")
+    Why=property(doc="Read Write Property: Reason of the event.          ")
     pass
 
 class FBEventTreeSelect (FBEvent):
@@ -6927,7 +6927,7 @@ class FBEventTreeSelect (FBEvent):
         """
         pass
 
-    TreeNode=property(doc="<b>Read Write Property:</b> Selected tree node.          ")
+    TreeNode=property(doc="Read Write Property: Selected tree node.          ")
     pass
 
 class FBEventVideoFrameRendering (FBEvent):
@@ -7036,12 +7036,12 @@ class FBFCurveEvent (FBEvent):
         """
         pass
 
-    Curve=property(doc="<b>Read Only Property:</b> Curve that will receive the new key.          ")
-    CurveIndex=property(doc="<b>Read Only Property:</b> Index of curve.          ")
-    CurveName=property(doc="<b>Read Only Property:</b> Name of curve.          ")
-    EventType=property(doc="<b>Read Only Property:</b> Type of fcurve event.          ")
-    KeyIndexStart=property(doc="<b>Read Only Property:</b> Index of the first key which is involved in the event.          ")
-    KeyIndexStop=property(doc="<b>Read Only Property:</b> Index of the last key which is involved in the event.          ")
+    Curve=property(doc="Read Only Property: Curve that will receive the new key.          ")
+    CurveIndex=property(doc="Read Only Property: Index of curve.          ")
+    CurveName=property(doc="Read Only Property: Name of curve.          ")
+    EventType=property(doc="Read Only Property: Type of fcurve event.          ")
+    KeyIndexStart=property(doc="Read Only Property: Index of the first key which is involved in the event.          ")
+    KeyIndexStop=property(doc="Read Only Property: Index of the last key which is involved in the event.          ")
     pass
 
 class FBFCurveEventType (Enumeration):
@@ -7115,16 +7115,16 @@ class FBFilePopup (FBVisualComponent):
         """
         Execute file popup.
 
-        return : <b>true</b> if <b>OK</b> is clicked by user. 
+        return : true if OK is clicked by user. 
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to put in popup window.          ")
-    FileName=property(doc="<b>Read Write Property:</b> File selected.          ")
-    Filter=property(doc="<b>Read Write Property:</b> Filter to use for popup window file selection.          ")
-    FullFilename=property(doc="<b>Read Only Property:</b> Full filename (path and file).          ")
-    Path=property(doc="<b>Read Write Property:</b> Path of file selected.          ")
-    Style=property(doc="<b>Read Write Property:</b> Style of file popup.          ")
+    Caption=property(doc="Read Write Property: Caption to put in popup window.          ")
+    FileName=property(doc="Read Write Property: File selected.          ")
+    Filter=property(doc="Read Write Property: Filter to use for popup window file selection.          ")
+    FullFilename=property(doc="Read Only Property: Full filename (path and file).          ")
+    Path=property(doc="Read Write Property: Path of file selected.          ")
+    Style=property(doc="Read Write Property: Style of file popup.          ")
     pass
 
 class FBFilePopupStyle (Enumeration):
@@ -7183,12 +7183,12 @@ class FBFolderPopup (FBVisualComponent):
         """
         Execute folder popup.
 
-        return : <b>true</b> if <b>OK</b> is clicked by user. 
+        return : true if OK is clicked by user. 
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to put in popup window.          ")
-    Path=property(doc="<b>Read Write Property:</b> Path of folder selected.          ")
+    Caption=property(doc="Read Write Property: Caption to put in popup window.          ")
+    Path=property(doc="Read Write Property: Path of folder selected.          ")
     pass
 
 class FBGapMode (Enumeration):
@@ -7336,8 +7336,8 @@ class FBImageContainer (FBVisualComponent):
         """
         pass
 
-    Filename=property(doc="<b>Read Write Property:</b> Filename for image.          ")
-    OnDragAndDrop=property(doc="<b>Event:</b> Drag and drop.          ")
+    Filename=property(doc="Read Write Property: Filename for image.          ")
+    OnDragAndDrop=property(doc="Event: Drag and drop.          ")
     pass
 
 class FBImageFormat (Enumeration):
@@ -7509,9 +7509,9 @@ class FBLabel (FBVisualComponent):
         """
         pass
 
-    Justify=property(doc="<b>Read Write Property:</b> Text justification for label.          ")
-    Style=property(doc="<b>Read Write Property:</b> Text style appearance.          ")
-    WordWrap=property(doc="<b>Read Write Property:</b> Enable wordwrap on text drawing.          ")
+    Justify=property(doc="Read Write Property: Text justification for label.          ")
+    Style=property(doc="Read Write Property: Text style appearance.          ")
+    WordWrap=property(doc="Read Write Property: Enable wordwrap on text drawing.          ")
     pass
 
 class FBLayerMode (Enumeration):
@@ -7538,7 +7538,7 @@ class FBLayerRotationMode (Enumeration):
 class FBLayout (FBVisualComponent):
     """
     Used to build the user interface.     
-     Layouts manage areas of the screen called regions. Regions contain UI components such as buttons, viewers, and edit boxes. Regions are added to layouts. When a UI component is bound to a region, the region defines how big it is and how it behaves when the layout is resized.<b>Types of Layouts</b> Device Constraint Manipulator Shader A region is first defined using the FBLayout::AddRegion() function. Once a region is defined and the corresponding UI component is created, and the component is bound to its region with FBLayout::SetControl(). You can use the FBSystem::OnUIIdle() in your layout to update real-time UI components such as guages and status indicators. In Python, FBBoxLayout and FBGridLayout take care of most of the region handling. They are used to create basic control layouts for simple tools. If you have a lot of content you can use FBScrollBox to manage it. For an example, see the Python sample Scrollbox.py.* Also see the Python sample Layout.py, and the C++ sample ortooluidemo. See samples: KeyboardMapper.py, ShotTrackSetupTool.py, Attach.py, Border.py, Layout.py.     
+     Layouts manage areas of the screen called regions. Regions contain UI components such as buttons, viewers, and edit boxes. Regions are added to layouts. When a UI component is bound to a region, the region defines how big it is and how it behaves when the layout is resized.Types of Layouts Device Constraint Manipulator Shader A region is first defined using the FBLayout::AddRegion() function. Once a region is defined and the corresponding UI component is created, and the component is bound to its region with FBLayout::SetControl(). You can use the FBSystem::OnUIIdle() in your layout to update real-time UI components such as guages and status indicators. In Python, FBBoxLayout and FBGridLayout take care of most of the region handling. They are used to create basic control layouts for simple tools. If you have a lot of content you can use FBScrollBox to manage it. For an example, see the Python sample Scrollbox.py.* Also see the Python sample Layout.py, and the C++ sample ortooluidemo. See samples: KeyboardMapper.py, ShotTrackSetupTool.py, Attach.py, Border.py, Layout.py.     
     """
     def FBLayout(self):
         """
@@ -7569,7 +7569,7 @@ class FBLayout (FBVisualComponent):
         pHType : H: Type of attachment. 
         pHRelative : H: Item to attach to. 
         pMultH : H: Multiplier of relative value. 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
@@ -7601,7 +7601,7 @@ class FBLayout (FBVisualComponent):
 
     def GetRegionPositions(self,pName,pComputed,pX,pY,pW,pH):
         """
-        Get region <b>pName</b> information (position and size)
+        Get region pName information (position and size)
 
         pName : Name of region. 
         pComputed : Is the information retrieved relative or absolute? 
@@ -7749,11 +7749,11 @@ class FBLayout (FBVisualComponent):
         """
         pass
 
-    OnIdle=property(doc="<b>Event:</b> Idle.          ")
-    OnInput=property(doc="<b>Event:</b> Input.          ")
-    OnPaint=property(doc="<b>Event:</b> Paint layout.          ")
-    OnResize=property(doc="<b>Event:</b> Resize layout.          ")
-    OnShow=property(doc="<b>Event:</b> Show layout.          ")
+    OnIdle=property(doc="Event: Idle.          ")
+    OnInput=property(doc="Event: Input.          ")
+    OnPaint=property(doc="Event: Paint layout.          ")
+    OnResize=property(doc="Event: Resize layout.          ")
+    OnShow=property(doc="Event: Show layout.          ")
     pass
 
 class FBLayoutRegion (FBVisualComponent):
@@ -7795,29 +7795,29 @@ class FBList (FBVisualComponent):
 
     def IsSelected(self,pIndex):
         """
-        Returns whether or not the item <b>pIndex</b> is currently selected.
+        Returns whether or not the item pIndex is currently selected.
 
         pIndex : Index to see if select or not. 
-        return : <b>true</b> if item at <b>pIndex</b> is selected. 
+        return : true if item at pIndex is selected. 
         """
         pass
 
     def Selected(self,pIndex,pSelected):
         """
-        Set the current selected state of item at <b>pIndex</b> to <b>pSelected</b>.
+        Set the current selected state of item at pIndex to pSelected.
 
         pIndex : Index to affect item at. 
-        pSelected : State to set item at <b>pIndex</b> to. 
+        pSelected : State to set item at pIndex to. 
         """
         pass
 
-    ExtendedSelect=property(doc="<b>Read Write Property:</b> Extended selection state?          ")
-    ItemIndex=property(doc="<b>Read Write Property:</b> Current item index.          ")
-    Items=property(doc="<b>List:</b> Names of items in list.          ")
-    MultiSelect=property(doc="<b>Read Write Property:</b> Can multiple items be selected?          ")
-    OnChange=property(doc="<b>Event:</b> List changed.          ")
-    OnDragAndDrop=property(doc="<b>Event:</b> Drag and drop event.          ")
-    Style=property(doc="<b>Read Write Property:</b> Style or direction of list.          ")
+    ExtendedSelect=property(doc="Read Write Property: Extended selection state?          ")
+    ItemIndex=property(doc="Read Write Property: Current item index.          ")
+    Items=property(doc="List: Names of items in list.          ")
+    MultiSelect=property(doc="Read Write Property: Can multiple items be selected?          ")
+    OnChange=property(doc="Event: List changed.          ")
+    OnDragAndDrop=property(doc="Event: Drag and drop event.          ")
+    Style=property(doc="Read Write Property: Style or direction of list.          ")
     pass
 
 class FBListStyle (Enumeration):
@@ -8277,7 +8277,7 @@ class FBPlotPopup (FBVisualComponent):
         Execute plot popup.
 
         pWindowName : str
-        return : <b>true</b> if <b>OK</b> is clicked by user. 
+        return : true if OK is clicked by user. 
         """
         pass
 
@@ -8289,12 +8289,12 @@ class FBPlotPopup (FBVisualComponent):
         """
         pass
 
-    EnableEvaluateDeformation=property(doc="<b>Read Write Property:</b> Enable Evaluate Deformation option for popup.          ")
-    EnablePlotAuxEffectors=property(doc="<b>Read Write Property:</b> Enable Plot Aux Effectors option for popup.          ")
-    EnablePlotCharacterExtension=property(doc="<b>Read Write Property:</b> Enable Plot Character Extension option for popup.          ")
-    EnablePlotLockedProperties=property(doc="<b>Read Write Property:</b> Enable Plot Locked Properties option for popup.          ")
-    EnablePlotTranslationOnRootOnly=property(doc="<b>Read Write Property:</b> Enable Plot Translation On Root Only option for popup.          ")
-    EnableSmartPlotControls=property(doc="<b>Read Write Property:</b> Enable Smart Plot option for popup.          ")
+    EnableEvaluateDeformation=property(doc="Read Write Property: Enable Evaluate Deformation option for popup.          ")
+    EnablePlotAuxEffectors=property(doc="Read Write Property: Enable Plot Aux Effectors option for popup.          ")
+    EnablePlotCharacterExtension=property(doc="Read Write Property: Enable Plot Character Extension option for popup.          ")
+    EnablePlotLockedProperties=property(doc="Read Write Property: Enable Plot Locked Properties option for popup.          ")
+    EnablePlotTranslationOnRootOnly=property(doc="Read Write Property: Enable Plot Translation On Root Only option for popup.          ")
+    EnableSmartPlotControls=property(doc="Read Write Property: Enable Smart Plot option for popup.          ")
     pass
 
 class FBPlotTangentMode (Enumeration):
@@ -8437,9 +8437,9 @@ To see how to create a custom property in Python, see CustomProperty.py. See sam
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to be displayed for progress bar.          ")
-    Percent=property(doc="<b>Read Write Property:</b> Percent completed for the operation. Must be used called in between ProgressBegin()/ProgressDone()          ")
-    Text=property(doc="<b>Read Write Property:</b> Text to display on progress bar. Must be used in between ProgressBegin()/ProgressDone()          ")
+    Caption=property(doc="Read Write Property: Caption to be displayed for progress bar.          ")
+    Percent=property(doc="Read Write Property: Percent completed for the operation. Must be used called in between ProgressBegin()/ProgressDone()          ")
+    Text=property(doc="Read Write Property: Text to display on progress bar. Must be used in between ProgressBegin()/ProgressDone()          ")
     pass
 
 class FBPropertyAction (FBProperty):
@@ -8480,7 +8480,7 @@ class FBPropertyAnimatable (FBProperty):
         """
         AllowsMuting.
 
-        return : <b>true</b> if property can be muted 
+        return : true if property can be muted 
         """
         pass
 
@@ -8513,7 +8513,7 @@ class FBPropertyAnimatable (FBProperty):
         """
         HasSomethingMuted.
 
-        return : <b>true</b> if property or any of its members is muted 
+        return : true if property or any of its members is muted 
         """
         pass
 
@@ -8522,7 +8522,7 @@ class FBPropertyAnimatable (FBProperty):
         Is the property animated.
         This is true if the property has an FCurve associated to it.
 
-        return : <b>true</b> if animated, <b>false</b> if not animated. 
+        return : true if animated, false if not animated. 
         """
         pass
 
@@ -8539,7 +8539,7 @@ class FBPropertyAnimatable (FBProperty):
         Get the focus (keyable) state of child component.
 
         pIndex : Index of the child FCurve component. 
-        return : <b>true</b> if the component is in focus, false otherwise 
+        return : true if the component is in focus, false otherwise 
         """
         pass
 
@@ -8548,7 +8548,7 @@ class FBPropertyAnimatable (FBProperty):
         IsMemberMuted.
 
         pIndex : Index of the sub-member of the property to check. 
-        return : <b>true</b> if property sub-member is muted 
+        return : true if property sub-member is muted 
         """
         pass
 
@@ -8556,7 +8556,7 @@ class FBPropertyAnimatable (FBProperty):
         """
         IsMuted.
 
-        return : <b>true</b> if property is muted 
+        return : true if property is muted 
         """
         pass
 
@@ -8588,7 +8588,7 @@ class FBPropertyAnimatable (FBProperty):
         Revert the FCurves to their default color.
 
         pIndex : Index of the FCurve to reset the color, use -1 to reset the color for all FCurves of the property. 
-        return : <b>true</b> if the color was reverted to its default value, false otherwise 
+        return : true if the color was reverted to its default value, false otherwise 
         """
         pass
 
@@ -8607,7 +8607,7 @@ class FBPropertyAnimatable (FBProperty):
 
         pColor : Color to set for the FCurve(s). 
         pIndex : Index of the FCurve to set the new color, use -1 to set the color for all FCurves. 
-        return : <b>true</b> if the color was changed, false otherwise 
+        return : true if the color was changed, false otherwise 
         """
         pass
 
@@ -8625,7 +8625,7 @@ class FBPropertyAnimatable (FBProperty):
 
         pIndex : Index of the child FCurve component. 
         pState : Focus (keyable) state to set for the property component. 
-        return : <b>true</b> if the operation was successful, false otherwise 
+        return : true if the operation was successful, false otherwise 
         """
         pass
 
@@ -8646,7 +8646,7 @@ class FBPropertyAnimatable (FBProperty):
         """
         pass
 
-    Data=property(doc="<b>Read Write Property:</b> The property data value. Type of this depends on the subclass of FBPropertyAnimatable (ex: in a FBPropertyAnimatableInt, Data is of type int).         ")
+    Data=property(doc="Read Write Property: The property data value. Type of this depends on the subclass of FBPropertyAnimatable (ex: in a FBPropertyAnimatableInt, Data is of type int).         ")
     pass
 
 class FBPropertyBool (FBProperty):
@@ -8793,7 +8793,7 @@ class FBPropertyConnectionEditor (FBVisualComponent):
         """
         pass
 
-    Property=property(doc="<b>Read Write Property:</b> Property to edit connections. Set to NULL to disable.          ")
+    Property=property(doc="Read Write Property: Property to edit connections. Set to NULL to disable.          ")
     pass
 
 class FBPropertyDouble (FBProperty):
@@ -8815,7 +8815,7 @@ class FBPropertyEnum (FBProperty):
 class FBPropertyFlag (Enumeration):
     """
     Available flags for FBProperty objects.b>PropertyList: Actor.     
-     Property flags are not saved into FBX files. See sample: PropertyDrop.py. <b>These classes are under development and may change dramatically between versions.</b>      
+     Property flags are not saved into FBX files. See sample: PropertyDrop.py. These classes are under development and may change dramatically between versions.      
     """
     kFBPropertyFlagNotSet=property(doc="        ")
     kFBPropertyFlagHideProperty=property(doc="This flag is used to show/hide the property in the propertiview. However, when turn on/off HidePropertry flag, this property won't show/hide unless you reload the UI. The nodes hidden by this flag are removed from UI.          ")
@@ -8852,7 +8852,7 @@ class FBPropertyInt (FBProperty):
 class FBPropertyListActor (FBPropertyList):
     """
     b>PropertyList: Actor face.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListActor(self):
         """
@@ -8935,7 +8935,7 @@ class FBPropertyListBox (FBPropertyList):
 class FBPropertyListCamera (FBPropertyList):
     """
     b>PropertyList: Character.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListCamera(self):
         """
@@ -8959,7 +8959,7 @@ class FBPropertyListCharacter (FBPropertyList):
 class FBPropertyListCharacterFace (FBPropertyList):
     """
     b>PropertyList: CharacterMarkerSet.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListCharacterFace(self):
         """
@@ -9196,7 +9196,7 @@ class FBPropertyListModelTemplate (FBPropertyList):
 
 class FBPropertyListModelTemplateBinding (FBPropertyList):
     """
-    b>List: MotionClip  <b>PropertyList:</b> MotionClip      
+    b>List: MotionClip  PropertyList: MotionClip      
         
     """
     pass
@@ -9394,7 +9394,7 @@ class FBPropertyStateEvent (FBEvent):
         """
         pass
 
-    EventType=property(doc="<b>Read Only Property:</b> Event type, please see the FBPropertyStateEventType for the possible types.          ")
+    EventType=property(doc="Read Only Property: Event type, please see the FBPropertyStateEventType for the possible types.          ")
     pass
 
 class FBPropertyStateEventType (Enumeration):
@@ -9916,12 +9916,12 @@ class FBSlider (FBVisualComponent):
         """
         pass
 
-    Max=property(doc="<b>Read Write Property:</b> Maximum value.          ")
-    Min=property(doc="<b>Read Write Property:</b> Minimum value.          ")
-    OnChange=property(doc="<b>Event:</b> Slider value changed.          ")
-    OnTransaction=property(doc="<b>Event:</b> Transaction begin/end (continuous value changes). This event property doesn't exist in pyfbsdk.          ")
-    Orientation=property(doc="<b>Read Write Property:</b> Slider orientation.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current value.          ")
+    Max=property(doc="Read Write Property: Maximum value.          ")
+    Min=property(doc="Read Write Property: Minimum value.          ")
+    OnChange=property(doc="Event: Slider value changed.          ")
+    OnTransaction=property(doc="Event: Transaction begin/end (continuous value changes). This event property doesn't exist in pyfbsdk.          ")
+    Orientation=property(doc="Read Write Property: Slider orientation.          ")
+    Value=property(doc="Read Write Property: Current value.          ")
     pass
 
 class FBSpread (FBVisualComponent):
@@ -10031,7 +10031,7 @@ class FBSpread (FBVisualComponent):
         """
         Sort rows.
 
-        pAscending : If <b>true</b>, sort ascending. 
+        pAscending : If true, sort ascending. 
         """
         pass
 
@@ -10045,14 +10045,14 @@ class FBSpread (FBVisualComponent):
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to display for spreadsheet.          ")
-    Column=property(doc="<b>Read Write Property:</b> Current column.          ")
-    MultiSelect=property(doc="<b>Read Write Property:</b> Can there be multiple selections?          ")
-    OnCellChange=property(doc="<b>Event:</b> Cell value changed.          ")
-    OnColumnClick=property(doc="<b>Event:</b> Column clicked.          ")
-    OnDragAndDrop=property(doc="<b>Event:</b> Drag and drop event.          ")
-    OnRowClick=property(doc="<b>Event:</b> Row clicked.          ")
-    Row=property(doc="<b>Read Write Property:</b> Current row.          ")
+    Caption=property(doc="Read Write Property: Caption to display for spreadsheet.          ")
+    Column=property(doc="Read Write Property: Current column.          ")
+    MultiSelect=property(doc="Read Write Property: Can there be multiple selections?          ")
+    OnCellChange=property(doc="Event: Cell value changed.          ")
+    OnColumnClick=property(doc="Event: Column clicked.          ")
+    OnDragAndDrop=property(doc="Event: Drag and drop event.          ")
+    OnRowClick=property(doc="Event: Row clicked.          ")
+    Row=property(doc="Read Write Property: Current row.          ")
     pass
 
 class FBStereoDisplayMode (Enumeration):
@@ -10330,11 +10330,11 @@ class FBTabPanel (FBVisualComponent):
         """
         pass
 
-    ItemIndex=property(doc="<b>Read Write Property:</b> Current tab panel.          ")
-    Items=property(doc="<b>List:</b> Names for tab panels.          ")
-    Layout=property(doc="<b>Read Write Property:</b> Layout for current tab panel.          ")
-    OnChange=property(doc="<b>Event:</b> Tab panel change.          ")
-    TabStyle=property(doc="<b>Read Write Property:</b> Style of the tab panel, 0 creates normal tabs, 1 creates buttons to activate tabs.          ")
+    ItemIndex=property(doc="Read Write Property: Current tab panel.          ")
+    Items=property(doc="List: Names for tab panels.          ")
+    Layout=property(doc="Read Write Property: Layout for current tab panel.          ")
+    OnChange=property(doc="Event: Tab panel change.          ")
+    TabStyle=property(doc="Read Write Property: Style of the tab panel, 0 creates normal tabs, 1 creates buttons to activate tabs.          ")
     pass
 
 class FBTakeChangeType (Enumeration):
@@ -10505,9 +10505,9 @@ class FBThermometer (FBVisualComponent):
         """
         pass
 
-    Max=property(doc="<b>Read Write Property:</b> Maximum value.          ")
-    Min=property(doc="<b>Read Write Property:</b> Minimum value.          ")
-    Value=property(doc="<b>Read Write Property:</b> Current value.          ")
+    Max=property(doc="Read Write Property: Maximum value.          ")
+    Min=property(doc="Read Write Property: Minimum value.          ")
+    Value=property(doc="Read Write Property: Current value.          ")
     pass
 
 class FBTimeMarkAction (Enumeration):
@@ -10685,39 +10685,39 @@ class FBTree (FBVisualComponent):
         """
         pass
 
-    AllowCollapse=property(doc="<b>Read Write Property:</b> When OnCollapsing occurs, set this to true to allow collapse.          ")
-    AllowExpansion=property(doc="<b>Read Write Property:</b> When OnExpanding occurs, set this to true to allow expansion.          ")
-    AutoExpandOnDblClick=property(doc="<b>Read Write Property:</b> Allow automatic expand on double click, default is false.          ")
-    AutoExpandOnDragOver=property(doc="<b>Read Write Property:</b> Allow automatic expand on drag over, default is false.          ")
-    AutoScroll=property(doc="<b>Read Write Property:</b> If AutoScroll property is True then the tree window will be automatically scrolled when the user drags item(s) over the boundaries of the tree.          ")
-    AutoScrollOnExpand=property(doc="<b>Read Write Property:</b> Allow automatic scroll on expand, default is true.          ")
-    CheckBoxes=property(doc="<b>Read Write Property:</b> Draw check boxe for each node.          ")
-    DeselectOnCollapse=property(doc="<b>Read Write Property:</b> Tells whether node are deselected if parent node is collapsed.          ")
-    EditNodeOn2Select=property(doc="<b>Read Write Property:</b> Set to true, to allow automatic node editing on second select.          ")
-    HighlightOnRightClick=property(doc="<b>Read Write Property:</b> Hightlight node on right click.          ")
-    Indent=property(doc="<b>Read Write Property:</b> Use Indent to determine how far child nodes are indented from their parent nodes when the parent is expanded.          ")
-    ItemHeight=property(doc="<b>Read Write Property:</b> Height of an item.          ")
-    MultiDrag=property(doc="<b>Read Write Property:</b> Tells whether multiple drag/drop is allowed or not.          ")
-    MultiSelect=property(doc="<b>Read Write Property:</b> Tells whether multiple selection is allowed or not.          ")
-    NoSelectOnDrag=property(doc="<b>Read Write Property:</b> Tells whether node are selected if drag is start and node is not already selected.          ")
-    NoSelectOnRightClick=property(doc="<b>Read Write Property:</b> Tells whether node are selected if right click on node.          ")
-    OnChange=property(doc="<b>Event:</b> Change of the selection.          ")
-    OnClick=property(doc="<b>Event:</b> Click on a node of the tree. Use OnSelect.          ")
-    OnClickCheck=property(doc="<b>Event:</b> Click on a node checkbox of the tree.          ")
-    OnCollapsed=property(doc="<b>Event:</b> Click on the '-' sign before a non-leaf node.          ")
-    OnCollapsing=property(doc="<b>Event:</b> Fired before the node collapse. To refuse collapsing, set AllowCollapse to false.          ")
-    OnDblClick=property(doc="<b>Event:</b> Double-Click on a node of the tree. Use FBEventTreeSelect to cast event.          ")
-    OnDragAndDrop=property(doc="<b>Event:</b> Drag and drop of an element.          ")
-    OnExpanded=property(doc="<b>Event:</b> Click on the '+' sign before a non-leaf node          ")
-    OnExpanding=property(doc="<b>Event:</b> Is fired before the node expand. To refuse expanding set AllowExpansion to false.          ")
-    OnSelect=property(doc="<b>Event:</b> A node was selected. Use FBEventTreeSelect to cast event.          ")
-    SelectedCount=property(doc="<b>Read Only Property:</b> Count of selected items.          ")
-    SelectedNodes=property(doc="<b>Read Only Property:</b> List of selected nodes.          ")
-    SelectionActive=property(doc="<b>Read Write Property:</b> Tells whether selection is allowed or not.          ")
-    ShowLines=property(doc="<b>Read Write Property:</b> On node selection, will draw entire line selected          ")
-    TreeHeight=property(doc="<b>Read Only Property:</b> Height of the tree.          ")
-    TreeWidth=property(doc="<b>Read Only Property:</b> Width of the tree.          ")
-    VisibleItemCount=property(doc="<b>Read Only Property:</b> Count of visible items.          ")
+    AllowCollapse=property(doc="Read Write Property: When OnCollapsing occurs, set this to true to allow collapse.          ")
+    AllowExpansion=property(doc="Read Write Property: When OnExpanding occurs, set this to true to allow expansion.          ")
+    AutoExpandOnDblClick=property(doc="Read Write Property: Allow automatic expand on double click, default is false.          ")
+    AutoExpandOnDragOver=property(doc="Read Write Property: Allow automatic expand on drag over, default is false.          ")
+    AutoScroll=property(doc="Read Write Property: If AutoScroll property is True then the tree window will be automatically scrolled when the user drags item(s) over the boundaries of the tree.          ")
+    AutoScrollOnExpand=property(doc="Read Write Property: Allow automatic scroll on expand, default is true.          ")
+    CheckBoxes=property(doc="Read Write Property: Draw check boxe for each node.          ")
+    DeselectOnCollapse=property(doc="Read Write Property: Tells whether node are deselected if parent node is collapsed.          ")
+    EditNodeOn2Select=property(doc="Read Write Property: Set to true, to allow automatic node editing on second select.          ")
+    HighlightOnRightClick=property(doc="Read Write Property: Hightlight node on right click.          ")
+    Indent=property(doc="Read Write Property: Use Indent to determine how far child nodes are indented from their parent nodes when the parent is expanded.          ")
+    ItemHeight=property(doc="Read Write Property: Height of an item.          ")
+    MultiDrag=property(doc="Read Write Property: Tells whether multiple drag/drop is allowed or not.          ")
+    MultiSelect=property(doc="Read Write Property: Tells whether multiple selection is allowed or not.          ")
+    NoSelectOnDrag=property(doc="Read Write Property: Tells whether node are selected if drag is start and node is not already selected.          ")
+    NoSelectOnRightClick=property(doc="Read Write Property: Tells whether node are selected if right click on node.          ")
+    OnChange=property(doc="Event: Change of the selection.          ")
+    OnClick=property(doc="Event: Click on a node of the tree. Use OnSelect.          ")
+    OnClickCheck=property(doc="Event: Click on a node checkbox of the tree.          ")
+    OnCollapsed=property(doc="Event: Click on the '-' sign before a non-leaf node.          ")
+    OnCollapsing=property(doc="Event: Fired before the node collapse. To refuse collapsing, set AllowCollapse to false.          ")
+    OnDblClick=property(doc="Event: Double-Click on a node of the tree. Use FBEventTreeSelect to cast event.          ")
+    OnDragAndDrop=property(doc="Event: Drag and drop of an element.          ")
+    OnExpanded=property(doc="Event: Click on the '+' sign before a non-leaf node          ")
+    OnExpanding=property(doc="Event: Is fired before the node expand. To refuse expanding set AllowExpansion to false.          ")
+    OnSelect=property(doc="Event: A node was selected. Use FBEventTreeSelect to cast event.          ")
+    SelectedCount=property(doc="Read Only Property: Count of selected items.          ")
+    SelectedNodes=property(doc="Read Only Property: List of selected nodes.          ")
+    SelectionActive=property(doc="Read Write Property: Tells whether selection is allowed or not.          ")
+    ShowLines=property(doc="Read Write Property: On node selection, will draw entire line selected          ")
+    TreeHeight=property(doc="Read Only Property: Height of the tree.          ")
+    TreeWidth=property(doc="Read Only Property: Width of the tree.          ")
+    VisibleItemCount=property(doc="Read Only Property: Count of visible items.          ")
     pass
 
 class FBTriggerStyle (Enumeration):
@@ -10901,7 +10901,7 @@ class FBView (FBVisualComponent):
         """
         Checks if object is a view.
 
-        return : Is object a view? (<b>true</b> or <b>false</b>) 
+        return : Is object a view? (true or false) 
         """
         pass
 
@@ -10909,7 +10909,7 @@ class FBView (FBVisualComponent):
         """
         Refresh view.
 
-        pNow : If <b>true</b>, refresh immediately (default = <b>false</b>). 
+        pNow : If true, refresh immediately (default = false). 
         """
         pass
 
@@ -10921,12 +10921,12 @@ class FBView (FBVisualComponent):
         pY : Viewport Y value. 
         pW : Viewport W (width) value. 
         pH : Viewport H (height) value. 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
-    DoubleBuffer=property(doc="<b>Read Only Property:</b> Indicates if the view is double buffered.          ")
-    GraphicOGL=property(doc="<b>Read Only Property:</b> Indicates if the view is OpenGL.          ")
+    DoubleBuffer=property(doc="Read Only Property: Indicates if the view is double buffered.          ")
+    GraphicOGL=property(doc="Read Only Property: Indicates if the view is OpenGL.          ")
     pass
 
 class FBViewerMode (Enumeration):
@@ -10979,7 +10979,7 @@ class FBVisualContainer (FBVisualComponent):
         pRef : Reference to item in container. 
         pImage : Handle to image to use. 
         pUseACopyOfTheImage : Create a copy of the image?(default=true) 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
@@ -10989,7 +10989,7 @@ class FBVisualContainer (FBVisualComponent):
 
         pRef : Reference to item in container. 
         pFilename : Name of file where image is located. 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
@@ -10998,20 +10998,20 @@ class FBVisualContainer (FBVisualComponent):
         Edit a container item.
 
         pRef : Reference of container to edit. 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
-    IconPosition=property(doc="<b>Read Write Property:</b> Where the icon is positioned for the items.          ")
-    ItemHeight=property(doc="<b>Read Write Property:</b> Item height.          ")
-    ItemIndex=property(doc="<b>Read Write Property:</b> Current item selected.          ")
-    ItemWidth=property(doc="<b>Read Write Property:</b> Item width.          ")
-    ItemWrap=property(doc="<b>Read Write Property:</b> Are items wrapped when enough space is available?          ")
-    Items=property(doc="<b>List:</b> Names of items in container.          ")
-    OnChange=property(doc="<b>Event:</b> Container contents changed.          ")
-    OnDblClick=property(doc="<b>Event:</b> Double click.          ")
-    OnDragAndDrop=property(doc="<b>Event:</b> Drag and Drop event.          ")
-    Orientation=property(doc="<b>Read Write Property:</b> Orientation of container.          ")
+    IconPosition=property(doc="Read Write Property: Where the icon is positioned for the items.          ")
+    ItemHeight=property(doc="Read Write Property: Item height.          ")
+    ItemIndex=property(doc="Read Write Property: Current item selected.          ")
+    ItemWidth=property(doc="Read Write Property: Item width.          ")
+    ItemWrap=property(doc="Read Write Property: Are items wrapped when enough space is available?          ")
+    Items=property(doc="List: Names of items in container.          ")
+    OnChange=property(doc="Event: Container contents changed.          ")
+    OnDblClick=property(doc="Event: Double click.          ")
+    OnDragAndDrop=property(doc="Event: Drag and Drop event.          ")
+    Orientation=property(doc="Read Write Property: Orientation of container.          ")
     pass
 
 class FBWebView (FBVisualComponent):
@@ -11053,14 +11053,14 @@ class FBWidgetHolder (FBVisualComponent):
 class FBActionManager (FBComponent):
     """
     Action Manager class.     
-     <b>This class is introduced to enable users to access to the actions related functions. between versions.</b>      
+     This class is introduced to enable users to access to the actions related functions. between versions.      
     """
     pass
 
 class FBActorFace (FBComponent):
     """
     Used to plot actor face animation.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBActorFace(self,pName):
         """
@@ -11186,12 +11186,12 @@ class FBAnimationLayer (FBComponent):
         """
         pass
 
-    LayerMode=property(doc="<b>Read Write Property:</b> Layer mode. By default, the layer is in kFBLayerModeAdditive mode. Cannot be applied to the BaseAnimation Layer.          ")
-    LayerRotationMode=property(doc="<b>Read Only Property:</b> Layer rotation mode. Cannot be applied to the BaseAnimation Layer.          ")
-    Lock=property(doc="<b>Read Write Property:</b> If true, the layer is locked. You cannot modify keyframes on a locked layer.          ")
-    Mute=property(doc="<b>Read Write Property:</b> If true, the layer is muted. A muted layer is not included in the result animation. Cannot be applied to the BaseAnimation Layer.          ")
-    Solo=property(doc="<b>Read Write Property:</b> If true, the layer is soloed. When you solo a layer, you mute other layers that are at the same level in the hierarchy, as well as the children of those layers. Cannot be applied to the BaseAnimation Layer.          ")
-    Weight=property(doc="<b>Read Write Property:</b> The weight value of a layer determines how much it is present in the result animation. Takes a value from 0 (the layer is not present) to 100. The weighting of a parent layer is factored into the weighting of its child layers, if any. BaseAnimation Layer always has a Weight of 100.          ")
+    LayerMode=property(doc="Read Write Property: Layer mode. By default, the layer is in kFBLayerModeAdditive mode. Cannot be applied to the BaseAnimation Layer.          ")
+    LayerRotationMode=property(doc="Read Only Property: Layer rotation mode. Cannot be applied to the BaseAnimation Layer.          ")
+    Lock=property(doc="Read Write Property: If true, the layer is locked. You cannot modify keyframes on a locked layer.          ")
+    Mute=property(doc="Read Write Property: If true, the layer is muted. A muted layer is not included in the result animation. Cannot be applied to the BaseAnimation Layer.          ")
+    Solo=property(doc="Read Write Property: If true, the layer is soloed. When you solo a layer, you mute other layers that are at the same level in the hierarchy, as well as the children of those layers. Cannot be applied to the BaseAnimation Layer.          ")
+    Weight=property(doc="Read Write Property: The weight value of a layer determines how much it is present in the result animation. Takes a value from 0 (the layer is not present) to 100. The weighting of a parent layer is factored into the weighting of its child layers, if any. BaseAnimation Layer always has a Weight of 100.          ")
     pass
 
 class FBAnimationNode (FBComponent):
@@ -11261,7 +11261,7 @@ class FBAnimationNode (FBComponent):
         """
         Verifies if there is a key at the current.
 
-        return : <b>true</b> if there is a key at the current time. 
+        return : true if there is a key at the current time. 
         """
         pass
 
@@ -11270,7 +11270,7 @@ class FBAnimationNode (FBComponent):
         Add a key to the animation node.
 
         pTime : Time to add key at. 
-        pData : Value of data to add at <b>pTime</b>. 
+        pData : Value of data to add at pTime. 
         pInterpolation : Interpolation type of the inserted key, default value is Cubic interpolation. 
         pTangentMode : Tangent calculation method of the inserted key, default value is Auto (Smooth). 
         """
@@ -11316,19 +11316,19 @@ class FBAnimationNode (FBComponent):
         Data : Data to read from animation node. 
         pEvaluateInfo : Node evaluation information (access to system and local time). 
         pConvertGlobalToLocal : If global transform data is read, convert it to local data. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
     def ReadData(self,Data,pTime,pConvertGlobalToLocal):
         """
         Read data from animation node.
-        This will launch a new evaluation buffer to read the data and therefore this call is only safe if it is executed from the main thread, e.g. within a tool. In all other cases, you should use ReadData( double <b>Data, FBEvaluateInfo</b> pEvalInfo );
+        This will launch a new evaluation buffer to read the data and therefore this call is only safe if it is executed from the main thread, e.g. within a tool. In all other cases, you should use ReadData( double Data, FBEvaluateInfo pEvalInfo );
 
         Data : Data to read from animation node. 
         pTime : Time to read. 
         pConvertGlobalToLocal : If global transform data is read, convert it to local data. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -11338,7 +11338,7 @@ class FBAnimationNode (FBComponent):
         this call doesn't generate a pull on the connection attached to this AnimationNode. No validation is done on the pointer size. You must provide a buffer that is at least GetSizerOfData() size.
 
         Data : Data to read from animation node. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -11356,7 +11356,7 @@ class FBAnimationNode (FBComponent):
 
         Data : float
         pCheckLocked : Decides whether to check the locked status. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -11366,19 +11366,19 @@ class FBAnimationNode (FBComponent):
 
         Data : Data to write to animation node. 
         pEvaluateInfo : Node evaluation information (access to system and local time). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
-    ConnectorType=property(doc="<b>Read Only Property:</b> Animation node connector type.          ")
-    DefaultInterpolation=property(doc="<b>Read Write Property:</b> Default type of interpolation.          ")
-    FCurve=property(doc="<b>Read Write Property:</b> FCurve for animation. See sample: StartKeysAtCurrentTime.py.         ")
-    KeyCount=property(doc="<b>Read Only Property:</b> Number of keys.          ")
-    Label=property(doc="<b>Read Write Property:</b> Label (UI Name).          ")
-    Live=property(doc="<b>Read Write Property:</b> Is animation live?          ")
-    Nodes=property(doc="<b>List:</b> List of animation nodes.          ")
-    RecordMode=property(doc="<b>Read Write Property:</b> Is the node in recording mode (device connectors)?          ")
-    UserName=property(doc="<b>Read Only Property:</b> Name of animation node.          ")
+    ConnectorType=property(doc="Read Only Property: Animation node connector type.          ")
+    DefaultInterpolation=property(doc="Read Write Property: Default type of interpolation.          ")
+    FCurve=property(doc="Read Write Property: FCurve for animation. See sample: StartKeysAtCurrentTime.py.         ")
+    KeyCount=property(doc="Read Only Property: Number of keys.          ")
+    Label=property(doc="Read Write Property: Label (UI Name).          ")
+    Live=property(doc="Read Write Property: Is animation live?          ")
+    Nodes=property(doc="List: List of animation nodes.          ")
+    RecordMode=property(doc="Read Write Property: Is the node in recording mode (device connectors)?          ")
+    UserName=property(doc="Read Only Property: Name of animation node.          ")
     pass
 
 class FBApplication (FBComponent):
@@ -11665,7 +11665,7 @@ class FBApplication (FBComponent):
         pCharacter : Target character. 
         pFbxOptions : The options for the character rig and animation load 
         pPlotOptions : If the animation should be plotted on the target rig, these plot options will be used. Set to NULL if animation will not be plotted. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -11791,18 +11791,18 @@ class FBApplication (FBComponent):
         """
         pass
 
-    CurrentActor=property(doc="<b>Read Write Property:</b> Indicate the current actor, as used by the character tool. Can be NULL. If not null, CurrentCharacter must be null, as the character tool works on only one item at a time.          ")
-    CurrentCharacter=property(doc="<b>Read Write Property:</b> Indicate the current character, as used by the character tool. Can be NULL. If not null, CurrentActor must be null, as the character tool works on only one item at a time. See sample: CurrentCharacterGoToStancePose.py.         ")
-    FBXFileName=property(doc="<b>Read Write Property:</b> Current scene filename.          ")
-    OnFileExit=property(doc="<b>Event:</b> A File Exit as been requested, nothing has been destroyed yet.          ")
-    OnFileMerge=property(doc="<b>Event:</b> A File Merge has been requested, nothing has been loaded yet.          ")
-    OnFileNew=property(doc="<b>Event:</b> A File New has been requested, nothing has been destroyed yet.          ")
-    OnFileNewCompleted=property(doc="<b>Event:</b> A File New has been completed.          ")
-    OnFileOpen=property(doc="<b>Event:</b> A File Open has been requested, nothing has been loaded yet.          ")
-    OnFileOpenCompleted=property(doc="<b>Event:</b> A File Open has been completed.          ")
-    OnFileSave=property(doc="<b>Event:</b> A File Save has been requested, nothing has been saved yet.          ")
-    OnFileSaveCompleted=property(doc="<b>Event:</b> A File Save has been completed.          ")
-    OnOverrideFileOpen=property(doc="<b>Event:</b> Called when a file is about to be opened/merged. The user can override the process with his own file import system.          ")
+    CurrentActor=property(doc="Read Write Property: Indicate the current actor, as used by the character tool. Can be NULL. If not null, CurrentCharacter must be null, as the character tool works on only one item at a time.          ")
+    CurrentCharacter=property(doc="Read Write Property: Indicate the current character, as used by the character tool. Can be NULL. If not null, CurrentActor must be null, as the character tool works on only one item at a time. See sample: CurrentCharacterGoToStancePose.py.         ")
+    FBXFileName=property(doc="Read Write Property: Current scene filename.          ")
+    OnFileExit=property(doc="Event: A File Exit as been requested, nothing has been destroyed yet.          ")
+    OnFileMerge=property(doc="Event: A File Merge has been requested, nothing has been loaded yet.          ")
+    OnFileNew=property(doc="Event: A File New has been requested, nothing has been destroyed yet.          ")
+    OnFileNewCompleted=property(doc="Event: A File New has been completed.          ")
+    OnFileOpen=property(doc="Event: A File Open has been requested, nothing has been loaded yet.          ")
+    OnFileOpenCompleted=property(doc="Event: A File Open has been completed.          ")
+    OnFileSave=property(doc="Event: A File Save has been requested, nothing has been saved yet.          ")
+    OnFileSaveCompleted=property(doc="Event: A File Save has been completed.          ")
+    OnOverrideFileOpen=property(doc="Event: Called when a file is about to be opened/merged. The user can override the process with his own file import system.          ")
     pass
 
 class FBAssetItem (FBComponent):
@@ -11854,7 +11854,7 @@ class FBAssetItem (FBComponent):
         """
         Get the path to this item on the local hard disk.
 
-        return : The path as an <b>FBString</b>. 
+        return : The path as an FBString. 
         """
         pass
 
@@ -11870,7 +11870,7 @@ class FBAssetItem (FBComponent):
         """
         Get the parent folder of this item.
 
-        return : An <b>FBAssetFolder*</b> if the parent was found, or NULL if this is the root item. 
+        return : An FBAssetFolder* if the parent was found, or NULL if this is the root item. 
         """
         pass
 
@@ -11878,7 +11878,7 @@ class FBAssetItem (FBComponent):
         """
         Get the path to this item on the database.
 
-        return : The server path as an <b>FBString</b>. 
+        return : The server path as an FBString. 
         """
         pass
 
@@ -12013,7 +12013,7 @@ class FBAssetMng (FBComponent):
         """
         Initialize the connection to the server.
 
-        return : <b>True</b> if the connection was established, <b>false</b> otherwise. 
+        return : True if the connection was established, false otherwise. 
         """
         pass
 
@@ -12042,10 +12042,10 @@ class FBAssetMng (FBComponent):
         """
         pass
 
-    Description=property(doc="<b>Read Write Property:</b> Description of the manager.          ")
+    Description=property(doc="Read Write Property: Description of the manager.          ")
     LastError=property(doc="Last error string.          ")
-    MenuFlags=property(doc="<b>Read Write Property:</b> Flags specifing which menu items are added by the manager.          ")
-    Name=property(doc="<b>Read Write Property:</b> Unique Name.          ")
+    MenuFlags=property(doc="Read Write Property: Flags specifing which menu items are added by the manager.          ")
+    Name=property(doc="Read Write Property: Unique Name.          ")
     pass
 
 class FBAudioClip (FBComponent):
@@ -12095,34 +12095,34 @@ class FBAudioClip (FBComponent):
         """
         pass
 
-    AccessMode=property(doc="<b>Read Write Property:</b> Specify the media data access mode between disk or memory.          ")
-    Bits=property(doc="<b>Read Only Property:</b> the bits of media.          ")
-    Channels=property(doc="<b>Read Only Property:</b> the number of channels in use.          ")
-    ClipSpeed=property(doc="<b>Read Write Property:</b> The speed of the media when being played.          ")
-    ConstrainDstToTake=property(doc="<b>Read Write Property:</b> Indicates whether to constrain the EndPoint to the end of the take.          ")
-    CurrentTake=property(doc="<b>Read Write Property:</b> The take this media belongs to.          ")
-    Destination=property(doc="<b>Read Write Property:</b> The audio output destination where the clip will be played.          ")
-    DstDuration=property(doc="<b>Read Write Property:</b> When not used in the Story, this specify when the clips stops playing.          ")
-    DstEnd=property(doc="<b>Read Write Property:</b> Total duration of this audio clip.          ")
-    DstIn=property(doc="<b>Read Write Property:</b> When not used in the Story, this specify when the clips begin to play.          ")
-    Duration=property(doc="<b>[Deprecated]Read Write Property:</b> Refer to DstDuration.          ")
-    EndPoint=property(doc="<b>[Deprecated]Read Write Property:</b> Refer to DstEnd.          ")
-    Filename=property(doc="<b>[Deprecated]Read Only Property:</b> Refer to Path          ")
-    Format=property(doc="<b>Read Only Property:</b> Data format of media, including rate, bits and channels count. You can typecast it to a FBAudioFmt.          ")
-    InPoint=property(doc="<b>[Deprecated]Read Write Property:</b> Refer to DstIn.          ")
-    LockClipSpeed=property(doc="<b>Read Write Property:</b> Indicates whether to lock the current playing speed.          ")
-    LockPitchToSpeed=property(doc="<b>Read Write Property:</b> Time stretch enabled factor.          ")
-    Path=property(doc="<b>Read Only Property:</b> Full Path of the media.          ")
-    Pitch=property(doc="<b>Read Write Property:</b> The audio clip pitch value. To write to this property, you must first set LockPitchToSpeed property to false.          ")
-    Rate=property(doc="<b>Read Only Property:</b> the rate of media.          ")
-    RelativePath=property(doc="<b>Read Only Property:</b> Relative path of media.          ")
-    Scrubbing=property(doc="<b>Read Write Property:</b> Control which clip (one at a time) can shuttle when playing a various speeds.          ")
-    SrcDuration=property(doc="<b>Read Only Property:</b> The duration time of media.          ")
-    SrcEnd=property(doc="<b>Read Only Property:</b> The end time of media.          ")
-    SrcIn=property(doc="<b>Read Only Property:</b> The begin time of media.          ")
-    TakeSetsInPoint=property(doc="<b>[Deprecated]Read Write Property:</b> Indicates whether to lock the InPoint to the start of the take.          ")
-    UseChannel=property(doc="<b>Read Write Property:</b> Enables you to control which track are used with stereo clips.          ")
-    UseChannelMode=property(doc="<b>[Deprecated]Read Write Property:</b> Enables you to control which track are used with stereo clips.          ")
+    AccessMode=property(doc="Read Write Property: Specify the media data access mode between disk or memory.          ")
+    Bits=property(doc="Read Only Property: the bits of media.          ")
+    Channels=property(doc="Read Only Property: the number of channels in use.          ")
+    ClipSpeed=property(doc="Read Write Property: The speed of the media when being played.          ")
+    ConstrainDstToTake=property(doc="Read Write Property: Indicates whether to constrain the EndPoint to the end of the take.          ")
+    CurrentTake=property(doc="Read Write Property: The take this media belongs to.          ")
+    Destination=property(doc="Read Write Property: The audio output destination where the clip will be played.          ")
+    DstDuration=property(doc="Read Write Property: When not used in the Story, this specify when the clips stops playing.          ")
+    DstEnd=property(doc="Read Write Property: Total duration of this audio clip.          ")
+    DstIn=property(doc="Read Write Property: When not used in the Story, this specify when the clips begin to play.          ")
+    Duration=property(doc="[Deprecated]Read Write Property: Refer to DstDuration.          ")
+    EndPoint=property(doc="[Deprecated]Read Write Property: Refer to DstEnd.          ")
+    Filename=property(doc="[Deprecated]Read Only Property: Refer to Path          ")
+    Format=property(doc="Read Only Property: Data format of media, including rate, bits and channels count. You can typecast it to a FBAudioFmt.          ")
+    InPoint=property(doc="[Deprecated]Read Write Property: Refer to DstIn.          ")
+    LockClipSpeed=property(doc="Read Write Property: Indicates whether to lock the current playing speed.          ")
+    LockPitchToSpeed=property(doc="Read Write Property: Time stretch enabled factor.          ")
+    Path=property(doc="Read Only Property: Full Path of the media.          ")
+    Pitch=property(doc="Read Write Property: The audio clip pitch value. To write to this property, you must first set LockPitchToSpeed property to false.          ")
+    Rate=property(doc="Read Only Property: the rate of media.          ")
+    RelativePath=property(doc="Read Only Property: Relative path of media.          ")
+    Scrubbing=property(doc="Read Write Property: Control which clip (one at a time) can shuttle when playing a various speeds.          ")
+    SrcDuration=property(doc="Read Only Property: The duration time of media.          ")
+    SrcEnd=property(doc="Read Only Property: The end time of media.          ")
+    SrcIn=property(doc="Read Only Property: The begin time of media.          ")
+    TakeSetsInPoint=property(doc="[Deprecated]Read Write Property: Indicates whether to lock the InPoint to the start of the take.          ")
+    UseChannel=property(doc="Read Write Property: Enables you to control which track are used with stereo clips.          ")
+    UseChannelMode=property(doc="[Deprecated]Read Write Property: Enables you to control which track are used with stereo clips.          ")
     pass
 
 class FBAudioIn (FBComponent):
@@ -12360,7 +12360,7 @@ class FBBox (FBComponent):
         Destroy an animation node.
 
         pAnimationNode : Handle to the animation node to be destroyed. 
-        return : <b>true</b> if destruction was successful. 
+        return : true if destruction was successful. 
         """
         pass
 
@@ -12377,7 +12377,7 @@ class FBBox (FBComponent):
         Is the animation node user data?
 
         pAnimationNode : Handle to the animation to be queried. 
-        return : <b>true</b> if node is user data. 
+        return : true if node is user data. 
         """
         pass
 
@@ -12420,16 +12420,16 @@ class FBBox (FBComponent):
         """
         pass
 
-    Animatable=property(doc="<b>Read Write Property:</b> Is the box animatable.          ")
-    Live=property(doc="<b>Read Write Property:</b> Is live?          ")
-    RecordMode=property(doc="<b>Read Write Property:</b> Is recording?          ")
+    Animatable=property(doc="Read Write Property: Is the box animatable.          ")
+    Live=property(doc="Read Write Property: Is live?          ")
+    RecordMode=property(doc="Read Write Property: Is recording?          ")
     UniqueName=property(doc="internal Unique name.          ")
     pass
 
 class FBCameraSwitcherAudioManager (FBComponent):
     """
     Camera Switcher Audio Manager class.     
-     <b>This class allows users to interact with the Audio Manager of the Camera Switcher.</b>      
+     This class allows users to interact with the Audio Manager of the Camera Switcher.      
     """
     def GetAudioClip(self):
         """
@@ -12546,7 +12546,7 @@ class FBCameraSwitcherAudioManager (FBComponent):
 class FBCharacterMarkerSet (FBComponent):
     """
     Character marker set class.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBCharacterMarkerSet(self,pName):
         """
@@ -12774,8 +12774,8 @@ class FBCluster (FBComponent):
         """
         pass
 
-    ClusterAccuracy=property(doc="<b>Read Write Property:</b> Cluster accuracy.          ")
-    ClusterMode=property(doc="<b>Read Write Property:</b> Cluster mode.          ")
+    ClusterAccuracy=property(doc="Read Write Property: Cluster accuracy.          ")
+    ClusterMode=property(doc="Read Write Property: Cluster mode.          ")
     pass
 
 class FBConstraintManager (FBComponent):
@@ -12814,7 +12814,7 @@ class FBConstraintManager (FBComponent):
     def TypeGetName(self,pTypeIndex):
         """
         Get the name of a registered type of constraint.
-        This will search in the registry for a constraint at the index <b>pTypeIndex</b>.
+        This will search in the registry for a constraint at the index pTypeIndex.
 
         pTypeIndex : Index of a constraint type. 
         return : Name of constraint type. 
@@ -12887,13 +12887,13 @@ class FBConstructionHistory (FBComponent):
         """
         pass
 
-    OnChange=property(doc="<b>Event:</b> History changed.          ")
+    OnChange=property(doc="Event: History changed.          ")
     pass
 
 class FBControlSet (FBComponent):
     """
     Control set class.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBControlSet(self,pName):
         """
@@ -12983,8 +12983,8 @@ class FBControlSet (FBComponent):
         """
         pass
 
-    ControlSetType=property(doc="<b>Read Property:</b> the control Set Type (FKIK or IK).          ")
-    UseAxis=property(doc="<b>Read Write Property:</b> is using axis.          ")
+    ControlSetType=property(doc="Read Property: the control Set Type (FKIK or IK).          ")
+    UseAxis=property(doc="Read Write Property: is using axis.          ")
     pass
 
 class FBCycleCreator (FBComponent):
@@ -13128,18 +13128,18 @@ class FBDeck (FBComponent):
         """
         pass
 
-    CassetteInside=property(doc="<b>Read Only Property:</b> Is the cassette inside?          ")
-    EE=property(doc="<b>Read Write Property:</b> Is EE on?          ")
-    IconFilename=property(doc="<b>Read Write Property:</b> Filename of icon for deck.          ")
-    Latency=property(doc="<b>Read Write Property:</b> Latency of response for the deck;          ")
-    Offset=property(doc="<b>Read Write Property:</b> Current offset for the TC.          ")
-    Online=property(doc="<b>Read Write Property:</b> Is deck online?          ")
-    PlayingBackward=property(doc="<b>Read Only Property:</b> Playing backwards?          ")
-    PlayingForward=property(doc="<b>Read Only Property:</b> Playing forward?          ")
-    PostRoll=property(doc="<b>Read Write Property:</b> Post-Roll.          ")
-    PreRoll=property(doc="<b>Read Write Property:</b> Pre-Roll.          ")
-    StandBy=property(doc="<b>Read Write Property:</b> In standby mode?          ")
-    TransportControl=property(doc="<b>Read Write Property:</b> Mode w/r to TC (None, Sync, Main );          ")
+    CassetteInside=property(doc="Read Only Property: Is the cassette inside?          ")
+    EE=property(doc="Read Write Property: Is EE on?          ")
+    IconFilename=property(doc="Read Write Property: Filename of icon for deck.          ")
+    Latency=property(doc="Read Write Property: Latency of response for the deck;          ")
+    Offset=property(doc="Read Write Property: Current offset for the TC.          ")
+    Online=property(doc="Read Write Property: Is deck online?          ")
+    PlayingBackward=property(doc="Read Only Property: Playing backwards?          ")
+    PlayingForward=property(doc="Read Only Property: Playing forward?          ")
+    PostRoll=property(doc="Read Write Property: Post-Roll.          ")
+    PreRoll=property(doc="Read Write Property: Pre-Roll.          ")
+    StandBy=property(doc="Read Write Property: In standby mode?          ")
+    TransportControl=property(doc="Read Write Property: Mode w/r to TC (None, Sync, Main );          ")
     UniqueName=property(doc="internal Unique name.          ")
     pass
 
@@ -13156,7 +13156,7 @@ class FBDeformer (FBComponent):
         """
         pass
 
-    DeformerType=property(doc="<b>Read Only Property:</b> Deformer Type.          ")
+    DeformerType=property(doc="Read Only Property: Deformer Type.          ")
     pass
 
 class FBDeviceInstrument (FBComponent):
@@ -13187,19 +13187,19 @@ class FBDeviceInstrument (FBComponent):
         In the evaluation engine callback, this will take the data in the instrument's temporary data holders and write it to the connectors.
 
         pEvaluateInfo : Evaluation information structure. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
-    Active=property(doc="<b>Read Write Property:</b> Is instrument active?          ")
-    Device=property(doc="<b>Read Write Property:</b> Handle to owner device.          ")
-    ModelTemplate=property(doc="<b>Read Write Property:</b> Model template to build instruments' structure.          ")
+    Active=property(doc="Read Write Property: Is instrument active?          ")
+    Device=property(doc="Read Write Property: Handle to owner device.          ")
+    ModelTemplate=property(doc="Read Write Property: Model template to build instruments' structure.          ")
     pass
 
 class FBDeviceOpticalMarker (FBComponent):
     """
     Device optical marker.     
-     A device optical marker represents the input locations for interfacing optical hardware. This type of marker corresponds uniquely to the input (from the hardware) and will be represented on-screen by a <b>FBModelMarkerOptical</b>.      
+     A device optical marker represents the input locations for interfacing optical hardware. This type of marker corresponds uniquely to the input (from the hardware) and will be represented on-screen by a FBModelMarkerOptical.      
     """
     def FBDeviceOpticalMarker(self,pName):
         """
@@ -13220,9 +13220,9 @@ class FBDeviceOpticalMarker (FBComponent):
         """
         pass
 
-    IsUsed=property(doc="<b>Property:</b> Is marker used?          ")
-    Model=property(doc="<b>Property:</b> Model marker access.          ")
-    Occlusion=property(doc="<b>Property:</b> Occulsion data for marker.          ")
+    IsUsed=property(doc="Property: Is marker used?          ")
+    Model=property(doc="Property: Model marker access.          ")
+    Occlusion=property(doc="Property: Occulsion data for marker.          ")
     pass
 
 class FBEvaluateManager (FBComponent):
@@ -13245,17 +13245,17 @@ class FBEvaluateManager (FBComponent):
         """
         pass
 
-    DeviceCount=property(doc="<b>Read only Property:</b> Number of devices to evaluate.          ")
-    DualQuaternionSkinning=property(doc="<b>Read/Write Property:</b> Using state of the Dual Quaternion for skinning (CPU Skinning or GPU Skinning).          ")
-    FrameSkipOptimization=property(doc="<b>Read/Write Property:</b> if true, apply frame skip optimization during playback. off-line rendering don't use frame skip optimization.          ")
-    NodeCount=property(doc="<b>Read only Property:</b> Number of nodes to evaluate.          ")
-    OnRenderingPipelineEvent=property(doc="<b> For callback events at rendering pipeline.</b>          ")
-    OnSynchronizationEvent=property(doc="<b> For callback events at synchronization point.</b>          ")
-    ParallelDeformation=property(doc="<b>Read/Write Property:</b> true if deformation is evaluated in parallel.          ")
-    ParallelEvaluation=property(doc="<b>Read/Write Property:</b> true if parallel DAG schedule algorithm is being used. false when serial algorithm is being used.          ")
-    ParallelPipeline=property(doc="<b>Read/Write Property:</b> true if transformation is evaluated in parallel.          ")
-    ParallelScheduleType=property(doc="<b> DEPRICATED </b><b>Read/Write Property:</b> choose between serial and parallel DAG schedule algorithm. kFBParallelScheduleSimple and kFBParallelScheduleAdvanced will set ParallelEvalution to true. kFBParallelScheduleSerial will set ParallelEvalution to false          ")
-    UseGPUDeformation=property(doc="<b>Read/Write Property:</b> true if GPU deformation is used.          ")
+    DeviceCount=property(doc="Read only Property: Number of devices to evaluate.          ")
+    DualQuaternionSkinning=property(doc="Read/Write Property: Using state of the Dual Quaternion for skinning (CPU Skinning or GPU Skinning).          ")
+    FrameSkipOptimization=property(doc="Read/Write Property: if true, apply frame skip optimization during playback. off-line rendering don't use frame skip optimization.          ")
+    NodeCount=property(doc="Read only Property: Number of nodes to evaluate.          ")
+    OnRenderingPipelineEvent=property(doc=" For callback events at rendering pipeline.          ")
+    OnSynchronizationEvent=property(doc=" For callback events at synchronization point.          ")
+    ParallelDeformation=property(doc="Read/Write Property: true if deformation is evaluated in parallel.          ")
+    ParallelEvaluation=property(doc="Read/Write Property: true if parallel DAG schedule algorithm is being used. false when serial algorithm is being used.          ")
+    ParallelPipeline=property(doc="Read/Write Property: true if transformation is evaluated in parallel.          ")
+    ParallelScheduleType=property(doc=" DEPRICATED Read/Write Property: choose between serial and parallel DAG schedule algorithm. kFBParallelScheduleSimple and kFBParallelScheduleAdvanced will set ParallelEvalution to true. kFBParallelScheduleSerial will set ParallelEvalution to false          ")
+    UseGPUDeformation=property(doc="Read/Write Property: true if GPU deformation is used.          ")
     pass
 
 class FBFbxOptions (FBComponent):
@@ -13438,83 +13438,83 @@ print FBApplication().FileMerge( myScenesToMerge, False, fbxLoadOptions )
         """
         pass
 
-    ActorFaces=property(doc="<b>Read Write Property:</b> Handling of the Actor Faces elements.          ")
-    ActorFacesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Actor Faces animation.          ")
-    Actors=property(doc="<b>Read Write Property:</b> Handling of the Actors elements.          ")
-    Audio=property(doc="<b>Read Write Property:</b> Handling of the Audio elements.          ")
-    BaseCameras=property(doc="<b>Read Write Property:</b> Consider base camera settings.          ")
-    Bones=property(doc="<b>Read Write Property:</b> Handling of the Bones elements.          ")
-    BonesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Bones animation.          ")
-    CacheSize=property(doc="<b>Read Write Property:</b> The Cached buffer size used to accelerate IO system.          ")
-    CameraSwitcherSettings=property(doc="<b>Read Write Property:</b> Consider camera switcher settings.          ")
-    Cameras=property(doc="<b>Read Write Property:</b> Handling of the Cameras elements.          ")
-    CamerasAnimation=property(doc="<b>Read Write Property:</b> Handling of the Cameras animation.          ")
-    CharacterExtensions=property(doc="<b>Read Write Property:</b> Handling of the Character Extensions.          ")
-    CharacterFaces=property(doc="<b>Read Write Property:</b> Handling of the Character Faces elements.          ")
-    CharacterFacesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Character Faces animation.          ")
-    Characters=property(doc="<b>Read Write Property:</b> Handling of the Characters elements.          ")
-    CharactersAnimation=property(doc="<b>Read Write Property:</b> Handling of the Characters animation.          ")
-    ClearSelectionBeforeSave=property(doc="<b>Read Write Property:</b> Set to true if the current selected objects shouldn't saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
-    ConsiderMuteSolo=property(doc="<b>Read Write property:</b> Consider the mute/solo settings to identify identical layer when merging.          ")
-    Constraints=property(doc="<b>Read Write Property:</b> Handling of the Constraints elements.          ")
-    ConstraintsAnimation=property(doc="<b>Read Write Property:</b> Handling of the Constraints animation.          ")
-    CopyCharacterExtensions=property(doc="<b>Read Write Property:</b> pCopyMissingExtensions Set to true if the character extensions on the rig in the file should be copied to the target rig.          ")
-    CurrentCameraSettings=property(doc="<b>Read Write Property:</b> Consider current camera settings.          ")
-    Devices=property(doc="<b>Read Write Property:</b> Handling of the Devices elements.          ")
-    DevicesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Devices animation.          ")
-    EmbedMedia=property(doc="<b>Read Write Property:</b> Embed all media in the FBX file itself. When saving in ASCII mode it is not possible to embed media.          ")
-    FileFormatAndVersion=property(doc="<b>Read Write Property:</b> File format and version chosen to save the scene.          ")
-    FileReference=property(doc="<b>Read Write property:</b> Load/Save scene as FileReference.          ")
-    FileReferenceEdit=property(doc="<b>Read Write Property:</b> Load/Save the edits made to referenced objects or not.          ")
-    FileReferences=property(doc="<b>Read Write Property:</b> Handling of the FileReferences elements.          ")
-    GlobalLightingSettings=property(doc="<b>Read Write Property:</b> Consider global Lighting settings.          ")
-    Groups=property(doc="<b>Read Write Property:</b> Handling of the Groups elements.          ")
-    IgnoreConflicts=property(doc="<b>Read Write Property:</b> Set to true to ignore conflicts between objects in character extensions and objects in the scene. Conflicting objects will be merged in the extension          ")
-    KeepTransformHierarchy=property(doc="<b>Read Write Property:</b> Indicate whether we keep transform hierarchy when SaveSelectedModelsOnly is true. Default value is false to ensure consistent behavior with SaveSelected operation via file menu.          ")
-    KeyingGroups=property(doc="<b>Read Write Property:</b> Handling of the Keying Groups elements.          ")
-    Lights=property(doc="<b>Read Write Property:</b> Handling of the Lights elements.          ")
-    LightsAnimation=property(doc="<b>Read Write Property:</b> Handling of the Lights animation.          ")
-    Materials=property(doc="<b>Read Write Property:</b> Handling of the Materials elements.          ")
-    MaterialsAnimation=property(doc="<b>Read Write Property:</b> Handling of the Materials animation.          ")
-    Models=property(doc="<b>Read Write Property:</b> Handling of the Models elements.          ")
-    ModelsAnimation=property(doc="<b>Read Write Property:</b> Handling of the Models animation.          ")
-    NamespaceList=property(doc="<b>Read Write Property:</b> A list of namespaces separated by '~'. On Load, duplicate the loaded objects into each namespace in the list. If the SetMultiLoadNamespaceList method is also called, this property is ignored.          ")
-    Notes=property(doc="<b>Read Write Property:</b> Handling of the Notes elements.          ")
-    NotesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Notes animation.          ")
-    OpticalData=property(doc="<b>Read Write Property:</b> Handling of the Optical Data elements.          ")
-    PhysicalProperties=property(doc="<b>Read Write Property:</b> Handling of the Physical Properties elements.          ")
-    PhysicalPropertiesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Physical Properties animation.          ")
-    Poses=property(doc="<b>Read Write Property:</b> Handling of the Poses elements.          ")
-    ProcessAnimationOnExtension=property(doc="<b>Read Write Property:</b> Set to true if animation on character extensions should also be transferred.          ")
-    RemoveConstraintReference=property(doc="<b>Read Write Property:</b> Set to true if we should remove constraint reference.          ")
-    RemoveEmptyLayer=property(doc="<b>Read Write property:</b> Remove empty animation layers that are in additive mode, without child or parent.          ")
-    ReplaceControlSet=property(doc="<b>Read Write Property:</b> Set to true if the character extensions (and their children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
-    ResetDOF=property(doc="<b>Read Write Property:</b> Set to true if we should change the limits on the target rig.          ")
-    ResetHierarchy=property(doc="<b>Read Write Property:</b> Set to true if we should reset the character hierarchy.          ")
-    RetargetOnBaseLayer=property(doc="<b>Read Write Property:</b> If the transfer method is retarget, set this parameter to control where the retarget correction will be made (on base layer or on another layer).          ")
-    SaveCharacter=property(doc="<b>Read Write Property:</b> Set to true if the character should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
-    SaveCharacterExtensions=property(doc="<b>Read Write Property:</b> Set to true if the character extensions (and their children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
-    SaveControlSet=property(doc="<b>Read Write Property:</b> Set to true if the rig (and its children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
-    SaveSelectedModelsOnly=property(doc="<b>Read Write Property:</b> Indicate that only the selected models will be saved.          ")
-    Scripts=property(doc="<b>Read Write Property:</b> Handling of the Scripts elements.          ")
-    SetPropertyStaticIfPossible=property(doc="<b>Read Write Property:</b> Set to false if want to keep properties' animated flag even when they are not really animated(no keyframe data) while retrieving/storing. See sample: SetPropertyStaticIfPossibleOption.py.         ")
-    Sets=property(doc="<b>Read Write Property:</b> Handling of the Sets elements.          ")
-    Shaders=property(doc="<b>Read Write Property:</b> Handling of the Shaders elements.          ")
-    ShadersAnimation=property(doc="<b>Read Write Property:</b> Handling of the Shaders animation.          ")
-    ShowFileDialog=property(doc="<b>Read Write Property:</b> Set to true if want to pop up dialog for FileName, Format, Embed, Compression, UseTakeName, OneTakePerFile.          ")
-    ShowOptionsDialog=property(doc="<b>Read Write Property:</b> Set to true if want to pop up options dialog for detail settings.          ")
-    Solvers=property(doc="<b>Read Write Property:</b> Handling of the Solvers elements.          ")
-    SolversAnimation=property(doc="<b>Read Write Property:</b> Handling of the Solvers animation.          ")
-    Story=property(doc="<b>Read Write Property:</b> Handling of the Story elements.          ")
-    StoryAnimation=property(doc="<b>Read Write Property:</b> Handling of the Story animation (animatable properties on story objects).          ")
-    TakeSpan=property(doc="<b>Read Write Property:</b> Indicate how the take start and end point should be set. By default it is read from the file.          ")
-    Textures=property(doc="<b>Read Write Property:</b> Handling of the Textures elements.          ")
-    TexturesAnimation=property(doc="<b>Read Write Property:</b> Handling of the Textures animation.          ")
-    TransferMethod=property(doc="<b>Read Write Property:</b> How should the animation should be transfered on the target rig.          ")
-    TransportSettings=property(doc="<b>Read Write Property:</b> Consider transport control settings.          ")
-    UpdateRecentFiles=property(doc="<b>Read Write Property:</b> Set to true to update recent file list.          ")
-    UseASCIIFormat=property(doc="<b>Read Write Property:</b> Indicate if the resulting FBX file will be in binary or ASCII mode.          ")
-    Video=property(doc="<b>Read Write Property:</b> Handling of the Video elements.          ")
+    ActorFaces=property(doc="Read Write Property: Handling of the Actor Faces elements.          ")
+    ActorFacesAnimation=property(doc="Read Write Property: Handling of the Actor Faces animation.          ")
+    Actors=property(doc="Read Write Property: Handling of the Actors elements.          ")
+    Audio=property(doc="Read Write Property: Handling of the Audio elements.          ")
+    BaseCameras=property(doc="Read Write Property: Consider base camera settings.          ")
+    Bones=property(doc="Read Write Property: Handling of the Bones elements.          ")
+    BonesAnimation=property(doc="Read Write Property: Handling of the Bones animation.          ")
+    CacheSize=property(doc="Read Write Property: The Cached buffer size used to accelerate IO system.          ")
+    CameraSwitcherSettings=property(doc="Read Write Property: Consider camera switcher settings.          ")
+    Cameras=property(doc="Read Write Property: Handling of the Cameras elements.          ")
+    CamerasAnimation=property(doc="Read Write Property: Handling of the Cameras animation.          ")
+    CharacterExtensions=property(doc="Read Write Property: Handling of the Character Extensions.          ")
+    CharacterFaces=property(doc="Read Write Property: Handling of the Character Faces elements.          ")
+    CharacterFacesAnimation=property(doc="Read Write Property: Handling of the Character Faces animation.          ")
+    Characters=property(doc="Read Write Property: Handling of the Characters elements.          ")
+    CharactersAnimation=property(doc="Read Write Property: Handling of the Characters animation.          ")
+    ClearSelectionBeforeSave=property(doc="Read Write Property: Set to true if the current selected objects shouldn't saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
+    ConsiderMuteSolo=property(doc="Read Write property: Consider the mute/solo settings to identify identical layer when merging.          ")
+    Constraints=property(doc="Read Write Property: Handling of the Constraints elements.          ")
+    ConstraintsAnimation=property(doc="Read Write Property: Handling of the Constraints animation.          ")
+    CopyCharacterExtensions=property(doc="Read Write Property: pCopyMissingExtensions Set to true if the character extensions on the rig in the file should be copied to the target rig.          ")
+    CurrentCameraSettings=property(doc="Read Write Property: Consider current camera settings.          ")
+    Devices=property(doc="Read Write Property: Handling of the Devices elements.          ")
+    DevicesAnimation=property(doc="Read Write Property: Handling of the Devices animation.          ")
+    EmbedMedia=property(doc="Read Write Property: Embed all media in the FBX file itself. When saving in ASCII mode it is not possible to embed media.          ")
+    FileFormatAndVersion=property(doc="Read Write Property: File format and version chosen to save the scene.          ")
+    FileReference=property(doc="Read Write property: Load/Save scene as FileReference.          ")
+    FileReferenceEdit=property(doc="Read Write Property: Load/Save the edits made to referenced objects or not.          ")
+    FileReferences=property(doc="Read Write Property: Handling of the FileReferences elements.          ")
+    GlobalLightingSettings=property(doc="Read Write Property: Consider global Lighting settings.          ")
+    Groups=property(doc="Read Write Property: Handling of the Groups elements.          ")
+    IgnoreConflicts=property(doc="Read Write Property: Set to true to ignore conflicts between objects in character extensions and objects in the scene. Conflicting objects will be merged in the extension          ")
+    KeepTransformHierarchy=property(doc="Read Write Property: Indicate whether we keep transform hierarchy when SaveSelectedModelsOnly is true. Default value is false to ensure consistent behavior with SaveSelected operation via file menu.          ")
+    KeyingGroups=property(doc="Read Write Property: Handling of the Keying Groups elements.          ")
+    Lights=property(doc="Read Write Property: Handling of the Lights elements.          ")
+    LightsAnimation=property(doc="Read Write Property: Handling of the Lights animation.          ")
+    Materials=property(doc="Read Write Property: Handling of the Materials elements.          ")
+    MaterialsAnimation=property(doc="Read Write Property: Handling of the Materials animation.          ")
+    Models=property(doc="Read Write Property: Handling of the Models elements.          ")
+    ModelsAnimation=property(doc="Read Write Property: Handling of the Models animation.          ")
+    NamespaceList=property(doc="Read Write Property: A list of namespaces separated by '~'. On Load, duplicate the loaded objects into each namespace in the list. If the SetMultiLoadNamespaceList method is also called, this property is ignored.          ")
+    Notes=property(doc="Read Write Property: Handling of the Notes elements.          ")
+    NotesAnimation=property(doc="Read Write Property: Handling of the Notes animation.          ")
+    OpticalData=property(doc="Read Write Property: Handling of the Optical Data elements.          ")
+    PhysicalProperties=property(doc="Read Write Property: Handling of the Physical Properties elements.          ")
+    PhysicalPropertiesAnimation=property(doc="Read Write Property: Handling of the Physical Properties animation.          ")
+    Poses=property(doc="Read Write Property: Handling of the Poses elements.          ")
+    ProcessAnimationOnExtension=property(doc="Read Write Property: Set to true if animation on character extensions should also be transferred.          ")
+    RemoveConstraintReference=property(doc="Read Write Property: Set to true if we should remove constraint reference.          ")
+    RemoveEmptyLayer=property(doc="Read Write property: Remove empty animation layers that are in additive mode, without child or parent.          ")
+    ReplaceControlSet=property(doc="Read Write Property: Set to true if the character extensions (and their children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
+    ResetDOF=property(doc="Read Write Property: Set to true if we should change the limits on the target rig.          ")
+    ResetHierarchy=property(doc="Read Write Property: Set to true if we should reset the character hierarchy.          ")
+    RetargetOnBaseLayer=property(doc="Read Write Property: If the transfer method is retarget, set this parameter to control where the retarget correction will be made (on base layer or on another layer).          ")
+    SaveCharacter=property(doc="Read Write Property: Set to true if the character should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
+    SaveCharacterExtensions=property(doc="Read Write Property: Set to true if the character extensions (and their children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
+    SaveControlSet=property(doc="Read Write Property: Set to true if the rig (and its children) should be saved when call FBApplication::SaveCharacterRigAndAnimation.          ")
+    SaveSelectedModelsOnly=property(doc="Read Write Property: Indicate that only the selected models will be saved.          ")
+    Scripts=property(doc="Read Write Property: Handling of the Scripts elements.          ")
+    SetPropertyStaticIfPossible=property(doc="Read Write Property: Set to false if want to keep properties' animated flag even when they are not really animated(no keyframe data) while retrieving/storing. See sample: SetPropertyStaticIfPossibleOption.py.         ")
+    Sets=property(doc="Read Write Property: Handling of the Sets elements.          ")
+    Shaders=property(doc="Read Write Property: Handling of the Shaders elements.          ")
+    ShadersAnimation=property(doc="Read Write Property: Handling of the Shaders animation.          ")
+    ShowFileDialog=property(doc="Read Write Property: Set to true if want to pop up dialog for FileName, Format, Embed, Compression, UseTakeName, OneTakePerFile.          ")
+    ShowOptionsDialog=property(doc="Read Write Property: Set to true if want to pop up options dialog for detail settings.          ")
+    Solvers=property(doc="Read Write Property: Handling of the Solvers elements.          ")
+    SolversAnimation=property(doc="Read Write Property: Handling of the Solvers animation.          ")
+    Story=property(doc="Read Write Property: Handling of the Story elements.          ")
+    StoryAnimation=property(doc="Read Write Property: Handling of the Story animation (animatable properties on story objects).          ")
+    TakeSpan=property(doc="Read Write Property: Indicate how the take start and end point should be set. By default it is read from the file.          ")
+    Textures=property(doc="Read Write Property: Handling of the Textures elements.          ")
+    TexturesAnimation=property(doc="Read Write Property: Handling of the Textures animation.          ")
+    TransferMethod=property(doc="Read Write Property: How should the animation should be transfered on the target rig.          ")
+    TransportSettings=property(doc="Read Write Property: Consider transport control settings.          ")
+    UpdateRecentFiles=property(doc="Read Write Property: Set to true to update recent file list.          ")
+    UseASCIIFormat=property(doc="Read Write Property: Indicate if the resulting FBX file will be in binary or ASCII mode.          ")
+    Video=property(doc="Read Write Property: Handling of the Video elements.          ")
     pass
 
 class FBFCurve (FBComponent):
@@ -13562,10 +13562,10 @@ class FBFCurve (FBComponent):
 
     def Evaluate(self,pTime):
         """
-        Evaluate FCurve at <b>pTime</b>.
+        Evaluate FCurve at pTime.
 
         pTime : Time at which FCurve is to be evaluated. 
-        return : Value of FCurve at <b>pTime</b>. 
+        return : Value of FCurve at pTime. 
         """
         pass
 
@@ -14074,7 +14074,7 @@ class FBFCurve (FBComponent):
         """
         pass
 
-    Keys=property(doc="<b>List:</b> Keys.          ")
+    Keys=property(doc="List: Keys.          ")
     pass
 
 class FBFCurveEditorUtility (FBComponent):
@@ -14158,8 +14158,8 @@ class FBFCurveEventManager (FBComponent):
         """
         pass
 
-    OnFCurveEvent=property(doc="<b>Event:</b> Called when a registered FCurve is modified.          ")
-    OnPropertyEvent=property(doc="<b>Event:</b> Called when a registered property state is modified (detached, destroyed...).          ")
+    OnFCurveEvent=property(doc="Event: Called when a registered FCurve is modified.          ")
+    OnPropertyEvent=property(doc="Event: Called when a registered property state is modified (detached, destroyed...).          ")
     pass
 
 class FBFileMonitoringManager (FBComponent):
@@ -14200,10 +14200,10 @@ class FBFileMonitoringManager (FBComponent):
         """
         pass
 
-    OnFileChangeAnimationClip=property(doc="<b>Event:</b> Animation clip file change event.          ")
-    OnFileChangeFileReference=property(doc="<b>Event:</b> File Reference file change event.          ")
-    OnFileChangeMainScene=property(doc="<b>Event:</b> Main scene file change event.          ")
-    OnFileChangePythonEditorScript=property(doc="<b>Event:</b> Python Editor Script file change event.          ")
+    OnFileChangeAnimationClip=property(doc="Event: Animation clip file change event.          ")
+    OnFileChangeFileReference=property(doc="Event: File Reference file change event.          ")
+    OnFileChangeMainScene=property(doc="Event: Main scene file change event.          ")
+    OnFileChangePythonEditorScript=property(doc="Event: Python Editor Script file change event.          ")
     pass
 
 class FBFilter (FBComponent):
@@ -14268,7 +14268,7 @@ if lModel:
         This is one of the two apply method that is meant to be called by client code. The FCurve can be a standalone independant FCurve, or can be associated to an object's animated property.
 
         pCurve : FCurve to apply filter to. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14279,7 +14279,7 @@ if lModel:
 
         pNode : Node to apply filter to. 
         pRecursive : Recursively apply filter on child nodes? 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14290,8 +14290,8 @@ if lModel:
         """
         pass
 
-    Start=property(doc="<b>Read Write Property:</b> Start time of the filtering region          ")
-    Stop=property(doc="<b>Read Write Property:</b> Stop time of the filtering region          ")
+    Start=property(doc="Read Write Property: Start time of the filtering region          ")
+    Stop=property(doc="Read Write Property: Stop time of the filtering region          ")
     pass
 
 class FBFolder (FBComponent):
@@ -14315,7 +14315,7 @@ class FBFolder (FBComponent):
         """
         pass
 
-    Items=property(doc="<b>List:</b> List of components in the folder.          ")
+    Items=property(doc="List: List of components in the folder.          ")
     pass
 
 class FBGenericMenu (FBComponent):
@@ -14487,7 +14487,7 @@ You can also delete a Menu item: this will remove the item from the menu as well
         """
         pass
 
-    OnMenuActivate=property(doc="<b>Event Property:</b> Register on this property to be notified when a menu item is clicked by the user.          ")
+    OnMenuActivate=property(doc="Event Property: Register on this property to be notified when a menu item is clicked by the user.          ")
     pass
 
 class FBGenericMenuItem (FBComponent):
@@ -14500,10 +14500,10 @@ class FBGenericMenuItem (FBComponent):
         """
         pass
 
-    Caption=property(doc="<b>Read/Write Property:</b> Caption of the menu item.          ")
-    Enable=property(doc="<b>Read/Write Property:</b> Enable or Disable (grey out) a menu Item.          ")
-    Id=property(doc="<b>Read/Write Property:</b> Id of the menu item.          ")
-    Menu=property(doc="<b>Read/Write Property:</b> If the menu item leads to another menu.          ")
+    Caption=property(doc="Read/Write Property: Caption of the menu item.          ")
+    Enable=property(doc="Read/Write Property: Enable or Disable (grey out) a menu Item.          ")
+    Id=property(doc="Read/Write Property: Id of the menu item.          ")
+    Menu=property(doc="Read/Write Property: If the menu item leads to another menu.          ")
     pass
 
 class FBGeometry (FBComponent):
@@ -14515,7 +14515,7 @@ class FBGeometry (FBComponent):
         """
         Begin geometry editing.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14523,7 +14523,7 @@ class FBGeometry (FBComponent):
         """
         End geometry editing.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14824,7 +14824,7 @@ class FBGeometry (FBComponent):
         nx : float
         ny : float
         nz : float
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14840,7 +14840,7 @@ class FBGeometry (FBComponent):
         nz : float
         UVu : float
         UVv : float
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14860,7 +14860,7 @@ class FBGeometry (FBComponent):
         pGreen : float
         pBlue : float
         pAlpha : float
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14869,7 +14869,7 @@ class FBGeometry (FBComponent):
         Clear all geometry vertex arrays.
         Call this function to clear Position, Normal, UV, Color and etc vertex arrays, and it won't affect geometry's topology (polygon, Surface and etc.,).
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14889,7 +14889,7 @@ class FBGeometry (FBComponent):
         Clear all Vertex arrays.
         Call this function to clear Position, Normal, UV, Color and etc vertex arrays, and it won't affect geometry's topology (polygon, Surface and etc.,).
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14908,7 +14908,7 @@ class FBGeometry (FBComponent):
 
         pColor : Vertex Color to set. 
         pIndex : Index of Vertex to affect with pColor(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14921,7 +14921,7 @@ class FBGeometry (FBComponent):
         pBlue : Blue Color Channel to set, range [0, 1]. 
         pAlpha : Alpha Color Channel to set, range [0, 1]. 
         pIndex : Index of Vertex to affect with Red, Green, Blue and Alpha (default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -14974,7 +14974,7 @@ class FBGeometry (FBComponent):
         Resize or Reserve vertex, normal and UV array for performance.
 
         pSize : Number of vertices to resize or reserve. 
-        pResize : <b>True</b>, for the geometry with known vertex count, we should resize the arrays to fixed size, and call VertexSet() afterwards; <b>False</b>, While for dynamic size geometry, we should only reserve the arrays with the estimated optimal size, then call VertexAdd() to dynamically increase the vertex count. 
+        pResize : True, for the geometry with known vertex count, we should resize the arrays to fixed size, and call VertexSet() afterwards; False, While for dynamic size geometry, we should only reserve the arrays with the estimated optimal size, then call VertexAdd() to dynamically increase the vertex count. 
         pInitUV : init Vertex UV array if true 
         pInitVertexColor : Init Vertex Color Array if true. 
         """
@@ -14995,7 +14995,7 @@ class FBGeometry (FBComponent):
 
         pVertex : Normal to set. 
         pIndex : Index of vertex to set Normal at(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -15007,7 +15007,7 @@ class FBGeometry (FBComponent):
         py : Y coordinate of normal. 
         pz : Z coordinate of normal.  
         pIndex : Index of vertex to set Normal at(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -15017,7 +15017,7 @@ class FBGeometry (FBComponent):
 
         pVertex : Vertex values used to set vertex. 
         pIndex : Index of vertex to affect (default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -15029,7 +15029,7 @@ class FBGeometry (FBComponent):
         py : Y coordinate to set. 
         pz : Z coordinate to set.  
         pIndex : Index of vertex to set(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -15068,7 +15068,7 @@ class FBGeometry (FBComponent):
 
         pUV : UV coordinate to set. 
         pIndex : Index of Vertex to affect with UV coordinate(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -15079,19 +15079,19 @@ class FBGeometry (FBComponent):
         pU : U coordinate to set. 
         pV : V coordinate to set. 
         pIndex : Index of Vertex to affect with UV coordinate(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
-    BinormalMappingMode=property(doc="<b>Read Only Property:</b> Binormal mapping mode.          ")
-    BinormalReferenceMode=property(doc="<b>Read Only Property:</b> Binormal reference mode.          ")
-    MaterialMappingMode=property(doc="<b>Read Property:</b> Material mapping mode.          ")
-    NormalMappingMode=property(doc="<b>Read Only Property:</b> Normal mapping mode.          ")
-    NormalReferenceMode=property(doc="<b>Read Only Property:</b> Normal reference mode.          ")
-    TangentMappingMode=property(doc="<b>Read Only Property:</b> Tangent mapping mode.          ")
-    TangentReferenceMode=property(doc="<b>Read Only Property:</b> Tangent reference mode.          ")
-    VertexColorMappingMode=property(doc="<b>Read Only Property:</b> Vertex Color mapping mode.          ")
-    VertexColorReferenceMode=property(doc="<b>Read Only Property:</b> Vertex Color reference mode.          ")
+    BinormalMappingMode=property(doc="Read Only Property: Binormal mapping mode.          ")
+    BinormalReferenceMode=property(doc="Read Only Property: Binormal reference mode.          ")
+    MaterialMappingMode=property(doc="Read Property: Material mapping mode.          ")
+    NormalMappingMode=property(doc="Read Only Property: Normal mapping mode.          ")
+    NormalReferenceMode=property(doc="Read Only Property: Normal reference mode.          ")
+    TangentMappingMode=property(doc="Read Only Property: Tangent mapping mode.          ")
+    TangentReferenceMode=property(doc="Read Only Property: Tangent reference mode.          ")
+    VertexColorMappingMode=property(doc="Read Only Property: Vertex Color mapping mode.          ")
+    VertexColorReferenceMode=property(doc="Read Only Property: Vertex Color reference mode.          ")
     pass
 
 class FBHUDManager (FBComponent):
@@ -15099,7 +15099,7 @@ class FBHUDManager (FBComponent):
         
         
     """
-    DefaultHUD=property(doc="<b>Read Write Property:</b> Specifies the HUD to be displayed on cameras that do not have HUD explicitly assigned.          ")
+    DefaultHUD=property(doc="Read Write Property: Specifies the HUD to be displayed on cameras that do not have HUD explicitly assigned.          ")
     pass
 
 class FBImage (FBComponent):
@@ -15193,13 +15193,13 @@ class FBImage (FBComponent):
         """
         pass
 
-    Depth=property(doc="<b>Read Write Property:</b> Color depth of the image.          ")
-    Format=property(doc="<b>Read Write Property:</b> Image data format.          ")
-    Height=property(doc="<b>Read Write Property:</b> Height of the image in pixels.          ")
-    InterleaveType=property(doc="<b>Read Only Property:</b> Image interleave type. Only meaningful if image type is field.          ")
-    InterpolationType=property(doc="<b>Read Only Property:</b> Image interpolation type.          ")
-    Type=property(doc="<b>Read Only Property:</b> Image type, refering to either frame or field.          ")
-    Width=property(doc="<b>Read Write Property:</b> Width of the image in pixels.          ")
+    Depth=property(doc="Read Write Property: Color depth of the image.          ")
+    Format=property(doc="Read Write Property: Image data format.          ")
+    Height=property(doc="Read Write Property: Height of the image in pixels.          ")
+    InterleaveType=property(doc="Read Only Property: Image interleave type. Only meaningful if image type is field.          ")
+    InterpolationType=property(doc="Read Only Property: Image interpolation type.          ")
+    Type=property(doc="Read Only Property: Image type, refering to either frame or field.          ")
+    Width=property(doc="Read Write Property: Width of the image in pixels.          ")
     pass
 
 class FBKeyControl (FBComponent):
@@ -15229,8 +15229,8 @@ class FBKeyControl (FBComponent):
         """
         pass
 
-    AutoKey=property(doc="<b>Read Write Property:</b> Enable/Disable Auto Key feature (key when moving 3D objects).          ")
-    NewKeyInterpolationType=property(doc="<b>Read Write Property:</b> Current key interpolation type that will be used for new keys.          ")
+    AutoKey=property(doc="Read Write Property: Enable/Disable Auto Key feature (key when moving 3D objects).          ")
+    NewKeyInterpolationType=property(doc="Read Write Property: Current key interpolation type that will be used for new keys.          ")
     pass
 
 class FBKeyingGroup (FBComponent):
@@ -15481,18 +15481,18 @@ class FBManipulator (FBComponent):
         """
         pass
 
-    Active=property(doc="<b>Read Write Property:</b> Is manipulator active?          ")
-    AlwaysActive=property(doc="<b>Read Write Property:</b> Is manipulator always active?          ")
-    ConsumeEvent=property(doc="<b>Read Write Property:</b> Is manipulator consuming event? If true, this will prevent other manipulators from being called.          ")
-    DefaultBehavior=property(doc="<b>Read Write Property:</b> Using default manipulator behavior?          ")
-    ViewerText=property(doc="<b>Read Write Property:</b> Text displayed in view.          ")
-    Visible=property(doc="<b>Read Write Property:</b> Is manipulator visible?          ")
+    Active=property(doc="Read Write Property: Is manipulator active?          ")
+    AlwaysActive=property(doc="Read Write Property: Is manipulator always active?          ")
+    ConsumeEvent=property(doc="Read Write Property: Is manipulator consuming event? If true, this will prevent other manipulators from being called.          ")
+    DefaultBehavior=property(doc="Read Write Property: Using default manipulator behavior?          ")
+    ViewerText=property(doc="Read Write Property: Text displayed in view.          ")
+    Visible=property(doc="Read Write Property: Is manipulator visible?          ")
     pass
 
 class FBMarkerSet (FBComponent):
     """
     Marker set class.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBMarkerSet(self,pName):
         """
@@ -15556,11 +15556,11 @@ class FBMarkerSet (FBComponent):
 
     def GetMarkerName(self,pNodeId,pMarkerIndex):
         """
-        Get the name of marker at index <b>pMarkerIndex</b>.
+        Get the name of marker at index pMarkerIndex.
 
         pNodeId : Id of Actor skeleton node. 
         pMarkerIndex : Index of marker to access. 
-        return : Name of marker at index <b>pMarkerIndex</b>. 
+        return : Name of marker at index pMarkerIndex. 
         """
         pass
 
@@ -15570,7 +15570,7 @@ class FBMarkerSet (FBComponent):
 
         pNodeId : Id of Actor body node. 
         pMarkerIndex : Index of marker to access. 
-        return : <b>True</b> if marker is oriented, <b>false</b> otherwise. 
+        return : True if marker is oriented, false otherwise. 
         """
         pass
 
@@ -15608,7 +15608,7 @@ class FBMarkerSet (FBComponent):
 
         pNodeId : Id of Actor skeleton node. 
         pMarkerIndex : Index of marker to access. 
-        return : <b>True</b> if marker is used, <b>false</b> otherwise. 
+        return : True if marker is used, false otherwise. 
         """
         pass
 
@@ -15641,7 +15641,7 @@ class FBMarkerSet (FBComponent):
 
     def SetMarkerName(self,pNodeId,pMarkerIndex,pMarkerName):
         """
-        Set the name of marker at index <b>pMarkerIndex</b>.
+        Set the name of marker at index pMarkerIndex.
 
         pNodeId : Id of Actor skeleton node. 
         pMarkerIndex : Index of marker to access. 
@@ -15915,17 +15915,17 @@ class FBModelOpticalAdvanced (FBComponent):
         """
         pass
 
-    Active=property(doc="<b>Property:</b> Optical engine for model active?          ")
-    AutoPlayToNextSegment=property(doc="<b>Property:</b> Automatic play to next segment ?          ")
-    ControllerMode=property(doc="<b>Property:</b> Controller mode.          ")
-    GenerationMode=property(doc="<b>Property:</b> Optical genration mode.          ")
-    InsertSegmentMode=property(doc="<b>Property:</b> Insert segment mode.          ")
-    MaxMatchDistance=property(doc="<b>Property:</b> Max matching distance.          ")
-    PlayToNextSegment=property(doc="<b>Property:</b> Play to next segment ?          ")
-    Quality=property(doc="<b>Property:</b> Rigid body quality.          ")
-    SegmentMode=property(doc="<b>Property:</b> Segment mode.          ")
-    ShowRigidQuality=property(doc="<b>Property:</b> Show the rigid quality?          ")
-    UsedTake=property(doc="<b>Property:</b> Take used by optical model.          ")
+    Active=property(doc="Property: Optical engine for model active?          ")
+    AutoPlayToNextSegment=property(doc="Property: Automatic play to next segment ?          ")
+    ControllerMode=property(doc="Property: Controller mode.          ")
+    GenerationMode=property(doc="Property: Optical genration mode.          ")
+    InsertSegmentMode=property(doc="Property: Insert segment mode.          ")
+    MaxMatchDistance=property(doc="Property: Max matching distance.          ")
+    PlayToNextSegment=property(doc="Property: Play to next segment ?          ")
+    Quality=property(doc="Property: Rigid body quality.          ")
+    SegmentMode=property(doc="Property: Segment mode.          ")
+    ShowRigidQuality=property(doc="Property: Show the rigid quality?          ")
+    UsedTake=property(doc="Property: Take used by optical model.          ")
     pass
 
 class FBModelTemplate (FBComponent):
@@ -15950,13 +15950,13 @@ class FBModelTemplate (FBComponent):
         """
         pass
 
-    Bindings=property(doc="<b>List:</b> Bindings for animation interface.          ")
-    Children=property(doc="<b>List:</b> Children for object hierarchy.          ")
-    DefaultRotation=property(doc="<b>Read Write Property:</b> Default rotation.          ")
-    DefaultScaling=property(doc="<b>Read Write Property:</b> Default scaling.          ")
-    DefaultTranslation=property(doc="<b>Read Write Property:</b> Default translation.          ")
-    Model=property(doc="<b>Read Write Property:</b> Model being interfaced.          ")
-    Prefix=property(doc="<b>Read Write Property:</b> Prefix of model template.          ")
+    Bindings=property(doc="List: Bindings for animation interface.          ")
+    Children=property(doc="List: Children for object hierarchy.          ")
+    DefaultRotation=property(doc="Read Write Property: Default rotation.          ")
+    DefaultScaling=property(doc="Read Write Property: Default scaling.          ")
+    DefaultTranslation=property(doc="Read Write Property: Default translation.          ")
+    Model=property(doc="Read Write Property: Model being interfaced.          ")
+    Prefix=property(doc="Read Write Property: Prefix of model template.          ")
     pass
 
 class FBModelVertexData (FBComponent):
@@ -16323,10 +16323,10 @@ class FBMotionClip (FBComponent):
         """
         pass
 
-    Filename=property(doc="<b>Read Write Property:</b> Filename and path of motion file.          ")
-    RelativePath=property(doc="<b>Read Only Property:</b> Relative path to the motion file.          ")
-    Start=property(doc="<b>Read Only Property:</b> Start time of clip.          ")
-    Stop=property(doc="<b>Read Only Property:</b> Stop time of clip.          ")
+    Filename=property(doc="Read Write Property: Filename and path of motion file.          ")
+    RelativePath=property(doc="Read Only Property: Relative path to the motion file.          ")
+    Start=property(doc="Read Only Property: Start time of clip.          ")
+    Stop=property(doc="Read Only Property: Stop time of clip.          ")
     pass
 
 class FBMotionFileOptions (FBComponent):
@@ -16469,23 +16469,23 @@ class FBMotionFileOptions (FBComponent):
         """
         pass
 
-    BaseRotationOnPreRotation=property(doc="<b>Read Write Property:</b> If set to true, the base rotation will be imported as Pre Rotation. Used for htr, asf/amc files.          ")
-    BaseTranslationOnRotationOffset=property(doc="<b>Read Write Property:</b> If set to true, the base translation will be imported as Rotation Pivot offset. Used for htr, asf/amc          ")
-    CreateInsteadOfMerge=property(doc="<b>Read Write Property:</b> If set to true, the motion will imported/models will be created in the scene, if set to false, the motion will be merged.          ")
-    CreateOpticalSegments=property(doc="<b>Read Write Property:</b> If set to true, optical segments will be created. Used for trc, c3d files.          ")
+    BaseRotationOnPreRotation=property(doc="Read Write Property: If set to true, the base rotation will be imported as Pre Rotation. Used for htr, asf/amc files.          ")
+    BaseTranslationOnRotationOffset=property(doc="Read Write Property: If set to true, the base translation will be imported as Rotation Pivot offset. Used for htr, asf/amc          ")
+    CreateInsteadOfMerge=property(doc="Read Write Property: If set to true, the motion will imported/models will be created in the scene, if set to false, the motion will be merged.          ")
+    CreateOpticalSegments=property(doc="Read Write Property: If set to true, optical segments will be created. Used for trc, c3d files.          ")
     CreateReferenceNode=property(doc="Settings based on file type.          ")
-    CreateUnmatchedModels=property(doc="<b>Read Write Property:</b> If set to true, nodes will be created to match the hierarchical structure of the imported file.          ")
-    CreateUnusedOpticalSegments=property(doc="<b>Read Write Property:</b> If set to true, unused optical segments will be created. Used for trc, c3d files.          ")
-    IgnoreModelType=property(doc="<b>Read Write Property:</b> If set to true, model type will not be considered when finding a matching model in the scene.          ")
-    ImportDOF=property(doc="<b>Read Write Property:</b> If set to true, the DOF value will be imported from the file.          ")
-    ImportScaling=property(doc="<b>Read Write Property:</b> If set to true, scaling values will be imported.          ")
-    KeepActorPrefix=property(doc="<b>Read Write Property:</b> If set to true, the Actor prefix will be kept when naming each optical marker. Used with c3d files.          ")
-    KeepDummyNode=property(doc="<b>Read Write Property:</b> If set to true, dummy bones from the file are not removed. Used for asf/amc files.          ")
+    CreateUnmatchedModels=property(doc="Read Write Property: If set to true, nodes will be created to match the hierarchical structure of the imported file.          ")
+    CreateUnusedOpticalSegments=property(doc="Read Write Property: If set to true, unused optical segments will be created. Used for trc, c3d files.          ")
+    IgnoreModelType=property(doc="Read Write Property: If set to true, model type will not be considered when finding a matching model in the scene.          ")
+    ImportDOF=property(doc="Read Write Property: If set to true, the DOF value will be imported from the file.          ")
+    ImportScaling=property(doc="Read Write Property: If set to true, scaling values will be imported.          ")
+    KeepActorPrefix=property(doc="Read Write Property: If set to true, the Actor prefix will be kept when naming each optical marker. Used with c3d files.          ")
+    KeepDummyNode=property(doc="Read Write Property: If set to true, dummy bones from the file are not removed. Used for asf/amc files.          ")
     ModelSelection=property(doc="Common settings when merging, unused with the CreateInsteadOfMerge property is set to true.          ")
-    SetLimits=property(doc="<b>Read Write Property:</b> If set to true, use motion limits. Used for asf/amc files.          ")
-    SetOccludedToLastValidPosition=property(doc="<b>Read Write Property:</b> If set to true, occluded segments will be set to their last valid position. Used for trc, c3d files.          ")
-    TakeStartEnd=property(doc="<b>Read Write Property:</b> Indicates how the start/end value of the take will be modified.          ")
-    UpAxisUsedInFile=property(doc="<b>Read Write Property:</b> Indicated the up axis used in the motion file. Only effective when loading c3d files.          ")
+    SetLimits=property(doc="Read Write Property: If set to true, use motion limits. Used for asf/amc files.          ")
+    SetOccludedToLastValidPosition=property(doc="Read Write Property: If set to true, occluded segments will be set to their last valid position. Used for trc, c3d files.          ")
+    TakeStartEnd=property(doc="Read Write Property: Indicates how the start/end value of the take will be modified.          ")
+    UpAxisUsedInFile=property(doc="Read Write Property: Indicated the up axis used in the motion file. Only effective when loading c3d files.          ")
     pass
 
 class FBNamespace (FBComponent):
@@ -16525,14 +16525,14 @@ class FBNamespace (FBComponent):
 
         pContentList : the list of content to return. 
         pModificationFlags : bitwise combination of kFBConnectionSrcObjectModified, kFBConnectionDstObjectModified, kFBConnectionSrcPropertyModified, kFBConnectionDstPropertyModified flags. kFBAllContent means all the content. 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
         pTypeInfo : the typeInfo of the type of interested object, 0 for all the objects. 
-        pExactTypeMatch : if <b>True</b>, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
+        pExactTypeMatch : if True, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
         """
         pass
 
-    ChildrenNamespaces=property(doc="<b>List:</b> Direct Children Namespace Objects.          ")
-    ContentLocked=property(doc="<b>Read Write Property:</b> Content locking state.          ")
+    ChildrenNamespaces=property(doc="List: Direct Children Namespace Objects.          ")
+    ContentLocked=property(doc="Read Write Property: Content locking state.          ")
     pass
 
 class FBOpticalGap (FBComponent):
@@ -16568,13 +16568,13 @@ class FBOpticalGap (FBComponent):
         """
         Check if valid (if item exists).
 
-        return : <b>true</b> if segment is valid. 
+        return : true if segment is valid. 
         """
         pass
 
-    Data=property(doc="<b>Property:</b> Gap curve data.          ")
-    Interpolation=property(doc="<b>Property:</b> Gap mode.          ")
-    TimeSpan=property(doc="<b>Property:</b> Current timespan.          ")
+    Data=property(doc="Property: Gap curve data.          ")
+    Interpolation=property(doc="Property: Gap mode.          ")
+    TimeSpan=property(doc="Property: Current timespan.          ")
     pass
 
 class FBOpticalSegment (FBComponent):
@@ -16610,7 +16610,7 @@ class FBOpticalSegment (FBComponent):
         """
         Check if valid (if item exists).
 
-        return : <b>true</b> if segment is valid. 
+        return : true if segment is valid. 
         """
         pass
 
@@ -16621,12 +16621,12 @@ class FBOpticalSegment (FBComponent):
         """
         pass
 
-    Data=property(doc="<b>Property:</b> Segment curve data.          ")
-    Marker=property(doc="<b>Property:</b> Optical marker.          ")
-    MarkerTimeSpan=property(doc="<b>Property:</b> Marker/Segment timespan.          ")
-    OriginalTimeSpan=property(doc="<b>Property:</b> Original timespan for segment.          ")
-    TimeSpan=property(doc="<b>Property:</b> Current segment timespan.          ")
-    Used=property(doc="<b>Property:</b> Is segment used?          ")
+    Data=property(doc="Property: Segment curve data.          ")
+    Marker=property(doc="Property: Optical marker.          ")
+    MarkerTimeSpan=property(doc="Property: Marker/Segment timespan.          ")
+    OriginalTimeSpan=property(doc="Property: Original timespan for segment.          ")
+    TimeSpan=property(doc="Property: Current segment timespan.          ")
+    Used=property(doc="Property: Is segment used?          ")
     pass
 
 class FBPlayerControl (FBComponent):
@@ -16850,11 +16850,11 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
 
     def Goto(self,p0,p1):
         """
-        Goto a time specified by <b>pTime</b>.
+        Goto a time specified by pTime.
 
         p0 : Time to jump to. 
         p1 : Time referential to use. kFBTimeReferentialAction or kFBTimeReferentialEdit 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -16871,7 +16871,7 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
         GotoEnd button (FastForward).
 
         p0 : Time referential to use. kFBTimeReferentialAction or kFBTimeReferentialEdit 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -16902,7 +16902,7 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
         GotoStart button (Rewind).
 
         p0 : Time referential to use. kFBTimeReferentialAction or kFBTimeReferentialEdit 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -17076,7 +17076,7 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
         Step one frame backward.
 
         p0 : Time referential to use. kFBTimeReferentialAction or kFBTimeReferentialEdit 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -17093,7 +17093,7 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
         Step one frame ahead.
 
         p0 : Time referential to use. kFBTimeReferentialAction or kFBTimeReferentialEdit 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -17105,22 +17105,22 @@ Keys can also be set and used with Key(), GotoNextKey(), and GotoPreviousKey(). 
         """
         pass
 
-    IsPlaying=property(doc="<b>Read Only Property:</b> Is the transport control playing?          ")
-    IsPlotting=property(doc="<b>Read Only Property:</b> Is there a plotting in progress?          ")
-    IsRecording=property(doc="<b>Read Only Property:</b> Is there a recording in progress?          ")
-    LoopActive=property(doc="<b>Read Write Property:</b> Is looping active? Deprecated, use the LoopMode property instead.          ")
-    LoopMode=property(doc="<b>Read Write Property:</b> Loop mode.          ")
-    LoopStart=property(doc="<b>Read Write Property:</b> Loop begin time.          ")
-    LoopStop=property(doc="<b>Read Write Property:</b> Loop end time.          ")
-    NextMarker=property(doc="<b>Read Only Property:</b> Next marked time.          ")
-    OnChange=property(doc="<b>Event Property:</b> Fired when something in the player control has changed. (see FBEventPlayerControlChange)          ")
-    PlotSamplingPeriod=property(doc="<b>Read Write Property:</b> Sampling period for the model plotting.          ")
-    PreviousMarker=property(doc="<b>Read Only Property:</b> Previous marked time.          ")
-    RecordingSamplingPeriod=property(doc="<b>Read Write Property:</b> Sampling period for the model recording.          ")
-    SnapMode=property(doc="<b>Read Write Property:</b> Set the transport control snap mode.          ")
-    TransportTimeFormat=property(doc="<b>Read Write Property:</b> Current Time Mode of the transport controls.          ")
-    ZoomWindowStart=property(doc="<b>Read Write Property:</b> Starting time of the transport control zoom window.          ")
-    ZoomWindowStop=property(doc="<b>Read Write Property:</b> Stopping time of the transport control zoom window.          ")
+    IsPlaying=property(doc="Read Only Property: Is the transport control playing?          ")
+    IsPlotting=property(doc="Read Only Property: Is there a plotting in progress?          ")
+    IsRecording=property(doc="Read Only Property: Is there a recording in progress?          ")
+    LoopActive=property(doc="Read Write Property: Is looping active? Deprecated, use the LoopMode property instead.          ")
+    LoopMode=property(doc="Read Write Property: Loop mode.          ")
+    LoopStart=property(doc="Read Write Property: Loop begin time.          ")
+    LoopStop=property(doc="Read Write Property: Loop end time.          ")
+    NextMarker=property(doc="Read Only Property: Next marked time.          ")
+    OnChange=property(doc="Event Property: Fired when something in the player control has changed. (see FBEventPlayerControlChange)          ")
+    PlotSamplingPeriod=property(doc="Read Write Property: Sampling period for the model plotting.          ")
+    PreviousMarker=property(doc="Read Only Property: Previous marked time.          ")
+    RecordingSamplingPeriod=property(doc="Read Write Property: Sampling period for the model recording.          ")
+    SnapMode=property(doc="Read Write Property: Set the transport control snap mode.          ")
+    TransportTimeFormat=property(doc="Read Write Property: Current Time Mode of the transport controls.          ")
+    ZoomWindowStart=property(doc="Read Write Property: Starting time of the transport control zoom window.          ")
+    ZoomWindowStop=property(doc="Read Write Property: Stopping time of the transport control zoom window.          ")
     pass
 
 class FBPointCacheFile (FBComponent):
@@ -17136,14 +17136,14 @@ class FBPointCacheFile (FBComponent):
         """
         pass
 
-    CacheFileName=property(doc="<b>Read Write Property:</b> Filename of media.          ")
-    ChannelCount=property(doc="<b>Read Only Property:</b> Channel Count.          ")
-    FreeRunning=property(doc="<b>Read Write Property:</b> Free Running.          ")
-    Loop=property(doc="<b>Read Write Property:</b> Loop.          ")
-    Offset=property(doc="<b>Read Write Property:</b> Offset.          ")
-    PlaySpeed=property(doc="<b>Read Write Property:</b> Play Speed.          ")
-    StartTime=property(doc="<b>Read Write Property:</b> Start Time.          ")
-    StopTime=property(doc="<b>Read Write Property:</b> Stop Time.          ")
+    CacheFileName=property(doc="Read Write Property: Filename of media.          ")
+    ChannelCount=property(doc="Read Only Property: Channel Count.          ")
+    FreeRunning=property(doc="Read Write Property: Free Running.          ")
+    Loop=property(doc="Read Write Property: Loop.          ")
+    Offset=property(doc="Read Write Property: Offset.          ")
+    PlaySpeed=property(doc="Read Write Property: Play Speed.          ")
+    StartTime=property(doc="Read Write Property: Start Time.          ")
+    StopTime=property(doc="Read Write Property: Stop Time.          ")
     pass
 
 class FBPointCacheManager (FBComponent):
@@ -17151,19 +17151,19 @@ class FBPointCacheManager (FBComponent):
     Point Cache Manager Interface to the point cache manager.     
     See sample: CharacterPointCache.py.     
     """
-    AllowCacheResampling=property(doc="<b>Read Write Property:</b> Allow the resample models's existing point cache deformation when true.          ")
-    AlwaysAskForPath=property(doc="<b>Read Write Property:</b> Always ask for the point cache file save path when true.          ")
-    ApplyCacheOnNewModel=property(doc="<b>Read Write Property:</b> Duplicated the cached models, and assoicated the point cache to the new models.          ")
-    ApplyGlobalTransform=property(doc="<b>Read Write Property:</b> Include no-deformable models and the global transform to Vertex Cache when true.          ")
-    CacheAABBox=property(doc="<b>Read Write Property:</b> Cache AABBox (Axis Aligned Bounding Box) when true.          ")
-    CacheNormal=property(doc="<b>Read Write Property:</b> Cache normal when true.          ")
-    CreateFilePerFrameCache=property(doc="<b>Read Write Property:</b> Create the point cache file for each frame when true.          ")
-    CreateMultiChannelCache=property(doc="<b>Read Write Property:</b> Create a single multiple channel point cache file for all models when true.          ")
-    DefaultPath=property(doc="<b>Read Write Property:</b> Default point cache file save path.          ")
-    Models=property(doc="<b>Read Write Property:</b> Models to be recorded          ")
-    NewModelRoot=property(doc="<b>Read Write Property:</b> Valid only when ApplyCacheOnNewModel is on. Create New Models under NewModelRoot. otherwise, a NULL model will be created.          ")
-    SaveEveryFrame=property(doc="<b>Read Write Property:</b> Recording Frequency.          ")
-    SetTransformReference=property(doc="<b> Action Property:</b> Set the model's current transformation as the reference.          ")
+    AllowCacheResampling=property(doc="Read Write Property: Allow the resample models's existing point cache deformation when true.          ")
+    AlwaysAskForPath=property(doc="Read Write Property: Always ask for the point cache file save path when true.          ")
+    ApplyCacheOnNewModel=property(doc="Read Write Property: Duplicated the cached models, and assoicated the point cache to the new models.          ")
+    ApplyGlobalTransform=property(doc="Read Write Property: Include no-deformable models and the global transform to Vertex Cache when true.          ")
+    CacheAABBox=property(doc="Read Write Property: Cache AABBox (Axis Aligned Bounding Box) when true.          ")
+    CacheNormal=property(doc="Read Write Property: Cache normal when true.          ")
+    CreateFilePerFrameCache=property(doc="Read Write Property: Create the point cache file for each frame when true.          ")
+    CreateMultiChannelCache=property(doc="Read Write Property: Create a single multiple channel point cache file for all models when true.          ")
+    DefaultPath=property(doc="Read Write Property: Default point cache file save path.          ")
+    Models=property(doc="Read Write Property: Models to be recorded          ")
+    NewModelRoot=property(doc="Read Write Property: Valid only when ApplyCacheOnNewModel is on. Create New Models under NewModelRoot. otherwise, a NULL model will be created.          ")
+    SaveEveryFrame=property(doc="Read Write Property: Recording Frequency.          ")
+    SetTransformReference=property(doc=" Action Property: Set the model's current transformation as the reference.          ")
     pass
 
 class FBPopup (FBLayout):
@@ -17182,7 +17182,7 @@ class FBPopup (FBLayout):
         """
         Close popup.
 
-        pOk : Equivalent of <b>OK</b> button clicked if <b>true</b> (default = <b>false</b>). 
+        pOk : Equivalent of OK button clicked if true (default = false). 
         """
         pass
 
@@ -17191,12 +17191,12 @@ class FBPopup (FBLayout):
         Show popup.
 
         pParent : Parent object for popup 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to display in popup.          ")
-    Modal=property(doc="<b>Read Write Property:</b> Modal?          ")
+    Caption=property(doc="Read Write Property: Caption to display in popup.          ")
+    Modal=property(doc="Read Write Property: Modal?          ")
     pass
 
 class FBPose (FBComponent):
@@ -17315,7 +17315,7 @@ class FBPose (FBComponent):
         """
         pass
 
-    Type=property(doc="<b>Read Only Property:</b> Type of the pose (bind pose or rest pose)          ")
+    Type=property(doc="Read Only Property: Type of the pose (bind pose or rest pose)          ")
     pass
 
 class FBProfiler (FBComponent):
@@ -17429,11 +17429,11 @@ class FBProfiler (FBComponent):
         """
         pass
 
-    ActiveSampling=property(doc="<b>Read/Write Property:</b> Activate the sampling for time events. Call before quering for FBProfileTimeEvent.          ")
-    BufferSize=property(doc="<b>Read/Write Property:</b> Buffer size for average and timing computation (maximum value 200).          ")
-    EvaluationDepth=property(doc="<b>Read/Write Property:</b> Specify the depth of evaluation profiling for data collection (maximum value is 10).          ")
-    FrameReference=property(doc="<b>Read/Write Property:</b> Draw task cycles in relation to main thread cycle time - frame cycle (percentage display).          ")
-    ProfilingMode=property(doc="<b>Read/Write Property:</b> Profiling collection modes, including disabling all profiling.          ")
+    ActiveSampling=property(doc="Read/Write Property: Activate the sampling for time events. Call before quering for FBProfileTimeEvent.          ")
+    BufferSize=property(doc="Read/Write Property: Buffer size for average and timing computation (maximum value 200).          ")
+    EvaluationDepth=property(doc="Read/Write Property: Specify the depth of evaluation profiling for data collection (maximum value is 10).          ")
+    FrameReference=property(doc="Read/Write Property: Draw task cycles in relation to main thread cycle time - frame cycle (percentage display).          ")
+    ProfilingMode=property(doc="Read/Write Property: Profiling collection modes, including disabling all profiling.          ")
     pass
 
 class FBPropertyAnimatableAction (FBPropertyAnimatable):
@@ -17527,7 +17527,7 @@ class FBPropertyAnimatableVector4d (FBPropertyAnimatable):
 class FBPropertyListCharacterExtension (FBPropertyListComponent):
     """
     Character extension property list.b>PropertyList: Character face.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListCharacterExtension(self):
         """
@@ -17575,7 +17575,7 @@ class FBPropertyListConstraint (FBPropertyListComponent):
 class FBPropertyListConstraintSolver (FBPropertyListComponent):
     """
     b>PropertyList: MarkerSet.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBPropertyListConstraintSolver(self):
         """
@@ -17908,9 +17908,9 @@ class FBReferenceTime (FBComponent):
         """
         pass
 
-    Count=property(doc="<b>Read Only Property:</b> Number of reference times. Deprecated, use GetUniqueIDList() instead.          ")
-    CurrentTimeReferenceID=property(doc="<b>Read Write Property:</b> Current reference time ID          ")
-    ItemIndex=property(doc="<b>Read Write Property:</b> Current reference time index. Deprecated, use CurrentTimeReferenceID instead.          ")
+    Count=property(doc="Read Only Property: Number of reference times. Deprecated, use GetUniqueIDList() instead.          ")
+    CurrentTimeReferenceID=property(doc="Read Write Property: Current reference time ID          ")
+    ItemIndex=property(doc="Read Write Property: Current reference time index. Deprecated, use CurrentTimeReferenceID instead.          ")
     pass
 
 class FBRenderer (FBComponent):
@@ -17973,7 +17973,7 @@ class FBRenderer (FBComponent):
         Frame the current camera either with all models or with the currently selected models.
 
         pAll : true to frame with all models. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -18152,7 +18152,7 @@ class FBRenderer (FBComponent):
         pModifier : Modifier pressed (CTRL/ALT/SHIFT). 
         pWheelDeltaValue : Mouse wheel delta value 
         pLayer : Rendering layer ID(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -18168,7 +18168,7 @@ class FBRenderer (FBComponent):
         pWheelDeltaValue : Mouse wheel delta value 
         pLayer : Rendering layer ID(default=-1). 
         pPaneId : specify which pane's dimension used for normalization, default (-1) for the whole viewer. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -18215,7 +18215,7 @@ class FBRenderer (FBComponent):
         PreRenders one frame (needed for some shaders) This functions destroys the frame buffer content and must be called every time a render is called the typical order of call must be Renderer->Prerender // at this point the frame buffer is garbage -Clear the ogl -Do your render functions Renderer->Render.
 
         pLayer : Rendering layer ID(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -18259,7 +18259,7 @@ class FBRenderer (FBComponent):
         Renders one frame.
 
         pLayer : Rendering layer ID(default=-1). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -18366,33 +18366,33 @@ class FBRenderer (FBComponent):
         """
         pass
 
-    AdvancedLightingMode=property(doc="<b>Read write Property:</b> Turn on/off advanced lighting setting UI widgets.          ")
-    AdvancedMaterialMode=property(doc="<b>Read write Property:</b> Turn on/off advanced material setting UI widgets.          ")
-    AutoEvaluate=property(doc="<b>Read Write Property:</b> Indicate if a call to RenderBegin will also cause a re-evaluation of the scene.          ")
-    Background=property(doc="<b>Read Write Property:</b> The renderer.          ")
+    AdvancedLightingMode=property(doc="Read write Property: Turn on/off advanced lighting setting UI widgets.          ")
+    AdvancedMaterialMode=property(doc="Read write Property: Turn on/off advanced material setting UI widgets.          ")
+    AutoEvaluate=property(doc="Read Write Property: Indicate if a call to RenderBegin will also cause a re-evaluation of the scene.          ")
+    Background=property(doc="Read Write Property: The renderer.          ")
     CurrentCamera=property(doc="        ")
-    CurrentPaneCallbackIndex=property(doc="<b>Read Write Property:</b> Current Pane's Renderer Callback Index.          ")
-    CurrentPaneCallbackPrefIndex=property(doc="<b>Read Write Property:</b> Current Pane's Renderer Callback Preference Index.          ")
-    DisplayNormals=property(doc="<b>Read Write Property:</b> Display model normals in main viewer.          ")
-    DisplaySetUpdateId=property(doc="<b>Read Only Property:</b> Current DisplaySet Update Id. Add/Delete models, Show/Hide models will affect DisplaySet.          ")
-    DisplayableGeometryCount=property(doc="<b>Read Only Property:</b> Displayable geometry count.          ")
-    DisplayableLightCount=property(doc="<b>Read Only Property:</b> Displayable light count.          ")
-    FrustumCulling=property(doc="<b>Read Write Property:</b> Turn on/off the early frustum culling optimization.          ")
-    HideManipulatorsOnManip=property(doc="<b>Read Write Property:</b> Hide manipulators UI elements while manipulating.          ")
-    HideManipulatorsOnPlayback=property(doc="<b>Read Write Property:</b> Hide manipulators UI elements during playback.          ")
-    IDBufferDisplay=property(doc="<b>Read write Property:</b> Render Model's unique Color ID into color Buffer (used for picking)          ")
-    IDBufferPicking=property(doc="<b>Read write Property:</b> Use ID (Color) Buffer for picking, instead of OpenGl selection buffer picking.          ")
-    IDBufferPickingAlpha=property(doc="<b>Read write Property:</b> Those Semi-transparent (Alpha Blend) geometry(region) contribute less than this threshold, will be considered as invisible during ID picking.          ")
-    PickingEnabled=property(doc="<b>Read Write Property:</b> Is picking in the viewer enabled?          ")
-    RegisteredCallbackCount=property(doc="<b>Read Only Property:</b> Registered Renderer Callback Count.          ")
-    RendererCallbacks=property(doc="<b>List:</b> Renderer Callbacks attached.          ")
-    RendererUpdateId=property(doc="<b>Read Only Property:</b> Current Render Update Id. DisplaySet update, material change, texture changes and shader change and other operations will trigger Renderer update.          ")
-    Scene=property(doc="<b>Read Write Property:</b> Scene that the renderer will use/draw          ")
-    SelectionForceSnapPointsDisplay=property(doc="<b>Read write Property:</b> Force show all feature points (pivots and etc) on selected models if true, ignore individual model's settings.          ")
-    SelectionOverride=property(doc="<b>Read write Property:</b> Add transparent color override layer on selected models if true.          ")
-    SelectionOverrideColor=property(doc="<b>Read write Property:</b> Selection override layer color.          ")
-    SelectionOverrideTransparency=property(doc="<b>Read write Property:</b> Selection override layer transparency.          ")
-    ShowStats=property(doc="<b>Read Write Property:</b> Show the stats about FPS, Evaluation rate ... like when using Shift-F in main viewer.          ")
+    CurrentPaneCallbackIndex=property(doc="Read Write Property: Current Pane's Renderer Callback Index.          ")
+    CurrentPaneCallbackPrefIndex=property(doc="Read Write Property: Current Pane's Renderer Callback Preference Index.          ")
+    DisplayNormals=property(doc="Read Write Property: Display model normals in main viewer.          ")
+    DisplaySetUpdateId=property(doc="Read Only Property: Current DisplaySet Update Id. Add/Delete models, Show/Hide models will affect DisplaySet.          ")
+    DisplayableGeometryCount=property(doc="Read Only Property: Displayable geometry count.          ")
+    DisplayableLightCount=property(doc="Read Only Property: Displayable light count.          ")
+    FrustumCulling=property(doc="Read Write Property: Turn on/off the early frustum culling optimization.          ")
+    HideManipulatorsOnManip=property(doc="Read Write Property: Hide manipulators UI elements while manipulating.          ")
+    HideManipulatorsOnPlayback=property(doc="Read Write Property: Hide manipulators UI elements during playback.          ")
+    IDBufferDisplay=property(doc="Read write Property: Render Model's unique Color ID into color Buffer (used for picking)          ")
+    IDBufferPicking=property(doc="Read write Property: Use ID (Color) Buffer for picking, instead of OpenGl selection buffer picking.          ")
+    IDBufferPickingAlpha=property(doc="Read write Property: Those Semi-transparent (Alpha Blend) geometry(region) contribute less than this threshold, will be considered as invisible during ID picking.          ")
+    PickingEnabled=property(doc="Read Write Property: Is picking in the viewer enabled?          ")
+    RegisteredCallbackCount=property(doc="Read Only Property: Registered Renderer Callback Count.          ")
+    RendererCallbacks=property(doc="List: Renderer Callbacks attached.          ")
+    RendererUpdateId=property(doc="Read Only Property: Current Render Update Id. DisplaySet update, material change, texture changes and shader change and other operations will trigger Renderer update.          ")
+    Scene=property(doc="Read Write Property: Scene that the renderer will use/draw          ")
+    SelectionForceSnapPointsDisplay=property(doc="Read write Property: Force show all feature points (pivots and etc) on selected models if true, ignore individual model's settings.          ")
+    SelectionOverride=property(doc="Read write Property: Add transparent color override layer on selected models if true.          ")
+    SelectionOverrideColor=property(doc="Read write Property: Selection override layer color.          ")
+    SelectionOverrideTransparency=property(doc="Read write Property: Selection override layer transparency.          ")
+    ShowStats=property(doc="Read Write Property: Show the stats about FPS, Evaluation rate ... like when using Shift-F in main viewer.          ")
     UseCameraSwitcher=property(doc="        ")
     pass
 
@@ -18409,11 +18409,11 @@ class FBRendererCallback (FBComponent):
         """
         pass
 
-    DefaultCameraBackPlateRendering=property(doc="<b>Read write Property:</b> Set true to use default camera back plate rendering; set false to disable it.          ")
-    DefaultCameraFrontPlateRendering=property(doc="<b>Read write Property:</b> Set true to use default camera front plate rendering; set false to disable it.          ")
-    DefaultLightGroundProjectionRendering=property(doc="<b>Read write Property:</b> Set true to use default light ground projection rendering; set false to disable it.          ")
-    DefaultLightVolumeRendering=property(doc="<b>Read write Property:</b> Set true to use default light volume rendering; set false to disable it.          ")
-    SupportIDBufferPicking=property(doc="<b>Read write Property:</b> Can this Renderer Callback support IDBuffer Picking.          ")
+    DefaultCameraBackPlateRendering=property(doc="Read write Property: Set true to use default camera back plate rendering; set false to disable it.          ")
+    DefaultCameraFrontPlateRendering=property(doc="Read write Property: Set true to use default camera front plate rendering; set false to disable it.          ")
+    DefaultLightGroundProjectionRendering=property(doc="Read write Property: Set true to use default light ground projection rendering; set false to disable it.          ")
+    DefaultLightVolumeRendering=property(doc="Read write Property: Set true to use default light volume rendering; set false to disable it.          ")
+    SupportIDBufferPicking=property(doc="Read write Property: Can this Renderer Callback support IDBuffer Picking.          ")
     pass
 
 class FBRigidBody (FBComponent):
@@ -18448,7 +18448,7 @@ class FBRigidBody (FBComponent):
         """
         Check if valid (if item exists).
 
-        return : <b>true</b> if segment is valid. 
+        return : true if segment is valid. 
         """
         pass
 
@@ -18459,12 +18459,12 @@ class FBRigidBody (FBComponent):
         """
         pass
 
-    Done=property(doc="<b>Property:</b> Done?          ")
-    Markers=property(doc="<b>Property:</b> List of markers composing the rigid body.          ")
-    Mode=property(doc="<b>Property:</b> Rigid body mode.          ")
-    Model=property(doc="<b>Property:</b> Rigid body model.          ")
-    QualityData=property(doc="<b>Property:</b> Quality of rigid body.          ")
-    SmoothWidth=property(doc="<b>Property:</b> Smoothing width.          ")
+    Done=property(doc="Property: Done?          ")
+    Markers=property(doc="Property: List of markers composing the rigid body.          ")
+    Mode=property(doc="Property: Rigid body mode.          ")
+    Model=property(doc="Property: Rigid body model.          ")
+    QualityData=property(doc="Property: Quality of rigid body.          ")
+    SmoothWidth=property(doc="Property: Smoothing width.          ")
     pass
 
 class FBScene (FBComponent):
@@ -18617,7 +18617,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         Remove all empty namespaces.
         During some namespace operations, empty namespace may left over, while this is not harmful but could be annoying. Save the scene and load it back those empty namespaces will disappear. And this function also allow user to remove all empty namespaces from the scene easily via SDK.
 
-        return : <b>True</b> if operation successfully. 
+        return : True if operation successfully. 
         """
         pass
 
@@ -18626,7 +18626,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         Delete the namespace & all its content.
 
         pNamespace : the namespace to work on 
-        return : <b>True</b> if operation successfully, <b>False</b> is this namespace doesn't exist, or is locked (by FileReferencing or etc.,) 
+        return : True if operation successfully, False is this namespace doesn't exist, or is locked (by FileReferencing or etc.,) 
         """
         pass
 
@@ -18636,10 +18636,10 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
 
         pNamespace : the namespace to work on 
         pModificationFlags : bitwise combination of kFBConnectionSrcObjectModified, kFBConnectionDstObjectModified, kFBConnectionSrcPropertyModified, kFBConnectionDstPropertyModified flags. kFBPlugAllContent means all the content. Modification flags beside kFBPlugAllContent will only work on FileReference Namespace. 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
         pTypeInfo : the typeInfo of the type of interested object, default for all the objects. 
-        pExactTypeMatch : if <b>True</b>, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
-        return : <b>False</b> is the given namespace doesn't exist, or is locked (by FileRef or etc.,), <b>True</b> otherwise. 
+        pExactTypeMatch : if True, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
+        return : False is the given namespace doesn't exist, or is locked (by FileRef or etc.,), True otherwise. 
         """
         pass
 
@@ -18648,7 +18648,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         Query if namespace is empty.
 
         pNamespace : the namespace to query, NULL for whole scene. 
-        return : <b>True</b> if the namespace (don't include nested children namespace) is empty 
+        return : True if the namespace (don't include nested children namespace) is empty 
         """
         pass
 
@@ -18657,7 +18657,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         Query if namespace exists.
 
         pNamespace : the namespace to query 
-        return : <b>True</b> if the namespace exist, otherwise return <b>False</b>. 
+        return : True if the namespace exist, otherwise return False. 
         """
         pass
 
@@ -18668,7 +18668,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         pNamespace : the namespace to use, must exist 
         pFilePath : the referenced file path to export. 
         pASCIIFormat : save the file in ASCII format. 
-        return : <b>True</b> if successfully. 
+        return : True if successfully. 
         """
         pass
 
@@ -18687,7 +18687,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
 
         pNamespaceList : the list of namespace to return. 
         pNamespace : specify the parent namespace, NULL for the whole scene. 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
         return : the list of children namespaces. 
         """
         pass
@@ -18699,9 +18699,9 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         pContentList : the list of content to return. 
         pNamespace : the namespace to work on, NULL for whole scene. 
         pModificationFlags : bitwise combination of kFBConnectionSrcObjectModified, kFBConnectionDstObjectModified, kFBConnectionSrcPropertyModified, kFBConnectionDstPropertyModified flags. kFBPlugAllContent means all the content. Modification flags beside kFBPlugAllContent will only work on FileReference Namespace. 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the whole children namespace hierarchy recursively. 
         pTypeInfo : the typeInfo of the type of interested object, 0 for all the objects. 
-        pExactTypeMatch : if <b>True</b>, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
+        pExactTypeMatch : if True, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
         """
         pass
 
@@ -18721,7 +18721,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         pNamespace : the namespace to import to, must be in editable scope. 
         pFilePath : the referenced file path to import. 
         pAsFileReference : import the file as file reference. The default value is false. 
-        return : <b>True</b> if successfully. 
+        return : True if successfully. 
         """
         pass
 
@@ -18732,7 +18732,7 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         pDstNamespaceList : the Dst namespaces list to import, must not exist or be self contained. 
         pFilePath : the referenced file path to import. 
         pAsFileReference : import the file as file reference. The default value is false. 
-        return : <b>True</b> if successfully. 
+        return : True if successfully. 
         """
         pass
 
@@ -18742,10 +18742,10 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
 
         pNameSpace : the namespace to work on, NULL for whole scene. 
         pNewNamespace : the new namespace 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
         pTypeInfo : the typeInfo of the type of interested object, default for all the objects. 
-        pExactTypeMatch : if <b>True</b>, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
-        return : <b>True</b> if operation successfully, <b>False</b> is this namespace (or pTypeInfo type of objects) doesn't exist, or locked (by FileReferencing or etc.,) 
+        pExactTypeMatch : if True, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
+        return : True if operation successfully, False is this namespace (or pTypeInfo type of objects) doesn't exist, or locked (by FileReferencing or etc.,) 
         """
         pass
 
@@ -18754,56 +18754,56 @@ See also the C++ code sample in toolscene. See samples: InsertCurrentTake.py, De
         Select (or de-select) the namespace content.
 
         pNamespace : the namespace to work on, NULL for whole scene. 
-        pSelect : <b>True</b> (or <b>False</b>) indicate to select (or de-select) 
+        pSelect : True (or False) indicate to select (or de-select) 
         pModificationFlags : bitwise combination of kFBConnectionSrcObjectModified, kFBConnectionDstObjectModified, kFBConnectionSrcPropertyModified, kFBConnectionDstPropertyModified flags. kFBPlugAllContent means all the content. Modification flags beside kFBPlugAllContent will only work on FileReference Namespace. 
-        pRecursive : <b>True</b> only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
+        pRecursive : True only work on the direct children level namespace, otherwise will work on the children namespace hierarchy recursively. 
         pTypeInfo : the typeInfo of the type of interested object, default for all the objects. 
-        pExactTypeMatch : if <b>True</b>, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
+        pExactTypeMatch : if True, the derived typeInfo won't be considered (For example, FBCamera won't be considered when passing FBModel::TypeInfo). 
         """
         pass
 
-    ActorFaces=property(doc="<b>List:</b> ActorFaces in scene.          ")
-    Actors=property(doc="<b>List:</b> Actors in scene.          ")
-    AudioClips=property(doc="<b>List:</b> Audio clips in scene.          ")
-    Cameras=property(doc="<b>List:</b> Cameras in scene.          ")
-    CharacterExtensions=property(doc="<b>List:</b> Character extensions available in the scene.          ")
-    CharacterFaces=property(doc="<b>List:</b> Character faces in scene.          ")
-    CharacterMarkerSets=property(doc="<b>List:</b> Character marker sets in scene.          ")
-    CharacterPoses=property(doc="<b>List:</b> Character poses in scene.          ")
-    Characters=property(doc="<b>List:</b> Characters in scene.          ")
-    Components=property(doc="<b>List:</b> Generic List of components.          ")
-    ConstraintSolvers=property(doc="<b>List:</b> Constraint Solvers present in the scene.          ")
-    Constraints=property(doc="<b>List:</b> Constraints in scene.          ")
-    ControlSets=property(doc="<b>List:</b> Control set rigs in scene.          ")
-    Deformers=property(doc="<b>List:</b> Deformers for scene.          ")
-    Devices=property(doc="<b>List:</b> Devices for scene.          ")
-    FileReferences=property(doc="<b>List:</b> FileReference available in the scene.          ")
-    Folders=property(doc="<b>List:</b> Folders in scene.          ")
-    Groups=property(doc="<b>List:</b> Groups available in the scene.          ")
-    HUDs=property(doc="<b>Read Only Property:</b> Heads Up Displays in the scene.          ")
-    Handles=property(doc="<b>List:</b> Handles present in the scene.          ")
-    KeyingGroups=property(doc="<b>Read Write Property:</b> Keying Groups in the scene.          ")
-    Lights=property(doc="<b>List:</b> Lights in scene.          ")
-    MarkerSets=property(doc="<b>List:</b> Marker sets in scene.          ")
-    Materials=property(doc="<b>List:</b> Materials for scene.          ")
-    ModelOpticals=property(doc="<b>Read Write Property:</b> Optical Data in the scene.          ")
-    ModelSkeletons=property(doc="<b>Read Write Property:</b> Bones (Skeletons) in the scene.          ")
-    MotionClips=property(doc="<b>List:</b> Motion clips in scene.          ")
-    Namespaces=property(doc="<b>List:</b> Namespace (include FileReference) available in the scene          ")
-    Notes=property(doc="<b>List:</b> Notes in scene.          ")
-    ObjectPoses=property(doc="<b>List:</b> ObjectPoses in scene.          ")
-    OnChange=property(doc="<b>Event:</b> Something in the scene has happened.(FBEventSceneChange)          ")
-    OnTakeChange=property(doc="<b>Event:</b> Something related to a take has happened.(FBEventTakeChange)          ")
-    PhysicalProperties=property(doc="<b>List:</b> PhysicalProperties present in the scene.          ")
-    Poses=property(doc="<b>List:</b> Poses in scene.          ")
-    Renderer=property(doc="<b>Read Only Property:</b> Local renderer.          ")
-    RootModel=property(doc="<b>Read Only Property:</b> Scene Root model for that scene          ")
-    Sets=property(doc="<b>List:</b> Sets available in the scene.          ")
-    Shaders=property(doc="<b>List:</b> Shaders for scene.          ")
-    Takes=property(doc="<b>List:</b> Takes for scene.          ")
-    Textures=property(doc="<b>List:</b> Textures for scene.          ")
-    UserObjects=property(doc="<b>List:</b> User objects          ")
-    VideoClips=property(doc="<b>List:</b> Video clips in scene.          ")
+    ActorFaces=property(doc="List: ActorFaces in scene.          ")
+    Actors=property(doc="List: Actors in scene.          ")
+    AudioClips=property(doc="List: Audio clips in scene.          ")
+    Cameras=property(doc="List: Cameras in scene.          ")
+    CharacterExtensions=property(doc="List: Character extensions available in the scene.          ")
+    CharacterFaces=property(doc="List: Character faces in scene.          ")
+    CharacterMarkerSets=property(doc="List: Character marker sets in scene.          ")
+    CharacterPoses=property(doc="List: Character poses in scene.          ")
+    Characters=property(doc="List: Characters in scene.          ")
+    Components=property(doc="List: Generic List of components.          ")
+    ConstraintSolvers=property(doc="List: Constraint Solvers present in the scene.          ")
+    Constraints=property(doc="List: Constraints in scene.          ")
+    ControlSets=property(doc="List: Control set rigs in scene.          ")
+    Deformers=property(doc="List: Deformers for scene.          ")
+    Devices=property(doc="List: Devices for scene.          ")
+    FileReferences=property(doc="List: FileReference available in the scene.          ")
+    Folders=property(doc="List: Folders in scene.          ")
+    Groups=property(doc="List: Groups available in the scene.          ")
+    HUDs=property(doc="Read Only Property: Heads Up Displays in the scene.          ")
+    Handles=property(doc="List: Handles present in the scene.          ")
+    KeyingGroups=property(doc="Read Write Property: Keying Groups in the scene.          ")
+    Lights=property(doc="List: Lights in scene.          ")
+    MarkerSets=property(doc="List: Marker sets in scene.          ")
+    Materials=property(doc="List: Materials for scene.          ")
+    ModelOpticals=property(doc="Read Write Property: Optical Data in the scene.          ")
+    ModelSkeletons=property(doc="Read Write Property: Bones (Skeletons) in the scene.          ")
+    MotionClips=property(doc="List: Motion clips in scene.          ")
+    Namespaces=property(doc="List: Namespace (include FileReference) available in the scene          ")
+    Notes=property(doc="List: Notes in scene.          ")
+    ObjectPoses=property(doc="List: ObjectPoses in scene.          ")
+    OnChange=property(doc="Event: Something in the scene has happened.(FBEventSceneChange)          ")
+    OnTakeChange=property(doc="Event: Something related to a take has happened.(FBEventTakeChange)          ")
+    PhysicalProperties=property(doc="List: PhysicalProperties present in the scene.          ")
+    Poses=property(doc="List: Poses in scene.          ")
+    Renderer=property(doc="Read Only Property: Local renderer.          ")
+    RootModel=property(doc="Read Only Property: Scene Root model for that scene          ")
+    Sets=property(doc="List: Sets available in the scene.          ")
+    Shaders=property(doc="List: Shaders for scene.          ")
+    Takes=property(doc="List: Takes for scene.          ")
+    Textures=property(doc="List: Textures for scene.          ")
+    UserObjects=property(doc="List: User objects          ")
+    VideoClips=property(doc="List: Video clips in scene.          ")
     pass
 
 class FBSpreadPart (FBComponent):
@@ -18811,12 +18811,12 @@ class FBSpreadPart (FBComponent):
     Spreadsheet part.     
      Due to protected constructor, this can only be created by a child object.      
     """
-    Column=property(doc="<b>Read Only Property:</b> Column number.          ")
-    Enabled=property(doc="<b>Read Write Property:</b> Is SpreadPart enabled?          ")
-    Justify=property(doc="<b>Read Write Property:</b> Text justification for SpreadPart          ")
-    ReadOnly=property(doc="<b>Read Write Property:</b> Is SpreadPart read-only?          ")
-    Row=property(doc="<b>Read Only Property:</b> Row number.          ")
-    Style=property(doc="<b>Read Write Property:</b> Style of cell          ")
+    Column=property(doc="Read Only Property: Column number.          ")
+    Enabled=property(doc="Read Write Property: Is SpreadPart enabled?          ")
+    Justify=property(doc="Read Write Property: Text justification for SpreadPart          ")
+    ReadOnly=property(doc="Read Write Property: Is SpreadPart read-only?          ")
+    Row=property(doc="Read Only Property: Row number.          ")
+    Style=property(doc="Read Write Property: Style of cell          ")
     pass
 
 class FBStory (FBComponent):
@@ -18839,15 +18839,15 @@ class FBStory (FBComponent):
         """
         pass
 
-    ClipsTextsVisible=property(doc="<b>Read Write Property:</b> If true, clips' texts are visible.          ")
-    LockedShot=property(doc="<b>Read Write Property:</b> If true, shots will be locked (no time discontinuity).          ")
-    MaintainShotAndClipShotLengthsSynced=property(doc="<b>Read Write Property:</b> When working in time discontinuity, if true, shots and their corresponding shot clips will be kept in sync in regards of their lengths.          ")
-    Mute=property(doc="<b>Read Write Property:</b> If true, the Story mode will be globally disabled.          ")
-    NoneBlockingPostprocess=property(doc="<b>Read Write Property:</b> If true, record to disk will post process recorded data in low priority thread without affecting application performance. Clip in story will remain unloaded.          ")
-    RecordToDisk=property(doc="<b>Read Write Property:</b> If true, record to story will record directly to disk.          ")
-    RootEditFolder=property(doc="<b>Read Only Property:</b> Story's root edit folder          ")
-    RootFolder=property(doc="<b>Read Only Property:</b> Story's root folder          ")
-    SummaryClip=property(doc="<b>Read Write Property:</b> If true, summary clips for story folders will be created to help manipulating folder content.          ")
+    ClipsTextsVisible=property(doc="Read Write Property: If true, clips' texts are visible.          ")
+    LockedShot=property(doc="Read Write Property: If true, shots will be locked (no time discontinuity).          ")
+    MaintainShotAndClipShotLengthsSynced=property(doc="Read Write Property: When working in time discontinuity, if true, shots and their corresponding shot clips will be kept in sync in regards of their lengths.          ")
+    Mute=property(doc="Read Write Property: If true, the Story mode will be globally disabled.          ")
+    NoneBlockingPostprocess=property(doc="Read Write Property: If true, record to disk will post process recorded data in low priority thread without affecting application performance. Clip in story will remain unloaded.          ")
+    RecordToDisk=property(doc="Read Write Property: If true, record to story will record directly to disk.          ")
+    RootEditFolder=property(doc="Read Only Property: Story's root edit folder          ")
+    RootFolder=property(doc="Read Only Property: Story's root folder          ")
+    SummaryClip=property(doc="Read Write Property: If true, summary clips for story folders will be created to help manipulating folder content.          ")
     pass
 
 class FBStoryClip (FBComponent):
@@ -19070,62 +19070,62 @@ class FBStoryClip (FBComponent):
         """
         pass
 
-    AudioClip=property(doc="<b>Read Only Property:</b> The audio clip used by this StoryClip.          ")
-    AutoLoop=property(doc="<b>Read Write Property:</b> If true, clip will automatically loop          ")
-    ClipAnimationPath=property(doc="<b>Read Write Property:</b> Animation clip's file path          ")
-    ClipAudioPath=property(doc="<b>Read Write Property:</b> Audio clip's file path          ")
-    ClipPitch=property(doc="<b>Read Write Property:</b> The clip pitch value.          ")
-    ClipVideoPath=property(doc="<b>Read Write Property:</b> Video clip's file path          ")
-    Color=property(doc="<b>Read Write Property:</b> Color of the clip.          ")
-    ConnectedToTake=property(doc="<b>Read Write Property:</b> When connected to current take, user can do updating from current take, but user can't edit clip animation by adding keys, only works for clips created by Insert Current Take.          ")
-    CustomTimeWarp=property(doc="<b>Read Only Property:</b> Animation and Shot clip's custom TimeWarp FCurve.          ")
-    FrameRate=property(doc="<b>Read Write Property:</b> Frame rate value. Only effective when UseSystemFrameRate is false.          ")
-    Ghost=property(doc="<b>Read Write Property:</b> Show ghosts          ")
-    GhostCustomTime=property(doc="<b>Read Write Property:</b> Custom time to display ghost, only applicable if ShowGhostClipMode is kFBStoryClipTimeCustom.          ")
-    GhostManipulatorCustomTime=property(doc="<b>Read Write Property:</b> Custom time to display ghost manipulator, only applicable if GhostManipulatorMode is kFBStoryClipGhostCustom.          ")
-    GhostManipulatorMode=property(doc="<b>Read Write Property:</b> Time mode to display ghost manipulator. See FBStoryClipGhostTimeMode.          ")
-    GhostManipulatorOffset=property(doc="<b>Read Write Property:</b> Animation clip's ghost manipulator offset.          ")
-    GhostModel=property(doc="<b>Read Write Property:</b> Show ghost of models          ")
-    GhostPivot=property(doc="<b>Read Write Property:</b> Show ghost of match object          ")
-    GhostTravelling=property(doc="<b>Read Write Property:</b> Show ghost of clip vector or traveling node          ")
-    ImageSequence=property(doc="<b>Read Write Property:</b> Whether is a image sequence.          ")
-    Loaded=property(doc="<b>Read Write Property:</b> If true, clip file is loaded into memory and can be evaluated (will affect track content).          ")
-    LockPitchToSpeed=property(doc="<b>Read Write Property:</b> Time-stretching enabled or not.          ")
-    Loop=property(doc="<b>Read Write Property:</b> If true, loop clip's animation          ")
-    LoopTranslation=property(doc="<b>Read Write Property:</b> Animation clip's loop translation.          ")
-    MarkIn=property(doc="<b>Read Write Property:</b> Start time inside the clip.          ")
-    MarkOut=property(doc="<b>Read Write Property:</b> Stop time inside the clip.          ")
-    MirrorAnimation=property(doc="<b>Read Write Property:</b> If true, clip animation will be mirrored          ")
-    MirrorPlane=property(doc="<b>Read Write Property:</b> Several mirror planes to mirror animation. See FBStoryClipMirrorPlane          ")
-    Offset=property(doc="<b>Read Write Property:</b> First loop time offset.          ")
-    OnChange=property(doc="<b>Event:</b> Something in the clip has changed. (FBEventClip)          ")
-    Pivots=property(doc="<b>List:</b> Pivots models (Generally, only one model is necessary)          ")
-    PostBlend=property(doc="<b>Read Write Property:</b> Start/Stop time of the post-blend phase.          ")
-    PreBlend=property(doc="<b>Read Write Property:</b> Start/Stop time of the pre-blend phase.          ")
-    Rotation=property(doc="<b>Read Write Property:</b> Animation clip's rotation offset. Refer to class notes to learn more about how this is applied.          ")
-    Scale=property(doc="<b>Read Write Property:</b> Animation clip's scaling (some don't support this property)          ")
-    ShotActionStart=property(doc="<b>Read Write Property:</b> If not in locked shot mode (time discontinuity enabled), this time can be different from the Clip->Start property.          ")
-    ShotActionStop=property(doc="<b>Read Write Property:</b> If not in locked shot mode (time discontinuity enabled), this time can be different from the Clip->Start property.          ")
-    ShotBackplate=property(doc="<b>Read Write Property:</b> The backplate used for that specific shot.          ")
-    ShotCamera=property(doc="<b>Read Write Property:</b> The camera used for that specific shot.          ")
-    ShotFrontplate=property(doc="<b>Read Write Property:</b> The frontplate used for that specific shot.          ")
-    ShotStartStopLocked=property(doc="<b>Read Write Property:</b> Shot clip's 'In/Out Locked' property value. True if the shot clip's In/Out properties (start/stop times of the clip local to its track) are locked, false otherwise.          ")
-    ShowBackplate=property(doc="<b>Read Write Property:</b> Enable/Disable the shot backplate.          ")
-    ShowEmbeddedTimecode=property(doc="<b>Read Write Property:</b> Whether to show embedded timecode of the clip, if available.          ")
-    ShowFrontplate=property(doc="<b>Read Write Property:</b> Enable/Disable the shot frontplate.          ")
-    ShowGhostClipMode=property(doc="<b>Read Write Property:</b> Show the ghost depending on the time. See FBStoryClipShowGhostMode          ")
-    SolvingMode=property(doc="<b>Read Write Property:</b> Solve Modes for story character clips. See FBStoryClipSolveMode          ")
-    Speed=property(doc="<b>Read Write Property:</b> Speed of the clip.          ")
-    Start=property(doc="<b>Read Write Property:</b> Start time of the clip local to its track.          ")
-    StartStopLocked=property(doc="<b>Read Write Property:</b> Clip's 'In/Out Locked' property value. True if the clip's In/Out properties (start/stop times of the clip local to its track) are locked, false otherwise.          ")
-    Stop=property(doc="<b>Read Write Property:</b> Stop time of the clip local to its track.          ")
-    TimeWarpEnabled=property(doc="<b>Read Write Property:</b> Animation and Shot clip's TimeWarp activeness.          ")
-    TimeWarpInterpolatorType=property(doc="<b>Read Write Property:</b> Animation and Shot clip's TimeWarp interpolation type. See FBStoryClipTimeWarpInterpolatorType.          ")
-    TimeWarpReverse=property(doc="<b>Read Write Property:</b> If true, reverse the Animation or Shot clip's TimeWarp FCurve.          ")
-    Translation=property(doc="<b>Read Write Property:</b> Animation clip's translation offset. Refer to class notes to learn more about how this is applied.          ")
-    TravellingNode=property(doc="<b>List:</b> Travelling node(s). If set, this property will overwrite the Track's Travelling node(s).          ")
-    TravellingNodeFunction=property(doc="<b>Read Write Property:</b> Travelling node function. If set, this property will overwrite the Track's Travelling node function. See FBStoryClipNodeFunction.          ")
-    UseSystemFrameRate=property(doc="<b>Read Write Property:</b> Whether always use system frame rate.          ")
+    AudioClip=property(doc="Read Only Property: The audio clip used by this StoryClip.          ")
+    AutoLoop=property(doc="Read Write Property: If true, clip will automatically loop          ")
+    ClipAnimationPath=property(doc="Read Write Property: Animation clip's file path          ")
+    ClipAudioPath=property(doc="Read Write Property: Audio clip's file path          ")
+    ClipPitch=property(doc="Read Write Property: The clip pitch value.          ")
+    ClipVideoPath=property(doc="Read Write Property: Video clip's file path          ")
+    Color=property(doc="Read Write Property: Color of the clip.          ")
+    ConnectedToTake=property(doc="Read Write Property: When connected to current take, user can do updating from current take, but user can't edit clip animation by adding keys, only works for clips created by Insert Current Take.          ")
+    CustomTimeWarp=property(doc="Read Only Property: Animation and Shot clip's custom TimeWarp FCurve.          ")
+    FrameRate=property(doc="Read Write Property: Frame rate value. Only effective when UseSystemFrameRate is false.          ")
+    Ghost=property(doc="Read Write Property: Show ghosts          ")
+    GhostCustomTime=property(doc="Read Write Property: Custom time to display ghost, only applicable if ShowGhostClipMode is kFBStoryClipTimeCustom.          ")
+    GhostManipulatorCustomTime=property(doc="Read Write Property: Custom time to display ghost manipulator, only applicable if GhostManipulatorMode is kFBStoryClipGhostCustom.          ")
+    GhostManipulatorMode=property(doc="Read Write Property: Time mode to display ghost manipulator. See FBStoryClipGhostTimeMode.          ")
+    GhostManipulatorOffset=property(doc="Read Write Property: Animation clip's ghost manipulator offset.          ")
+    GhostModel=property(doc="Read Write Property: Show ghost of models          ")
+    GhostPivot=property(doc="Read Write Property: Show ghost of match object          ")
+    GhostTravelling=property(doc="Read Write Property: Show ghost of clip vector or traveling node          ")
+    ImageSequence=property(doc="Read Write Property: Whether is a image sequence.          ")
+    Loaded=property(doc="Read Write Property: If true, clip file is loaded into memory and can be evaluated (will affect track content).          ")
+    LockPitchToSpeed=property(doc="Read Write Property: Time-stretching enabled or not.          ")
+    Loop=property(doc="Read Write Property: If true, loop clip's animation          ")
+    LoopTranslation=property(doc="Read Write Property: Animation clip's loop translation.          ")
+    MarkIn=property(doc="Read Write Property: Start time inside the clip.          ")
+    MarkOut=property(doc="Read Write Property: Stop time inside the clip.          ")
+    MirrorAnimation=property(doc="Read Write Property: If true, clip animation will be mirrored          ")
+    MirrorPlane=property(doc="Read Write Property: Several mirror planes to mirror animation. See FBStoryClipMirrorPlane          ")
+    Offset=property(doc="Read Write Property: First loop time offset.          ")
+    OnChange=property(doc="Event: Something in the clip has changed. (FBEventClip)          ")
+    Pivots=property(doc="List: Pivots models (Generally, only one model is necessary)          ")
+    PostBlend=property(doc="Read Write Property: Start/Stop time of the post-blend phase.          ")
+    PreBlend=property(doc="Read Write Property: Start/Stop time of the pre-blend phase.          ")
+    Rotation=property(doc="Read Write Property: Animation clip's rotation offset. Refer to class notes to learn more about how this is applied.          ")
+    Scale=property(doc="Read Write Property: Animation clip's scaling (some don't support this property)          ")
+    ShotActionStart=property(doc="Read Write Property: If not in locked shot mode (time discontinuity enabled), this time can be different from the Clip->Start property.          ")
+    ShotActionStop=property(doc="Read Write Property: If not in locked shot mode (time discontinuity enabled), this time can be different from the Clip->Start property.          ")
+    ShotBackplate=property(doc="Read Write Property: The backplate used for that specific shot.          ")
+    ShotCamera=property(doc="Read Write Property: The camera used for that specific shot.          ")
+    ShotFrontplate=property(doc="Read Write Property: The frontplate used for that specific shot.          ")
+    ShotStartStopLocked=property(doc="Read Write Property: Shot clip's 'In/Out Locked' property value. True if the shot clip's In/Out properties (start/stop times of the clip local to its track) are locked, false otherwise.          ")
+    ShowBackplate=property(doc="Read Write Property: Enable/Disable the shot backplate.          ")
+    ShowEmbeddedTimecode=property(doc="Read Write Property: Whether to show embedded timecode of the clip, if available.          ")
+    ShowFrontplate=property(doc="Read Write Property: Enable/Disable the shot frontplate.          ")
+    ShowGhostClipMode=property(doc="Read Write Property: Show the ghost depending on the time. See FBStoryClipShowGhostMode          ")
+    SolvingMode=property(doc="Read Write Property: Solve Modes for story character clips. See FBStoryClipSolveMode          ")
+    Speed=property(doc="Read Write Property: Speed of the clip.          ")
+    Start=property(doc="Read Write Property: Start time of the clip local to its track.          ")
+    StartStopLocked=property(doc="Read Write Property: Clip's 'In/Out Locked' property value. True if the clip's In/Out properties (start/stop times of the clip local to its track) are locked, false otherwise.          ")
+    Stop=property(doc="Read Write Property: Stop time of the clip local to its track.          ")
+    TimeWarpEnabled=property(doc="Read Write Property: Animation and Shot clip's TimeWarp activeness.          ")
+    TimeWarpInterpolatorType=property(doc="Read Write Property: Animation and Shot clip's TimeWarp interpolation type. See FBStoryClipTimeWarpInterpolatorType.          ")
+    TimeWarpReverse=property(doc="Read Write Property: If true, reverse the Animation or Shot clip's TimeWarp FCurve.          ")
+    Translation=property(doc="Read Write Property: Animation clip's translation offset. Refer to class notes to learn more about how this is applied.          ")
+    TravellingNode=property(doc="List: Travelling node(s). If set, this property will overwrite the Track's Travelling node(s).          ")
+    TravellingNodeFunction=property(doc="Read Write Property: Travelling node function. If set, this property will overwrite the Track's Travelling node function. See FBStoryClipNodeFunction.          ")
+    UseSystemFrameRate=property(doc="Read Write Property: Whether always use system frame rate.          ")
     pass
 
 class FBStoryFolder (FBComponent):
@@ -19199,14 +19199,14 @@ class FBStoryFolder (FBComponent):
         """
         pass
 
-    Childs=property(doc="<b>List:</b> Children folders of this folder.          ")
-    Collapsed=property(doc="<b>Read Write Property:</b> Toggle to collapse or expand the story folder.          ")
-    Label=property(doc="<b>Read Write Property:</b> Label to display for this story folder.          ")
-    Mute=property(doc="<b>Read Write Property:</b> If true, this story folder will be muted.          ")
-    Parent=property(doc="<b>Read Only Property:</b> Object pointing to the folder's parent.          ")
-    RecordClipPath=property(doc="<b>Read Write Property:</b> Path for story recording. Can be relative or full path.          ")
-    Solo=property(doc="<b>Read Write Property:</b> If true, this story folder will be the only one to play.          ")
-    Tracks=property(doc="<b>List:</b> Tracks of this folder.          ")
+    Childs=property(doc="List: Children folders of this folder.          ")
+    Collapsed=property(doc="Read Write Property: Toggle to collapse or expand the story folder.          ")
+    Label=property(doc="Read Write Property: Label to display for this story folder.          ")
+    Mute=property(doc="Read Write Property: If true, this story folder will be muted.          ")
+    Parent=property(doc="Read Only Property: Object pointing to the folder's parent.          ")
+    RecordClipPath=property(doc="Read Write Property: Path for story recording. Can be relative or full path.          ")
+    Solo=property(doc="Read Write Property: If true, this story folder will be the only one to play.          ")
+    Tracks=property(doc="List: Tracks of this folder.          ")
     pass
 
 class FBStoryGroupClip (FBComponent):
@@ -19260,10 +19260,10 @@ class FBStoryGroupClip (FBComponent):
         """
         pass
 
-    DependentClips=property(doc="<b>Read Write Property:</b> Clips that are included in the group clip.          ")
-    Start=property(doc="<b>Read Write Property:</b> Start time of the clip.          ")
-    StartStopLocked=property(doc="<b>Read Write Property:</b> Clip's 'In/Out Locked' property value. True if the clip's In/Out properties (start/end times of the clip local to its track) are locked, false otherwise.          ")
-    Stop=property(doc="<b>Read Write Property:</b> Stop time of the clip.          ")
+    DependentClips=property(doc="Read Write Property: Clips that are included in the group clip.          ")
+    Start=property(doc="Read Write Property: Start time of the clip.          ")
+    StartStopLocked=property(doc="Read Write Property: Clip's 'In/Out Locked' property value. True if the clip's In/Out properties (start/end times of the clip local to its track) are locked, false otherwise.          ")
+    Stop=property(doc="Read Write Property: Stop time of the clip.          ")
     pass
 
 class FBTake (FBComponent):
@@ -19779,9 +19779,9 @@ See samples: MergePreviewAnimationLayers.py, ExportAnimationLibrary.py, GoToNext
         """
         pass
 
-    Comments=property(doc="<b>Read Write Property:</b> Take comments.          ")
-    LocalTimeSpan=property(doc="<b>Read Write Property:</b> Local time span.          ")
-    ReferenceTimeSpan=property(doc="<b>Read Write Property:</b> Reference time span.          ")
+    Comments=property(doc="Read Write Property: Take comments.          ")
+    LocalTimeSpan=property(doc="Read Write Property: Local time span.          ")
+    ReferenceTimeSpan=property(doc="Read Write Property: Reference time span.          ")
     pass
 
 class FBTimeWarpManager (FBComponent):
@@ -20015,22 +20015,22 @@ class FBTool (FBLayout):
         """
         pass
 
-    StartSizeX=property(doc="<b>Read Property:</b> Starting Size. This is the initial size in X when the tool is opened. Default = 800         ")
-    StartSizeY=property(doc="<b>Read Property:</b> Starting Size. This is the initial size in Y when the tool is opened. Default = 400         ")
-    MaxSizeX=property(doc="<b>Read Property:</b> Maximum Size in X (Disabled in this version). A value of -1 means no maximum size.         ")
+    StartSizeX=property(doc="Read Property: Starting Size. This is the initial size in X when the tool is opened. Default = 800         ")
+    StartSizeY=property(doc="Read Property: Starting Size. This is the initial size in Y when the tool is opened. Default = 400         ")
+    MaxSizeX=property(doc="Read Property: Maximum Size in X (Disabled in this version). A value of -1 means no maximum size.         ")
     MaxSizeY=property(doc="Maximum Size in Y (Disabled in this version). A value of -1 means no maximum size.         ")
-    MinSizeX=property(doc="<b>Read Property:</b> Minimum Size in X. A value of -1 means no minimum value.         ")
-    MinSizeY=property(doc="<b>Read Property:</b> Minimum Size in Y. A value of -1 means no minimum value.         ")
-    StartPosX=property(doc="<b>Read Property:</b> Starting Position in X. This is the initial position when the tool is opened. Default = 450         ")
-    StartPosY=property(doc="<b>Read Property:</b> Starting Position in Y. This is the initial position when the tool is opened. Default = 450         ")
-    ToolName=property(doc="<b>Read Property:</b> Tool Name         ")
-    DisplayName=property(doc="<b>Read Write Property:</b> Tool Display Name (Caption on the tool's title bar)          ")
+    MinSizeX=property(doc="Read Property: Minimum Size in X. A value of -1 means no minimum value.         ")
+    MinSizeY=property(doc="Read Property: Minimum Size in Y. A value of -1 means no minimum value.         ")
+    StartPosX=property(doc="Read Property: Starting Position in X. This is the initial position when the tool is opened. Default = 450         ")
+    StartPosY=property(doc="Read Property: Starting Position in Y. This is the initial position when the tool is opened. Default = 450         ")
+    ToolName=property(doc="Read Property: Tool Name         ")
+    DisplayName=property(doc="Read Write Property: Tool Display Name (Caption on the tool's title bar)          ")
     pass
 
 class FBToolLayoutManager (FBComponent):
     """
     Tool Layout Manager class.     
-     <b>This class allows users to interact with Layouts.</b>Sample Python code: 
+     This class allows users to interact with Layouts.Sample Python code: 
 @code
 from pyfbsdk import *
 
@@ -20195,7 +20195,7 @@ lToolLayoutMan.DeleteLayout( 'MyLayout' )
 class FBTransportAudioManager (FBComponent):
     """
     Transport Tool Audio Manager class.     
-     <b>This class allows users to interact with the Audio Manager of the Transport Tool.</b>      
+     This class allows users to interact with the Audio Manager of the Transport Tool.      
     """
     def GetAudioClip(self):
         """
@@ -20322,8 +20322,8 @@ class FBTreeNode (FBComponent):
         """
         pass
 
-    Checked=property(doc="<b>Read Write Property:</b> Is FBTreeNode checked.          ")
-    Reference=property(doc="<b>Read Write Property:</b> Data to be associated to this node.          ")
+    Checked=property(doc="Read Write Property: Is FBTreeNode checked.          ")
+    Reference=property(doc="Read Write Property: Data to be associated to this node.          ")
     pass
 
 class FBUndoManager (FBComponent):
@@ -20426,10 +20426,10 @@ class FBUndoManager (FBComponent):
         """
         pass
 
-    OnRedo=property(doc="<b>Event:</b> A redo operation will be executed.          ")
-    OnRedoCompleted=property(doc="<b>Event:</b> A redo operation has been executed.          ")
-    OnUndo=property(doc="<b>Event:</b> An undo operation will be executed.          ")
-    OnUndoCompleted=property(doc="<b>Event:</b> An undo operation has been executed.          ")
+    OnRedo=property(doc="Event: A redo operation will be executed.          ")
+    OnRedoCompleted=property(doc="Event: A redo operation has been executed.          ")
+    OnUndo=property(doc="Event: An undo operation will be executed.          ")
+    OnUndoCompleted=property(doc="Event: An undo operation has been executed.          ")
     pass
 
 class FBVideoGrabber (FBComponent):
@@ -20449,7 +20449,7 @@ class FBVideoGrabber (FBComponent):
         BeginGrab.
         Begin video grabbing session.
 
-        return : <b>True</b> if we can begin the grab session. 
+        return : True if we can begin the grab session. 
         """
         pass
 
@@ -20623,10 +20623,10 @@ class FBAssetFolder (FBAssetItem):
 
     def GetChild(self,pIndex):
         """
-        Get the child at index <b>pIndex</b>.
+        Get the child at index pIndex.
 
         pIndex : int
-        return : The child at <b>pIndex</b>, or NULL if the index was out of range. 
+        return : The child at pIndex, or NULL if the index was out of range. 
         """
         pass
 
@@ -20670,7 +20670,7 @@ class FBBoxPlaceHolder (FBBox):
         """
         pass
 
-    Box=property(doc="<b>Read Only Property:</b> Underlying box object.          ")
+    Box=property(doc="Read Only Property: Underlying box object.          ")
     pass
 
 class FBCharacterExtension (FBKeyingGroup):
@@ -20862,15 +20862,15 @@ class FBCharacterExtension (FBKeyingGroup):
         """
         pass
 
-    IncludePartInBodyPart=property(doc="<b>Read Write Property:</b> Include or not this extension when the Body Part mode is active.          ")
-    IncludePartInFullBody=property(doc="<b>Read Write Property:</b> Include or not this extension when the Full Body mode is active.          ")
-    Label=property(doc="<b>Read Write Property:</b> The logical name of the extension, use for mirroring.          ")
-    MirrorLabel=property(doc="<b>Read Write Property:</b> Enum that indicate which extension is used as mirror, 0 is none, 1 is self, 2-n represent the (ith - 2)character extension in the attached character excluding self.          ")
-    PlotAllowed=property(doc="<b>Read Write Property:</b> Controls if objects in the set are transformable.          ")
-    ReferenceModel=property(doc="<b>Read Write Property:</b> Controls the referential of the extension.          ")
-    RetargetMode=property(doc="<b>Read Write Property:</b> Character extension retarget mode.          ")
-    StancePoseMode=property(doc="<b>Read Write Property:</b> Character extension stance pose mode.          ")
-    SyncActivationAndVisibilityMode=property(doc="<b>Read Write Property:</b> The 'Sync Activation & Visibility' mode.          ")
+    IncludePartInBodyPart=property(doc="Read Write Property: Include or not this extension when the Body Part mode is active.          ")
+    IncludePartInFullBody=property(doc="Read Write Property: Include or not this extension when the Full Body mode is active.          ")
+    Label=property(doc="Read Write Property: The logical name of the extension, use for mirroring.          ")
+    MirrorLabel=property(doc="Read Write Property: Enum that indicate which extension is used as mirror, 0 is none, 1 is self, 2-n represent the (ith - 2)character extension in the attached character excluding self.          ")
+    PlotAllowed=property(doc="Read Write Property: Controls if objects in the set are transformable.          ")
+    ReferenceModel=property(doc="Read Write Property: Controls the referential of the extension.          ")
+    RetargetMode=property(doc="Read Write Property: Character extension retarget mode.          ")
+    StancePoseMode=property(doc="Read Write Property: Character extension stance pose mode.          ")
+    SyncActivationAndVisibilityMode=property(doc="Read Write Property: The 'Sync Activation & Visibility' mode.          ")
     pass
 
 class FBCharacterPose (FBPose):
@@ -21079,7 +21079,7 @@ class FBCharacterPose (FBPose):
         Is the pose of the character extension stored in the pose?
 
         pCharacterExtensionName : Name of the character extension. 
-        return : <b>true</b> if the pose of the character extension stored in the pose. 
+        return : true if the pose of the character extension stored in the pose. 
         """
         pass
 
@@ -21087,7 +21087,7 @@ class FBCharacterPose (FBPose):
         """
         Is the pose of the character stored in the pose?
 
-        return : <b>true</b> if the pose of the character stored in the pose. 
+        return : true if the pose of the character stored in the pose. 
         """
         pass
 
@@ -21169,7 +21169,7 @@ class FBConstraint (FBBox):
     def AnimationNodeInCreate(self,pUserId,pProperty):
         """
         Animation Node Creations (IN).
-        Used to create the In connectors on an animation node. This function will return a newly created animation node, connected to the model specified by <b>pProperty</b>.
+        Used to create the In connectors on an animation node. This function will return a newly created animation node, connected to the model specified by pProperty.
 
         pUserId : User specified reference number. 
         pProperty : Property of model to animate (must be animatable) 
@@ -21180,7 +21180,7 @@ class FBConstraint (FBBox):
     def AnimationNodeOutCreate(self,pUserId,pModel,pAttribute):
         """
         Animation Node Creations (IN/OUT).
-        Used to create the connectors (in or out) on an animation node. This function will return a newly created animation node, connected to the model specified by <b>pModel</b>.
+        Used to create the connectors (in or out) on an animation node. This function will return a newly created animation node, connected to the model specified by pModel.
 
         pUserId : User specified reference number. 
         pModel : Model to associate with animation node. 
@@ -21199,11 +21199,11 @@ class FBConstraint (FBBox):
 
     def DeformerBind(self,pModel):
         """
-        Bind/Unbind <b>pModel</b> to deformation constraint.
-        These functions are used for adding/removing a deformation binding to/from <b>pModel</b> if the constraint is a deformation constraint.
+        Bind/Unbind pModel to deformation constraint.
+        These functions are used for adding/removing a deformation binding to/from pModel if the constraint is a deformation constraint.
 
         pModel : Model to bind/unbind. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -21215,10 +21215,10 @@ class FBConstraint (FBBox):
 
     def Disable(self,pModel):
         """
-        Disable constraint on <b>pModel</b>.
+        Disable constraint on pModel.
 
         pModel : Model on which constraint should be disabled. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -21246,7 +21246,7 @@ class FBConstraint (FBBox):
 
         pGroupIndex : Group to add reference to. 
         pModel : Model to place at new reference. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -21274,7 +21274,7 @@ class FBConstraint (FBBox):
         Add a group of references.
 
         pGroupName : Name of reference group to add. 
-        pMaxItemCount : Maximum number of items in <b>pGroupName</b>. 
+        pMaxItemCount : Maximum number of items in pGroupName. 
         return : Index of new reference group. 
         """
         pass
@@ -21301,17 +21301,17 @@ class FBConstraint (FBBox):
         Get the name of the reference group.
 
         pGroupIndex : Index of the reference group to get the name for. 
-        return : The name of the reference group <b>pGroupIndex</b>. 
+        return : The name of the reference group pGroupIndex. 
         """
         pass
 
     def ReferenceRemove(self,pGroupIndex,pModel):
         """
-        Remove a reference to <b>pModel</b> from the group at <b>pGroupIndex</b>.
+        Remove a reference to pModel from the group at pGroupIndex.
 
         pGroupIndex : Index to remove reference from. 
         pModel : Model to remove reference from. 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -21324,7 +21324,7 @@ class FBConstraint (FBBox):
 
     def RestoreModelState(self,pModel):
         """
-        Restore the saved model state onto <b>pModel</b>.
+        Restore the saved model state onto pModel.
 
         pModel : Model to affect with previous state. 
         """
@@ -21332,7 +21332,7 @@ class FBConstraint (FBBox):
 
     def SaveModelState(self,pModel,pS,pR,pT):
         """
-        Save current state of <b>pModel</b>.
+        Save current state of pModel.
 
         pModel : Model to save. 
         pS : Scaling information? 
@@ -21355,13 +21355,13 @@ class FBConstraint (FBBox):
         """
         pass
 
-    Active=property(doc="<b>Read Write Property:</b> Active state.          ")
-    Deformer=property(doc="<b>Read Write Property:</b> Is a deformer constraint?          ")
-    Description=property(doc="<b>Read Write Property:</b> Long description of constraint.          ")
-    HasLayout=property(doc="<b>Read Write Property:</b> Does the constraint have a layout?          ")
-    Lock=property(doc="<b>Read Write Property:</b> Lock state.          ")
-    Snap=property(doc="<b>Function Property:</b> Snap constraint.          ")
-    Weight=property(doc="<b>Read Write Property:</b> Weight of constraint.          ")
+    Active=property(doc="Read Write Property: Active state.          ")
+    Deformer=property(doc="Read Write Property: Is a deformer constraint?          ")
+    Description=property(doc="Read Write Property: Long description of constraint.          ")
+    HasLayout=property(doc="Read Write Property: Does the constraint have a layout?          ")
+    Lock=property(doc="Read Write Property: Lock state.          ")
+    Snap=property(doc="Function Property: Snap constraint.          ")
+    Weight=property(doc="Read Write Property: Weight of constraint.          ")
     pass
 
 class FBCycleAnalysisNode (FBBox):
@@ -21402,11 +21402,11 @@ class FBCycleAnalysisNode (FBBox):
         """
         pass
 
-    RealTime=property(doc="<b>Read Only Property:</b> Real time.          ")
-    RootHMode=property(doc="<b>Read Only Property:</b> RootH Mode.          ")
-    RootRMode=property(doc="<b>Read Only Property:</b> RootR Mode.          ")
-    RootSpeedMode=property(doc="<b>Read Only Property:</b> Root Speed Mode.          ")
-    RootXZMode=property(doc="<b>Read Only Property:</b> RootXZ Mode.          ")
+    RealTime=property(doc="Read Only Property: Real time.          ")
+    RootHMode=property(doc="Read Only Property: RootH Mode.          ")
+    RootRMode=property(doc="Read Only Property: RootR Mode.          ")
+    RootSpeedMode=property(doc="Read Only Property: Root Speed Mode.          ")
+    RootXZMode=property(doc="Read Only Property: RootXZ Mode.          ")
     pass
 
 class FBDeformerPointCache (FBDeformer):
@@ -21422,16 +21422,16 @@ class FBDeformerPointCache (FBDeformer):
         """
         pass
 
-    Active=property(doc="<b>Read Write Property:</b> Active.          ")
-    ChannelCount=property(doc="<b>Read Only Property:</b> Channel Count.          ")
-    ChannelEnd=property(doc="<b>Read Only Property:</b> Channel End.          ")
-    ChannelFrameRate=property(doc="<b>Read Only Property:</b> Channel FrameRate.          ")
-    ChannelIndex=property(doc="<b>Read Write Property:</b> Channel Index.          ")
-    ChannelName=property(doc="<b>Read Only Property:</b> Channel Name.          ")
-    ChannelPointCount=property(doc="<b>Read Only Property:</b> Channel Point Count.          ")
-    ChannelSampleRegular=property(doc="<b>Read Only Property:</b> Channel Sample Regular.          ")
-    ChannelStart=property(doc="<b>Read Only Property:</b> Channel Start.          ")
-    PointCacheFile=property(doc="<b>Read Write Property:</b> Point Cache File Object.          ")
+    Active=property(doc="Read Write Property: Active.          ")
+    ChannelCount=property(doc="Read Only Property: Channel Count.          ")
+    ChannelEnd=property(doc="Read Only Property: Channel End.          ")
+    ChannelFrameRate=property(doc="Read Only Property: Channel FrameRate.          ")
+    ChannelIndex=property(doc="Read Write Property: Channel Index.          ")
+    ChannelName=property(doc="Read Only Property: Channel Name.          ")
+    ChannelPointCount=property(doc="Read Only Property: Channel Point Count.          ")
+    ChannelSampleRegular=property(doc="Read Only Property: Channel Sample Regular.          ")
+    ChannelStart=property(doc="Read Only Property: Channel Start.          ")
+    PointCacheFile=property(doc="Read Write Property: Point Cache File Object.          ")
     pass
 
 class FBDevice (FBBox):
@@ -21449,7 +21449,7 @@ class FBDevice (FBBox):
 
     def AckOneBadSampleReceived(self):
         """
-        Acknowlege that one <b>bad</b> sample was received (for statistical purposes).
+        Acknowlege that one bad sample was received (for statistical purposes).
 
         """
         pass
@@ -21487,7 +21487,7 @@ class FBDevice (FBBox):
         """
         Create a new model binding.
 
-        return : <b>The</b> model root that has been created or NULL is an error occured. 
+        return : The model root that has been created or NULL is an error occured. 
         """
         pass
 
@@ -21515,17 +21515,17 @@ class FBDevice (FBBox):
         """
         pass
 
-    CommType=property(doc="<b>Read Write Property:</b> Type of communications.          ")
-    HardwareVersionInfo=property(doc="<b>Read Write Property:</b> Device information: hardware version.          ")
-    Information=property(doc="<b>Read Write Property:</b> Device information: information.          ")
-    ModelBindingRoot=property(doc="<b>Component:</b> Root of model currently binded model hierarchy.          ")
-    ModelTemplate=property(doc="<b>Component:</b> Root of model template structure.          ")
-    Online=property(doc="<b>Read Write Property:</b> Is online?          ")
-    RecordingStartTime=property(doc="<b>Read Only Property:</b> The time at which the recording started.          ")
-    RecordingStopTime=property(doc="<b>Read Only Property:</b> The time at which the recording stopped.          ")
-    SamplingMode=property(doc="<b>Read Write Property:</b> Mode to use to record device.          ")
-    SamplingPeriod=property(doc="<b>Read Write Property:</b> Set this to how many times a device is to be evaluated in one second. There is no theoretical maximum value but practically you should consider scene complexity, system resources, network speed, etc. If set to 0: the device is evaluated on the sync signal. When the sync occurs; the device is scheduled to be evaluated. If you do not set, the sampling period is based on the internal variable from the [Sync] section of the .Application.txt file (NTSC, PAL, CINEMA).          ")
-    Status=property(doc="<b>Read Write Property:</b> Device information: status.          ")
+    CommType=property(doc="Read Write Property: Type of communications.          ")
+    HardwareVersionInfo=property(doc="Read Write Property: Device information: hardware version.          ")
+    Information=property(doc="Read Write Property: Device information: information.          ")
+    ModelBindingRoot=property(doc="Component: Root of model currently binded model hierarchy.          ")
+    ModelTemplate=property(doc="Component: Root of model template structure.          ")
+    Online=property(doc="Read Write Property: Is online?          ")
+    RecordingStartTime=property(doc="Read Only Property: The time at which the recording started.          ")
+    RecordingStopTime=property(doc="Read Only Property: The time at which the recording stopped.          ")
+    SamplingMode=property(doc="Read Write Property: Mode to use to record device.          ")
+    SamplingPeriod=property(doc="Read Write Property: Set this to how many times a device is to be evaluated in one second. There is no theoretical maximum value but practically you should consider scene complexity, system resources, network speed, etc. If set to 0: the device is evaluated on the sync signal. When the sync occurs; the device is scheduled to be evaluated. If you do not set, the sampling period is based on the internal variable from the [Sync] section of the .Application.txt file (NTSC, PAL, CINEMA).          ")
+    Status=property(doc="Read Write Property: Device information: status.          ")
     pass
 
 class FBFileReference (FBNamespace):
@@ -21573,7 +21573,7 @@ class FBFileReference (FBNamespace):
         """
         Clear all cached Ref edit.
 
-        return : <b>True</b> if the RefEdits are cleared properly. 
+        return : True if the RefEdits are cleared properly. 
         """
         pass
 
@@ -21582,7 +21582,7 @@ class FBFileReference (FBNamespace):
         Clear the cached RefEdit for the given ref file path.
 
         pFilePath : The Ref File Path to query against, default to be current Ref File. 
-        return : <b>True</b> if the RefEdit for the given Ref File Path is cached and cleared properly. 
+        return : True if the RefEdit for the given Ref File Path is cached and cleared properly. 
         """
         pass
 
@@ -21627,14 +21627,14 @@ class FBFileReference (FBNamespace):
         Swap the Ref File Path and apply ref edit.
 
         pFilePath : The new Ref File path to be used 
-        pApplyAvailableRefEdit : Apply the cached Ref Edit (if exist) for the Ref File to be used if <b>True</b>. 
-        pMergeCurrentRefEdit : Merge the current RefEdit to if <b>True</b> if the reference items' name are matching. 
-        return : <b>True</b> if swap successfully. 
+        pApplyAvailableRefEdit : Apply the cached Ref Edit (if exist) for the Ref File to be used if True. 
+        pMergeCurrentRefEdit : Merge the current RefEdit to if True if the reference items' name are matching. 
+        return : True if swap successfully. 
         """
         pass
 
-    IsLoaded=property(doc="<b>Read Write Property: </b> File Reference Load/Unload.          ")
-    ReferenceFilePath=property(doc="<b>Read Write Property: </b> File Reference file path.          ")
+    IsLoaded=property(doc="Read Write Property:  File Reference Load/Unload.          ")
+    ReferenceFilePath=property(doc="Read Write Property:  File Reference file path.          ")
     pass
 
 class FBGlobalLight (FBBox):
@@ -21642,13 +21642,13 @@ class FBGlobalLight (FBBox):
     Global light class.     
          
     """
-    AmbientColor=property(doc="<b>Read Write Property:</b> Ambient light color.          ")
-    FogBegin=property(doc="<b>Read Write Property:</b> Begin fog distance.          ")
-    FogColor=property(doc="<b>Read Write Property:</b> Fog color.          ")
-    FogDensity=property(doc="<b>Read Write Property:</b> Fog density.          ")
-    FogEnable=property(doc="<b>Read Write Property:</b> Enable fog?          ")
-    FogEnd=property(doc="<b>Read Write Property:</b> End fog distance.          ")
-    FogMode=property(doc="<b>Read Write Property:</b> Fog falloff mode.          ")
+    AmbientColor=property(doc="Read Write Property: Ambient light color.          ")
+    FogBegin=property(doc="Read Write Property: Begin fog distance.          ")
+    FogColor=property(doc="Read Write Property: Fog color.          ")
+    FogDensity=property(doc="Read Write Property: Fog density.          ")
+    FogEnable=property(doc="Read Write Property: Enable fog?          ")
+    FogEnd=property(doc="Read Write Property: End fog distance.          ")
+    FogMode=property(doc="Read Write Property: Fog falloff mode.          ")
     pass
 
 class FBGroup (FBBox):
@@ -21693,14 +21693,14 @@ class FBGroup (FBBox):
         """
         Select.
 
-        pSelect : If <b>true</b>, group contents will be selected. 
+        pSelect : If true, group contents will be selected. 
         """
         pass
 
-    Items=property(doc="<b>List:</b> Items in the group.          ")
-    Pickable=property(doc="<b>Read Write Property:</b> Controls if objects in the group are pickable.          ")
-    Show=property(doc="<b>Read Write Property:</b> Controls if objects in the group are displayed.          ")
-    Transformable=property(doc="<b>Read Write Property:</b> Controls if objects in the group are transformable.          ")
+    Items=property(doc="List: Items in the group.          ")
+    Pickable=property(doc="Read Write Property: Controls if objects in the group are pickable.          ")
+    Show=property(doc="Read Write Property: Controls if objects in the group are displayed.          ")
+    Transformable=property(doc="Read Write Property: Controls if objects in the group are transformable.          ")
     pass
 
 class FBHandle (FBBox):
@@ -21725,12 +21725,12 @@ class FBHandle (FBBox):
         """
         pass
 
-    Follow=property(doc="<b>List:</b> Object to be followed by the handle. Should have a cardinality of 1.          ")
-    Image=property(doc="<b>List:</b> Image to be used in the handle display. Only the image at position 0 is used.          ")
-    Manipulate=property(doc="<b>List:</b> Objects manipulated by the handle.          ")
-    ManipulateRotation=property(doc="<b>List:</b> Objects manipulated by the handle. Only their rotation is affected.          ")
-    ManipulateScaling=property(doc="<b>List:</b> Objects manipulated by the handle. Only their scaling is affected.          ")
-    ManipulateTranslation=property(doc="<b>List:</b> Objects manipulated by the handle. Only their translation is affected.          ")
+    Follow=property(doc="List: Object to be followed by the handle. Should have a cardinality of 1.          ")
+    Image=property(doc="List: Image to be used in the handle display. Only the image at position 0 is used.          ")
+    Manipulate=property(doc="List: Objects manipulated by the handle.          ")
+    ManipulateRotation=property(doc="List: Objects manipulated by the handle. Only their rotation is affected.          ")
+    ManipulateScaling=property(doc="List: Objects manipulated by the handle. Only their scaling is affected.          ")
+    ManipulateTranslation=property(doc="List: Objects manipulated by the handle. Only their translation is affected.          ")
     pass
 
 class FBHUD (FBBox):
@@ -21766,10 +21766,10 @@ class FBHUD (FBBox):
         """
         pass
 
-    Elements=property(doc="<b>List:</b> Elements present in the HUD.          ")
-    HUDs=property(doc="<b>List:</b> HUDS attached to this HUD.          ")
-    OnDisplay=property(doc="<b>Event:</b> Callback just before HUD is displayed to update custom values          ")
-    Visibility=property(doc="<b>Read Write Property:</b> Indicate if the information will be displayed or not.          ")
+    Elements=property(doc="List: Elements present in the HUD.          ")
+    HUDs=property(doc="List: HUDS attached to this HUD.          ")
+    OnDisplay=property(doc="Event: Callback just before HUD is displayed to update custom values          ")
+    Visibility=property(doc="Read Write Property: Indicate if the information will be displayed or not.          ")
     pass
 
 class FBHUDElement (FBBox):
@@ -21777,18 +21777,18 @@ class FBHUDElement (FBBox):
     Heads Up display.     
      Display scene related information on a camera output. Rendered on video out, output renderings.      
     """
-    Height=property(doc="<b>Read Write Property:</b> Specifies the height of HUD element on the screen. It's in pixel when ScaleByPercent is false and percentage when ScaleByPercent is true.          ")
-    HorizontalDock=property(doc="<b>Read Write Property:</b> Specifies if the HUD element will be horizontally docked to the Left, Right, or Center.          ")
-    Justification=property(doc="<b>Read Write Property:</b> Specifies if the justification of the HUD element is Left, Right, or Center.          ")
-    PositionByPercent=property(doc="<b>Read Write Property:</b> When set to true, X and Y position values are in percentage, relative to the corresponding camera view dimension. Otherwise, they are absolute pixel values.          ")
-    ScaleByPercent=property(doc="<b>Read Write Property:</b> When set to true, Scale is in percentage, relative to the corresponding camera view dimension. Otherwise, it is an absolute value.          ")
-    ScaleUniformly=property(doc="<b>Read Write Property:</b> Specifies whether the width and height of HUD element will be scaled uniformly according to the initial aspect ratio.          ")
-    Show=property(doc="<b>Read Write Property:</b> Specifies if the HUD element will be displayed or not.          ")
-    VerticalDock=property(doc="<b>Read Write Property:</b> Specifies if the HUD element will be vertically docked to the Bottom, Top, or Center.          ")
+    Height=property(doc="Read Write Property: Specifies the height of HUD element on the screen. It's in pixel when ScaleByPercent is false and percentage when ScaleByPercent is true.          ")
+    HorizontalDock=property(doc="Read Write Property: Specifies if the HUD element will be horizontally docked to the Left, Right, or Center.          ")
+    Justification=property(doc="Read Write Property: Specifies if the justification of the HUD element is Left, Right, or Center.          ")
+    PositionByPercent=property(doc="Read Write Property: When set to true, X and Y position values are in percentage, relative to the corresponding camera view dimension. Otherwise, they are absolute pixel values.          ")
+    ScaleByPercent=property(doc="Read Write Property: When set to true, Scale is in percentage, relative to the corresponding camera view dimension. Otherwise, it is an absolute value.          ")
+    ScaleUniformly=property(doc="Read Write Property: Specifies whether the width and height of HUD element will be scaled uniformly according to the initial aspect ratio.          ")
+    Show=property(doc="Read Write Property: Specifies if the HUD element will be displayed or not.          ")
+    VerticalDock=property(doc="Read Write Property: Specifies if the HUD element will be vertically docked to the Bottom, Top, or Center.          ")
     Visibility=property(doc="        ")
-    Width=property(doc="<b>Read Write Property:</b> Specifies the width of HUD element on the screen. It's in pixel when ScaleByPercent is false and percentage when ScaleByPercent is true.          ")
-    X=property(doc="<b>Read Write Property:</b> Specifies the horizontal position of the HUD element, relative to dock position and justification.          ")
-    Y=property(doc="<b>Read Write Property:</b> Specifies the vertical position of the HUD element, relative to dock position and justification.          ")
+    Width=property(doc="Read Write Property: Specifies the width of HUD element on the screen. It's in pixel when ScaleByPercent is false and percentage when ScaleByPercent is true.          ")
+    X=property(doc="Read Write Property: Specifies the horizontal position of the HUD element, relative to dock position and justification.          ")
+    Y=property(doc="Read Write Property: Specifies the vertical position of the HUD element, relative to dock position and justification.          ")
     pass
 
 class FBMaterial (FBBox):
@@ -21837,24 +21837,24 @@ class FBMaterial (FBBox):
         """
         pass
 
-    Ambient=property(doc="<b>Read Write Property:</b> Ambient color.          ")
-    AmbientFactor=property(doc="<b>Read Write Property:</b> Ambient Factor value.          ")
-    Bump=property(doc="<b>Read Write Property:</b> Bump.          ")
-    BumpFactor=property(doc="<b>Read Write Property:</b> Bump Factor value.          ")
-    Diffuse=property(doc="<b>Read Write Property:</b> Diffuse color.          ")
-    DiffuseFactor=property(doc="<b>Read Write Property:</b> Diffuse Factor value.          ")
-    DisplacementColor=property(doc="<b>Read Write Property:</b> Displacement color.          ")
-    DisplacementFactor=property(doc="<b>Read Write Property:</b> Displacement Factor value.          ")
-    Emissive=property(doc="<b>Read Write Property:</b> Emissive color.          ")
-    EmissiveFactor=property(doc="<b>Read Write Property:</b> Emissive Factor value.          ")
-    NormalMap=property(doc="<b>Read Write Property:</b> Normal Map.          ")
-    Reflection=property(doc="<b>Read Write Property:</b> Reflection color.          ")
-    ReflectionFactor=property(doc="<b>Read Write Property:</b> Reflection Factor value.          ")
-    Shininess=property(doc="<b>Read Write Property:</b> Shininess value.          ")
-    Specular=property(doc="<b>Read Write Property:</b> Specular color.          ")
-    SpecularFactor=property(doc="<b>Read Write Property:</b> Specular Factor value.          ")
-    TransparencyFactor=property(doc="<b>Read Write Property:</b> Transparency Factor value.          ")
-    TransparentColor=property(doc="<b>Read Write Property:</b> Transparent color.          ")
+    Ambient=property(doc="Read Write Property: Ambient color.          ")
+    AmbientFactor=property(doc="Read Write Property: Ambient Factor value.          ")
+    Bump=property(doc="Read Write Property: Bump.          ")
+    BumpFactor=property(doc="Read Write Property: Bump Factor value.          ")
+    Diffuse=property(doc="Read Write Property: Diffuse color.          ")
+    DiffuseFactor=property(doc="Read Write Property: Diffuse Factor value.          ")
+    DisplacementColor=property(doc="Read Write Property: Displacement color.          ")
+    DisplacementFactor=property(doc="Read Write Property: Displacement Factor value.          ")
+    Emissive=property(doc="Read Write Property: Emissive color.          ")
+    EmissiveFactor=property(doc="Read Write Property: Emissive Factor value.          ")
+    NormalMap=property(doc="Read Write Property: Normal Map.          ")
+    Reflection=property(doc="Read Write Property: Reflection color.          ")
+    ReflectionFactor=property(doc="Read Write Property: Reflection Factor value.          ")
+    Shininess=property(doc="Read Write Property: Shininess value.          ")
+    Specular=property(doc="Read Write Property: Specular color.          ")
+    SpecularFactor=property(doc="Read Write Property: Specular Factor value.          ")
+    TransparencyFactor=property(doc="Read Write Property: Transparency Factor value.          ")
+    TransparentColor=property(doc="Read Write Property: Transparent color.          ")
     pass
 
 class FBMesh (FBGeometry):
@@ -21874,7 +21874,7 @@ class FBMesh (FBGeometry):
         """
         Compute Mesh Vertex Normal.
 
-        pCW : <b>True</b> for clock wise normal, otherwise for counter-clock wise 
+        pCW : True for clock wise normal, otherwise for counter-clock wise 
         """
         pass
 
@@ -21944,7 +21944,7 @@ class FBMesh (FBGeometry):
         Add a vertex.
 
         pVertex : Index in mesh of vertex to add to polygon, must be in range of [0, ControlPointCount) 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -22138,7 +22138,7 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
 
         pMatrix : Matrix to fill with requested information. 
         pWhat : Type of information requested (default=transformation). 
-        pGlobalInfo : <b>true</b> if it is GlobalInfo, <b>false</b> if Local (default=true). 
+        pGlobalInfo : true if it is GlobalInfo, false if Local (default=true). 
         pEvaluateInfo : EvaluateInfo, Take Display if none specified. 
         """
         pass
@@ -22165,7 +22165,7 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
 
         pVector : Vector to fill with requested values. 
         pWhat : Type of information requested (default=translation, inverses not supported). 
-        pGlobalInfo : <b>true</b> if it is GlobalInfo, <b>false</b> if Local (default=true). 
+        pGlobalInfo : true if it is GlobalInfo, false if Local (default=true). 
         pEvaluateInfo : EvaluateInfo, Take Display if none specified 
         """
         pass
@@ -22275,8 +22275,8 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
 
         pMatrix : Information to use to set the model's matrix. 
         pWhat : Type of matrix to set (default=transformation). 
-        pGlobalInfo : <b>true</b> if it is GlobalInfo, <b>false</b> if Local (default=true). 
-        pPushUndo : <b>true</b> if this operation is undoable, don't push undo in non UI thread. 
+        pGlobalInfo : true if it is GlobalInfo, false if Local (default=true). 
+        pPushUndo : true if this operation is undoable, don't push undo in non UI thread. 
         pEvaluateInfo : EvaluateInfo, Take Display if none specified 
         """
         pass
@@ -22287,8 +22287,8 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
 
         pMatrix : Information to use to set the model's matrix. 
         pWhat : Type of matrix to set (default=transformation). 
-        pGlobalInfo : <b>true</b> if it is GlobalInfo, <b>false</b> if Local (default=true). 
-        pPushUndo : <b>true</b> if this operation is undoable, don't push undo in non UI thread. 
+        pGlobalInfo : true if it is GlobalInfo, false if Local (default=true). 
+        pPushUndo : true if this operation is undoable, don't push undo in non UI thread. 
         pEvaluateInfo : EvaluateInfo, Take Display if none specified 
         pPrecision : Indicate the precision level, used when calculating the threshold value for gimble lock. 16 * pow(10.0, -10)) is the new default value since Mobu 2016, 16 * pow(10.0, -6)) is old default value before then. 
         """
@@ -22317,8 +22317,8 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
 
         pVector : Vector to use to set values. 
         pWhat : Type of information to set (default=translation, inverses not supported). 
-        pGlobalInfo : <b>true</b> if it is GlobalInfo, <b>false</b> if Local (default=true). 
-        pPushUndo : <b>true</b> if this operation is undoable, don't push undo in non UI thread. 
+        pGlobalInfo : true if it is GlobalInfo, false if Local (default=true). 
+        pPushUndo : true if this operation is undoable, don't push undo in non UI thread. 
         pEvaluateInfo : EvaluateInfo, Take Display if none specified 
         """
         pass
@@ -22335,62 +22335,62 @@ There is a few ways to get a handle on existing models in a scene: FBFindObjects
         """
         Get the current Frustum Culling Status.
 
-        return : <b>True</b> if model don't use frustum culling currently. 
+        return : True if model don't use frustum culling currently. 
         """
         pass
 
-    AnimationNode=property(doc="<b>Read Only Property:</b> Animation node of the model.          ")
-    BlendShapeDeformable=property(doc="<b>Read Write Property:</b> Model blend-shape deformable. Not Savable          ")
-    CastsShadows=property(doc="<b>Read Write Property:</b> If true, the geometry will produce shadows.          ")
-    Children=property(doc="<b>List:</b> Children for model.          ")
-    ConstrainDeformable=property(doc="<b>Read Write Property:</b> Model constraint deformable. Not Savable          ")
-    Deformers=property(doc="<b>List:</b> Deformers (Skeleton Deformer or Point Cache Deformer).          ")
-    GeometricRotation=property(doc="<b>Read Write Property:</b> Geometric rotation.          ")
-    GeometricScaling=property(doc="<b>Read Write Property:</b> Geometric scaling.          ")
-    GeometricTranslation=property(doc="<b>Read Write Property:</b> Geometric translation.          ")
-    Geometry=property(doc="<b>Read Write Property:</b> Geometry for the model.          ")
-    GeometryUpdateId=property(doc="<b>Read Only Property:</b> model geometry (vertex data) related update id.          ")
-    Icon3D=property(doc="<b>Read Write Property:</b> Is model a 3D icon?          ")
-    IsConstrained=property(doc="<b>Read Only Property:</b> Is model constrained?          ")
-    IsDeformable=property(doc="<b>Read Only Property:</b> Is model deformable?          ")
-    LookAt=property(doc="<b>Read Write Property:</b> Look at model (interest point).          ")
-    Materials=property(doc="<b>List:</b> Materials for model.          ")
-    ModelVertexData=property(doc="<b>Read Only Property:</b> ModelVertexData for the model.          ")
-    Parent=property(doc="<b>Read Write Property:</b> Parent model.          ")
-    Pickable=property(doc="<b>Read Write Property:</b> Indicate if a model can be picked in the viewer. This has a default value of 'true'.          ")
-    PointCacheDeformable=property(doc="<b>Read Write Property:</b> Model point cache deformable. Not Savable          ")
-    PointCacheRecord=property(doc="<b>Read Write Property:</b> Record Point Cache for model? Not Savable          ")
-    PostRotation=property(doc="<b>Read Write Property:</b> Post Rotation (considered if RotationActive is true)          ")
-    PreRotation=property(doc="<b>Read Write Property:</b> Pre Rotation (considered if RotationActive is true)          ")
-    PrimaryVisibility=property(doc="<b>Read Write Property:</b> Control the geometry render state. Geometry can still cast shadows even if this is turned off.          ")
-    QuaternionInterpolate=property(doc="<b>Read Write Property:</b> Use quaternion interpolation.          ")
-    ReceiveShadows=property(doc="<b>Read Write Property:</b> If true, the geometry will receive shadows.          ")
-    Rotation=property(doc="<b>Read Write Property:</b> Lcl rotation.          ")
-    RotationActive=property(doc="<b>Read Write Property:</b> Is model using Rotation Limits?          ")
-    RotationMax=property(doc="<b>Read Write Property:</b> Max Rotation Limit (considered if RotationActive is true)          ")
-    RotationMaxX=property(doc="<b>Read Write Property:</b> Is model using Maximum Rotation Limits On X?          ")
-    RotationMaxY=property(doc="<b>Read Write Property:</b> Is model using Maximum Rotation Limits On Y?          ")
-    RotationMaxZ=property(doc="<b>Read Write Property:</b> Is model using Maximum Rotation Limits On Z?          ")
-    RotationMin=property(doc="<b>Read Write Property:</b> Min Rotation Limit (considered if RotationActive is true)          ")
-    RotationMinX=property(doc="<b>Read Write Property:</b> Is model using Minimum Rotation Limits On X?          ")
-    RotationMinY=property(doc="<b>Read Write Property:</b> Is model using Minimum Rotation Limits On Y?          ")
-    RotationMinZ=property(doc="<b>Read Write Property:</b> Is model using Minimum Rotation Limits On Z?          ")
-    RotationOrder=property(doc="<b>Read Write Property:</b> Rotation order.          ")
-    RotationSpaceForLimitOnly=property(doc="<b>Read Write Property:</b> Apply Post Rotation Matrix only for Limits?          ")
-    Scaling=property(doc="<b>Read Write Property:</b> Lcl scaling.          ")
-    Scene=property(doc="<b>Read Only Property:</b> Scene containing the model.          ")
-    Shaders=property(doc="<b>List:</b> Shaders for model.          ")
-    ShadingMode=property(doc="<b>Read Write Property:</b> Shading mode for the model.          ")
-    Show=property(doc="<b>Read Write Property:</b> Indicate if the viewer should show the object, according to its visibility value. This has a default value of 'false'.          ")
-    SkeletonDeformable=property(doc="<b>Read Write Property:</b> Model skeleton deformable. Not Savable          ")
-    SoftSelected=property(doc="<b>Read Write Property:</b> Is model Soft selected?          ")
-    Textures=property(doc="<b>List:</b> Textures with Special UseType (Other than 'Color' which should connect to materials).          ")
-    Transformable=property(doc="<b>Read Write Property:</b> Indicate if a model can be transformable in the viewer. This has a default value of 'true'.          ")
-    Translation=property(doc="<b>Read Write Property:</b> Lcl translation.          ")
-    UniqueColorId=property(doc="<b> Read Only Property:</b> Unique Color Id for color based viewer picking. Color channel values are in the range [0, 1] with 1.0/255 precision.          ")
-    UpVector=property(doc="<b>Read Write Property:</b> UpVector model.          ")
-    Visibility=property(doc="<b>Read Write Property:</b> Visibility of model. This can be overridden by the 'Show' property.          ")
-    VisibilityInheritance=property(doc="<b>Read Write Property:</b> //!< When this value is set to True the Visibility of this model is also applied to all its descendants          ")
+    AnimationNode=property(doc="Read Only Property: Animation node of the model.          ")
+    BlendShapeDeformable=property(doc="Read Write Property: Model blend-shape deformable. Not Savable          ")
+    CastsShadows=property(doc="Read Write Property: If true, the geometry will produce shadows.          ")
+    Children=property(doc="List: Children for model.          ")
+    ConstrainDeformable=property(doc="Read Write Property: Model constraint deformable. Not Savable          ")
+    Deformers=property(doc="List: Deformers (Skeleton Deformer or Point Cache Deformer).          ")
+    GeometricRotation=property(doc="Read Write Property: Geometric rotation.          ")
+    GeometricScaling=property(doc="Read Write Property: Geometric scaling.          ")
+    GeometricTranslation=property(doc="Read Write Property: Geometric translation.          ")
+    Geometry=property(doc="Read Write Property: Geometry for the model.          ")
+    GeometryUpdateId=property(doc="Read Only Property: model geometry (vertex data) related update id.          ")
+    Icon3D=property(doc="Read Write Property: Is model a 3D icon?          ")
+    IsConstrained=property(doc="Read Only Property: Is model constrained?          ")
+    IsDeformable=property(doc="Read Only Property: Is model deformable?          ")
+    LookAt=property(doc="Read Write Property: Look at model (interest point).          ")
+    Materials=property(doc="List: Materials for model.          ")
+    ModelVertexData=property(doc="Read Only Property: ModelVertexData for the model.          ")
+    Parent=property(doc="Read Write Property: Parent model.          ")
+    Pickable=property(doc="Read Write Property: Indicate if a model can be picked in the viewer. This has a default value of 'true'.          ")
+    PointCacheDeformable=property(doc="Read Write Property: Model point cache deformable. Not Savable          ")
+    PointCacheRecord=property(doc="Read Write Property: Record Point Cache for model? Not Savable          ")
+    PostRotation=property(doc="Read Write Property: Post Rotation (considered if RotationActive is true)          ")
+    PreRotation=property(doc="Read Write Property: Pre Rotation (considered if RotationActive is true)          ")
+    PrimaryVisibility=property(doc="Read Write Property: Control the geometry render state. Geometry can still cast shadows even if this is turned off.          ")
+    QuaternionInterpolate=property(doc="Read Write Property: Use quaternion interpolation.          ")
+    ReceiveShadows=property(doc="Read Write Property: If true, the geometry will receive shadows.          ")
+    Rotation=property(doc="Read Write Property: Lcl rotation.          ")
+    RotationActive=property(doc="Read Write Property: Is model using Rotation Limits?          ")
+    RotationMax=property(doc="Read Write Property: Max Rotation Limit (considered if RotationActive is true)          ")
+    RotationMaxX=property(doc="Read Write Property: Is model using Maximum Rotation Limits On X?          ")
+    RotationMaxY=property(doc="Read Write Property: Is model using Maximum Rotation Limits On Y?          ")
+    RotationMaxZ=property(doc="Read Write Property: Is model using Maximum Rotation Limits On Z?          ")
+    RotationMin=property(doc="Read Write Property: Min Rotation Limit (considered if RotationActive is true)          ")
+    RotationMinX=property(doc="Read Write Property: Is model using Minimum Rotation Limits On X?          ")
+    RotationMinY=property(doc="Read Write Property: Is model using Minimum Rotation Limits On Y?          ")
+    RotationMinZ=property(doc="Read Write Property: Is model using Minimum Rotation Limits On Z?          ")
+    RotationOrder=property(doc="Read Write Property: Rotation order.          ")
+    RotationSpaceForLimitOnly=property(doc="Read Write Property: Apply Post Rotation Matrix only for Limits?          ")
+    Scaling=property(doc="Read Write Property: Lcl scaling.          ")
+    Scene=property(doc="Read Only Property: Scene containing the model.          ")
+    Shaders=property(doc="List: Shaders for model.          ")
+    ShadingMode=property(doc="Read Write Property: Shading mode for the model.          ")
+    Show=property(doc="Read Write Property: Indicate if the viewer should show the object, according to its visibility value. This has a default value of 'false'.          ")
+    SkeletonDeformable=property(doc="Read Write Property: Model skeleton deformable. Not Savable          ")
+    SoftSelected=property(doc="Read Write Property: Is model Soft selected?          ")
+    Textures=property(doc="List: Textures with Special UseType (Other than 'Color' which should connect to materials).          ")
+    Transformable=property(doc="Read Write Property: Indicate if a model can be transformable in the viewer. This has a default value of 'true'.          ")
+    Translation=property(doc="Read Write Property: Lcl translation.          ")
+    UniqueColorId=property(doc=" Read Only Property: Unique Color Id for color based viewer picking. Color channel values are in the range [0, 1] with 1.0/255 precision.          ")
+    UpVector=property(doc="Read Write Property: UpVector model.          ")
+    Visibility=property(doc="Read Write Property: Visibility of model. This can be overridden by the 'Show' property.          ")
+    VisibilityInheritance=property(doc="Read Write Property: //!< When this value is set to True the Visibility of this model is also applied to all its descendants          ")
     pass
 
 class FBNote (FBBox):
@@ -22409,7 +22409,7 @@ class FBNote (FBBox):
     def Attach(self,pComp):
         """
         Attach the note to a component.
-        Will attach the note to the component. If <b>pComp</b> is NULL, the note will only be added to the scene.
+        Will attach the note to the component. If pComp is NULL, the note will only be added to the scene.
 
         pComp : Component on which to attach note. 
         return : A boolean indicating if the operation was successful or not. 
@@ -22419,14 +22419,14 @@ class FBNote (FBBox):
     def Detach(self,pComp):
         """
         Detach the note from a component.
-        Will detach the note from the component. If <b>pComp</b> is NULL, the note will be removed from the scene and detached from all components.
+        Will detach the note from the component. If pComp is NULL, the note will be removed from the scene and detached from all components.
 
         pComp : Component from which to detach note. 
         return : A boolean indicating if the operation was successful or not. 
         """
         pass
 
-    StaticComment=property(doc="<b>Read Write Property:</b> Comment associated to this note.          ")
+    StaticComment=property(doc="Read Write Property: Comment associated to this note.          ")
     pass
 
 class FBObjectPose (FBPose):
@@ -22750,14 +22750,14 @@ class FBSet (FBBox):
         """
         Select.
 
-        pSelect : If <b>true</b>, set contents will be selected. 
+        pSelect : If true, set contents will be selected. 
         """
         pass
 
-    Items=property(doc="<b>List:</b> Items in the set.          ")
-    Pickable=property(doc="<b>Read Write Property:</b> Controls if objects in the set are pickable.          ")
-    Transformable=property(doc="<b>Read Write Property:</b> Controls if objects in the set are transformable.          ")
-    Visibility=property(doc="<b>Read Write Property:</b> Visibility of set (animatable).          ")
+    Items=property(doc="List: Items in the set.          ")
+    Pickable=property(doc="Read Write Property: Controls if objects in the set are pickable.          ")
+    Transformable=property(doc="Read Write Property: Controls if objects in the set are transformable.          ")
+    Visibility=property(doc="Read Write Property: Visibility of set (animatable).          ")
     pass
 
 class FBShader (FBBox):
@@ -22775,7 +22775,7 @@ class FBShader (FBBox):
 
     def Append(self,pModel):
         """
-        Append shader to <b>pModel</b>.
+        Append shader to pModel.
 
         pModel : Model to append shader to. 
         return : True if the operation is successful, false otherwise. 
@@ -22792,7 +22792,7 @@ class FBShader (FBBox):
 
     def ReplaceAll(self,pModel):
         """
-        Replace all shader in <b>pModel</b>.
+        Replace all shader in pModel.
 
         pModel : Model to replace all shader to. 
         return : True if the operation is successful, false otherwise. 
@@ -22806,7 +22806,7 @@ class FBShader (FBBox):
         """
         pass
 
-    RenderingPass=property(doc="<b>Read Write Property:</b> Rendering pass object are shaded in.          ")
+    RenderingPass=property(doc="Read Write Property: Rendering pass object are shaded in.          ")
     ShaderDescription=property(doc="Description.          ")
     pass
 
@@ -22841,9 +22841,9 @@ class FBSpreadColumn (FBSpreadPart):
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption of the column.          ")
-    Justify=property(doc="<b>Read Write Property:</b> Text justification.          ")
-    Width=property(doc="<b>Read Write Property:</b> Column width.          ")
+    Caption=property(doc="Read Write Property: Caption of the column.          ")
+    Justify=property(doc="Read Write Property: Text justification.          ")
+    Width=property(doc="Read Write Property: Column width.          ")
     pass
 
 class FBSpreadRow (FBSpreadPart):
@@ -22865,7 +22865,7 @@ class FBSpreadRow (FBSpreadPart):
         Edit the row caption.
         This will initiate the UI edit of a row caption.
 
-        return : Operation was successful (<b>true</b> or <b>false</b>). 
+        return : Operation was successful (true or false). 
         """
         pass
 
@@ -22876,9 +22876,9 @@ class FBSpreadRow (FBSpreadPart):
         """
         pass
 
-    Caption=property(doc="<b>Read Write Property:</b> Caption to display with row.          ")
-    Parent=property(doc="<b>Read Write Property:</b> Parent of row (reference).          ")
-    RowSelected=property(doc="<b>Read Write Property:</b> Is row selected?          ")
+    Caption=property(doc="Read Write Property: Caption to display with row.          ")
+    Parent=property(doc="Read Write Property: Parent of row (reference).          ")
+    RowSelected=property(doc="Read Write Property: Is row selected?          ")
     pass
 
 class FBSurface (FBGeometry):
@@ -23003,13 +23003,13 @@ class FBSurface (FBGeometry):
         """
         pass
 
-    SurfaceMode=property(doc="<b>Read Write Property:</b> Surface mode.          ")
-    UClosed=property(doc="<b>Read Write Property:</b> U Closed.          ")
-    USize=property(doc="<b>Read Write Property:</b> Size in U directions.          ")
-    UStep=property(doc="<b>Read Write Property:</b> Step in U directions.          ")
-    VClosed=property(doc="<b>Read Write Property:</b> V Closed          ")
-    VSize=property(doc="<b>Read Write Property:</b> Size in V directions.          ")
-    VStep=property(doc="<b>Read Write Property:</b> Step in V directions.          ")
+    SurfaceMode=property(doc="Read Write Property: Surface mode.          ")
+    UClosed=property(doc="Read Write Property: U Closed.          ")
+    USize=property(doc="Read Write Property: Size in U directions.          ")
+    UStep=property(doc="Read Write Property: Step in U directions.          ")
+    VClosed=property(doc="Read Write Property: V Closed          ")
+    VSize=property(doc="Read Write Property: Size in V directions.          ")
+    VStep=property(doc="Read Write Property: Step in V directions.          ")
     pass
 
 class FBTexture (FBBox):
@@ -23045,18 +23045,18 @@ class FBTexture (FBBox):
         """
         pass
 
-    Alpha=property(doc="<b>Read Write Property:</b> Texture alpha value.          ")
-    BlendMode=property(doc="<b>Read Write Property:</b> Texture blend mode.          ")
-    Height=property(doc="<b>Read Only Property:</b> Height of texture.          ")
-    Mapping=property(doc="<b>Read Write Property:</b> Texture mapping.          ")
-    Rotation=property(doc="<b>Read Write Property:</b> Rotation coordinates.          ")
-    Scaling=property(doc="<b>Read Write Property:</b> Scaling coordinates.          ")
-    SwapUV=property(doc="<b>Read Write Property:</b> Swap UV coordinates?          ")
-    TextureOGLId=property(doc="<b>Read Only:</b> OpenGL texture buffer object Id.          ")
-    Translation=property(doc="<b>Read Write Property:</b> Translation coordinates.          ")
-    UseType=property(doc="<b>Read Write Property:</b> Texture Use Type.          ")
-    Video=property(doc="<b>Read Write Property:</b> Media used for texturing.          ")
-    Width=property(doc="<b>Read Only Property:</b> Width of texture.          ")
+    Alpha=property(doc="Read Write Property: Texture alpha value.          ")
+    BlendMode=property(doc="Read Write Property: Texture blend mode.          ")
+    Height=property(doc="Read Only Property: Height of texture.          ")
+    Mapping=property(doc="Read Write Property: Texture mapping.          ")
+    Rotation=property(doc="Read Write Property: Rotation coordinates.          ")
+    Scaling=property(doc="Read Write Property: Scaling coordinates.          ")
+    SwapUV=property(doc="Read Write Property: Swap UV coordinates?          ")
+    TextureOGLId=property(doc="Read Only: OpenGL texture buffer object Id.          ")
+    Translation=property(doc="Read Write Property: Translation coordinates.          ")
+    UseType=property(doc="Read Write Property: Texture Use Type.          ")
+    Video=property(doc="Read Write Property: Media used for texturing.          ")
+    Width=property(doc="Read Only Property: Width of texture.          ")
     pass
 
 class FBUserObject (FBBox):
@@ -23087,13 +23087,13 @@ class FBVideo (FBBox):
         """
         pass
 
-    KeepOnGPU=property(doc="<b>Read Write Property:</b> Don't auto flush from GPU if true. session runtime flag, won't be saved.          ")
+    KeepOnGPU=property(doc="Read Write Property: Don't auto flush from GPU if true. session runtime flag, won't be saved.          ")
     pass
 
 class FBActor (FBConstraint):
     """
     FBActor is used to link motion data to a character.     
-     In MotionBuilder, an actor is a model used to link captured motion data to a character. Use functions in FBActor to set the body color, skeleton color, pivot color, marker size, pivot size, pivot information, etc. on an actor.<b>These classes are under development and may change dramatically between versions.</b>To obtain the list of actors present in a scene, you need to create an instance of class FBSystem, to obtain the current scene. The FBScene object holds the list of actors in the property Actors. 
+     In MotionBuilder, an actor is a model used to link captured motion data to a character. Use functions in FBActor to set the body color, skeleton color, pivot color, marker size, pivot size, pivot information, etc. on an actor.These classes are under development and may change dramatically between versions.To obtain the list of actors present in a scene, you need to create an instance of class FBSystem, to obtain the current scene. The FBScene object holds the list of actors in the property Actors. 
 @code
 FBSystem lSystem;
 FBScene* lScene = lSystem.Scene;
@@ -23239,180 +23239,180 @@ else
         """
         pass
 
-    BodyColor=property(doc="<b>Read Write Property:</b> The color of the body of the actor.          ")
-    ChestOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    ChestOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    ChestPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    FKFingerMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered intermediate finger phalanges.          ")
-    FKFingerTipMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered finger tip phalanges.          ")
-    FKThumbTipMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered thumb tip phalanges.          ")
-    HeadOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    HeadOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    HeadPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    HipsOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    HipsOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    HipsPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    HumanFingerLimits=property(doc="<b>Read Write Property:</b> Enables/Disables human finger limits during actor solve.          ")
-    IKManip=property(doc="<b>Read Write Property:</b> Access to the IK Manip mode. This property is shared for all actors.          ")
-    LeftAnkleOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftAnkleOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftAnklePosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftCollarOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftCollarOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftCollarPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftElbowOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftElbowOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftElbowPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftFootOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftFootOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftFootPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftHandIndexIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddlePinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHipOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftHipOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftHipPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftIndexAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftIndexAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftIndexBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftIndexBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftIndexCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftIndexCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftKneeOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftKneeOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftKneePosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftMiddleAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftMiddleAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftMiddleBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftMiddleBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftMiddleCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftMiddleCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftPinkyAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftPinkyAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftPinkyBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftPinkyBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftPinkyCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftPinkyCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftRingAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftRingAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftRingBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftRingBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftRingCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftRingCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftShoulderOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftShoulderOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftShoulderPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    LeftThumbAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftThumbAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftThumbBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftThumbBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftThumbCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftThumbCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftWristOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    LeftWristOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    LeftWristPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    ManipulateOffsets=property(doc="<b>Read Write Property:</b> Flag to compute offsets while manipulating. If it is set to false, the manipulator is re-snapping as before. If it is set to true, offsets properties (T and R) are computed and candidated instead.          ")
-    MarkerSet=property(doc="<b>Read Write Property:</b> Associated marker set.          ")
-    MarkerSetSize=property(doc="<b>Read Write Property:</b> The size of the markers of the actor.          ")
-    NeckOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    NeckOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    NeckPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    OutputMarkerSet=property(doc="<b>Read Write Property:</b> Associated output marker set.          ")
-    PivotColor=property(doc="<b>Read Write Property:</b> The color of the pivot points of the actor.          ")
-    PivotPointsVisibility=property(doc="<b>Read Write Property:</b> Show or Hide the Pivot Points.          ")
-    PivotSize=property(doc="<b>Read Write Property:</b> The size of the pivot points of the actor.          ")
-    RightAnkleOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightAnkleOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightAnklePosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightCollarOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightCollarOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightCollarPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightElbowOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightElbowOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightElbowPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightFootOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightFootOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightFootPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightHandIndexIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddlePinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHipOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightHipOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightHipPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightIndexAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightIndexAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightIndexBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightIndexBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightIndexCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightIndexCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightKneeOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightKneeOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightKneePosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightMiddleAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightMiddleAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightMiddleBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightMiddleBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightMiddleCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightMiddleCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightPinkyAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightPinkyAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightPinkyBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightPinkyBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightPinkyCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightPinkyCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightRingAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightRingAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightRingBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightRingBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightRingCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightRingCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightShoulderOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightShoulderOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightShoulderPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    RightThumbAOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightThumbAOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightThumbBOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightThumbBOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightThumbCOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightThumbCOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightWristOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    RightWristOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    RightWristPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
-    SkeletonColor=property(doc="<b>Read Write Property:</b> The color of the skeleton of the actor.          ")
-    SkeletonVisibility=property(doc="<b>Read Write Property:</b> Show or Hide the Skeleton.          ")
-    SymmetryEditRotation=property(doc="<b>Read Write Property:</b> Symmetry Edit (Rotation) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
-    SymmetryEditScaling=property(doc="<b>Read Write Property:</b> Symmetry Edit (Scaling) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
-    SymmetryEditTranslation=property(doc="<b>Read Write Property:</b> Symmetry Edit (Translation) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
-    Visibility=property(doc="<b>Read Write Property:</b> Show or Hide the Actor Body.          ")
-    WaistOffsetR=property(doc="<b>Read Write Property:</b> Local rotation offset that is applied after the actor solve          ")
-    WaistOffsetT=property(doc="<b>Read Write Property:</b> Local translation offset that is applied after the actor solve          ")
-    WaistPosition=property(doc="<b>Read Write Property:</b> Body part pivot of the actor.          ")
+    BodyColor=property(doc="Read Write Property: The color of the body of the actor.          ")
+    ChestOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    ChestOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    ChestPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    FKFingerMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered intermediate finger phalanges.          ")
+    FKFingerTipMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered finger tip phalanges.          ")
+    FKThumbTipMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered thumb tip phalanges.          ")
+    HeadOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    HeadOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    HeadPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    HipsOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    HipsOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    HipsPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    HumanFingerLimits=property(doc="Read Write Property: Enables/Disables human finger limits during actor solve.          ")
+    IKManip=property(doc="Read Write Property: Access to the IK Manip mode. This property is shared for all actors.          ")
+    LeftAnkleOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftAnkleOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftAnklePosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftCollarOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftCollarOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftCollarPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftElbowOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftElbowOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftElbowPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftFootOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftFootOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftFootPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftHandIndexIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddlePinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHipOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftHipOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftHipPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftIndexAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftIndexAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftIndexBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftIndexBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftIndexCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftIndexCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftKneeOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftKneeOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftKneePosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftMiddleAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftMiddleAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftMiddleBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftMiddleBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftMiddleCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftMiddleCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftPinkyAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftPinkyAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftPinkyBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftPinkyBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftPinkyCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftPinkyCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftRingAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftRingAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftRingBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftRingBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftRingCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftRingCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftShoulderOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftShoulderOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftShoulderPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    LeftThumbAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftThumbAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftThumbBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftThumbBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftThumbCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftThumbCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftWristOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    LeftWristOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    LeftWristPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    ManipulateOffsets=property(doc="Read Write Property: Flag to compute offsets while manipulating. If it is set to false, the manipulator is re-snapping as before. If it is set to true, offsets properties (T and R) are computed and candidated instead.          ")
+    MarkerSet=property(doc="Read Write Property: Associated marker set.          ")
+    MarkerSetSize=property(doc="Read Write Property: The size of the markers of the actor.          ")
+    NeckOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    NeckOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    NeckPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    OutputMarkerSet=property(doc="Read Write Property: Associated output marker set.          ")
+    PivotColor=property(doc="Read Write Property: The color of the pivot points of the actor.          ")
+    PivotPointsVisibility=property(doc="Read Write Property: Show or Hide the Pivot Points.          ")
+    PivotSize=property(doc="Read Write Property: The size of the pivot points of the actor.          ")
+    RightAnkleOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightAnkleOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightAnklePosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightCollarOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightCollarOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightCollarPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightElbowOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightElbowOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightElbowPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightFootOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightFootOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightFootPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightHandIndexIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddlePinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHipOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightHipOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightHipPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightIndexAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightIndexAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightIndexBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightIndexBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightIndexCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightIndexCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightKneeOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightKneeOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightKneePosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightMiddleAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightMiddleAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightMiddleBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightMiddleBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightMiddleCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightMiddleCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightPinkyAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightPinkyAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightPinkyBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightPinkyBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightPinkyCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightPinkyCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightRingAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightRingAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightRingBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightRingBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightRingCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightRingCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightShoulderOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightShoulderOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightShoulderPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    RightThumbAOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightThumbAOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightThumbBOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightThumbBOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightThumbCOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightThumbCOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightWristOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    RightWristOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    RightWristPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
+    SkeletonColor=property(doc="Read Write Property: The color of the skeleton of the actor.          ")
+    SkeletonVisibility=property(doc="Read Write Property: Show or Hide the Skeleton.          ")
+    SymmetryEditRotation=property(doc="Read Write Property: Symmetry Edit (Rotation) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
+    SymmetryEditScaling=property(doc="Read Write Property: Symmetry Edit (Scaling) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
+    SymmetryEditTranslation=property(doc="Read Write Property: Symmetry Edit (Translation) mode state. Only effective when IKManip property is set to false. This property is shared for all actors.          ")
+    Visibility=property(doc="Read Write Property: Show or Hide the Actor Body.          ")
+    WaistOffsetR=property(doc="Read Write Property: Local rotation offset that is applied after the actor solve          ")
+    WaistOffsetT=property(doc="Read Write Property: Local translation offset that is applied after the actor solve          ")
+    WaistPosition=property(doc="Read Write Property: Body part pivot of the actor.          ")
     pass
 
 class FBCamera (FBModel):
@@ -23450,102 +23450,102 @@ class FBCamera (FBModel):
         """
         pass
 
-    AntiAliasingIntensity=property(doc="<b>Read Write Property:</b> Anti-aliasing intensity.          ")
-    AntiAliasingMethod=property(doc="<b>Read Write Property:</b> Anti-aliasing method.          ")
-    ApertureMode=property(doc="<b>Read Write Property:</b> Aperture mode.          ")
-    BackGroundColor=property(doc="<b>Read Write Property:</b> Background color for camera.          ")
-    BackGroundImageCenter=property(doc="<b>Read Write Property:</b> Center the background image          ")
-    BackGroundImageCrop=property(doc="<b>Read Write Property:</b> Crop the background image          ")
-    BackGroundImageFit=property(doc="<b>Read Write Property:</b> Fit the background image          ")
-    BackGroundImageKeepRatio=property(doc="<b>Read Write Property:</b> Keep the background image's ratio          ")
-    BackGroundImageOffsetX=property(doc="<b>Read Write Property:</b> Ignored if BackGroundImageFit is true. X offset, in term of percentage of the fit background image width, applied on the background image.          ")
-    BackGroundImageOffsetY=property(doc="<b>Read Write Property:</b> Ignored if BackGroundImageFit is true. Y offset, in term of percentage of the fit background image height, applied on the background image.          ")
-    BackGroundImageScaleX=property(doc="<b>Read Write Property:</b> Ignored if BackGroundImageFit is true. X scale, in term of percentage of the fit background image width, applied on the background image.          ")
-    BackGroundImageScaleY=property(doc="<b>Read Write Property:</b> Ignored if BackGroundImageFit and/or BackGroundImageKeepRatio is true. Y scale, in term of percentage of the fit background image height, applied on the background image. The X scale property is considered instead of this Y scale property if BackGroundImageKeepRatio is set to true.          ")
+    AntiAliasingIntensity=property(doc="Read Write Property: Anti-aliasing intensity.          ")
+    AntiAliasingMethod=property(doc="Read Write Property: Anti-aliasing method.          ")
+    ApertureMode=property(doc="Read Write Property: Aperture mode.          ")
+    BackGroundColor=property(doc="Read Write Property: Background color for camera.          ")
+    BackGroundImageCenter=property(doc="Read Write Property: Center the background image          ")
+    BackGroundImageCrop=property(doc="Read Write Property: Crop the background image          ")
+    BackGroundImageFit=property(doc="Read Write Property: Fit the background image          ")
+    BackGroundImageKeepRatio=property(doc="Read Write Property: Keep the background image's ratio          ")
+    BackGroundImageOffsetX=property(doc="Read Write Property: Ignored if BackGroundImageFit is true. X offset, in term of percentage of the fit background image width, applied on the background image.          ")
+    BackGroundImageOffsetY=property(doc="Read Write Property: Ignored if BackGroundImageFit is true. Y offset, in term of percentage of the fit background image height, applied on the background image.          ")
+    BackGroundImageScaleX=property(doc="Read Write Property: Ignored if BackGroundImageFit is true. X scale, in term of percentage of the fit background image width, applied on the background image.          ")
+    BackGroundImageScaleY=property(doc="Read Write Property: Ignored if BackGroundImageFit and/or BackGroundImageKeepRatio is true. Y scale, in term of percentage of the fit background image height, applied on the background image. The X scale property is considered instead of this Y scale property if BackGroundImageKeepRatio is set to true.          ")
     BackGroundMedia=property(doc="        ")
-    BackGroundPlaneDistance=property(doc="<b>Read Write Property:</b> Set the distance for the background plane.          ")
-    BackGroundPlaneDistanceMode=property(doc="<b>Read Write Property:</b> Select mode for the background plane's distance.          ")
-    BackGroundTexture=property(doc="<b>Read Write Property:</b> Background Texture          ")
-    CameraViewportHeight=property(doc="<b> Read Only Property:</b> Camera Viewport height          ")
-    CameraViewportWidth=property(doc="<b> Read Only Property:</b> Camera Viewport width          ")
-    CameraViewportX=property(doc="<b> Read Only Property:</b> Camera Viewport start position's X value          ")
-    CameraViewportY=property(doc="<b> Read Only Property:</b> Camera Viewport start position's Y value          ")
-    Display2DMagnifierFrame=property(doc="<b>Read Write Property:</b> Enable/Disable the drawing of the 2D Magnifier frame box.          ")
-    DisplayTurnTableIcon=property(doc="<b>Read Write Property:</b> Enable/Disable the drawing of the Turn Table icon.          ")
-    FarPlaneDistance=property(doc="<b>Read Write Property:</b> Far plane distance.          ")
-    FieldOfView=property(doc="<b>Read Write Property:</b> Field of View (used when in horizontal or vertical aperture modes).          ")
-    FieldOfViewX=property(doc="<b>Read Write Property:</b> Field of View X angle (used in horizontal and vertical aperture mode).          ")
-    FieldOfViewY=property(doc="<b>Read Write Property:</b> Field of View Y angle (used in horizontal and vertical aperture mode).          ")
-    FilmAspectRatio=property(doc="<b>Read Write Property:</b> Film aspect ratio.          ")
-    FilmBackType=property(doc="<b>Read Write Property:</b> Film back standard type.          ")
-    FilmSizeHeight=property(doc="<b>Read Write Property:</b> Height of the film.          ")
-    FilmSizeWidth=property(doc="<b>Read Write Property:</b> Width of the film.          ")
-    FocalLength=property(doc="<b>Read Write Property:</b> Focal Length.          ")
-    FocusAngle=property(doc="<b>Read Write Property:</b> Focus Angle (rendering dof).          ")
-    FocusDistanceSource=property(doc="<b>Read Write Property:</b> Select source for focusing.          ")
-    FocusModel=property(doc="<b>Read Write Property:</b> Another model that determines the focus distance.          ")
-    FocusSpecificDistance=property(doc="<b>Read Write Property:</b> Specfic distance for focusing.          ")
-    ForeGroundAlpha=property(doc="<b>Read Write Property:</b> Opacity of foreground.          ")
-    ForeGroundImageCenter=property(doc="<b>Read Write Property:</b> Center the foreground image          ")
-    ForeGroundImageCrop=property(doc="<b>Read Write Property:</b> Crop the foreground image          ")
-    ForeGroundImageFit=property(doc="<b>Read Write Property:</b> Fit the foreground image          ")
-    ForeGroundImageKeepRatio=property(doc="<b>Read Write Property:</b> Keep the foreground image's ratio?          ")
-    ForeGroundImageOffsetX=property(doc="<b>Read Write Property:</b> Ignored if ForeGroundImageFit is true. X offset, in term of percentage of the fit foreground image width, applied on the foreground image.          ")
-    ForeGroundImageOffsetY=property(doc="<b>Read Write Property:</b> Ignored if ForeGroundImageFit is true. Y offset, in term of percentage of the fit foreground image height, applied on the foreground image.          ")
-    ForeGroundImageScaleX=property(doc="<b>Read Write Property:</b> Ignored if ForeGroundImageFit is true. X scale, in term of percentage of the fit foreground image width, applied on the foreground image.          ")
-    ForeGroundImageScaleY=property(doc="<b>Read Write Property:</b> Ignored if ForeGroundImageFit and/or ForeGroundImageKeepRatio is true. Y scale, in term of percentage of the fit foreground image height, applied on the foreground image. The X scale property is considered instead of this Y scale property if ForeGroundImageKeepRatio is set to true.          ")
-    ForeGroundMaterialThreshold=property(doc="<b>Read Write Property:</b> Material threshold for a transparent foreground.          ")
+    BackGroundPlaneDistance=property(doc="Read Write Property: Set the distance for the background plane.          ")
+    BackGroundPlaneDistanceMode=property(doc="Read Write Property: Select mode for the background plane's distance.          ")
+    BackGroundTexture=property(doc="Read Write Property: Background Texture          ")
+    CameraViewportHeight=property(doc=" Read Only Property: Camera Viewport height          ")
+    CameraViewportWidth=property(doc=" Read Only Property: Camera Viewport width          ")
+    CameraViewportX=property(doc=" Read Only Property: Camera Viewport start position's X value          ")
+    CameraViewportY=property(doc=" Read Only Property: Camera Viewport start position's Y value          ")
+    Display2DMagnifierFrame=property(doc="Read Write Property: Enable/Disable the drawing of the 2D Magnifier frame box.          ")
+    DisplayTurnTableIcon=property(doc="Read Write Property: Enable/Disable the drawing of the Turn Table icon.          ")
+    FarPlaneDistance=property(doc="Read Write Property: Far plane distance.          ")
+    FieldOfView=property(doc="Read Write Property: Field of View (used when in horizontal or vertical aperture modes).          ")
+    FieldOfViewX=property(doc="Read Write Property: Field of View X angle (used in horizontal and vertical aperture mode).          ")
+    FieldOfViewY=property(doc="Read Write Property: Field of View Y angle (used in horizontal and vertical aperture mode).          ")
+    FilmAspectRatio=property(doc="Read Write Property: Film aspect ratio.          ")
+    FilmBackType=property(doc="Read Write Property: Film back standard type.          ")
+    FilmSizeHeight=property(doc="Read Write Property: Height of the film.          ")
+    FilmSizeWidth=property(doc="Read Write Property: Width of the film.          ")
+    FocalLength=property(doc="Read Write Property: Focal Length.          ")
+    FocusAngle=property(doc="Read Write Property: Focus Angle (rendering dof).          ")
+    FocusDistanceSource=property(doc="Read Write Property: Select source for focusing.          ")
+    FocusModel=property(doc="Read Write Property: Another model that determines the focus distance.          ")
+    FocusSpecificDistance=property(doc="Read Write Property: Specfic distance for focusing.          ")
+    ForeGroundAlpha=property(doc="Read Write Property: Opacity of foreground.          ")
+    ForeGroundImageCenter=property(doc="Read Write Property: Center the foreground image          ")
+    ForeGroundImageCrop=property(doc="Read Write Property: Crop the foreground image          ")
+    ForeGroundImageFit=property(doc="Read Write Property: Fit the foreground image          ")
+    ForeGroundImageKeepRatio=property(doc="Read Write Property: Keep the foreground image's ratio?          ")
+    ForeGroundImageOffsetX=property(doc="Read Write Property: Ignored if ForeGroundImageFit is true. X offset, in term of percentage of the fit foreground image width, applied on the foreground image.          ")
+    ForeGroundImageOffsetY=property(doc="Read Write Property: Ignored if ForeGroundImageFit is true. Y offset, in term of percentage of the fit foreground image height, applied on the foreground image.          ")
+    ForeGroundImageScaleX=property(doc="Read Write Property: Ignored if ForeGroundImageFit is true. X scale, in term of percentage of the fit foreground image width, applied on the foreground image.          ")
+    ForeGroundImageScaleY=property(doc="Read Write Property: Ignored if ForeGroundImageFit and/or ForeGroundImageKeepRatio is true. Y scale, in term of percentage of the fit foreground image height, applied on the foreground image. The X scale property is considered instead of this Y scale property if ForeGroundImageKeepRatio is set to true.          ")
+    ForeGroundMaterialThreshold=property(doc="Read Write Property: Material threshold for a transparent foreground.          ")
     ForeGroundMedia=property(doc="        ")
-    ForeGroundPlaneDistance=property(doc="<b>Read Write Property:</b> Set the distance for the foreground plane.          ")
-    ForeGroundPlaneDistanceMode=property(doc="<b>Read Write Property:</b> Select mode for the foreground plane's distance.          ")
-    ForeGroundTexture=property(doc="<b>Read Write Property:</b> ForeGround Texture          ")
-    ForeGroundTransparent=property(doc="<b>Read Write Property:</b> Is the foreground transparent?          ")
-    FrameColor=property(doc="<b>Read Write Property:</b> Frame color for camera.          ")
-    FrameSizeMode=property(doc="<b>Read Write Property:</b> Frame size standard mode.          ")
-    HUDs=property(doc="<b> List :</b> HUDs present in this camera          ")
-    InteractiveMode=property(doc="<b>Read Write Property:</b> Interactive mode?          ")
-    Interest=property(doc="<b>Read Write Property:</b> Direct camera's interest.          ")
-    MagnifierPosX=property(doc="<b>Read Write Property:</b> 2D Magnifier X Position.          ")
-    MagnifierPosY=property(doc="<b>Read Write Property:</b> 2D Magnifier Y Position.          ")
-    MagnifierZoom=property(doc="<b>Read Write Property:</b> 2D Magnifier Zoom value.          ")
-    MotionBlurIntensity=property(doc="<b>Read Write Property:</b> Motion Blur Intensity.          ")
-    MouseLockCamera=property(doc="<b>Read Write Property:</b> Mouse lock for camera?          ")
-    NearPlaneDistance=property(doc="<b>Read Write Property:</b> Near plane distance.          ")
-    NumberOfSamples=property(doc="<b>Read Write Property:</b> Number of samples to oversample with.          ")
-    OpticalCenterX=property(doc="<b>Read Write Property:</b> Optical Center X (mm).          ")
-    OpticalCenterY=property(doc="<b>Read Write Property:</b> Optical Center Y (mm).          ")
+    ForeGroundPlaneDistance=property(doc="Read Write Property: Set the distance for the foreground plane.          ")
+    ForeGroundPlaneDistanceMode=property(doc="Read Write Property: Select mode for the foreground plane's distance.          ")
+    ForeGroundTexture=property(doc="Read Write Property: ForeGround Texture          ")
+    ForeGroundTransparent=property(doc="Read Write Property: Is the foreground transparent?          ")
+    FrameColor=property(doc="Read Write Property: Frame color for camera.          ")
+    FrameSizeMode=property(doc="Read Write Property: Frame size standard mode.          ")
+    HUDs=property(doc=" List : HUDs present in this camera          ")
+    InteractiveMode=property(doc="Read Write Property: Interactive mode?          ")
+    Interest=property(doc="Read Write Property: Direct camera's interest.          ")
+    MagnifierPosX=property(doc="Read Write Property: 2D Magnifier X Position.          ")
+    MagnifierPosY=property(doc="Read Write Property: 2D Magnifier Y Position.          ")
+    MagnifierZoom=property(doc="Read Write Property: 2D Magnifier Zoom value.          ")
+    MotionBlurIntensity=property(doc="Read Write Property: Motion Blur Intensity.          ")
+    MouseLockCamera=property(doc="Read Write Property: Mouse lock for camera?          ")
+    NearPlaneDistance=property(doc="Read Write Property: Near plane distance.          ")
+    NumberOfSamples=property(doc="Read Write Property: Number of samples to oversample with.          ")
+    OpticalCenterX=property(doc="Read Write Property: Optical Center X (mm).          ")
+    OpticalCenterY=property(doc="Read Write Property: Optical Center Y (mm).          ")
     OrthoFactor=property(doc="Constant scale factor to be used with OrthoZoom for orthographic cameras.          ")
-    OrthoZoom=property(doc="<b>Read Write Property:</b> Zoom factor of an orthographic camera.          ")
-    PixelAspectRatio=property(doc="<b>Read Write Property:</b> Pixel aspect ratio.          ")
-    ResolutionHeight=property(doc="<b>Read Write Property:</b> Resolution height.          ")
-    ResolutionMode=property(doc="<b>Read Write Property:</b> Resolution standard mode.          ")
-    ResolutionWidth=property(doc="<b>Read Write Property:</b> Resolution width.          ")
-    Roll=property(doc="<b>Read Write Property:</b> Camera's roll on it's Z axis.          ")
-    SafeAreaMode=property(doc="<b>Read Write Property:</b> Select mode for safe area.          ")
-    SamplingType=property(doc="<b>Read Write Property:</b> Type of over sampling.          ")
-    SqueezeRatio=property(doc="<b>Read Write Property:</b> Squeeze ratio.          ")
-    SystemCamera=property(doc="<b>Read Only Property:</b> Indicate if this a producer (default or system) camera or a custom (user-created) camera.          ")
-    TurnTable=property(doc="<b>Read Write Property:</b> Camera's rotation around its interest.          ")
-    Type=property(doc="<b>Read Write Property:</b> Type of camera          ")
-    Use2DMagnifier=property(doc="<b>Read Write Property:</b> Enable/Disable the 2D Magnifier.          ")
-    UseAccumulationBuffer=property(doc="<b>Read Write Property:</b> Use accumulation buffer?          ")
-    UseAntiAliasing=property(doc="<b>Read Write Property:</b> Use anti-aliasing?          ")
-    UseDepthOfField=property(doc="<b>Read Write Property:</b> Use depth of field calculations?          ")
-    UseFrameColor=property(doc="<b>Read Write Property:</b> Use frame color?          ")
-    UseMotionBlur=property(doc="<b>Read Write Property:</b> Enable Motion Blur.          ")
-    UseRealTimeMotionBlur=property(doc="<b>Read Write Property:</b> Enable Real-time Motion Blur.          ")
-    ViewBackGroundPlaneMode=property(doc="<b>Read Write Property:</b> Background plane view mode          ")
-    ViewCameraInterest=property(doc="<b>Read Write Property:</b> Show the camera interest?          ")
-    ViewDisplaySafeArea=property(doc="<b>Read Write Property:</b> Display safe area?          ")
-    ViewForeGroundPlaneMode=property(doc="<b>Read Write Property:</b> Foreground plane view mode          ")
-    ViewNearFarPlane=property(doc="<b>Read Write Property:</b> Show near/far planes?          ")
-    ViewOpticalCenter=property(doc="<b>Read Write Property:</b> View optical center?          ")
-    ViewShowAxis=property(doc="<b>Read Write Property:</b> Show axis?          ")
-    ViewShowGrid=property(doc="<b>Read Write Property:</b> Show grid?          ")
-    ViewShowName=property(doc="<b>Read Write Property:</b> Show name?          ")
-    ViewShowTimeCode=property(doc="<b>Read Write Property:</b> Show time code?          ")
-    WindowHeight=property(doc="<b>Read Only Property:</b> Window height.          ")
-    WindowWidth=property(doc="<b>Read Only Property:</b> Window width.          ")
+    OrthoZoom=property(doc="Read Write Property: Zoom factor of an orthographic camera.          ")
+    PixelAspectRatio=property(doc="Read Write Property: Pixel aspect ratio.          ")
+    ResolutionHeight=property(doc="Read Write Property: Resolution height.          ")
+    ResolutionMode=property(doc="Read Write Property: Resolution standard mode.          ")
+    ResolutionWidth=property(doc="Read Write Property: Resolution width.          ")
+    Roll=property(doc="Read Write Property: Camera's roll on it's Z axis.          ")
+    SafeAreaMode=property(doc="Read Write Property: Select mode for safe area.          ")
+    SamplingType=property(doc="Read Write Property: Type of over sampling.          ")
+    SqueezeRatio=property(doc="Read Write Property: Squeeze ratio.          ")
+    SystemCamera=property(doc="Read Only Property: Indicate if this a producer (default or system) camera or a custom (user-created) camera.          ")
+    TurnTable=property(doc="Read Write Property: Camera's rotation around its interest.          ")
+    Type=property(doc="Read Write Property: Type of camera          ")
+    Use2DMagnifier=property(doc="Read Write Property: Enable/Disable the 2D Magnifier.          ")
+    UseAccumulationBuffer=property(doc="Read Write Property: Use accumulation buffer?          ")
+    UseAntiAliasing=property(doc="Read Write Property: Use anti-aliasing?          ")
+    UseDepthOfField=property(doc="Read Write Property: Use depth of field calculations?          ")
+    UseFrameColor=property(doc="Read Write Property: Use frame color?          ")
+    UseMotionBlur=property(doc="Read Write Property: Enable Motion Blur.          ")
+    UseRealTimeMotionBlur=property(doc="Read Write Property: Enable Real-time Motion Blur.          ")
+    ViewBackGroundPlaneMode=property(doc="Read Write Property: Background plane view mode          ")
+    ViewCameraInterest=property(doc="Read Write Property: Show the camera interest?          ")
+    ViewDisplaySafeArea=property(doc="Read Write Property: Display safe area?          ")
+    ViewForeGroundPlaneMode=property(doc="Read Write Property: Foreground plane view mode          ")
+    ViewNearFarPlane=property(doc="Read Write Property: Show near/far planes?          ")
+    ViewOpticalCenter=property(doc="Read Write Property: View optical center?          ")
+    ViewShowAxis=property(doc="Read Write Property: Show axis?          ")
+    ViewShowGrid=property(doc="Read Write Property: Show grid?          ")
+    ViewShowName=property(doc="Read Write Property: Show name?          ")
+    ViewShowTimeCode=property(doc="Read Write Property: Show time code?          ")
+    WindowHeight=property(doc="Read Only Property: Window height.          ")
+    WindowWidth=property(doc="Read Only Property: Window width.          ")
     pass
 
 class FBCameraSwitcher (FBModel):
@@ -23570,14 +23570,14 @@ class FBCameraSwitcher (FBModel):
         """
         pass
 
-    CurrentCamera=property(doc="<b>Read Write Property:</b> Camera currently being used by the switcher. Set to NULL to turn on evaluate switch, otherwise manual switch.          ")
-    CurrentCameraIndex=property(doc="<b>Read Write Property:</b> Camera index currently being used by the switcher. Set to -1 to turn on evaluate switch.          ")
+    CurrentCamera=property(doc="Read Write Property: Camera currently being used by the switcher. Set to NULL to turn on evaluate switch, otherwise manual switch.          ")
+    CurrentCameraIndex=property(doc="Read Write Property: Camera index currently being used by the switcher. Set to -1 to turn on evaluate switch.          ")
     pass
 
 class FBCharacter (FBConstraint):
     """
     A character is the link between a motion source and a character model.     
-     <b>These classes are under development and may change dramatically between versions.</b> This class exposes part of the functionality associated with a Character. A character can possess a number of potential sources at the same time, such as an actor and another character, but with only one active at any given time. Before setting the InputType to the desired value, one must make sure to have previously set either the InputCharacter or the InputActor.To obtain the list of characters present in a scene, you need to create an instance of class FBSystem, to obtain the current scene. The FBScene object holds the list of characters in the property Characters. 
+     These classes are under development and may change dramatically between versions. This class exposes part of the functionality associated with a Character. A character can possess a number of potential sources at the same time, such as an actor and another character, but with only one active at any given time. Before setting the InputType to the desired value, one must make sure to have previously set either the InputCharacter or the InputActor.To obtain the list of characters present in a scene, you need to create an instance of class FBSystem, to obtain the current scene. The FBScene object holds the list of characters in the property Characters. 
 @code
 FBSystem lSystem;
 FBScene* lScene = lSystem.Scene;
@@ -24045,72 +24045,72 @@ See samples: CharacterMarkerSet.py, EnableGameModeOnSelectedCharacters_Z.py, Mir
         """
         pass
 
-    ActiveInput=property(doc="<b>Read Write Property:</b> Is the character input active?          ")
-    CharacterExtensions=property(doc="<b>List:</b> Character Extensions in the character.          ")
-    ContactBehaviour=property(doc="<b>Read Write Property:</b> Contact Behavior selection.          ")
-    FKFingerMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered intermediate finger phalanges.          ")
-    FKFingerTipMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered finger tip phalanges.          ")
-    FKThumbTipMultiplier=property(doc="<b>Read Write Property:</b> Used to augment the amount of FK propagation for unmarkered thumb tip phalanges.          ")
-    HipsTranslationMode=property(doc="<b>Read Write Property:</b> Hips Translation Mode.          ")
-    HumanFingerLimits=property(doc="<b>Read Write Property:</b> Enables/Disables human finger limits during actor solve.          ")
-    InputActor=property(doc="<b>Read Write Property:</b> The index of the actor used for the input.          ")
-    InputCharacter=property(doc="<b>Read Write Property:</b> The index of the character used for the input.          ")
-    InputType=property(doc="<b>Read Write Property:</b> The input type for the character (ex: Actor).          ")
-    InverseLeftElbow=property(doc="<b>Read Write Property:</b> Is left elbow inverted.          ")
-    InverseLeftKnee=property(doc="<b>Read Write Property:</b> Is left knee inverted.          ")
-    InverseRightElbow=property(doc="<b>Read Write Property:</b> Is right elbow inverted.          ")
-    InverseRightKnee=property(doc="<b>Read Write Property:</b> Is right knee inverted.          ")
-    KeyingMode=property(doc="<b>Read Write Property:</b> The current keying mode.          ")
-    LeftElbowKillPitch=property(doc="<b>Read Write Property:</b> is Pitch used for Left elbow.          ")
-    LeftHandIndexIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandIndexRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddlePinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandMiddleRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandPinkyRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftHandRingRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    LeftKneeKillPitch=property(doc="<b>Read Write Property:</b> is Pitch used for Left knee.          ")
-    LockX=property(doc="<b>Read Write Property:</b> Lock character skeleton in place on X axis.          ")
-    LockY=property(doc="<b>Read Write Property:</b> Lock character skeleton in place on Y axis.          ")
-    LockZ=property(doc="<b>Read Write Property:</b> Lock character skeleton in place on Z axis.          ")
-    MirrorMode=property(doc="<b>Read Write Property:</b> is in mirror mode.          ")
-    RightElbowKillPitch=property(doc="<b>Read Write Property:</b> is Pitch used for Right elbow.          ")
-    RightHandIndexIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandIndexRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddlePinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandMiddleRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandPinkyRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingIndex=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingMiddle=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingPinky=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightHandRingRing=property(doc="<b>Read Write Property:</b> Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
-    RightKneeKillPitch=property(doc="<b>Read Write Property:</b> is Pitch used for Right knee.          ")
-    RollSolver=property(doc="<b>Read Write Property:</b> Roll Solver selection.          ")
-    ShoulderCorrection=property(doc="<b>Read Write Property:</b> shoulder correction values.          ")
-    SyncMode=property(doc="<b>Read Write Property:</b> is character in sync mode.          ")
-    WriteReference=property(doc="<b>Read Write Property:</b> are we writing back on reference.          ")
+    ActiveInput=property(doc="Read Write Property: Is the character input active?          ")
+    CharacterExtensions=property(doc="List: Character Extensions in the character.          ")
+    ContactBehaviour=property(doc="Read Write Property: Contact Behavior selection.          ")
+    FKFingerMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered intermediate finger phalanges.          ")
+    FKFingerTipMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered finger tip phalanges.          ")
+    FKThumbTipMultiplier=property(doc="Read Write Property: Used to augment the amount of FK propagation for unmarkered thumb tip phalanges.          ")
+    HipsTranslationMode=property(doc="Read Write Property: Hips Translation Mode.          ")
+    HumanFingerLimits=property(doc="Read Write Property: Enables/Disables human finger limits during actor solve.          ")
+    InputActor=property(doc="Read Write Property: The index of the actor used for the input.          ")
+    InputCharacter=property(doc="Read Write Property: The index of the character used for the input.          ")
+    InputType=property(doc="Read Write Property: The input type for the character (ex: Actor).          ")
+    InverseLeftElbow=property(doc="Read Write Property: Is left elbow inverted.          ")
+    InverseLeftKnee=property(doc="Read Write Property: Is left knee inverted.          ")
+    InverseRightElbow=property(doc="Read Write Property: Is right elbow inverted.          ")
+    InverseRightKnee=property(doc="Read Write Property: Is right knee inverted.          ")
+    KeyingMode=property(doc="Read Write Property: The current keying mode.          ")
+    LeftElbowKillPitch=property(doc="Read Write Property: is Pitch used for Left elbow.          ")
+    LeftHandIndexIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandIndexRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddlePinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandMiddleRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandPinkyRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftHandRingRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    LeftKneeKillPitch=property(doc="Read Write Property: is Pitch used for Left knee.          ")
+    LockX=property(doc="Read Write Property: Lock character skeleton in place on X axis.          ")
+    LockY=property(doc="Read Write Property: Lock character skeleton in place on Y axis.          ")
+    LockZ=property(doc="Read Write Property: Lock character skeleton in place on Z axis.          ")
+    MirrorMode=property(doc="Read Write Property: is in mirror mode.          ")
+    RightElbowKillPitch=property(doc="Read Write Property: is Pitch used for Right elbow.          ")
+    RightHandIndexIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandIndexRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddlePinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandMiddleRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandPinkyRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingIndex=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingMiddle=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingPinky=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightHandRingRing=property(doc="Read Write Property: Used to set blending coefficients. Each of the 4 fingers can be a blend of the 4 finger. This is not available for thumbs.          ")
+    RightKneeKillPitch=property(doc="Read Write Property: is Pitch used for Right knee.          ")
+    RollSolver=property(doc="Read Write Property: Roll Solver selection.          ")
+    ShoulderCorrection=property(doc="Read Write Property: shoulder correction values.          ")
+    SyncMode=property(doc="Read Write Property: is character in sync mode.          ")
+    WriteReference=property(doc="Read Write Property: are we writing back on reference.          ")
     pass
 
 class FBCharacterFace (FBConstraint):
     """
     Animates a character face using an actor as input.     
-     <b>These classes are under development and may change dramatically between versions.</b>      
+     These classes are under development and may change dramatically between versions.      
     """
     def FBCharacterFace(self,pName):
         """
@@ -24126,7 +24126,7 @@ class FBCharacterFace (FBConstraint):
 
         pList : List of clusters to add to this group. 
         pName : Optional name to assign to this cluster group. 
-        return : <b>Index</b> of the new cluster group <b>-1</b> if the operation failed to complete. 
+        return : Index of the new cluster group -1 if the operation failed to complete. 
         """
         pass
 
@@ -24135,7 +24135,7 @@ class FBCharacterFace (FBConstraint):
         Find a cluster group by name.
 
         pName : Name to search for on the face. 
-        return : <b>Index</b> of the matching cluster group. <b>-1</b> if not found. 
+        return : Index of the matching cluster group. -1 if not found. 
         """
         pass
 
@@ -24190,7 +24190,7 @@ class FBCharacterFace (FBConstraint):
 
         pClusterGrpId : Index of the cluster group to modify. 
         pName : Optional name to assign to the shape. 
-        return : <b>Index</b> of the new shape. <b>-1</b> if the operation failed to complete. 
+        return : Index of the new shape. -1 if the operation failed to complete. 
         """
         pass
 
@@ -24200,7 +24200,7 @@ class FBCharacterFace (FBConstraint):
 
         pClusterGrpId : Index of the cluster group to search. 
         pName : Name to search for in the cluster group. 
-        return : <b>Index</b> of the matching shape. <b>-1</b> if not found. 
+        return : Index of the matching shape. -1 if not found. 
         """
         pass
 
@@ -24259,7 +24259,7 @@ class FBCharacterFace (FBConstraint):
         Add an expression to the face.
 
         pName : Optional name to assign to the new expression. 
-        return : <b>Index</b> of the new expression. <b>-1</b> if the operation failed to complete. 
+        return : Index of the new expression. -1 if the operation failed to complete. 
         """
         pass
 
@@ -24268,7 +24268,7 @@ class FBCharacterFace (FBConstraint):
         Find an expression on the face by name.
 
         pName : Name of the expression to search for. 
-        return : <b>Index</b> of the matching expression. <b>-1</b> if not found. 
+        return : Index of the matching expression. -1 if not found. 
         """
         pass
 
@@ -24360,7 +24360,7 @@ class FBCharacterFace (FBConstraint):
 
         pShapeGrpId : Index of the blendshape group to search. 
         pName : Name to search for. 
-        return : <b>Index</b> of the shape, <b>-1</b> if not found. 
+        return : Index of the shape, -1 if not found. 
         """
         pass
 
@@ -24398,7 +24398,7 @@ class FBCharacterFace (FBConstraint):
         Find a blendshape group by name.
 
         pName : Name to search for. 
-        return : <b>Index</b> of the blendshape group, <b>-1</b> if not found. 
+        return : Index of the blendshape group, -1 if not found. 
         """
         pass
 
@@ -24449,8 +24449,8 @@ class FBCharacterFace (FBConstraint):
         """
         pass
 
-    ActiveInput=property(doc="<b>Read Write Property:</b> Is the character input active?          ")
-    InputActorFace=property(doc="<b>Read Write Property:</b> The index of the actor used for the input.          ")
+    ActiveInput=property(doc="Read Write Property: Is the character input active?          ")
+    InputActorFace=property(doc="Read Write Property: The index of the actor used for the input.          ")
     pass
 
 class FBConstraintSolver (FBConstraint):
@@ -24544,16 +24544,16 @@ class FBDeviceOptical (FBDevice):
         """
         pass
 
-    AutoAntialiasing=property(doc="<b>Property:</b> Is it auto-antialiasing?          ")
-    DampingTime=property(doc="<b>Property:</b> Damping time for device.          ")
-    ForceOpticalSamplingRate=property(doc="<b>Property:</b> Force the use of the optical sampling rate?          ")
-    MarkerTimeStamp=property(doc="<b>Property:</b> TimeStamp for marker.          ")
-    Markers=property(doc="<b>List:</b> Markers.          ")
-    ModelOptical=property(doc="<b>Property:</b> Optical model for manipulation.          ")
-    OpticalSamplingRate=property(doc="<b>Property:</b> Resampling rate for optical device.          ")
-    SkipFrame=property(doc="<b>Property:</b> Skip Record Frame          ")
-    SupportOcclusion=property(doc="<b>Property:</b> Does the device support occulsion?          ")
-    UseMarkerTimeStamp=property(doc="<b>Property:</b> Use the individual marker timestamps?          ")
+    AutoAntialiasing=property(doc="Property: Is it auto-antialiasing?          ")
+    DampingTime=property(doc="Property: Damping time for device.          ")
+    ForceOpticalSamplingRate=property(doc="Property: Force the use of the optical sampling rate?          ")
+    MarkerTimeStamp=property(doc="Property: TimeStamp for marker.          ")
+    Markers=property(doc="List: Markers.          ")
+    ModelOptical=property(doc="Property: Optical model for manipulation.          ")
+    OpticalSamplingRate=property(doc="Property: Resampling rate for optical device.          ")
+    SkipFrame=property(doc="Property: Skip Record Frame          ")
+    SupportOcclusion=property(doc="Property: Does the device support occulsion?          ")
+    UseMarkerTimeStamp=property(doc="Property: Use the individual marker timestamps?          ")
     pass
 
 class FBHUDFlashElement (FBHUDElement):
@@ -24569,7 +24569,7 @@ class FBHUDFlashElement (FBHUDElement):
         """
         pass
 
-    FilePath=property(doc="<b>Read Write Property:</b> Path to load the swf file from          ")
+    FilePath=property(doc="Read Write Property: Path to load the swf file from          ")
     pass
 
 class FBHUDRectElement (FBHUDElement):
@@ -24585,7 +24585,7 @@ class FBHUDRectElement (FBHUDElement):
         """
         pass
 
-    Color=property(doc="<b>Read Write Property:</b> Color of the rectangluar region.          ")
+    Color=property(doc="Read Write Property: Color of the rectangluar region.          ")
     pass
 
 class FBHUDTextElement (FBHUDElement):
@@ -24608,12 +24608,12 @@ class FBHUDTextElement (FBHUDElement):
         """
         pass
 
-    AdjustWidthToFitText=property(doc="<b>Read Write Property:</b> If On it it will adjust the width of a text element so that a text character's aspect ratio does not change as the content grows or shrinks.          ")
-    BackgroundColor=property(doc="<b>Read Write Property:</b> Background text color.          ")
-    Color=property(doc="<b>Read Write Property:</b> Text color.          ")
-    Content=property(doc="<b>Read Write Property:</b> C like format to display like in printf.          ")
-    Font=property(doc="<b>Read Write Property:</b> Specifies the font.          ")
-    ForceTimeCodeDisplay=property(doc="<b>Read Write Property:</b> Specifies if the display of time-related reference property will be in timecode format.          ")
+    AdjustWidthToFitText=property(doc="Read Write Property: If On it it will adjust the width of a text element so that a text character's aspect ratio does not change as the content grows or shrinks.          ")
+    BackgroundColor=property(doc="Read Write Property: Background text color.          ")
+    Color=property(doc="Read Write Property: Text color.          ")
+    Content=property(doc="Read Write Property: C like format to display like in printf.          ")
+    Font=property(doc="Read Write Property: Specifies the font.          ")
+    ForceTimeCodeDisplay=property(doc="Read Write Property: Specifies if the display of time-related reference property will be in timecode format.          ")
     pass
 
 class FBHUDTextureElement (FBHUDElement):
@@ -24629,7 +24629,7 @@ class FBHUDTextureElement (FBHUDElement):
         """
         pass
 
-    Texture=property(doc="<b>Read Write Property:</b> Texture to display.          ")
+    Texture=property(doc="Read Write Property: Texture to display.          ")
     pass
 
 class FBLayeredTexture (FBTexture):
@@ -24668,8 +24668,8 @@ class FBLayeredTexture (FBTexture):
         """
         pass
 
-    BackgroundColor=property(doc="<b>Read/Write Property:</b> Animatable Background color which is used to clear color buffer before composition.          ")
-    Layers=property(doc="<b>Read/Write Property:</b> Textures Layers.          ")
+    BackgroundColor=property(doc="Read/Write Property: Animatable Background color which is used to clear color buffer before composition.          ")
+    Layers=property(doc="Read/Write Property: Textures Layers.          ")
     pass
 
 class FBLight (FBModel):
@@ -24685,26 +24685,26 @@ class FBLight (FBModel):
         """
         pass
 
-    AreaLightShape=property(doc="<b>Read Write Property:</b> Area light shape.          ")
-    AttenuationType=property(doc="<b>Read Write Property:</b> Type of attenuation for the light.          ")
-    BottomBarnDoor=property(doc="<b>Read Write Property:</b> Angle of bottom barn door.          ")
-    CastLightOnObject=property(doc="<b>Read Write Property:</b> Cast light on object?          ")
-    CastShadows=property(doc="<b>Read Write Property:</b> Cast shadows on object?          ")
-    ConeAngle=property(doc="<b> DEPRECATED </b> Equivalent to OuterAngle.          ")
-    DiffuseColor=property(doc="<b>Read Write Property:</b> Color: Diffuse color.          ")
-    DrawFrontFacingVolumetric=property(doc="<b>Read Write Property:</b> Draw front facing volumetric light?          ")
-    DrawGroundProjection=property(doc="<b>Read Write Property:</b> Draw ground projection of gobo?          ")
-    DrawVolumetricLight=property(doc="<b>Read Write Property:</b> Draw volumetric light with gobo?          ")
-    EnableBarnDoor=property(doc="<b>Read Write Property:</b> Whether or not enable barn door.          ")
-    FogIntensity=property(doc="<b>Read Write Property:</b> Intensity of the fog (spot light).          ")
-    GoboMedia=property(doc="<b>Read Write Property:</b> Media to use as a Gobo with the light.          ")
-    InnerAngle=property(doc="<b>Read Write Property:</b> Inner Cone angle for light.          ")
-    Intensity=property(doc="<b>Read Write Property:</b> Light intensity.          ")
-    LeftBarnDoor=property(doc="<b>Read Write Property:</b> Angle of left barn door.          ")
-    LightType=property(doc="<b>Read Write Property:</b> Type of light.          ")
-    OuterAngle=property(doc="<b>Read Write Property:</b> Outer Cone angle for light.          ")
-    RightBarnDoor=property(doc="<b>Read Write Property:</b> Angle of right barn door.          ")
-    TopBarnDoor=property(doc="<b>Read Write Property:</b> Angle of top barn door.          ")
+    AreaLightShape=property(doc="Read Write Property: Area light shape.          ")
+    AttenuationType=property(doc="Read Write Property: Type of attenuation for the light.          ")
+    BottomBarnDoor=property(doc="Read Write Property: Angle of bottom barn door.          ")
+    CastLightOnObject=property(doc="Read Write Property: Cast light on object?          ")
+    CastShadows=property(doc="Read Write Property: Cast shadows on object?          ")
+    ConeAngle=property(doc=" DEPRECATED  Equivalent to OuterAngle.          ")
+    DiffuseColor=property(doc="Read Write Property: Color: Diffuse color.          ")
+    DrawFrontFacingVolumetric=property(doc="Read Write Property: Draw front facing volumetric light?          ")
+    DrawGroundProjection=property(doc="Read Write Property: Draw ground projection of gobo?          ")
+    DrawVolumetricLight=property(doc="Read Write Property: Draw volumetric light with gobo?          ")
+    EnableBarnDoor=property(doc="Read Write Property: Whether or not enable barn door.          ")
+    FogIntensity=property(doc="Read Write Property: Intensity of the fog (spot light).          ")
+    GoboMedia=property(doc="Read Write Property: Media to use as a Gobo with the light.          ")
+    InnerAngle=property(doc="Read Write Property: Inner Cone angle for light.          ")
+    Intensity=property(doc="Read Write Property: Light intensity.          ")
+    LeftBarnDoor=property(doc="Read Write Property: Angle of left barn door.          ")
+    LightType=property(doc="Read Write Property: Type of light.          ")
+    OuterAngle=property(doc="Read Write Property: Outer Cone angle for light.          ")
+    RightBarnDoor=property(doc="Read Write Property: Angle of right barn door.          ")
+    TopBarnDoor=property(doc="Read Write Property: Angle of top barn door.          ")
     pass
 
 class FBModelCube (FBModel):
@@ -24735,13 +24735,13 @@ class FBModelMarker (FBModel):
         """
         pass
 
-    Color=property(doc="<b>Read Write Property:</b> Color of model marker.          ")
-    IKPivot=property(doc="<b>Read Write Property:</b> marker Pivot Offset.          ")
-    Length=property(doc="<b>Read Write Property:</b> Length for capsule (not related to scaling).          ")
-    Look=property(doc="<b>Read Write Property:</b> Look of model marker.          ")
-    ResLevel=property(doc="<b>Read Write Property:</b> Resolution level of model marker.          ")
-    Size=property(doc="<b>Read Write Property:</b> Size (not related to scaling).          ")
-    Type=property(doc="<b>Read Write Property:</b> Type of model marker.          ")
+    Color=property(doc="Read Write Property: Color of model marker.          ")
+    IKPivot=property(doc="Read Write Property: marker Pivot Offset.          ")
+    Length=property(doc="Read Write Property: Length for capsule (not related to scaling).          ")
+    Look=property(doc="Read Write Property: Look of model marker.          ")
+    ResLevel=property(doc="Read Write Property: Resolution level of model marker.          ")
+    Size=property(doc="Read Write Property: Size (not related to scaling).          ")
+    Type=property(doc="Read Write Property: Type of model marker.          ")
     pass
 
 class FBModelNull (FBModel):
@@ -24757,7 +24757,7 @@ class FBModelNull (FBModel):
         """
         pass
 
-    Size=property(doc="<b>Read Write Property:</b> Size (not related to scaling).          ")
+    Size=property(doc="Read Write Property: Size (not related to scaling).          ")
     pass
 
 class FBModelOptical (FBModel):
@@ -24777,7 +24777,7 @@ class FBModelOptical (FBModel):
         """
         Clear the segments (by default only the unused).
 
-        pUnUsedOnly : Clear only the unused segments if <b>true</b>(default=true). 
+        pUnUsedOnly : Clear only the unused segments if true(default=true). 
         """
         pass
 
@@ -24795,7 +24795,7 @@ class FBModelOptical (FBModel):
         """
         Setup exportation from optical model.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -24803,17 +24803,17 @@ class FBModelOptical (FBModel):
         """
         Setup importation for optical model.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
-    MarkerSize=property(doc="<b>Read Write Property:</b> Size of markers.          ")
-    Markers=property(doc="<b>List:</b> Markers.          ")
-    RigidBodies=property(doc="<b>List:</b> Rigid bodies.          ")
-    SamplingPeriod=property(doc="<b>Read Write Property:</b>Sampling period.          ")
-    SamplingStart=property(doc="<b>Read Write Property:</b> Sampling start time.          ")
-    SamplingStop=property(doc="<b>Read Write Property:</b>Sampling stop time.          ")
-    Segments=property(doc="<b>List:</b> Segments.          ")
+    MarkerSize=property(doc="Read Write Property: Size of markers.          ")
+    Markers=property(doc="List: Markers.          ")
+    RigidBodies=property(doc="List: Rigid bodies.          ")
+    SamplingPeriod=property(doc="Read Write Property:Sampling period.          ")
+    SamplingStart=property(doc="Read Write Property: Sampling start time.          ")
+    SamplingStop=property(doc="Read Write Property:Sampling stop time.          ")
+    Segments=property(doc="List: Segments.          ")
     pass
 
 class FBModelPath3D (FBModel):
@@ -25039,7 +25039,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID to set with 
         pTLocal : Vector to use to set values to Key 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25062,7 +25062,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
         pKeyTLocal : Vector to use to set values to Key 
         pLeftTangentTLocal : Vector to use to set values to Key Left Tangent 
         pRightTangentTLocal : Vector to use to set values to Key Right Tangent 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25072,7 +25072,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID at which left tangent is to be set 
         pTLocal : Vector to use to set values to Key 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25082,7 +25082,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID at which right tangent is to be set 
         pTLocal : Vector to use to set values to Key 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25093,7 +25093,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID to set with 
         pDerivative : Value of the derivative to apply to tangent 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25104,7 +25104,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID to set with 
         pDerivative : Value of the derivative to apply to tangent 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25115,7 +25115,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID to set with 
         pDerivative : Value of the derivative to apply to tangent 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25126,7 +25126,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
 
         pKeyIndex : Key ID to set with 
         pDerivative : Value of the derivative to apply to tangent 
-        pUpdate : <b>true</b> if geometry update is required, <b>false</b> if not required (default=true) 
+        pUpdate : true if geometry update is required, false if not required (default=true) 
         """
         pass
 
@@ -25194,7 +25194,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
         """
         Enable or disable displaying Curve Controls for the 3D model path.
 
-        pShow : <b>true</b> if curve controls are to be displayed <b>false</b> if not required 
+        pShow : true if curve controls are to be displayed false if not required 
         """
         pass
 
@@ -25202,7 +25202,7 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
         """
         Enable or disable displaying Curve Points for the 3D model path.
 
-        pShow : <b>true</b> if curve points are to be displayed <b>false</b> if not required 
+        pShow : true if curve points are to be displayed false if not required 
         """
         pass
 
@@ -25263,17 +25263,17 @@ path.PathKeyInsertAfter(2,FBVector4d(50,25,0,0))
         """
         pass
 
-    AutoControlNode=property(doc="<b>Read Write Property:</b> Automatically create key control nodes.          ")
-    Color=property(doc="<b>Read Write Property:</b> Path display color in viewport.          ")
-    KeyPropertyBehavior=property(doc="<b>Read Only Property:</b> Key property behavior.          ")
-    PathEndCapScale=property(doc="<b>Read Write Property:</b> Path end cap display scale.          ")
-    PathEndCapStyle=property(doc="<b>Read Write Property:</b> Path end cap display style.          ")
-    PathLength=property(doc="<b>Read Only Property:</b> Path Length In Centimeter.          ")
-    PathLengthInString=property(doc="<b>Read Only Property:</b> Path Length Display String According To The Current Unit.          ")
-    PathLengthShow=property(doc="<b>Read Write Property:</b> Path length label display or not.          ")
-    PathLengthUnit=property(doc="<b>Read Write Property:</b> Path Length Unit.          ")
-    TextBackground=property(doc="<b>Read Write Property:</b> Path Length label display background color.          ")
-    TextScale=property(doc="<b>Read Write Property:</b> Path Length label display scale.          ")
+    AutoControlNode=property(doc="Read Write Property: Automatically create key control nodes.          ")
+    Color=property(doc="Read Write Property: Path display color in viewport.          ")
+    KeyPropertyBehavior=property(doc="Read Only Property: Key property behavior.          ")
+    PathEndCapScale=property(doc="Read Write Property: Path end cap display scale.          ")
+    PathEndCapStyle=property(doc="Read Write Property: Path end cap display style.          ")
+    PathLength=property(doc="Read Only Property: Path Length In Centimeter.          ")
+    PathLengthInString=property(doc="Read Only Property: Path Length Display String According To The Current Unit.          ")
+    PathLengthShow=property(doc="Read Write Property: Path length label display or not.          ")
+    PathLengthUnit=property(doc="Read Write Property: Path Length Unit.          ")
+    TextBackground=property(doc="Read Write Property: Path Length label display background color.          ")
+    TextScale=property(doc="Read Write Property: Path Length label display scale.          ")
     pass
 
 class FBModelPlaceHolder (FBBoxPlaceHolder):
@@ -25288,8 +25288,8 @@ class FBModelPlaceHolder (FBBoxPlaceHolder):
         """
         pass
 
-    Model=property(doc="<b>Read Only Property:</b> Underlying model object.          ")
-    UseGlobalTransforms=property(doc="<b>Read Write Property:</b> Indicate if the translations are expressed in local or global mode.          ")
+    Model=property(doc="Read Only Property: Underlying model object.          ")
+    UseGlobalTransforms=property(doc="Read Write Property: Indicate if the translations are expressed in local or global mode.          ")
     pass
 
 class FBModelPlane (FBModel):
@@ -25320,7 +25320,7 @@ class FBModelRoot (FBModel):
         """
         pass
 
-    Size=property(doc="<b>Read Write Property:</b> Size (not related to scaling).          ")
+    Size=property(doc="Read Write Property: Size (not related to scaling).          ")
     pass
 
 class FBModelSkeleton (FBModel):
@@ -25344,13 +25344,13 @@ class FBModelSkeleton (FBModel):
         """
         pass
 
-    Color=property(doc="<b>Read Write Property:</b> Color of skeleton node.          ")
-    Length=property(doc="<b>Read Write Property:</b> Length of skeleton node. (Note: Only effective when the look is set to: Capsule)          ")
-    LinkFollowGeometryOffset=property(doc="<b>Read Write Property:</b> Whether link to parent node must follow skeleton node or not, when skeleton node has a geometry offset.          ")
-    Look=property(doc="<b>Read Write Property:</b> Look of skeleton node.          ")
-    PreserveLinkEndPosition=property(doc="<b>Read Write Property:</b> Whether skeleton node must preserve its links' end position to children nodes, when skeleton node has a geometry offset. (Note: Only effective when the look is set to: Bone, Box or Stick)          ")
-    Resolution=property(doc="<b>Read Write Property:</b> Resolution of skeleton node. (Note: Only effective when the look is set to: Sphere, Capsule or Stick)          ")
-    Size=property(doc="<b>Read Write Property:</b> Size (not related to scaling).          ")
+    Color=property(doc="Read Write Property: Color of skeleton node.          ")
+    Length=property(doc="Read Write Property: Length of skeleton node. (Note: Only effective when the look is set to: Capsule)          ")
+    LinkFollowGeometryOffset=property(doc="Read Write Property: Whether link to parent node must follow skeleton node or not, when skeleton node has a geometry offset.          ")
+    Look=property(doc="Read Write Property: Look of skeleton node.          ")
+    PreserveLinkEndPosition=property(doc="Read Write Property: Whether skeleton node must preserve its links' end position to children nodes, when skeleton node has a geometry offset. (Note: Only effective when the look is set to: Bone, Box or Stick)          ")
+    Resolution=property(doc="Read Write Property: Resolution of skeleton node. (Note: Only effective when the look is set to: Sphere, Capsule or Stick)          ")
+    Size=property(doc="Read Write Property: Size (not related to scaling).          ")
     pass
 
 class FBNurbs (FBSurface):
@@ -25384,7 +25384,7 @@ class FBNurbs (FBSurface):
         """
         Get knot vector value of control point.
 
-        pUorV : <b>1</b> if V knot vector, <b>0</b> if U knot vector. 
+        pUorV : 1 if V knot vector, 0 if U knot vector. 
         pIndex : Index of control point to set knot value for. 
         """
         pass
@@ -25393,7 +25393,7 @@ class FBNurbs (FBSurface):
         """
         Get multiplicity (number of 'instances') of control point.
 
-        pUorV : <b>1</b> if V multiplicity, <b>0</b> if U multlipicity. 
+        pUorV : 1 if V multiplicity, 0 if U multlipicity. 
         pIndex : Index of control point to get multiplicity for. 
         """
         pass
@@ -25411,7 +25411,7 @@ class FBNurbs (FBSurface):
         """
         Number of knot vectors.
 
-        pUorV : <b>1</b> if V knot vector, <b>0</b> if U knot vector. 
+        pUorV : 1 if V knot vector, 0 if U knot vector. 
         return : Number of knot vectors on NURBS surface 
         """
         pass
@@ -25420,7 +25420,7 @@ class FBNurbs (FBSurface):
         """
         Set knot vector value of control point.
 
-        pUorV : <b>1</b> if V knot vector, <b>0</b> if U knot vector. 
+        pUorV : 1 if V knot vector, 0 if U knot vector. 
         pIndex : Index of control point to set knot value for. 
         pKnotValue : Knot value for control point at pIndex. 
         """
@@ -25430,7 +25430,7 @@ class FBNurbs (FBSurface):
         """
         Set multiplicity (number of 'instances') of control point.
 
-        pUorV : <b>1</b> if V multiplicity, <b>0</b> if U multlipicity. 
+        pUorV : 1 if V multiplicity, 0 if U multlipicity. 
         pIndex : Index of control point to set multiplicity for. 
         pMultiplicity : Multiplicity value for control point at pIndex. 
         """
@@ -25473,10 +25473,10 @@ class FBNurbs (FBSurface):
         """
         pass
 
-    UNurbType=property(doc="<b>Read Write Property:</b> Nurbs Type for U direction.          ")
-    UOrder=property(doc="<b>Read Write Property:</b> Nurbs U order.          ")
-    VNurbType=property(doc="<b>Read Write Property:</b> Nurbs Type for V direction.          ")
-    VOrder=property(doc="<b>Read Write Property:</b> Nurbs V order.          ")
+    UNurbType=property(doc="Read Write Property: Nurbs Type for U direction.          ")
+    UOrder=property(doc="Read Write Property: Nurbs U order.          ")
+    VNurbType=property(doc="Read Write Property: Nurbs Type for V direction.          ")
+    VOrder=property(doc="Read Write Property: Nurbs V order.          ")
     pass
 
 class FBPatch (FBSurface):
@@ -25534,8 +25534,8 @@ class FBPatch (FBSurface):
         """
         pass
 
-    USurfaceType=property(doc="<b>Read Write Property:</b> Patch mode for U direction.          ")
-    VSurfaceType=property(doc="<b>Read Write Property:</b> Patch mode for V direction.          ")
+    USurfaceType=property(doc="Read Write Property: Patch mode for U direction.          ")
+    VSurfaceType=property(doc="Read Write Property: Patch mode for V direction.          ")
     pass
 
 class FBShaderLighted (FBShader):
@@ -25593,14 +25593,14 @@ if lModel <> None:
         """
         pass
 
-    Alpha=property(doc="<b>Read Write Property:</b> Controls the actual effect of the shader on the object. At 0.0 it does nothing, and at 1.0 it fully affects the object.          ")
-    Contrast=property(doc="<b>Read Write Property:</b> Changes the contrast of the object when it reflects light.          ")
-    Luminosity=property(doc="<b>Read Write Property:</b> Changes the brightness of the object when reflecting light.          ")
-    Specular=property(doc="<b>Read Write Property:</b> Changes an object's level of shininess when it reflects light by affecting the specular highlight.          ")
-    Transparency=property(doc="<b>Read Write Property:</b> Indicates the computation method of the transparency.          ")
-    UseContrast=property(doc="<b>Read Write Property:</b> Activate the Contrast option.          ")
-    UseLuminosity=property(doc="<b>Read Write Property:</b> Activate the Luminosity option.          ")
-    UseSpecular=property(doc="<b>Read Write Property:</b> Activate the Specularity option.          ")
+    Alpha=property(doc="Read Write Property: Controls the actual effect of the shader on the object. At 0.0 it does nothing, and at 1.0 it fully affects the object.          ")
+    Contrast=property(doc="Read Write Property: Changes the contrast of the object when it reflects light.          ")
+    Luminosity=property(doc="Read Write Property: Changes the brightness of the object when reflecting light.          ")
+    Specular=property(doc="Read Write Property: Changes an object's level of shininess when it reflects light by affecting the specular highlight.          ")
+    Transparency=property(doc="Read Write Property: Indicates the computation method of the transparency.          ")
+    UseContrast=property(doc="Read Write Property: Activate the Contrast option.          ")
+    UseLuminosity=property(doc="Read Write Property: Activate the Luminosity option.          ")
+    UseSpecular=property(doc="Read Write Property: Activate the Specularity option.          ")
     pass
 
 class FBShaderShadowLive (FBShader):
@@ -25642,14 +25642,14 @@ lShader.ShadowCasterProperty.append( lModel )
         """
         pass
 
-    Lights=property(doc="<b>List:</b> List of light object which will produce shadows.          ")
-    LocalShadow=property(doc="<b>Read Write Property:</b> Creates an accurate projection of a shadow for each object.          ")
-    Models=property(doc="<b>List:</b> List of object which when lighted will cast a shadow.          ")
-    ShadowFrameType=property(doc="<b>Read Write Property:</b> Used to select the shadow calculation method.          ")
-    ShadowIntensity=property(doc="<b>Read Write Property:</b> Controls the darkness of shadows cast by a selected object.          ")
-    ShadowType=property(doc="<b>Read Write Property:</b> Indicate which shadow type is desired.          ")
-    ShadowZOffset=property(doc="<b>Read Write Property:</b> Specifies the offset of the Live Shadow shader's plane from the original selected plane.          ")
-    UseGobo=property(doc="<b>Read Write Property:</b> Includes the gobo in the shadow map calculation.          ")
+    Lights=property(doc="List: List of light object which will produce shadows.          ")
+    LocalShadow=property(doc="Read Write Property: Creates an accurate projection of a shadow for each object.          ")
+    Models=property(doc="List: List of object which when lighted will cast a shadow.          ")
+    ShadowFrameType=property(doc="Read Write Property: Used to select the shadow calculation method.          ")
+    ShadowIntensity=property(doc="Read Write Property: Controls the darkness of shadows cast by a selected object.          ")
+    ShadowType=property(doc="Read Write Property: Indicate which shadow type is desired.          ")
+    ShadowZOffset=property(doc="Read Write Property: Specifies the offset of the Live Shadow shader's plane from the original selected plane.          ")
+    UseGobo=property(doc="Read Write Property: Includes the gobo in the shadow map calculation.          ")
     pass
 
 class FBStoryTrack (FBConstraint):
@@ -25755,34 +25755,34 @@ class FBStoryTrack (FBConstraint):
         """
         pass
 
-    AcceptKey=property(doc="<b>Read Write Property:</b> Allow track to accept keys          ")
-    AudioOutIndex=property(doc="<b>Read Write Property:</b> Audio Output's index to use.          ")
-    Character=property(doc="<b>Read Write Property:</b> Character to use.          ")
-    CharacterIndex=property(doc="<b>Read Write Property:</b> Character's index to use.          ")
-    ClipNameConvention=property(doc="<b>Read Write Property:</b> Naming convention for each new recording clip that is created. Can use special tags: <Name> <StartTCValue> <StartFrameValue> <StartDate> <StartTime> <TakeName>          ")
-    Clips=property(doc="<b>List:</b> Clips contained in this track.          ")
-    Details=property(doc="<b>List:</b> All objects associated to this track for processing.          ")
-    Ghost=property(doc="<b>Read Write Property:</b> Show ghosts          ")
-    GhostModel=property(doc="<b>Read Write Property:</b> Show ghost of models          ")
-    GhostPivot=property(doc="<b>Read Write Property:</b> Show ghost of match object          ")
-    GhostShowTrackMode=property(doc="<b>Read Write Property:</b> Show the ghosts for all the clips or only the adjacent clips. See FBStoryTrackGhostShowMode          ")
-    GhostTravelling=property(doc="<b>Read Write Property:</b> Show ghost of clip vector or traveling node          ")
-    Label=property(doc="<b>Read Write Property:</b> Label to display for this story track.          ")
-    Mute=property(doc="<b>Read Write Property:</b> If true, this track wont' play.          ")
-    OffsetEnable=property(doc="<b>Read Write Property:</b> When enabled, allow clip to be offset          ")
-    ParentFolder=property(doc="<b>Read Only Property:</b> Parent folder.          ")
-    ParentTrack=property(doc="<b>Read Only Property:</b> Parent track, if the track is of Character or Animation type.          ")
-    PassThrough=property(doc="<b>Read Write Property:</b> Enable passthrough of animation if there is no clip on track animation is taken from other tracks of take          ")
-    RecordClipPath=property(doc="<b>Read Write Property:</b> Path for story recording. Can be relative or full path.          ")
-    RecordTrack=property(doc="<b>Read Write Property:</b> Path for story recording. Can be relative or full path.          ")
-    ReferenceMode=property(doc="<b>Read Write Property:</b> Track composition mode, kFBStoryTrackOverride or kFBStoryTrackAdditive          ")
-    ShowBackplate=property(doc="<b>Read Write Property:</b> If true, the backplate will be shown.          ")
-    ShowFrontplate=property(doc="<b>Read Write Property:</b> If true, the frontplate will be shown.          ")
-    Solo=property(doc="<b>Read Write Property:</b> If true, this track will be the only one to play.          ")
-    SubTracks=property(doc="<b>List:</b> Only Character and Animation tracks can have sub-tracks.          ")
-    TrackVideo=property(doc="<b>Read Only Property:</b> This FBVideo can be used as a texture.          ")
-    Type=property(doc="<b>Read Only Property:</b> Type of the track          ")
-    Weight=property(doc="<b>Read Write Property:</b> Control the blend amount.          ")
+    AcceptKey=property(doc="Read Write Property: Allow track to accept keys          ")
+    AudioOutIndex=property(doc="Read Write Property: Audio Output's index to use.          ")
+    Character=property(doc="Read Write Property: Character to use.          ")
+    CharacterIndex=property(doc="Read Write Property: Character's index to use.          ")
+    ClipNameConvention=property(doc="Read Write Property: Naming convention for each new recording clip that is created. Can use special tags: <Name> <StartTCValue> <StartFrameValue> <StartDate> <StartTime> <TakeName>          ")
+    Clips=property(doc="List: Clips contained in this track.          ")
+    Details=property(doc="List: All objects associated to this track for processing.          ")
+    Ghost=property(doc="Read Write Property: Show ghosts          ")
+    GhostModel=property(doc="Read Write Property: Show ghost of models          ")
+    GhostPivot=property(doc="Read Write Property: Show ghost of match object          ")
+    GhostShowTrackMode=property(doc="Read Write Property: Show the ghosts for all the clips or only the adjacent clips. See FBStoryTrackGhostShowMode          ")
+    GhostTravelling=property(doc="Read Write Property: Show ghost of clip vector or traveling node          ")
+    Label=property(doc="Read Write Property: Label to display for this story track.          ")
+    Mute=property(doc="Read Write Property: If true, this track wont' play.          ")
+    OffsetEnable=property(doc="Read Write Property: When enabled, allow clip to be offset          ")
+    ParentFolder=property(doc="Read Only Property: Parent folder.          ")
+    ParentTrack=property(doc="Read Only Property: Parent track, if the track is of Character or Animation type.          ")
+    PassThrough=property(doc="Read Write Property: Enable passthrough of animation if there is no clip on track animation is taken from other tracks of take          ")
+    RecordClipPath=property(doc="Read Write Property: Path for story recording. Can be relative or full path.          ")
+    RecordTrack=property(doc="Read Write Property: Path for story recording. Can be relative or full path.          ")
+    ReferenceMode=property(doc="Read Write Property: Track composition mode, kFBStoryTrackOverride or kFBStoryTrackAdditive          ")
+    ShowBackplate=property(doc="Read Write Property: If true, the backplate will be shown.          ")
+    ShowFrontplate=property(doc="Read Write Property: If true, the frontplate will be shown.          ")
+    Solo=property(doc="Read Write Property: If true, this track will be the only one to play.          ")
+    SubTracks=property(doc="List: Only Character and Animation tracks can have sub-tracks.          ")
+    TrackVideo=property(doc="Read Only Property: This FBVideo can be used as a texture.          ")
+    Type=property(doc="Read Only Property: Type of the track          ")
+    Weight=property(doc="Read Write Property: Control the blend amount.          ")
     pass
 
 class FBVideoClip (FBVideo):
@@ -25837,33 +25837,33 @@ class FBVideoClip (FBVideo):
         """
         Verifies the validity of the FBVideo object.
 
-        return : <b>true</b> if data is valid. 
+        return : true if data is valid. 
         """
         pass
 
-    CurrentFrame=property(doc="<b>Read Write Property:</b> Current frame.          ")
-    CurrentFrameTime=property(doc="<b>Read Write Property:</b> Current time in clip.          ")
-    CurrentFrameTimeCode=property(doc="<b>Read Only Property:</b> Embedded timecode from current frame in clip. Use the method GetEmbeddedTimecode to get the timecode of a different frame than the current frame.          ")
-    Filename=property(doc="<b>Read Write Property:</b> Filename of media.          ")
-    Format=property(doc="<b>Read Only Property:</b> Video format.          ")
-    FrameRate=property(doc="<b>Read Write Property:</b> Frame rate.          ")
-    FrameTime=property(doc="<b>Read Only Property:</b> Inverse of FPS, time per frame          ")
-    FreeRunning=property(doc="<b>Read Write Property:</b> Is free Running on?          ")
-    Height=property(doc="<b>Read Only Property:</b> Height of image.          ")
-    InterlaceMode=property(doc="<b>Read Write Property:</b> Interlace mode.          ")
-    LastFrame=property(doc="<b>Read Only Property:</b> Last frame in clip.          ")
-    LastFrameTime=property(doc="<b>Read Only Property:</b> Time of last frame          ")
-    Loop=property(doc="<b>Read Write Property:</b> Loop video clip?          ")
-    PlaySpeed=property(doc="<b>Read Write Property:</b> Playback speed.          ")
-    PowerOfTwoHeight=property(doc="<b>Read Only Property:</b> Closest power of two value superior to height of image.          ")
-    PowerOfTwoWidth=property(doc="<b>Read Only Property:</b> Closest power of two value superior to width of image.          ")
-    ProxyMode=property(doc="<b>Read Write Property:</b> Proxy mode.          ")
-    RelativePath=property(doc="<b>Read Only Property:</b> Relative path of media.          ")
-    StartFrame=property(doc="<b>Read Write Property:</b> Frame to begin video playback from.          ")
-    StopFrame=property(doc="<b>Read Write Property:</b> Frame to end video playback at.          ")
-    StorageMode=property(doc="<b>Read Write Property:</b> Storage mode.          ")
-    TimeOffset=property(doc="<b>Read Write Property:</b> Temporal offset for beginning of video.          ")
-    Width=property(doc="<b>Read Only Property:</b> Width of image.          ")
+    CurrentFrame=property(doc="Read Write Property: Current frame.          ")
+    CurrentFrameTime=property(doc="Read Write Property: Current time in clip.          ")
+    CurrentFrameTimeCode=property(doc="Read Only Property: Embedded timecode from current frame in clip. Use the method GetEmbeddedTimecode to get the timecode of a different frame than the current frame.          ")
+    Filename=property(doc="Read Write Property: Filename of media.          ")
+    Format=property(doc="Read Only Property: Video format.          ")
+    FrameRate=property(doc="Read Write Property: Frame rate.          ")
+    FrameTime=property(doc="Read Only Property: Inverse of FPS, time per frame          ")
+    FreeRunning=property(doc="Read Write Property: Is free Running on?          ")
+    Height=property(doc="Read Only Property: Height of image.          ")
+    InterlaceMode=property(doc="Read Write Property: Interlace mode.          ")
+    LastFrame=property(doc="Read Only Property: Last frame in clip.          ")
+    LastFrameTime=property(doc="Read Only Property: Time of last frame          ")
+    Loop=property(doc="Read Write Property: Loop video clip?          ")
+    PlaySpeed=property(doc="Read Write Property: Playback speed.          ")
+    PowerOfTwoHeight=property(doc="Read Only Property: Closest power of two value superior to height of image.          ")
+    PowerOfTwoWidth=property(doc="Read Only Property: Closest power of two value superior to width of image.          ")
+    ProxyMode=property(doc="Read Write Property: Proxy mode.          ")
+    RelativePath=property(doc="Read Only Property: Relative path of media.          ")
+    StartFrame=property(doc="Read Write Property: Frame to begin video playback from.          ")
+    StopFrame=property(doc="Read Write Property: Frame to end video playback at.          ")
+    StorageMode=property(doc="Read Write Property: Storage mode.          ")
+    TimeOffset=property(doc="Read Write Property: Temporal offset for beginning of video.          ")
+    Width=property(doc="Read Only Property: Width of image.          ")
     pass
 
 class FBVideoIn (FBVideo):
@@ -25953,10 +25953,10 @@ class FBVideoIn (FBVideo):
         """
         pass
 
-    FilePath=property(doc="<b>Read Write Property:</b> Location of the generated movie file after a recording session.          ")
-    Online=property(doc="<b>Read Write Property:</b> If true, the device is online and will display the current video feed.          ")
-    RecordAudio=property(doc="<b>Read Write Property:</b> If true, the device will also record audio during a recording session.          ")
-    Recording=property(doc="<b>Read Write Property:</b> If true, the device will record during a recording session.          ")
+    FilePath=property(doc="Read Write Property: Location of the generated movie file after a recording session.          ")
+    Online=property(doc="Read Write Property: If true, the device is online and will display the current video feed.          ")
+    RecordAudio=property(doc="Read Write Property: If true, the device will also record audio during a recording session.          ")
+    Recording=property(doc="Read Write Property: If true, the device will record during a recording session.          ")
     pass
 
 class FBVideoMemory (FBVideo):
@@ -25981,7 +25981,7 @@ class FBVideoMemory (FBVideo):
         """
         pass
 
-    TextureOGLId=property(doc="<b>Read Write Property:</b> OpenGL texture buffer object id (GL_TEXTURE_2D type).          ")
+    TextureOGLId=property(doc="Read Write Property: OpenGL texture buffer object id (GL_TEXTURE_2D type).          ")
     pass
 
 class FBVideoOut (FBVideo):
@@ -25996,7 +25996,7 @@ class FBVideoOut (FBVideo):
         """
         pass
 
-    Online=property(doc="<b>Read Write Property:</b> If true, the device is online and will output display.          ")
+    Online=property(doc="Read Write Property: If true, the device is online and will output display.          ")
     pass
 
 class FBCameraStereo (FBCamera):
@@ -26012,20 +26012,20 @@ class FBCameraStereo (FBCamera):
         """
         pass
 
-    CenterCamera=property(doc="<b>Read Write Property: </b> This property hold the center camera connected to it. Must be either the master, left or right camera.          ")
-    DisplayZeroParallaxPlane=property(doc="<b>Read Write Property: </b> Display the zero parallax plane.          ")
-    FilmOffsetLeftCam=property(doc="<b>Read Write Property: </b> This property handles the film offset for the left camera. (inch)          ")
-    FilmOffsetRightCam=property(doc="<b>Read Write Property: </b> This property handles the film offset for the right camera. (inch)          ")
-    InteraxialSeparation=property(doc="<b>Read Write Property: </b> This property handles the distance between left and right cameras.          ")
-    LeftCamera=property(doc="<b>Read Write Property: </b> This property hold the left camera connected to it.          ")
-    PrecompFileName=property(doc="<b>Read Write Property: </b> This property handles the precomp file name.          ")
-    RelativePrecompFileName=property(doc="<b>Read Write Property: </b> This property handles the relative precomp file name.          ")
-    RightCamera=property(doc="<b>Read Write Property: </b> This property hold the right camera connected to it.          ")
-    Stereo=property(doc="<b>Read Write Property: </b> //!< This property handles the types of Stereo camera.          ")
-    ToeInAdjust=property(doc="<b>Read Write Property: </b> This property is to offset the computed toe-in effect when it's in Converged mode.          ")
-    ZeroParallax=property(doc="<b>Read Write Property: </b> This property handles the distance on the camera view axis where the zero parallax plane occurs.          ")
-    ZeroParallaxPlaneColor=property(doc="<b>Read Write Property: </b> Zero parallax plane color.          ")
-    ZeroParallaxPlaneTransparency=property(doc="<b>Read Write Property: </b> Zero parallax plane transparency.          ")
+    CenterCamera=property(doc="Read Write Property:  This property hold the center camera connected to it. Must be either the master, left or right camera.          ")
+    DisplayZeroParallaxPlane=property(doc="Read Write Property:  Display the zero parallax plane.          ")
+    FilmOffsetLeftCam=property(doc="Read Write Property:  This property handles the film offset for the left camera. (inch)          ")
+    FilmOffsetRightCam=property(doc="Read Write Property:  This property handles the film offset for the right camera. (inch)          ")
+    InteraxialSeparation=property(doc="Read Write Property:  This property handles the distance between left and right cameras.          ")
+    LeftCamera=property(doc="Read Write Property:  This property hold the left camera connected to it.          ")
+    PrecompFileName=property(doc="Read Write Property:  This property handles the precomp file name.          ")
+    RelativePrecompFileName=property(doc="Read Write Property:  This property handles the relative precomp file name.          ")
+    RightCamera=property(doc="Read Write Property:  This property hold the right camera connected to it.          ")
+    Stereo=property(doc="Read Write Property:  //!< This property handles the types of Stereo camera.          ")
+    ToeInAdjust=property(doc="Read Write Property:  This property is to offset the computed toe-in effect when it's in Converged mode.          ")
+    ZeroParallax=property(doc="Read Write Property:  This property handles the distance on the camera view axis where the zero parallax plane occurs.          ")
+    ZeroParallaxPlaneColor=property(doc="Read Write Property:  Zero parallax plane color.          ")
+    ZeroParallaxPlaneTransparency=property(doc="Read Write Property:  Zero parallax plane transparency.          ")
     pass
 
 class FBHUDBloopSlateElement (FBHUDFlashElement):
@@ -26041,11 +26041,11 @@ class FBHUDBloopSlateElement (FBHUDFlashElement):
         """
         pass
 
-    BackgroundColor=property(doc="<b>Read Write Property:</b> Bloop slate background color, by default it is 100% transparent.          ")
-    Enable=property(doc="<b>Read Write Property:</b> Bloop slate will appear if set to true.          ")
-    ForegroundColor=property(doc="<b>Read Write Property:</b> Bloop slate foreground color.          ")
-    ShowAfterDelayOnRecordPlay=property(doc="<b>Read Write Property:</b> Delay before the bloop slate is displayed after recording has started.          ")
-    ShowDuration=property(doc="<b>Read Write Property:</b> Time that the bloop slate will be displayed.          ")
+    BackgroundColor=property(doc="Read Write Property: Bloop slate background color, by default it is 100% transparent.          ")
+    Enable=property(doc="Read Write Property: Bloop slate will appear if set to true.          ")
+    ForegroundColor=property(doc="Read Write Property: Bloop slate foreground color.          ")
+    ShowAfterDelayOnRecordPlay=property(doc="Read Write Property: Delay before the bloop slate is displayed after recording has started.          ")
+    ShowDuration=property(doc="Read Write Property: Time that the bloop slate will be displayed.          ")
     pass
 
 class FBHUDTimelineElement (FBHUDFlashElement):
@@ -26061,14 +26061,14 @@ class FBHUDTimelineElement (FBHUDFlashElement):
         """
         pass
 
-    CutActiveColor=property(doc="<b>Read Write Property:</b> Specifies color of the Cut region when it is active.          ")
-    CutIdleColor=property(doc="<b>Read Write Property:</b> Specifies color of the Cut region when it is idle.          ")
-    HeadActiveColor=property(doc="<b>Read Write Property:</b> Specifies color of the Head region when it is active.          ")
-    HeadDuration=property(doc="<b>Read Write Property:</b> Specifies duration of the Head region.          ")
-    HeadIdleColor=property(doc="<b>Read Write Property:</b> Specifies color of the Head region when it is idle.          ")
-    TailActiveColor=property(doc="<b>Read Write Property:</b> Specifies color of the Tail region when it is active.          ")
-    TailDuration=property(doc="<b>Read Write Property:</b> Specifies duration of the Tail region.          ")
-    TailIdleColor=property(doc="<b>Read Write Property:</b> Specifies color of the Tail region when it is idle.          ")
+    CutActiveColor=property(doc="Read Write Property: Specifies color of the Cut region when it is active.          ")
+    CutIdleColor=property(doc="Read Write Property: Specifies color of the Cut region when it is idle.          ")
+    HeadActiveColor=property(doc="Read Write Property: Specifies color of the Head region when it is active.          ")
+    HeadDuration=property(doc="Read Write Property: Specifies duration of the Head region.          ")
+    HeadIdleColor=property(doc="Read Write Property: Specifies color of the Head region when it is idle.          ")
+    TailActiveColor=property(doc="Read Write Property: Specifies color of the Tail region when it is active.          ")
+    TailDuration=property(doc="Read Write Property: Specifies duration of the Tail region.          ")
+    TailIdleColor=property(doc="Read Write Property: Specifies color of the Tail region when it is idle.          ")
     pass
 
 class FBModelMarkerOptical (FBModelMarker):
@@ -26099,7 +26099,7 @@ class FBModelMarkerOptical (FBModelMarker):
         """
         End exportation from optical model.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -26111,7 +26111,7 @@ class FBModelMarkerOptical (FBModelMarker):
         pY : Y position. 
         pZ : Z position(default=NULL). 
         pOcclusion : Occlusion value(default=NULL). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -26137,7 +26137,7 @@ class FBModelMarkerOptical (FBModelMarker):
         End importation and clean up data.
         Interpolates optical data to create a curve from the input key frams.
 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -26149,7 +26149,7 @@ class FBModelMarkerOptical (FBModelMarker):
         pY : Y position. 
         pZ : Z position(default=0.0). 
         pOcclusion : Occlusion value(default=0.0). 
-        return : <b>true</b> if successful. 
+        return : true if successful. 
         """
         pass
 
@@ -26170,12 +26170,12 @@ class FBModelMarkerOptical (FBModelMarker):
         """
         pass
 
-    Color=property(doc="<b>Property:</b> Marker color.          ")
-    Data=property(doc="<b>Property:</b> Data.          ")
-    Done=property(doc="<b>Property:</b> Done?          ")
-    Gaps=property(doc="<b>Property:</b> Gaps.          ")
-    Optical=property(doc="<b>Property:</b> Optical model.          ")
-    Segments=property(doc="<b>Property:</b> Marker segments.          ")
+    Color=property(doc="Property: Marker color.          ")
+    Data=property(doc="Property: Data.          ")
+    Done=property(doc="Property: Done?          ")
+    Gaps=property(doc="Property: Gaps.          ")
+    Optical=property(doc="Property: Optical model.          ")
+    Segments=property(doc="Property: Marker segments.          ")
     pass
 
 class FBVideoClipImage (FBVideoClip):
@@ -26191,8 +26191,8 @@ class FBVideoClipImage (FBVideoClip):
         """
         pass
 
-    ImageSequence=property(doc="<b>Read Write Property:</b> Clip is an image sequence?          ")
-    MaxMipMapResolution=property(doc="<b>Read Write Property:</b> Maximum MipMap resolution will be loaded into GPU.          ")
-    UseSystemFrameRate=property(doc="<b>Read Write Property:</b> Clip is using system frame rate?          ")
+    ImageSequence=property(doc="Read Write Property: Clip is an image sequence?          ")
+    MaxMipMapResolution=property(doc="Read Write Property: Maximum MipMap resolution will be loaded into GPU.          ")
+    UseSystemFrameRate=property(doc="Read Write Property: Clip is using system frame rate?          ")
     pass
 
