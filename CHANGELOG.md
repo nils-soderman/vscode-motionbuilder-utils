@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.3]
+*(01-12-2021)*
+
+- Make sure sdk files are writeable before copying
+
 
 ## [0.1.2]
 *(01-12-2021)*

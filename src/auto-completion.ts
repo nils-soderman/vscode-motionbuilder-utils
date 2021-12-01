@@ -50,6 +50,7 @@ function copySDKFiles(targetDirectory: string) {
         if (fs.existsSync(targetFilepath)) {
             // if file already exists, check if there if the source is a newer version
             if (fs.statSync(sourceFilepath).mtime > fs.statSync(targetFilepath).mtime) {
+                fs.chmodSync(targetFilepath, 0o600); // Make sure file is writeable
                 fs.copyFile(sourceFilepath, targetFilepath, () => { });
             }
         }
