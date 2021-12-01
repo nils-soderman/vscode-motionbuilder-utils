@@ -1,6 +1,15 @@
 # Change Log
 
 
+## [0.1.2]
+*(01-12-2021)*
+
+- AutoCompletion SDK files are now copied to APPDATA by default.
+- Added Configuration:
+    - `motionbuilder.autocompletion.sdkCopyPath`: Location where to copy the MoBu SDK autocompletion files
+
+
+
 ## [0.1.1]
 *(25-11-2021)*
 

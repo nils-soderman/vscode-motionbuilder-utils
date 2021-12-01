@@ -6,6 +6,7 @@ import * as fs from 'fs';
 
 const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
 
+
 /**
  * @param bEnsureExists If folder doesn't exist, create it
  * @returns absolute path to this extensions tempdir
@@ -17,6 +18,7 @@ export function getExtentionTempDir(bEnsureExists = true) {
     }
     return tempDir;
 }
+
 
 /**
  * Write a temp file inside of this extensions temp directory
@@ -48,6 +50,22 @@ export function readJson(filepath: string) {
     const fileContent = fs.readFileSync(filepath);
     return JSON.parse(fileContent.toString());
 }
+
+
+export function getAppDataFolder() {
+    return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
+}
+
+
+export function getExtensionAppdataFolder(bEnsureExists = true) {
+    const appdataDir = path.join(getAppDataFolder(), TEMPFOLDER_NAME);
+    if (bEnsureExists && !fs.existsSync(appdataDir)) {
+        fs.mkdirSync(appdataDir);
+    }
+    return appdataDir;
+}
+
+
 
 /**
  * @returns The workspace configuration for this extension _('motionbuilder')_

@@ -105,6 +105,10 @@
             "type": "boolean",
             "default": true,
             "description": "Patch auto-completion when extention is activated."
+          },
+          "motionbuilder.autocompletion.sdkCopyPath": {
+            "type": "string",
+            "description": "Where to place the MoBu SDK files. By default they will be placed under APPDATA"
           }
         }
       }
