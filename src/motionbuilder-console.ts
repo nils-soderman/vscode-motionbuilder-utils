@@ -20,16 +20,23 @@ function getOutputChannel(bEnsureChannelExists = true) {
 
 
 function handleResponse(response: string) {
+    // Format response
     response = response.replace(/\n\r/g, "\n");
 
+    const traceBackString = "Traceback (most recent call last):\n";
+    if (response.includes(traceBackString))
+    {
+        const responseTracebackSplit = response.split(traceBackString, 2);
+        const tracebackMsg = responseTracebackSplit[1].split("\n").slice(2).join("\n");
+        response = responseTracebackSplit[0] + traceBackString + tracebackMsg;
+    }
+
+    // Log the message in the output channel
     const outputChannel = getOutputChannel();
-
     outputChannel.appendLine(response);
-
     if (utils.getExtensionConfig().get("execute.showOutput")) {
         outputChannel.show(true);
     }
-
 }
 
 
