@@ -16,7 +16,7 @@ function getPythonConfig() {
 
 
 function getSourceAutocompletionDirectory() {
-    return path.join(path.dirname(__dirname), "auto_completion");
+    return path.join(path.dirname(__dirname), "auto-completion");
 }
 
 
