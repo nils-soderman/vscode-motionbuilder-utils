@@ -3,6 +3,7 @@
 ## [0.1.3]
 *(01-12-2021)*
 
+- Added pythonidelib to auto-completion modules
 - Make sure sdk files are writeable before copying
 
 
