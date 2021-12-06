@@ -3,7 +3,7 @@
 ## [0.1.3]
 *(06-12-2021)*
 
-- Intented code can now be executed
+- Selected indented code can now be executed
 - Improved traceback error messages when executing code in MoBu
 - Added pythonidelib to the auto-completion modules
 - Make sure sdk files are writeable before copying
