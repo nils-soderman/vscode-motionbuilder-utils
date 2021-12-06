@@ -43,7 +43,7 @@ function formatSelectedText(text: string, firstCharIndex: number) {
                 line = line.trimStart();
             }
             else {
-                const numberOfWhitespaceCharacters = line.length - line.trimStart.length;
+                const numberOfWhitespaceCharacters = line.length - line.trimStart().length;
                 if (numberOfWhitespaceCharacters < charactersToRemove) {
                     charactersToRemove = numberOfWhitespaceCharacters;
                 }
