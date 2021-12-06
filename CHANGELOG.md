@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.4]
+*(06-12-2021)*
+
+- Fixed bug when executing selected indented code
+
+
 ## [0.1.3]
 *(06-12-2021)*
 
