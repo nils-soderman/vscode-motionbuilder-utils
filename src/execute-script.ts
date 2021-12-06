@@ -24,6 +24,42 @@ function writeDataFile(fileToExecute: string, originalFilepath: string) {
 }
 
 
+/**
+ * Try to make sure the text is runnable
+ * @param text
+ * @param firstCharIndex
+ */
+function formatSelectedText(text: string, firstCharIndex: number) {
+    if (firstCharIndex <= 0) {
+        return text;
+    }
+
+    let formattedText = "";
+    let charactersToRemove = firstCharIndex;
+    let i = 0;
+    for (let line of text.split("\n")) {
+        if (charactersToRemove) {
+            if (i == 0) {
+                line = line.trimStart();
+            }
+            else {
+                const numberOfWhitespaceCharacters = line.length - line.trimStart.length;
+                if (numberOfWhitespaceCharacters < charactersToRemove) {
+                    charactersToRemove = numberOfWhitespaceCharacters;
+                }
+                line = line.slice(charactersToRemove);
+            }
+        }
+
+        formattedText += line + "\n";
+        i++;
+    }
+
+    return formattedText;
+
+}
+
+
 export async function execute() {
     if (!vscode.window.activeTextEditor) {
         return;
@@ -34,7 +70,18 @@ export async function execute() {
     // Combine all user selections into a single string
     for (let selection of vscode.window.activeTextEditor.selections) {
         if (!selection.isEmpty) {
-            selectionText += activeDocuemt.getText(selection) + "\n";
+
+            // Get the first line that is not empty
+            let firstChar = -1;
+            for (let i = 0; i < selection.end.line - selection.start.line; i++) {
+                const line = activeDocuemt.lineAt(selection.start.line + i);
+                if (!line.isEmptyOrWhitespace) {
+                    firstChar = line.firstNonWhitespaceCharacterIndex;
+                    break;
+                }
+            }
+
+            selectionText += formatSelectedText(activeDocuemt.getText(selection), firstChar) + "\n";
         }
     }
 

@@ -1,9 +1,11 @@
 # Change Log
 
 ## [0.1.3]
-*(01-12-2021)*
+*(06-12-2021)*
 
-- Added pythonidelib to auto-completion modules
+- Intented code can now be executed
+- Improved traceback error messages when executing code in MoBu
+- Added pythonidelib to the auto-completion modules
 - Make sure sdk files are writeable before copying
 
 
