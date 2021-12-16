@@ -31,6 +31,94 @@ TAB_CHAR = "    "
 CUSTOM_ADDITIONS_FILEPATH =  os.path.join(os.path.dirname(__file__), "stub-custom-additions.py")
 
 # --------------------------------------------------------
+#                       Classes
+# --------------------------------------------------------
+
+class StubMainClass():
+    def __init__(self, Name="", Indentation = 0) -> None:
+        self.Name = Name
+        self.DocString = ""
+        self.SetIndentationLevel(Indentation)
+        
+    def SetIndentationLevel(self, Level:int):
+        self._Indentation = Level + 1
+        
+    def GetAsString(self):
+        return ""
+    
+    def GetDocString(self):
+        if not self.DocString:
+            return ""
+        PatchedDocString = PatchGeneratedDocString(self.DocString)
+        if not PatchedDocString:
+            return ""
+        return '"""%s"""' % PatchedDocString
+    
+    def Indent(self, Text):
+        return "\n".join([(TAB_CHAR * self._Indentation) + Line.strip() for Line in Text.split("\n")])
+
+
+class StubFunction(StubMainClass):
+    def __init__(self, Name="", Indentation = 0) -> None:
+        super().__init__(Name=Name, Indentation = Indentation)
+        self.Params = []
+        self.ReturnType = None
+        self.bIsClassFunction = False
+    
+    def GetParamsAsString(self):
+        # self.Params = [("Name", "Type")]
+        ParamString = ""
+        for Index, Param in enumerate(self.Params):
+            if self.bIsClassFunction and Index == 0:
+                ParamString += "self"
+            else:
+                ParamString += Param[0]
+                if Param[1]:
+                    ParamString += ":%s" % Param[1]
+            ParamString += ","
+            
+        return ParamString[:-1]
+    
+    def GetAsString(self):
+        FunctionAsString = 'def %s(%s)' %(self.Name, self.GetParamsAsString())
+        
+        if self.ReturnType and self.ReturnType != "None":
+            FunctionAsString += '->%s' % self.ReturnType
+            
+        FunctionAsString += ":"
+        
+        DocString = self.GetDocString()
+        if DocString:
+            FunctionAsString += "\n%s\n%s" % (self.Indent(DocString), self.Indent("..."))
+        else:
+            FunctionAsString += "..."
+        
+        return FunctionAsString
+
+
+class StubClass(StubMainClass):
+    def __init__(self, Name="", Indentation = 0) -> None:
+        super().__init__(Name = Name, Indentation = Indentation)
+        self.Parents = []
+        self.StubEnums = []
+        self.StubProperties = []
+        self.StubFunctions = []
+
+    def GetAsString(self):
+        ParentClassesAsString = ','.join(self.Parents)
+        ClassAsString = "class %s(%s):" % (self.Name, ParentClassesAsString)
+        
+        ClassAsString += "..."
+        
+        return ClassAsString
+
+class StubProperty(StubMainClass):
+    def __init__(self, Name="", Indentation = 0) -> None:
+        super().__init__(Name=Name, Indentation = Indentation)
+
+
+
+# --------------------------------------------------------
 #              Native pyfbsdk generated docs
 # --------------------------------------------------------
 
@@ -85,7 +173,8 @@ def PatchArgumentName(Param:str):
 
 
 def GetArgumentsFromFunction(Function):
-    HelpFunction = Function.__doc__.split("->", 1)[0]
+    DocString = Function.__doc__
+    HelpFunction = DocString.split("->", 1)[0]
     HelpArgumentString = HelpFunction.split("(", 1)[1].strip()[:-1]
     HelpArgumentString = HelpArgumentString.replace("]", "").replace("[", "")
     HelpArguments = HelpArgumentString.split(",")
@@ -98,65 +187,48 @@ def GetArgumentsFromFunction(Function):
     return ReturnValue
 
 
-def GenerateStubFunction(Function, DocMembers, Indentation = TAB_CHAR, bIsClassFunction = False):
+def GenerateStubFunction(Function, DocMembers, Indentation = 0, bIsClassFunction = False):
     FunctionName:str = Function.__name__
-    if FunctionName.startswith("_"):
-        return None
-    functionString = "def %s(" % (FunctionName)
     
-    # Arguments
-    # get args & types from the help doc
-    Arguments = GetArgumentsFromFunction(Function)
+    StubFunctionInstance = StubFunction(FunctionName, Indentation = Indentation)
+    StubFunctionInstance.bIsClassFunction = bIsClassFunction
+    
+    # Parameters
+    Parameters = GetArgumentsFromFunction(Function)
     
     DocRef = None
     if FunctionName in DocMembers:
         DocRef = DocMembers[FunctionName]
+        StubFunctionInstance.DocString = DocRef.__doc__
         DocArguments = inspect.getargspec(DocRef).args
-        ArgumentNames = [PatchArgumentName(x) for x in DocArguments]
-        Arguments = [(Name, ":%s" % Arg[1]) for Name, Arg in zip(ArgumentNames, Arguments)]
-        
-    if bIsClassFunction:
-        if Arguments:
-            Arguments.pop(0)
-        Arguments.insert(0, ("self", ""))
-            
-    if Arguments:
-        # Get args from
-        functionString += ",".join(["%s%s" %(x[0], x[1]) for x in Arguments])
-    
-    functionString += ")"
+        Parameters = [(PatchArgumentName(Name), Arg[1]) for Name, Arg in zip(DocArguments, Parameters)]
+    StubFunctionInstance.Params = Parameters
     
     # Return Type
     ReturnType = Function.__doc__.split("->", 1)[1].strip()
     if "\n" in ReturnType:
         ReturnType = ReturnType.split("\n")[0].strip()
-    if ReturnType != "None":
-        functionString += "->%s" % ReturnType
-    functionString += ":"
+    StubFunctionInstance.ReturnType = ReturnType
+        
+    return StubFunctionInstance
+
+
+def GetClassParents(Class):
+    return Class.__bases__
+
+def GetClassParentNames(Class):
+    ParentClassNames = []
+    for Parent in GetClassParents(Class):
+        ParentClassName = Parent.__name__
+        if ParentClassName == "instance":
+            ParentClassName = ""
+
+        elif ParentClassName == "enum":
+            ParentClassName = "_Enum"
+            
+        ParentClassNames.append(ParentClassName)
     
-    # Doc String
-    if DocRef:
-        functionString += '\n%s"""%s"""\n%s' %(Indentation, PatchGeneratedDocString(DocRef.__doc__), Indentation)
-    
-    functionString += "..."
-    
-    return functionString
-
-
-def GetClassParent(Class):
-    Parents = Class.__bases__
-    if len(Parents) > 1:
-        raise Exception("Support for multiple parent classes not yed implemented")
-    return Parents[0]
-
-def GetClassParentName(Class):
-    ParentClassName = GetClassParent(Class).__name__
-    if ParentClassName == "instance":
-        ParentClassName = ""
-
-    elif ParentClassName == "enum":
-        ParentClassName = "_Enum"
-    return ParentClassName
+    return ParentClassNames
 
 
 def GetClassMembers(Class):
@@ -170,6 +242,13 @@ def GenerateStubClass(Class, DocMembers):
     ClassName:str = Class.__name__
     DocClasses = [x for x in DocMembers if type(x).__name__ in ["class", "type"]]
     DocMemberNames = [x.__name__ for x in DocClasses]
+    
+    StubClassInstance = StubClass(ClassName)
+    StubClassInstance.Parents = GetClassParentNames(Class)
+    
+    
+    return StubClassInstance
+    
     
     ClassString = "class %s(%s):\n    " % (ClassName, GetClassParentName(Class))
     
@@ -242,40 +321,35 @@ def SortClasses(Classes):
     return Classes
 
 def GenerateStub(Filepath: str, Module, GeneratedDocModuleName = ""):
-    Functions = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "function"]
+    Functions = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "function" and not x[1].__name__.startswith("_")]
     Classes = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "class"]
-    Types = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "type"]
+    Enums = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "type"]
     Misc = [x for x in inspect.getmembers(Module) if type(x[1]).__name__ not in ["function", "class", "type"]]
-
-    Classes = SortClasses(Classes)
     
-    StubFileContent = ""
     DocMembers = []
     if GeneratedDocModuleName:
         ImportedModule = importlib.import_module(GeneratedDocModuleName)
         DocMembers = dict(inspect.getmembers(ImportedModule))
     
+    # Collect all of the data
+    StubFunctions = [GenerateStubFunction(x, DocMembers) for x in Functions]
+    StubClasses = [GenerateStubClass(x, DocMembers) for x in Classes]
+    StubEnums = [GenerateStubClass(x, DocMembers) for x in Enums]
+    
+    
+    # TODO: Sort the classes here instead
+        #Classes = SortClasses(Classes)
+    
+    # Generate the stub file content as a string 
+    StubFileContent = ""
     if os.path.isfile(CUSTOM_ADDITIONS_FILEPATH):
         with open(CUSTOM_ADDITIONS_FILEPATH, 'r') as File:
-            StubFileContent += "%s\n" % File.read()
+            StubFileContent += "%s\n" % File.read()        
     
-    for Type in Types:
-        TypeString = GenerateStubClass(Type, DocMembers)
-        if TypeString:
-            StubFileContent += "%s\n" % TypeString
-            
-            
-    for Class in Classes:
-        ClassString = GenerateStubClass(Class, DocMembers)
-        if ClassString:
-            StubFileContent += "%s\n" % ClassString
+    for ListOfStubItems in [StubEnums, StubClasses, StubFunctions]:
+        StubFileContent += "%s\n" % "\n".join([x.GetAsString() for x in ListOfStubItems])
     
-    for Function in Functions:
-        FunctionString = GenerateStubFunction(Function, DocMembers)
-        if FunctionString:
-            StubFileContent += "%s\n" % FunctionString
-            
-    
+    # Write content into the file
     with open(Filepath, "w+") as File:
         File.write(StubFileContent)
 
