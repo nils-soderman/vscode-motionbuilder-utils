@@ -79,6 +79,8 @@ def PatchArgumentName(Param:str):
     if Param.startswith("p"):
         if not (len(Param) == 2 and Param[1].isdigit()):   
             Param = Param[1:]
+    if Param == "True":
+        Param = "bState"
     return Param
 
 
@@ -96,10 +98,7 @@ def GetArgumentsFromFunction(Function):
     return ReturnValue
 
 
-def GenerateStubFunction(Function, DocMembers):
-    DocFunctions = [x for x in DocMembers if type(x).__name__ == "function"]
-    DocFunctionNames = [x.__name__ for x in DocFunctions]
-    
+def GenerateStubFunction(Function, DocMembers, Indentation = TAB_CHAR, bIsClassFunction = False):
     FunctionName:str = Function.__name__
     if FunctionName.startswith("_"):
         return None
@@ -110,16 +109,20 @@ def GenerateStubFunction(Function, DocMembers):
     Arguments = GetArgumentsFromFunction(Function)
     
     DocRef = None
-    if FunctionName in DocFunctionNames:
-        DocIndex = DocFunctionNames.index(FunctionName)
-        DocRef = DocFunctions[DocIndex]
+    if FunctionName in DocMembers:
+        DocRef = DocMembers[FunctionName]
         DocArguments = inspect.getargspec(DocRef).args
         ArgumentNames = [PatchArgumentName(x) for x in DocArguments]
-        Arguments = [(Name, Arg[1]) for Name, Arg in zip(ArgumentNames, Arguments)]
+        Arguments = [(Name, ":%s" % Arg[1]) for Name, Arg in zip(ArgumentNames, Arguments)]
         
+    if bIsClassFunction:
+        if Arguments:
+            Arguments.pop(0)
+        Arguments.insert(0, ("self", ""))
+            
     if Arguments:
         # Get args from
-        functionString += ",".join(["%s:%s" %(x[0], x[1]) for x in Arguments])
+        functionString += ",".join(["%s%s" %(x[0], x[1]) for x in Arguments])
     
     functionString += ")"
     
@@ -133,7 +136,7 @@ def GenerateStubFunction(Function, DocMembers):
     
     # Doc String
     if DocRef:
-        functionString += '\n    """%s"""\n    ' % PatchGeneratedDocString(DocRef.__doc__)
+        functionString += '\n%s"""%s"""\n%s' %(Indentation, PatchGeneratedDocString(DocRef.__doc__), Indentation)
     
     functionString += "..."
     
@@ -172,39 +175,50 @@ def GenerateStubClass(Class, DocMembers):
     
     # Docs
     DocGenRef = FindDocGenRef(DocMembers, ClassName)
-    DocGenMembers = []
+    DocGenMembers = {}
     if DocGenRef:
         DocString = PatchGeneratedDocString(DocGenRef.__doc__)
         if DocString:
             ClassString += '"""%s"""\n    ' % DocString
             
-        DocGenMembers = GetClassMembers(DocGenRef)
-    DocGenMembersDict = dict(DocGenMembers)
+        DocGenMembers = dict(GetClassMembers(DocGenRef))
     
     # Class Memebers, functions & properties
     ClassMemebers = GetClassMembers(Class)
+    
+    # TODO: Sort by types, generate in order of Enum, Property, Function
     for ClassMemeber in ClassMemebers:
         MemberType = type(ClassMemeber[1]).__name__
+        bGeneratedDocString = False
+        
         if MemberType == "function":
-            FunctionString = GenerateStubFunction(ClassMemeber[1], DocGenMembers)
-            ClassString += "%s\n%s" % (FunctionString, TAB_CHAR)
+            bGeneratedDocString = True
+            try:
+                FunctionString = GenerateStubFunction(ClassMemeber[1], DocGenMembers, Indentation = TAB_CHAR + TAB_CHAR, bIsClassFunction = True)
+                ClassString += "%s\n%s" % (FunctionString, TAB_CHAR)
+            except:
+                print("Failed for %s" % ClassMemeber[0])
         elif MemberType == "property":
-            pass
+            ClassString += "%s:%s\n%s" % (ClassMemeber[0], "property", TAB_CHAR)
         else:
-            ClassString += "%s:_Enum\n%s" % (ClassMemeber[0], TAB_CHAR)
-            
-        if ClassMemeber[0] in DocGenMembersDict:
-            DocString = PatchGeneratedDocString(DocGenMembersDict.get(ClassMemeber[0]).__doc__)
+            ClassString += "%s:%s\n%s" % (ClassMemeber[0], ClassName, TAB_CHAR)
+        
+        if not bGeneratedDocString and ClassMemeber[0] in DocGenMembers:
+            DocString = PatchGeneratedDocString(DocGenMembers.get(ClassMemeber[0]).__doc__)
             if DocString:
                 ClassString += '"""%s"""\n%s' %(DocString, TAB_CHAR) 
     
-    
-    ClassString += "..."
+    if len(ClassMemebers) > 0:
+        ClassString = ClassString.strip()
+    else:
+        ClassString += "..."
     
     return ClassString
 
-def FindDocGenRef(DocMembers, RefName):
-    for Mebmer in DocMembers:
+def FindDocGenRef(DocMembers:dict, RefName):
+    # if RefName in DocMembers:
+        # return DocMembers[RefName]
+    for Mebmer in DocMembers.values():
         if hasattr(Mebmer, "__name__") and Mebmer.__name__ == RefName:
             return Mebmer
 
@@ -239,7 +253,7 @@ def GenerateStub(Filepath: str, Module, GeneratedDocModuleName = ""):
     DocMembers = []
     if GeneratedDocModuleName:
         ImportedModule = importlib.import_module(GeneratedDocModuleName)
-        DocMembers = [x[1] for x in inspect.getmembers(ImportedModule)]
+        DocMembers = dict(inspect.getmembers(ImportedModule))
     
     if os.path.isfile(CUSTOM_ADDITIONS_FILEPATH):
         with open(CUSTOM_ADDITIONS_FILEPATH, 'r') as File:
