@@ -1,26 +1,17 @@
-def FlushOutput():
-    pass
+def FlushOutput(): ...
 
-def GetGlobalDict() -> object:
-    pass
+def GetGlobalDict() -> object: ...
 
-def GetShortcutInfo() -> dict:
-    pass
+def GetShortcutInfo() -> dict: ...
 
-def GetTraceLevel() -> int:
-    pass
+def GetTraceLevel() -> int: ...
 
-def Greet() -> str:
-    pass
+def Greet() -> str: ...
 
-def RefCount(arg1: object) -> int:
-    pass
+def RefCount(arg1: object) -> int: ...
 
-def SetCompletion(arg1: list):
-    pass
+def SetCompletion(arg1: list): ...
 
-def SetSyntaxInfo(arg1: list, arg2: list):
-    pass
+def SetSyntaxInfo(arg1: list, arg2: list): ...
 
-def SetTraceLevel(arg1: int):
-    pass
+def SetTraceLevel(arg1: int): ...
