@@ -30,6 +30,68 @@ TAB_CHAR = "    "
 # Custom additions to insert at the top of the stub file
 CUSTOM_ADDITIONS_FILEPATH =  os.path.join(os.path.dirname(__file__), "stub-custom-additions.py")
 
+
+# --------------------------------------------------------
+#                    Patch Functions
+# --------------------------------------------------------
+
+def PatchGeneratedDocString(Text):
+    # Remove HTML tags
+    for TagName, ReplaceWith in [("b", "")]:
+        Text = Text.replace("<%s>" % TagName, ReplaceWith)
+        Text = Text.replace("</%s>" % TagName, ReplaceWith)
+    Text = Text.replace("b>", "") # There are some broken HTML tags in there too
+        
+    # Patch @code, example:
+    #   @code
+    #   print("Hello World")
+    #   @endcode
+    if "@code" in Text:
+        NewText = ""
+        bInCodeBlock = False
+        bFirstCodeLine = False
+        for Line in Text.split("\n"):
+            Line += "\n"
+            if bInCodeBlock:
+                if Line.startswith("@endcode"):
+                    bInCodeBlock = False
+                    Line = "\n"
+                elif not Line.strip():
+                    continue
+                else:
+                    if Line.strip().startswith("//"):
+                        Line = Line.replace("//", "#")
+                    if not bFirstCodeLine:
+                        Line = "    %s" % Line
+                bFirstCodeLine = False
+            elif Line.startswith("@code"):
+                bFirstCodeLine = True
+                bInCodeBlock = True
+                Line = "\n>>> "
+            
+            NewText += Line
+        Text = NewText
+        
+    # Remove p prefix from parameters, example: pVector -> Vector
+    Text = re.sub(r"\s(p)([A-Z])", r"\2", Text)
+        
+    return Text.strip()
+
+
+
+def PatchArgumentName(Param:str):
+    # Remove the 'p' prefix
+    if Param.startswith("p"):
+        if not (len(Param) == 2 and Param[1].isdigit()):   
+            Param = Param[1:]
+    
+    if Param == "True":
+        Param = "bState"
+        
+    return Param
+
+
+
 # --------------------------------------------------------
 #                       Classes
 # --------------------------------------------------------
@@ -37,7 +99,7 @@ CUSTOM_ADDITIONS_FILEPATH =  os.path.join(os.path.dirname(__file__), "stub-custo
 class StubMainClass():
     def __init__(self, Name="", Indentation = 0) -> None:
         self.Name = Name
-        self.DocString = ""
+        self._DocString = ""
         self.SetIndentationLevel(Indentation)
         
     def SetIndentationLevel(self, Level:int):
@@ -46,20 +108,20 @@ class StubMainClass():
     def GetAsString(self):
         return ""
     
+    def SetDocString(self, Text):
+        self._DocString = PatchGeneratedDocString(Text)
+    
     def GetDocString(self):
-        if not self.DocString:
-            return ""
-        PatchedDocString = PatchGeneratedDocString(self.DocString)
-        if not PatchedDocString:
-            return ""
-        return '"""%s"""' % PatchedDocString
+        if self._DocString:
+            return '"""%s"""' % self._DocString
+        return ""
     
     def Indent(self, Text):
         return "\n".join([(TAB_CHAR * self._Indentation) + Line.strip() for Line in Text.split("\n")])
 
 
 class StubFunction(StubMainClass):
-    def __init__(self, Name="", Indentation = 0) -> None:
+    def __init__(self, Name="", Indentation = 0):
         super().__init__(Name=Name, Indentation = Indentation)
         self.Params = []
         self.ReturnType = None
@@ -97,7 +159,7 @@ class StubFunction(StubMainClass):
 
 
 class StubClass(StubMainClass):
-    def __init__(self, Name="", Indentation = 0) -> None:
+    def __init__(self, Name="", Indentation = 0):
         super().__init__(Name = Name, Indentation = Indentation)
         self.Parents = []
         self.StubEnums = []
@@ -113,7 +175,7 @@ class StubClass(StubMainClass):
         return ClassAsString
 
 class StubProperty(StubMainClass):
-    def __init__(self, Name="", Indentation = 0) -> None:
+    def __init__(self, Name="", Indentation = 0):
         super().__init__(Name=Name, Indentation = Indentation)
 
 
@@ -121,56 +183,6 @@ class StubProperty(StubMainClass):
 # --------------------------------------------------------
 #              Native pyfbsdk generated docs
 # --------------------------------------------------------
-
-def PatchGeneratedDocString(Text):
-    # Remove HTML tags
-    for TagName, ReplaceWith in [("b", "")]:
-        Text = Text.replace("<%s>" % TagName, ReplaceWith)
-        Text = Text.replace("</%s>" % TagName, ReplaceWith)
-    Text = Text.replace("b>", "") # There are some broken HTML tags in there too
-        
-    # Patch code
-    if "@code" in Text:
-        NewText = ""
-        bInCodeBlock = False
-        bFirstCodeLine = False
-        for Line in Text.split("\n"):
-            Line += "\n"
-            if bInCodeBlock:
-                if Line.startswith("@endcode"):
-                    bInCodeBlock = False
-                    Line = "\n"
-                elif not Line.strip():
-                    continue
-                else:
-                    if Line.strip().startswith("//"):
-                        Line = Line.replace("//", "#")
-                    if not bFirstCodeLine:
-                        Line = "    %s" % Line
-                bFirstCodeLine = False
-            elif Line.startswith("@code"):
-                bFirstCodeLine = True
-                bInCodeBlock = True
-                Line = "\n>>> "
-            
-            NewText += Line
-        Text = NewText
-        
-    # Remove p prefix from paramgeters, example: pVector -> Vector
-    Text = re.sub(r"\s(p)([A-Z])", r"\2", Text)
-        
-    return Text.strip()
-
-
-
-def PatchArgumentName(Param:str):
-    if Param.startswith("p"):
-        if not (len(Param) == 2 and Param[1].isdigit()):   
-            Param = Param[1:]
-    if Param == "True":
-        Param = "bState"
-    return Param
-
 
 def GetArgumentsFromFunction(Function):
     DocString = Function.__doc__
@@ -196,10 +208,9 @@ def GenerateStubFunction(Function, DocMembers, Indentation = 0, bIsClassFunction
     # Parameters
     Parameters = GetArgumentsFromFunction(Function)
     
-    DocRef = None
-    if FunctionName in DocMembers:
-        DocRef = DocMembers[FunctionName]
-        StubFunctionInstance.DocString = DocRef.__doc__
+    DocRef = DocMembers.get(FunctionName)
+    if DocRef:
+        StubFunctionInstance.SetDocString(DocRef.__doc__)
         DocArguments = inspect.getargspec(DocRef).args
         Parameters = [(PatchArgumentName(Name), Arg[1]) for Name, Arg in zip(DocArguments, Parameters)]
     StubFunctionInstance.Params = Parameters
@@ -246,26 +257,17 @@ def GenerateStubClass(Class, DocMembers):
     StubClassInstance = StubClass(ClassName)
     StubClassInstance.Parents = GetClassParentNames(Class)
     
+    # TODO: DocMembers/DocGenRef etc. could be a class
+    DocGenRef = DocMembers.get(ClassName)
+    DocGenMembers = {}
+    if DocGenRef:
+        StubClassInstance.SetDocString(DocGenRef.__doc__)
+        DocGenMembers = dict(GetClassMembers(DocGenRef))
+        
+    ClassMemebers = GetClassMembers(Class)
     
     return StubClassInstance
     
-    
-    ClassString = "class %s(%s):\n    " % (ClassName, GetClassParentName(Class))
-    
-    # Docs
-    DocGenRef = FindDocGenRef(DocMembers, ClassName)
-    DocGenMembers = {}
-    if DocGenRef:
-        DocString = PatchGeneratedDocString(DocGenRef.__doc__)
-        if DocString:
-            ClassString += '"""%s"""\n    ' % DocString
-            
-        DocGenMembers = dict(GetClassMembers(DocGenRef))
-    
-    # Class Memebers, functions & properties
-    ClassMemebers = GetClassMembers(Class)
-    
-    # TODO: Sort by types, generate in order of Enum, Property, Function
     for ClassMemeber in ClassMemebers:
         MemberType = type(ClassMemeber[1]).__name__
         bGeneratedDocString = False
@@ -286,20 +288,7 @@ def GenerateStubClass(Class, DocMembers):
             DocString = PatchGeneratedDocString(DocGenMembers.get(ClassMemeber[0]).__doc__)
             if DocString:
                 ClassString += '"""%s"""\n%s' %(DocString, TAB_CHAR) 
-    
-    if len(ClassMemebers) > 0:
-        ClassString = ClassString.strip()
-    else:
-        ClassString += "..."
-    
-    return ClassString
-
-def FindDocGenRef(DocMembers:dict, RefName):
-    # if RefName in DocMembers:
-        # return DocMembers[RefName]
-    for Mebmer in DocMembers.values():
-        if hasattr(Mebmer, "__name__") and Mebmer.__name__ == RefName:
-            return Mebmer
+                
 
 def SortClasses(Classes):
     """ 
