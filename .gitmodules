@@ -1,0 +1,3 @@
+[submodule "python/pyfbsdk-generator"]
+	path = python/pyfbsdk-generator
+	url = https://github.com/nils-soderman/pyfbsdk-stub-generator.git

@@ -21,7 +21,7 @@ import pyfbsdk_additions
 import pythonidelib
 import pyfbsdk
 
-MODULES = [pyfbsdk, pyfbsdk_additions, pythonidelib]
+MODULES = [pyfbsdk]
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "auto-completion")
 
@@ -31,16 +31,20 @@ TAB_CHAR = "    "
 CUSTOM_ADDITIONS_FILEPATH =  os.path.join(os.path.dirname(__file__), "stub-custom-additions.py")
 
 
+class FObjectType:
+    Function = 'function'
+    Class = 'class'
+    Property = 'property'
+    Enum = 'type'
+
 # --------------------------------------------------------
 #                    Patch Functions
 # --------------------------------------------------------
 
 def PatchGeneratedDocString(Text):
-    # Remove HTML tags
-    for TagName, ReplaceWith in [("b", "")]:
-        Text = Text.replace("<%s>" % TagName, ReplaceWith)
-        Text = Text.replace("</%s>" % TagName, ReplaceWith)
-    Text = Text.replace("b>", "") # There are some broken HTML tags in there too
+    # Replace content
+    for TagName, ReplaceWith in [("<b>", ""), ("</b>", ""), ("b>", ""), ("\\", "\\\\")]:
+        Text = Text.replace(TagName, ReplaceWith)
         
     # Patch @code, example:
     #   @code
@@ -103,10 +107,10 @@ class StubMainClass():
         self.SetIndentationLevel(Indentation)
         
     def SetIndentationLevel(self, Level:int):
-        self._Indentation = Level + 1
+        self._Indentation = Level
         
     def GetAsString(self):
-        return ""
+        raise NotImplementedError("GetAsString() has not yet been implemented")
     
     def SetDocString(self, Text):
         self._DocString = PatchGeneratedDocString(Text)
@@ -116,8 +120,12 @@ class StubMainClass():
             return '"""%s"""' % self._DocString
         return ""
     
-    def Indent(self, Text):
-        return "\n".join([(TAB_CHAR * self._Indentation) + Line.strip() for Line in Text.split("\n")])
+    def Indent(self, Text, bCurrent = False):
+        Level = self._Indentation if bCurrent else self._Indentation + 1
+        return "\n".join([(TAB_CHAR * Level) + Line.strip() for Line in Text.split("\n")])
+    
+    def GetRequirements(self) -> list:
+        raise NotImplementedError("GetRequirements() has not yet been implemented")
 
 
 class StubFunction(StubMainClass):
@@ -141,8 +149,15 @@ class StubFunction(StubMainClass):
             
         return ParamString[:-1]
     
+    def GetRequirements(self):
+        Parameters = self.Params[1:] if self.bIsClassFunction else self.Params
+        return [x[1] for x in Parameters if x[1] and x[1].startswith("FB")]
+    
     def GetAsString(self):
-        FunctionAsString = 'def %s(%s)' %(self.Name, self.GetParamsAsString())
+        FunctionAsString = self.Indent(
+            'def %s(%s)' %(self.Name, self.GetParamsAsString()), 
+            bCurrent = True
+            )
         
         if self.ReturnType and self.ReturnType != "None":
             FunctionAsString += '->%s' % self.ReturnType
@@ -162,26 +177,62 @@ class StubClass(StubMainClass):
     def __init__(self, Name="", Indentation = 0):
         super().__init__(Name = Name, Indentation = Indentation)
         self.Parents = []
-        self.StubEnums = []
         self.StubProperties = []
         self.StubFunctions = []
+        
+    def GetRequirements(self) -> list:
+        return self.Parents
+        Requirements = []
+        # Get requirements for all functiosn & properties
+        for Object in self.StubProperties + self.StubFunctions:
+            Requirements.extend(Object.GetRequirements())
+        
+        # Add Parent class names as requirements
+        return Requirements + self.Parents
 
     def GetAsString(self):
         ParentClassesAsString = ','.join(self.Parents)
-        ClassAsString = "class %s(%s):" % (self.Name, ParentClassesAsString)
+        ClassAsString = "class %s(%s):\n" % (self.Name, ParentClassesAsString)
         
-        ClassAsString += "..."
+        if self.GetDocString():
+            ClassAsString += "%s\n" % self.Indent(self.GetDocString())
         
-        return ClassAsString
+        ClassMembers = self.StubProperties + self.StubFunctions
+        for StubObject in ClassMembers:
+            StubObject.SetIndentationLevel(1)
+            ClassAsString += "%s\n" % StubObject.GetAsString()
+        
+        # If class doesn't have any members, add a ...
+        if not len(ClassMembers):
+            ClassAsString += self.Indent("...")
+        
+        return ClassAsString.strip()
 
 class StubProperty(StubMainClass):
     def __init__(self, Name="", Indentation = 0):
         super().__init__(Name=Name, Indentation = Indentation)
+        self.Type = None
+        
+    def GetType(self):
+        if self.Type:
+            return self.Type
+        return "property"
+        
+    def GetRequirements(self):
+        if self.Type and self.Type.startswith("FB"):
+            return [self.Type]
+        return []
+        
+    def GetAsString(self):
+        PropertyAsString = self.Indent("%s:%s" % (self.Name, self.GetType()), bCurrent = True)
+        if self.GetDocString():
+            PropertyAsString += self.Indent("\n%s" % self.GetDocString(), bCurrent = True)
 
+        return PropertyAsString
 
 
 # --------------------------------------------------------
-#              Native pyfbsdk generated docs
+#                Helper functions
 # --------------------------------------------------------
 
 def GetArgumentsFromFunction(Function):
@@ -198,6 +249,45 @@ def GetArgumentsFromFunction(Function):
         ReturnValue.append((ArgName.strip(), Type[1:].strip()))
     return ReturnValue
 
+
+def GetClassParents(Class):
+    return Class.__bases__
+
+
+def GetClassParentNames(Class):
+    ParentClassNames = []
+    for Parent in GetClassParents(Class):
+        ParentClassName = Parent.__name__
+        if ParentClassName == "instance":
+            ParentClassName = ""
+
+        elif ParentClassName == "enum":
+            ParentClassName = "_Enum"
+            
+        ParentClassNames.append(ParentClassName)
+    
+    return ParentClassNames
+
+
+def GetClassMembers(Class):
+    IgnoreMembers = ["names", "values", "__slots__", "__instance_size__"]
+    Members = inspect.getmembers(Class)
+    ParentClass = GetClassParents(Class)[0]
+    UniqueMemebers = [x for x in Members if not hasattr(ParentClass, x[0]) and x[0] not in IgnoreMembers and not x[0].startswith("__")]
+    return UniqueMemebers
+
+
+def GetObjectType(Object):
+    return type(Object).__name__
+
+
+def IsPrivate(Object):
+    return Object.__name__.startswith("_")
+
+
+# --------------------------------------------------------
+#                   Generate Functions
+# --------------------------------------------------------
 
 def GenerateStubFunction(Function, DocMembers, Indentation = 0, bIsClassFunction = False):
     FunctionName:str = Function.__name__
@@ -224,31 +314,6 @@ def GenerateStubFunction(Function, DocMembers, Indentation = 0, bIsClassFunction
     return StubFunctionInstance
 
 
-def GetClassParents(Class):
-    return Class.__bases__
-
-def GetClassParentNames(Class):
-    ParentClassNames = []
-    for Parent in GetClassParents(Class):
-        ParentClassName = Parent.__name__
-        if ParentClassName == "instance":
-            ParentClassName = ""
-
-        elif ParentClassName == "enum":
-            ParentClassName = "_Enum"
-            
-        ParentClassNames.append(ParentClassName)
-    
-    return ParentClassNames
-
-
-def GetClassMembers(Class):
-    IgnoreMembers = ["names", "values", "__slots__", "__instance_size__"]
-    Members = inspect.getmembers(Class)
-    ParentClass = GetClassParent(Class)
-    UniqueMemebers = [x for x in Members if not hasattr(ParentClass, x[0]) and x[0] not in IgnoreMembers and not x[0].startswith("__")]
-    return UniqueMemebers
-
 def GenerateStubClass(Class, DocMembers):
     ClassName:str = Class.__name__
     DocClasses = [x for x in DocMembers if type(x).__name__ in ["class", "type"]]
@@ -264,56 +329,56 @@ def GenerateStubClass(Class, DocMembers):
         StubClassInstance.SetDocString(DocGenRef.__doc__)
         DocGenMembers = dict(GetClassMembers(DocGenRef))
         
-    ClassMemebers = GetClassMembers(Class)
-    
+    for Name, Reference in GetClassMembers(Class):
+        MemberType = GetObjectType(Reference)
+        if MemberType == FObjectType.Function:
+            try:
+                StubClassInstance.StubFunctions.append(
+                    GenerateStubFunction(Reference, DocGenMembers, bIsClassFunction = True)
+                )
+            except:
+                print("Failed for %s" % Name)
+        else:
+            Property = StubProperty(Name)
+            if MemberType == FObjectType.Property:
+                Property.Type = "property"
+            else:
+                Property.Type = ClassName
+            StubClassInstance.StubProperties.append(Property)
+            PropertyDocGenRef = DocGenMembers.get(Name)
+            if PropertyDocGenRef:
+                Property.SetDocString(PropertyDocGenRef.__doc__)
+            
     return StubClassInstance
     
-    for ClassMemeber in ClassMemebers:
-        MemberType = type(ClassMemeber[1]).__name__
-        bGeneratedDocString = False
-        
-        if MemberType == "function":
-            bGeneratedDocString = True
-            try:
-                FunctionString = GenerateStubFunction(ClassMemeber[1], DocGenMembers, Indentation = TAB_CHAR + TAB_CHAR, bIsClassFunction = True)
-                ClassString += "%s\n%s" % (FunctionString, TAB_CHAR)
-            except:
-                print("Failed for %s" % ClassMemeber[0])
-        elif MemberType == "property":
-            ClassString += "%s:%s\n%s" % (ClassMemeber[0], "property", TAB_CHAR)
-        else:
-            ClassString += "%s:%s\n%s" % (ClassMemeber[0], ClassName, TAB_CHAR)
-        
-        if not bGeneratedDocString and ClassMemeber[0] in DocGenMembers:
-            DocString = PatchGeneratedDocString(DocGenMembers.get(ClassMemeber[0]).__doc__)
-            if DocString:
-                ClassString += '"""%s"""\n%s' %(DocString, TAB_CHAR) 
-                
 
 def SortClasses(Classes):
     """ 
     Sort classes based on their parent class
     """
     i = 0
-    ClassNames = [x.__name__ for x in Classes]
+    ClassNames = [x.Name for x in Classes]
     while (i < len(Classes)):
-        ParentClassName = GetClassParentName(Classes[i])
-        if ParentClassName:
-            ParentClassIndex = ClassNames.index(ParentClassName)
-            if ParentClassIndex >= i:
-                Classes.insert(ParentClassIndex + 1, Classes.pop(i))
-                ClassNames.insert(ParentClassIndex + 1, ClassNames.pop(i))
+        Requirements = Classes[i].GetRequirements()
+        if Requirements:
+            RequiredIndecies = [ClassNames.index(x) for x in Requirements if x in ClassNames]
+            RequiredMaxIndex = max(RequiredIndecies) if RequiredIndecies else -1
+            if RequiredMaxIndex > i:
+                Classes.insert(RequiredMaxIndex + 1, Classes.pop(i))
+                ClassNames.insert(RequiredMaxIndex + 1, ClassNames.pop(i))
                 i -= 1
         
         i += 1
         
     return Classes
 
+
+
 def GenerateStub(Filepath: str, Module, GeneratedDocModuleName = ""):
-    Functions = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "function" and not x[1].__name__.startswith("_")]
-    Classes = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "class"]
-    Enums = [x[1] for x in inspect.getmembers(Module) if type(x[1]).__name__ == "type"]
-    Misc = [x for x in inspect.getmembers(Module) if type(x[1]).__name__ not in ["function", "class", "type"]]
+    Functions = [x[1] for x in inspect.getmembers(Module) if GetObjectType(x[1]) == FObjectType.Function and not IsPrivate(x[1])]
+    Classes = [x[1] for x in inspect.getmembers(Module) if GetObjectType(x[1]) == FObjectType.Class]
+    Enums = [x[1] for x in inspect.getmembers(Module) if GetObjectType(x[1]) == FObjectType.Enum]
+    Misc = [x for x in inspect.getmembers(Module) if GetObjectType(x[1]) not in [FObjectType.Function, FObjectType.Class, FObjectType.Enum]]
     
     DocMembers = []
     if GeneratedDocModuleName:
@@ -325,9 +390,7 @@ def GenerateStub(Filepath: str, Module, GeneratedDocModuleName = ""):
     StubClasses = [GenerateStubClass(x, DocMembers) for x in Classes]
     StubEnums = [GenerateStubClass(x, DocMembers) for x in Enums]
     
-    
-    # TODO: Sort the classes here instead
-        #Classes = SortClasses(Classes)
+    Classes = SortClasses(StubClasses)
     
     # Generate the stub file content as a string 
     StubFileContent = ""
@@ -335,8 +398,7 @@ def GenerateStub(Filepath: str, Module, GeneratedDocModuleName = ""):
         with open(CUSTOM_ADDITIONS_FILEPATH, 'r') as File:
             StubFileContent += "%s\n" % File.read()        
     
-    for ListOfStubItems in [StubEnums, StubClasses, StubFunctions]:
-        StubFileContent += "%s\n" % "\n".join([x.GetAsString() for x in ListOfStubItems])
+    StubFileContent += "%s\n" % "\n".join([x.GetAsString() for x in StubEnums + StubClasses + StubFunctions])
     
     # Write content into the file
     with open(Filepath, "w+") as File:
@@ -346,8 +408,6 @@ def MotionBuilderMain():
     for Module in MODULES:
         OutputFilepath = os.path.join(OUTPUT_DIR, "%s.py" % Module.__name__)
         GenerateStub(OutputFilepath, Module, "pyfbsdk_gen_doc")
-        break
-    # GenerateStub(os.path.join(OUTPUT_DIR, "pydbsdk_help.txt"), "")
 
 
 
