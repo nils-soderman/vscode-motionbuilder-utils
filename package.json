@@ -7,8 +7,9 @@
     "motionbuilder",
     "mobu",
     "python",
-    "dcc",
-    "autodesk"
+    "pyfbsdk",
+    "autodesk",
+    "autocompletion"
   ],
   "qna": "marketplace",
   "icon": "media/mobu-icon.png",
