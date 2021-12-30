@@ -8,6 +8,7 @@ import * as utils from "./utils";
 
 const PYTHON_CONFIG = "python";
 const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
+const STUB_FILES_PATH = "python/stub-files";
 
 
 function getPythonConfig() {
@@ -16,7 +17,7 @@ function getPythonConfig() {
 
 
 function getSourceAutocompletionDirectory() {
-    return path.join(path.dirname(__dirname), "auto-completion");
+    return path.join(path.dirname(__dirname), STUB_FILES_PATH);
 }
 
 

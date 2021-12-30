@@ -7,8 +7,10 @@ import * as child_process from "child_process";
 
 import * as utils from './utils';
 
+const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
+// const MOBU_DOCS_URL = AUTODESK_HELP_DOMAIN + "view/MOBPRO/";
+const MOBU_FILE_HOSTING_URL = AUTODESK_HELP_DOMAIN + "cloudhelp/";
 
-const MOBU_DOCS_URL = "https://download.autodesk.com/us/motionbuilder/sdk-documentation/";
 
 const FDOCTYPE = {
     c: "c",
@@ -17,12 +19,20 @@ const FDOCTYPE = {
     python: "python"
 };
 
+function getDocumentationPageURL(version: number, relativePageURL: string) {
+    return MOBU_FILE_HOSTING_URL + version + "/ENU/" + relativePageURL;
+}
 
-function parseDocumentation(type: string) {
+function parseGeneratedDocumentationFile(type: string) {
     const filepath = path.join(__dirname, "..", "documentation", `${type}.json`);
     return utils.readJson(filepath);
 }
 
+function openPageInBrowser(pageId: string) {
+    const url = getDocumentationPageURL(2022, pageId);
+    console.log("url: " + url);
+    child_process.exec(`start ${url}`);
+}
 
 function openExampleInVSCode(url: string) {
     https.get(url, (res) => {
@@ -57,7 +67,7 @@ function openExampleInVSCode(url: string) {
 async function browseDocumentation(types: string[]) {
     let items: any = {};
     for (const type of types) {
-        let itemsToAppend = parseDocumentation(type);
+        let itemsToAppend = parseGeneratedDocumentationFile(type);
         if (types.length > 1) {
             const prefix = `${type[0].toUpperCase() + type.slice(1)}: `;
             for (const [key, value] of Object.entries(itemsToAppend)) {
@@ -75,15 +85,15 @@ async function browseDocumentation(types: string[]) {
         return;
     }
 
-    const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
+    // const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
+    const pageId = items[selection]["id"];
 
-    if (relativeURL.startsWith("SDKSamples") && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
+    if (pageId.startsWith("SDKSamples") && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        openExampleInVSCode(MOBU_DOCS_URL + relativeURL);
+        // openExampleInVSCode(MOBU_DOCS_URL + relativeURL);
     }
     else {
-        const url = `${MOBU_DOCS_URL}?url=${relativeURL},topicNumber=${items[selection]["id"]}`;
-        child_process.exec(`start ${url}`);
+        openPageInBrowser(pageId);
     }
 }
 
