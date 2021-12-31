@@ -33,17 +33,20 @@ def GetMotionBuilderVersion():
 #            Generate Guide TOC
 # ------------------------------------------
 
+
 def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
     ReturnDict = {}
 
     PageName = CategoryPage.Title
-    if "guid" in CategoryPage.Id.lower():
-        ReturnDict[PageName] = {"id": CategoryPage.GetURLRelativeToENU()}
+    CategoryURL = CategoryPage.GetURLRelativeToENU()
+    if CategoryURL and "files/" in CategoryURL.lower():
+        ReturnDict[PageName] = {"id": CategoryURL}
 
     for Page in CategoryPage.Pages:
         PageName = Page.Title
-        if len(PageName) > 1 and "guid" in Page.Id.lower():
-            ReturnDict[PageName] = {"id": Page.GetURLRelativeToENU()}
+        PageURL = Page.GetURLRelativeToENU()
+        if len(PageName) > 1 and PageURL and "files/" in PageURL.lower():
+            ReturnDict[PageName] = {"id": PageURL}
 
     for Child in CategoryPage.SubCategories:
         if isinstance(Child, docParser.DocumentationCategory):
@@ -69,10 +72,10 @@ def GenerateGuideTOC(Version):
 def GenerateExamplesTOC(Version):
     MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
     PythonExamples = MoBuDocumentation.GetPythonExamples()
-    
+
     Data = {}
     for ExamplePage in PythonExamples.values():
-        PageName = ExamplePage.Title    
+        PageName = ExamplePage.Title
         Data[PageName] = {"url": ExamplePage.GetURLRelativeToENU()}
 
     SaveJsonFile("examples.json", Data)
@@ -80,6 +83,7 @@ def GenerateExamplesTOC(Version):
 # ------------------------------------------
 #                Examples
 # ------------------------------------------
+
 
 def GeneratePythonTOC(Version):
     MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
