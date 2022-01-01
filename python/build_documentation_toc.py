@@ -13,6 +13,13 @@ reload(docParser)
 
 OUTPUT_DIR = os.path.join(CURRENT_DIR, "..", "documentation")
 
+# ------------------------------------------
+#            Structs & Enums
+# ------------------------------------------
+
+class FDictTags:
+    Url = "url"
+
 
 # ------------------------------------------
 #           Helper Functions
@@ -40,13 +47,13 @@ def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
     PageName = CategoryPage.Title
     CategoryURL = CategoryPage.GetURLRelativeToENU()
     if CategoryURL and "files/" in CategoryURL.lower():
-        ReturnDict[PageName] = {"id": CategoryURL}
+        ReturnDict[PageName] = {FDictTags.Url: CategoryURL}
 
     for Page in CategoryPage.Pages:
         PageName = Page.Title
         PageURL = Page.GetURLRelativeToENU()
         if len(PageName) > 1 and PageURL and "files/" in PageURL.lower():
-            ReturnDict[PageName] = {"id": PageURL}
+            ReturnDict[PageName] = {FDictTags.Url: PageURL}
 
     for Child in CategoryPage.SubCategories:
         if isinstance(Child, docParser.DocumentationCategory):
@@ -76,7 +83,7 @@ def GenerateExamplesTOC(Version):
     Data = {}
     for ExamplePage in PythonExamples.values():
         PageName = ExamplePage.Title
-        Data[PageName] = {"url": ExamplePage.GetURLRelativeToENU()}
+        Data[PageName] = {FDictTags.Url: ExamplePage.GetURLRelativeToENU()}
 
     SaveJsonFile("examples.json", Data)
 

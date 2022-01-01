@@ -1,11 +1,11 @@
+import * as child_process from "child_process";
+import * as htmlParser from 'node-html-parser';
 import * as vscode from 'vscode';
-import * as https from 'https';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import * as child_process from "child_process";
-
 import * as utils from './utils';
+
 
 const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
 // const MOBU_DOCS_URL = AUTODESK_HELP_DOMAIN + "view/MOBPRO/";
@@ -30,52 +30,51 @@ function parseGeneratedDocumentationFile(type: string) {
 
 function openPageInBrowser(pageId: string) {
     const url = getDocumentationPageURL(2022, pageId);
-    console.log("url: " + url);
     child_process.exec(`start ${url}`);
 }
 
-function openExampleInVSCode(url: string) {
-    https.get(url, (res) => {
-        let data = '';
-        res.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        res.on('end', () => {
-            // Get the script as plain text
-            const content = data.split("<body>")[1].replace(/<[^>]*>/g, '').trim();
-
-            // Save file
-            let filename = path.basename(url);
-            if (filename.includes(".")) {
-                filename = filename.split(".")[0];
+function openExampleInVSCode(url: string, filename:string) {
+    function handleResponse(data: string, statusCode?: number) {
+        // TODO: check statusCode
+        const parsedHtml = htmlParser.parse(data);
+        let content = "";
+        for (const line of parsedHtml.querySelectorAll(".line")) {
+            let lineText = line.text.split(/[0-9]\s(.+)/)[1];
+            if (lineText) {
+                content += line.text.split(/[0-9]\s(.+)/)[1] + "\n";
             }
-            filename += ".py";
+            else {
+                content += "\n";
+            }
+        }
 
-            const filepath = utils.saveTempFile(filename, content);
+        // Save file
+        const filepath = utils.saveTempFile(filename, content);
 
-            const openPath = vscode.Uri.file(filepath);
-            vscode.workspace.openTextDocument(openPath).then(doc => {
-                vscode.window.showTextDocument(doc);
-            });
-
+        const openPath = vscode.Uri.file(filepath);
+        vscode.workspace.openTextDocument(openPath).then(doc => {
+            vscode.window.showTextDocument(doc);
         });
-    });
-}
+    }
 
+    utils.getRequest(url, handleResponse);
+}
 
 async function browseDocumentation(types: string[]) {
     let items: any = {};
+    let browsingType: string = "";
     for (const type of types) {
         let itemsToAppend = parseGeneratedDocumentationFile(type);
         if (types.length > 1) {
             const prefix = `${type[0].toUpperCase() + type.slice(1)}: `;
             for (const [key, value] of Object.entries(itemsToAppend)) {
-                items[prefix + key] = value;
+                // @ts-ignore
+                items[prefix + key] = { url: value["url"], type: type };
             }
         }
         else {
             items = Object.assign(items, itemsToAppend);
+            browsingType = type;
         }
     }
 
@@ -86,14 +85,28 @@ async function browseDocumentation(types: string[]) {
     }
 
     // const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
-    const pageId = items[selection]["id"];
+    const relativePageUrl = items[selection]["url"];
+    if (!browsingType) {
+        browsingType = items[selection]["type"];
+    }
 
-    if (pageId.startsWith("SDKSamples") && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
+    if (browsingType == FDOCTYPE.example && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        // openExampleInVSCode(MOBU_DOCS_URL + relativeURL);
+        const url = getDocumentationPageURL(2022, relativePageUrl);
+
+        // Construct a filename
+        let filename = selection.replace("/", "_");
+        if (!filename.endsWith(".py")) {
+            filename += ".py";
+        }
+        if (filename.includes(":")) {
+            filename = filename.split(":")[1].trimStart();
+        }
+
+        openExampleInVSCode(url, "Example_" + filename);
     }
     else {
-        openPageInBrowser(pageId);
+        openPageInBrowser(relativePageUrl);
     }
 }
 

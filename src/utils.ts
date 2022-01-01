@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as https from 'https';
 import * as path from 'path';
 import * as os from "os";
 import * as fs from 'fs';
@@ -72,4 +73,27 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
  */
 export function getExtensionConfig() {
     return vscode.workspace.getConfiguration("motionbuilder");
+}
+
+
+export function getRequest(url: string, callback?: Function) {
+    https.get(url, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        res.on("end", () => {
+            if (callback) {
+                callback(data, res.statusCode);
+            }
+        });
+
+        res.on('error', () => {
+            if (callback) {
+                callback(data, res.statusCode);
+            }
+        });
+
+    });
 }
