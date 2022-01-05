@@ -109,6 +109,12 @@ def GeneratePythonTOC(Version):
 def GenerateSDKTOC(Version):
     MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
     
+    Data = {}
+    for Page in MoBuDocumentation.GetSDKTableOfContents().values():
+        PageName = Page.Title
+        Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
+    
+    SaveJsonFile("c.json", Data)
 
 # ------------------------------------------
 #              Main functions
@@ -116,10 +122,10 @@ def GenerateSDKTOC(Version):
 
 
 def GenerateTableOfContents(Version):
-    # GenerateGuideTOC(Version)
+    GenerateGuideTOC(Version)
     GenerateExamplesTOC(Version)
     GeneratePythonTOC(Version)
-    # GenerateSDKTOC(Version)
+    GenerateSDKTOC(Version)
 
 
 def main():
