@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.5]
+*(06-01-2022)*
+
+- Improved the pyfbsdk stub file _(for improved auto-completion & linting)_
+- Browsing documentation now uses the MotionBuilder 2022 documentation
+
 ## [0.1.4]
 *(06-12-2021)*
 

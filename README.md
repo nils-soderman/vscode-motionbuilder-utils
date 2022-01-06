@@ -26,11 +26,16 @@ The selected text will be executed, if nothing is selected the entire document w
 
 <br>
 
-## Auto-Completion
+## Better Auto-Completion
 
-This extention automatically sets up Python auto-completion for the MotionBuilder sdk.
+This extention comes with improved stub files for the pyfbsdk module.
 
-This assumes PyLance is installed as it'll add an additional path to `python.analysis.extraPaths`
+![Better auto-completion demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/auto-completion.jpg?raw=true)
+
+* Feature complete _(contains all of the functions & classes that can be accessed in the pyfbsdk module)_
+* Variable type annotations
+* Better & more readable description
+
 
 <br>
 
