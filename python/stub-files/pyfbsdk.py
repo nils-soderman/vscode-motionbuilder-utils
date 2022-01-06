@@ -3490,11 +3490,11 @@ class FBColor():
     
     
     Slicing is not supported by this object.See samples: LayeredTexture.py, SetAllCamerasBackgroundColor.py, SetAllCamerasBackgroundColorFromCurrentCamera.py, SetAllCamerasBackgroundColorFromFirstSelectedCamera.py."""
-    def CopyFrom(self,arg2:FBColor=None)->FBColor:...
+    def CopyFrom(self,arg2:FBColor)->FBColor:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBColor=None)->bool:...
-    def NotEqual(self,arg2:FBColor=None)->bool:...
+    def IsEqual(self,arg2:FBColor)->bool:...
+    def NotEqual(self,arg2:FBColor)->bool:...
 class FBColorAndAlpha():
     """FBColorAndAlpha class.
     Color and alpha vector.This class creates a list like object, which can be modified using the list protocol method. But unlike lists, its length is fixed: it always contain 4 floating point values. Thus it does not support the any list methods that would affect its length. The values within can be changed, usually via the bracket operator.
@@ -3507,11 +3507,11 @@ class FBColorAndAlpha():
     
     
     Slicing is not supported by this object."""
-    def CopyFrom(self,arg2:FBColorAndAlpha=None)->FBColorAndAlpha:...
+    def CopyFrom(self,arg2:FBColorAndAlpha)->FBColorAndAlpha:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBColorAndAlpha=None)->bool:...
-    def NotEqual(self,arg2:FBColorAndAlpha=None)->bool:...
+    def IsEqual(self,arg2:FBColorAndAlpha)->bool:...
+    def NotEqual(self,arg2:FBColorAndAlpha)->bool:...
 class FBComponentList():
     """FBComponentList class.
     This class implements a special sort of list that can only contain instances of FBComponent objects. To users it behaves as a tuple, since it is not possible to add new objects in the list. Only methods or function that uses FBComponentList as argument can insert new objects. Users can query the content of the list with the bracket operator.
@@ -3520,10 +3520,10 @@ class FBComponentList():
     l = FBComponentList()
     len(l)
     print l[0]"""
-    def Add(self,arg2:FBComponent=None):...
+    def Add(self,arg2:FBComponent):...
     def Clear(self):...
     def GetCount(self)->int:...
-    def append(self,arg2:FBComponent=None):...
+    def append(self,arg2:FBComponent):...
     def count(self)->int:...
     def removeAll(self):...
 class FBConfigFile():
@@ -3635,7 +3635,7 @@ class FBDeviceNotifyInfo():
         return : Current system time."""
         ...
 class FBDirMap():
-    def Add(self,SourceDir:str=None,TargetDir:str=None):
+    def Add(self,SourceDir:str,TargetDir:str):
         """Adds an entry in the map.
         Environment variables can be specified for the target path using the syntax. Environment variables are expanded before the paths get added to the map. An error in the formatting of the paths (environment variable tokens) will abort the expansion and both given paths will remained unchanged.
         
@@ -3648,17 +3648,17 @@ class FBDirMap():
     def GetCount(self)->int:
         """Returns the number of items in the map."""
         ...
-    def GetSource(self,Index:object=None)->str:
+    def GetSource(self,Index:object)->str:
         """Returns the source directory for the element at specified index.
         
         Index : int"""
         ...
-    def GetTarget(self,Index:object=None)->str:
+    def GetTarget(self,Index:object)->str:
         """Returns the target directory for the element at specified index.
         
         Index : int"""
         ...
-    def Map(self,Path:str=None)->str:
+    def Map(self,Path:str)->str:
         """Iterates through all the mapped directories.
         If one of the mapped directory's source is found in the given path, that part of the path will be replaced by the mapped directory's target. Only the first occurrence is processed.
         
@@ -4012,7 +4012,7 @@ class FBMatrix():
     
     
     The implementation of this 4x4 matrix uses a simple list of 16 elements, not a list of 4 vectors of 4 elements.* Slicing is not supported by this object.See sample: Matrix.py."""
-    def CopyFrom(self,arg2:FBMatrix=None)->FBMatrix:...
+    def CopyFrom(self,arg2:FBMatrix)->FBMatrix:...
     def GetBufferAddress(self)->int:...
     def Identity(self):
         """Load identity matrix."""
@@ -4028,8 +4028,8 @@ class FBMatrix():
         Matrix : Matrix to Product.
         return : result matrix."""
         ...
-    def IsEqual(self,arg2:FBMatrix=None)->bool:...
-    def NotEqual(self,arg2:FBMatrix=None)->bool:...
+    def IsEqual(self,arg2:FBMatrix)->bool:...
+    def NotEqual(self,arg2:FBMatrix)->bool:...
     def Set(self,Value:float):
         """Set matrix from an array.
         
@@ -4053,7 +4053,7 @@ class FBModelList():
     l = FBModelList()
     len(l)
     print l[0]"""
-    def Add(self,Model:FBModel=None):
+    def Add(self,Model:FBModel):
         """Append a new modle at the end of the list.
         
         Model : model to add to the list."""
@@ -4064,13 +4064,13 @@ class FBModelList():
     def GetCount(self)->int:
         """Get number of models in list."""
         ...
-    def GetModel(self,Index:object=None)->object:
+    def GetModel(self,Index:object)->object:
         """Get the ith model in list.
         
         Index : index of modle to get (0 based).
         return : TheIndex model"""
         ...
-    def append(self,Model:FBModel=None):
+    def append(self,Model:FBModel):
         """Append a new modle at the end of the list.
         
         Model : model to add to the list."""
@@ -4122,15 +4122,15 @@ class FBMultiLangManager():
         return : Indicate if the change of language was successful."""
         ...
 class FBNormal():
-    def CopyFrom(self,arg2:FBNormal=None)->FBNormal:...
-    def CrossProduct(self,arg2:FBNormal=None)->FBNormal:...
-    def DotProduct(self,arg2:FBNormal=None)->float:...
+    def CopyFrom(self,arg2:FBNormal)->FBNormal:...
+    def CrossProduct(self,arg2:FBNormal)->FBNormal:...
+    def DotProduct(self,arg2:FBNormal)->float:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBNormal=None)->bool:...
+    def IsEqual(self,arg2:FBNormal)->bool:...
     def Length(self)->float:...
     def Normalize(self)->FBNormal:...
-    def NotEqual(self,arg2:FBNormal=None)->bool:...
+    def NotEqual(self,arg2:FBNormal)->bool:...
     def SquareLength(self)->float:...
 class FBObjectPoseMirrorOptions():
     """FBObjectPoseMirrorOptions class.
@@ -4188,7 +4188,7 @@ class FBPickInfosList():
     # tuple unpacking of pick infos.
     model, vector = l[0]"""
     def GetCount(self)->int:...
-    def GetPickedModel(self,arg2:object=None)->object:...
+    def GetPickedModel(self,arg2:object)->object:...
     def count(self)->int:...
 class FBPlotOptions():
     """Option parameters for plotting.
@@ -4881,30 +4881,30 @@ class FBPropertyStringList(FBProperty):
     if my_string in propertyStringList:
     print 'it is contained!'
     del propertyStringList[0]"""
-    def append(self,Value:object=None):
+    def append(self,Value:object):
         """Append new str at end of list.
         
         Value : to append"""
         ...
-    def count(self,arg2:object=None)->int:
+    def count(self,arg2:object)->int:
         """Returns the number of elements.
         Corresponds to python: del propertyList[2]
         
         return : number of elements in list."""
         ...
-    def findFromReference(self,Reference:object=None)->int:
+    def findFromReference(self,Reference:object)->int:
         """Find the index of an element from its attached reference.
         
         Reference : Reference of searched object.
         return : Returns the index of the element corresponding to reference."""
         ...
-    def getReferenceAt(self,Index:object=None)->int:
+    def getReferenceAt(self,Index:object)->int:
         """Retrieve the reference of an object at ith position.
         
         Index : Index of the object to find reference.
         return : Returns the reference of the object."""
         ...
-    def insert(self,Index:int=None,Value:object=None):
+    def insert(self,Index:int,Value:object):
         """Insert a new element in list.
         
         Index : Index where to insert string
@@ -4916,7 +4916,7 @@ class FBPropertyStringList(FBProperty):
         Index : Index where to remove element.
         return : Returns the element that was removed."""
         ...
-    def remove(self,Index:object=None):
+    def remove(self,Index:object):
         """Remove an element in list.
         
         Index : Index where to remove element."""
@@ -4924,7 +4924,7 @@ class FBPropertyStringList(FBProperty):
     def removeAll(self):
         """Remove all elements of list"""
         ...
-    def setReferenceAt(self,Reference:object=None,arg3:object=None):
+    def setReferenceAt(self,Reference:object,arg3:object):
         """Sets the reference value of an object.
         
         Reference : Reference of the object."""
@@ -4935,11 +4935,11 @@ class FBPropertyString(FBProperty):
 class FBPropertyListTreeNode(FBProperty):
     """PropertyList of nodes in the tree view.PropertyList: UserObject.
     These classes are under development and may change dramatically between versions."""
-    def append(self,arg2:object=None):...
-    def count(self,arg2:object=None)->int:...
-    def insert(self,arg2:int=None,arg3:object=None):...
+    def append(self,arg2:object):...
+    def count(self,arg2:object)->int:...
+    def insert(self,arg2:int,arg3:object):...
     def pop(self)->object:...
-    def remove(self,arg2:object=None):...
+    def remove(self,arg2:object):...
     def removeAll(self):...
 class FBPropertyListComponent(FBProperty):
     """PropertyList: Contraint
@@ -4952,18 +4952,18 @@ class FBPropertyListComponent(FBProperty):
     if my_component in propertyListComponent:
     print 'it is contained!'
     del propertyListComponent[0]"""
-    def append(self,Comp:object=None):
+    def append(self,Comp:object):
         """Append new FBComponent at end of list.
         
         Comp : to append"""
         ...
-    def count(self,arg2:object=None)->int:
+    def count(self,arg2:object)->int:
         """Returns the number of elements.
         Corresponds to python: del propertyList[2]
         
         return : number of elements in list."""
         ...
-    def insert(self,Index:int=None,Comp:object=None):
+    def insert(self,Index:int,Comp:object):
         """Insert a new element in list.
         
         Index : Index where to insert component
@@ -4975,7 +4975,7 @@ class FBPropertyListComponent(FBProperty):
         Index : Index where to remove element.
         return : Returns the element that was removed."""
         ...
-    def remove(self,Index:object=None):
+    def remove(self,Index:object):
         """Remove an element in list.
         
         Index : Index where to remove element."""
@@ -4990,11 +4990,11 @@ class FBPropertyList(FBProperty):
     >>> # Supported list operations:
     len(propertyList)
     print propertyList[0]"""
-    def append(self,arg2:object=None):...
-    def count(self,arg2:object=None)->int:...
-    def insert(self,arg2:int=None,arg3:object=None):...
+    def append(self,arg2:object):...
+    def count(self,arg2:object)->int:...
+    def insert(self,arg2:int,arg3:object):...
     def pop(self)->object:...
-    def remove(self,arg2:object=None):...
+    def remove(self,arg2:object):...
     def removeAll(self):...
 class FBPropertyListVideoOut(FBPropertyListComponent):
     ...
@@ -5583,7 +5583,7 @@ class FBRenderer(FBComponent):
         PaneId : specify which pane's dimension used for normalization, default (-1) for the whole viewer.
         return : true if successful."""
         ...
-    def OGLModelDisplay(self,RenderOptions:FBRenderOptions=None,Model:FBModel=None):
+    def OGLModelDisplay(self,RenderOptions:FBRenderOptions,Model:FBModel):
         """RenderOptions : FBRenderOptions
         Model : FBModel"""
         ...
@@ -6551,7 +6551,7 @@ class FBConstraint(FBBox):
     """Read Write Property: Lock state."""
     Weight:float
     """Read Write Property: Weight of constraint."""
-    def AnimationNodeInCreate(self,UserId:object,Property:FBProperty,arg4:str=None)->FBAnimationNode:
+    def AnimationNodeInCreate(self,UserId:object,Property:FBProperty,arg4:str)->FBAnimationNode:
         """Animation Node Creations (IN).
         Used to create the In connectors on an animation node. This function will return a newly created animation node, connected to the model specified byProperty.
         
@@ -6580,7 +6580,7 @@ class FBConstraint(FBBox):
         Model : Model to bind/unbind.
         return : true if successful."""
         ...
-    def DeformerUnBind(self,Model:FBModel=None)->bool:
+    def DeformerUnBind(self,Model:FBModel)->bool:
         """Model : FBModel"""
         ...
     def Disable(self,Model:FBModel)->bool:
@@ -6697,7 +6697,7 @@ class FBCharacterSolver(FBConstraint):
         ...
     def GetRegisteredSolverNames(self)->list:...
     def GetTarget(self)->object:...
-    def GetTransformationOffset(self,arg2:FBModel=None)->list:...
+    def GetTransformationOffset(self,arg2:FBModel)->list:...
     def SetParentRotationOffset(self,R,Index:int):
         """Set the Parent Rotation Offset of the Given Extra Bone Index.
         The rotation Offset if extracted at Characterisation (in Stance Pose). You don't need this value if the parent of the bone is characterized too.
@@ -6705,7 +6705,7 @@ class FBCharacterSolver(FBConstraint):
         R : Offset Rotation between the Bone and is parent at Stance Pose.
         Index : Index of extra Bone to get."""
         ...
-    def SetTransformationOffset(self,arg2:FBModel=None,arg3:FBVector3d=None,arg4:FBVector3d=None,arg5:FBVector3d=None):...
+    def SetTransformationOffset(self,arg2:FBModel,arg3:FBVector3d,arg4:FBVector3d,arg5:FBVector3d):...
 class FBCharacterFace(FBConstraint):
     """Animates a character face using an actor as input.
     These classes are under development and may change dramatically between versions."""
@@ -7207,15 +7207,15 @@ class FBCharacter(FBConstraint):
         BodyNodeId : FBBodyNodeId
         return : The model linked to the specified body part."""
         ...
-    def GetParentROffset(self,BodyNodeId:FBBodyNodeId=None,RVector:FBVector3d=None):
+    def GetParentROffset(self,BodyNodeId:FBBodyNodeId,RVector:FBVector3d):
         """BodyNodeId : FBBodyNodeId
         RVector : FBRVector"""
         ...
-    def GetROffset(self,BodyNodeId:FBBodyNodeId=None,RVector:FBVector3d=None):
+    def GetROffset(self,BodyNodeId:FBBodyNodeId,RVector:FBVector3d):
         """BodyNodeId : FBBodyNodeId
         RVector : FBRVector"""
         ...
-    def GetSOffset(self,BodyNodeId:FBBodyNodeId=None,SVector:FBVector3d=None):
+    def GetSOffset(self,BodyNodeId:FBBodyNodeId,SVector:FBVector3d):
         """BodyNodeId : FBBodyNodeId
         SVector : FBSVector"""
         ...
@@ -7230,11 +7230,11 @@ class FBCharacter(FBConstraint):
         
         SkinModelList : List to be filled up. (will not be cleared)"""
         ...
-    def GetTOffset(self,BodyNodeId:FBBodyNodeId=None,TVector:FBVector4d=None):
+    def GetTOffset(self,BodyNodeId:FBBodyNodeId,TVector:FBVector4d):
         """BodyNodeId : FBBodyNodeId
         TVector : FBTVector"""
         ...
-    def GetTransformOffset(self,BodyNodeId:FBBodyNodeId=None,OffsetMatrix:FBMatrix=None):
+    def GetTransformOffset(self,BodyNodeId:FBBodyNodeId,OffsetMatrix:FBMatrix):
         """BodyNodeId : FBBodyNodeId
         OffsetMatrix : FBMatrix"""
         ...
@@ -7312,7 +7312,7 @@ class FBCharacter(FBConstraint):
         
         Solver : Character solver that will be used by the character."""
         ...
-    def SetExternalSolverWithIndex(self,arg2:object=None):...
+    def SetExternalSolverWithIndex(self,arg2:object):...
     def SetFKVisibility(self,State:bool)->bool:
         """Set the FK visibility state.
         
@@ -9780,7 +9780,7 @@ class FBApplication(FBComponent):
         ClearSceneName : Set to true to clear the scene name, set to false to retain it. Default is true.
         return : true if successful."""
         ...
-    def FileOpen(self,Buffer,BufferLength:int,arg4:FBFbxOptions=None)->bool:
+    def FileOpen(self,Buffer,BufferLength:int,arg4:FBFbxOptions)->bool:
         """Open a file from memory.
         
         p0 : the memory buffer for the file. Raw memory address is expected in pyfbsdk.
@@ -10009,13 +10009,13 @@ class FBAnimationNode(FBComponent):
     """Read Write Property: Is the node in recording mode (device connectors)?"""
     UserName:property
     """Read Only Property: Name of animation node."""
-    def ConvertGlobalToNodeTime(self,KeyTime:FBTime=None)->FBTime:
+    def ConvertGlobalToNodeTime(self,KeyTime:FBTime)->FBTime:
         """Convert global time to node time.
         (NOTE: Only used in the context of a story clip)
         
         KeyTime : Time of the key to convert."""
         ...
-    def ConvertNodeToGlobalTime(self,KeyTime:FBTime=None)->FBTime:
+    def ConvertNodeToGlobalTime(self,KeyTime:FBTime)->FBTime:
         """Convert node time to global time.
         (NOTE: Only used in the context of a story clip)
         
@@ -10045,14 +10045,14 @@ class FBAnimationNode(FBComponent):
         
         return : true if there is a key at the current time."""
         ...
-    def KeyAdd(self,Data:FBTime=None,Interpolation:object=None,TangentMode:FBInterpolation=None,arg5:FBTangentMode=None):
+    def KeyAdd(self,Data:FBTime,Interpolation:object,TangentMode:FBInterpolation,arg5:FBTangentMode):
         """Add a key to the animation node at current time.
         
         Data : Value of data to add.
         Interpolation : Interpolation type of the inserted key, default value is Cubic interpolation.
         TangentMode : Tangent calculation method of the inserted key, default value is Auto (Smooth)."""
         ...
-    def KeyCandidate(self,Time:FBTime=None):
+    def KeyCandidate(self,Time:FBTime):
         """Keys the current candidate values if no time is specified, at current time.
         
         Time : Time at which to insert the key."""
@@ -10060,12 +10060,12 @@ class FBAnimationNode(FBComponent):
     def KeyRemove(self):
         """Remove key at current time."""
         ...
-    def KeyRemoveAt(self,Time:FBTime=None):
+    def KeyRemoveAt(self,Time:FBTime):
         """Remove key at the specified time.
         
         Time : Time for the key"""
         ...
-    def ReadData(self,Data:FBEvaluateInfo=None,arg3:object=None)->list:
+    def ReadData(self,Data:FBEvaluateInfo,arg3:object)->list:
         """Read the last data evaluated for this animation node ...
         this call doesn't generate a pull on the connection attached to this AnimationNode. No validation is done on the pointer size. You must provide a buffer that is at least GetSizerOfData() size.
         
@@ -10073,19 +10073,19 @@ class FBAnimationNode(FBComponent):
         return : true if successful."""
         ...
     def ReadLastEvalData(self)->list:...
-    def SetBufferType(self,Global:object=None):
+    def SetBufferType(self,Global:object):
         """Set buffer type for ANIMATIONNODE_TYPE_LOCAL_TRANSLATION, ANIMATIONNODE_TYPE_LOCAL_ROTATION and ANIMATIONNODE_TYPE_LOCAL_SCALE.
         
         Global : Is buffer local or global."""
         ...
-    def SetCandidate(self,Data:list=None,CheckLocked:object=None)->bool:
+    def SetCandidate(self,Data:list,CheckLocked:object)->bool:
         """Set the current candidate values for current time.
         
         Data : float
         CheckLocked : Decides whether to check the locked status.
         return : true if successful."""
         ...
-    def WriteData(self,Data:list=None,EvaluateInfo:FBEvaluateInfo=None)->int:
+    def WriteData(self,Data:list,EvaluateInfo:FBEvaluateInfo)->int:
         """Write data to animation node.
         
         Data : Data to write to animation node.
@@ -10291,7 +10291,7 @@ class FBControlSet(FBComponent):
         ...
 class FBCycleCreator(FBComponent):
     """See sample: CycleCreator.py."""
-    def CreateCycle(self,StartTime:FBTime=None,EndTime:FBTime=None,Char:FBCharacter=None,MoveStartToZero:object=None,AddZeroKey:object=None,NewTakeName:str=None,ReferencedIK:FBModel=None,PasteTx:object=None,PasteTy:object=None,PasteTz:object=None,PasteR:object=None,PasteG:object=None)->bool:
+    def CreateCycle(self,StartTime:FBTime,EndTime:FBTime,Char:FBCharacter,MoveStartToZero:object,AddZeroKey:object,NewTakeName:str,ReferencedIK:FBModel,PasteTx:object,PasteTy:object,PasteTz:object,PasteR:object,PasteG:object)->bool:
         """Create animation cycle for current character ifChar is NULL, else for the character assigned byChar; during the time scope betweenStartTime andEndTime.
         
         StartTime : Start time of the cycle
@@ -10874,7 +10874,7 @@ class FBFilter(FBComponent):
     """Read Write Property: Start time of the filtering region"""
     Stop:FBTime
     """Read Write Property: Stop time of the filtering region"""
-    def Apply(self,Curve:FBFCurve,Recursive:object=None)->bool:
+    def Apply(self,Curve:FBFCurve,Recursive:object)->bool:
         """Apply the filter to an animation node.
         This is the other apply method and it can be used on an object's animation node.
         
@@ -11153,18 +11153,18 @@ class FBGeometry(FBComponent):
         OutArrayCount : To return the length the array.
         return : Pointer to index array of vertex color, or NULL if the array hasn't been allocated yet."""
         ...
-    def SetBinormalsDirectArray(self,arg2:list=None)->bool:...
-    def SetBinormalsIndexArray(self,arg2:list=None)->bool:...
-    def SetMaterialIndexArray(self,arg2:list=None)->bool:...
-    def SetNormalsDirectArray(self,arg2:list=None)->bool:...
-    def SetNormalsIndexArray(self,arg2:list=None)->bool:...
-    def SetPositionsArray(self,arg2:list=None)->bool:...
-    def SetTangentsDirectArray(self,arg2:list=None)->bool:...
-    def SetTangentsIndexArray(self,arg2:list=None)->bool:...
-    def SetUVSetDirectArray(self,arg2:list=None,arg3:str=None)->bool:...
-    def SetUVSetIndexArray(self,arg2:list=None,arg3:str=None)->bool:...
-    def SetVertexColorsDirectArray(self,arg2:list=None)->bool:...
-    def SetVertexColorsIndexArray(self,arg2:list=None)->bool:...
+    def SetBinormalsDirectArray(self,arg2:list)->bool:...
+    def SetBinormalsIndexArray(self,arg2:list)->bool:...
+    def SetMaterialIndexArray(self,arg2:list)->bool:...
+    def SetNormalsDirectArray(self,arg2:list)->bool:...
+    def SetNormalsIndexArray(self,arg2:list)->bool:...
+    def SetPositionsArray(self,arg2:list)->bool:...
+    def SetTangentsDirectArray(self,arg2:list)->bool:...
+    def SetTangentsIndexArray(self,arg2:list)->bool:...
+    def SetUVSetDirectArray(self,arg2:list,arg3:str)->bool:...
+    def SetUVSetIndexArray(self,arg2:list,arg3:str)->bool:...
+    def SetVertexColorsDirectArray(self,arg2:list)->bool:...
+    def SetVertexColorsIndexArray(self,arg2:list)->bool:...
     def ShapeAdd(self,Name:str)->int:
         """Add new shape.
         
@@ -11186,7 +11186,7 @@ class FBGeometry(FBComponent):
         PosDiff : The position differentiation.
         NormalDiff : The normal differentiation."""
         ...
-    def ShapeGetDiffPointAsList(self,arg2:object=None,arg3:object=None,arg4:list=None,arg5:FBVertex=None,arg6:FBNormal=None)->bool:...
+    def ShapeGetDiffPointAsList(self,arg2:object,arg3:object,arg4:list,arg5:FBVertex,arg6:FBNormal)->bool:...
     def ShapeGetName(self,ShapeIdx:int)->str:
         """Return the shape Name.
         
@@ -11655,7 +11655,7 @@ class FBKeyingGroup(FBComponent):
         ...
 class FBLogger(FBComponent):
     def DisableClear(self):...
-    def DumpObject(self,arg2:FBPlug=None,arg3:object=None)->object:...
+    def DumpObject(self,arg2:FBPlug,arg3:object)->object:...
     def Enable(self,TypeInfo:int,Enable:bool)->bool:...
     def GetLog(self)->object:...
 class FBCharacterExtension(FBKeyingGroup):
@@ -11907,7 +11907,7 @@ class FBMarkerSet(FBComponent):
         MarkerIndex : Index of marker to access.
         IsOriented : Oriented or not."""
         ...
-    def SetMarkerROffset(self,NodeId:FBSkeletonNodeId=None,MarkerIndex:object=None,ROffset:FBVector3d=None):
+    def SetMarkerROffset(self,NodeId:FBSkeletonNodeId,MarkerIndex:object,ROffset:FBVector3d):
         """NodeId : FBSkeletonNodeId
         MarkerIndex : int
         ROffset : FBRVector"""
@@ -11917,7 +11917,7 @@ class FBMarkerSet(FBComponent):
         
         Visibility : True will make to markers visible, false will hide them."""
         ...
-    def SetMarkerTOffset(self,NodeId:FBSkeletonNodeId=None,MarkerIndex:object=None,TOffset:FBVector3d=None):
+    def SetMarkerTOffset(self,NodeId:FBSkeletonNodeId,MarkerIndex:object,TOffset:FBVector3d):
         """NodeId : FBSkeletonNodeId
         MarkerIndex : int
         TOffset : FBTVector"""
@@ -12088,27 +12088,27 @@ class FBModelVertexData(FBComponent):
     def DisableOGLVertexData(self):
         """Disable OpenGL Vertex Array (Pos & Normal)."""
         ...
-    def DrawSubPatch(self,SubPatchIndex:object=None,WireFrame:object=None):
+    def DrawSubPatch(self,SubPatchIndex:object,WireFrame:object):
         """Draw the specified sub patch.
         Must be called between Enable/DisableOGLVertexData function calls.
         
         SubPatchIndex : Index of the sub patch to be drawn.
         WireFrame : Draw wire frame if true."""
         ...
-    def DrawSubRegion(self,SubRegionIndex:object=None,WireFrame:object=None):
+    def DrawSubRegion(self,SubRegionIndex:object,WireFrame:object):
         """Draw the specified sub region.
         Must be called between Enable/DisableOGLVertexData function calls.
         
         SubRegionIndex : Index of the sub region to be drawn.
         WireFrame : Draw wire frame if true."""
         ...
-    def EnableOGLUVSet(self,TextureMapping:FBTextureMapping=None,UVSet:str=None):
+    def EnableOGLUVSet(self,TextureMapping:FBTextureMapping,UVSet:str):
         """Enable (Setup) OpenGL UV set array.
         
         TextureMapping : Texture Mapping Mode.
         UVSet : UV Set name ifTextureMapping is kFBTextureMappingUV, otherwise ignored."""
         ...
-    def EnableOGLVertexData(self,AfterDeform:object=None):
+    def EnableOGLVertexData(self,AfterDeform:object):
         """Enable (Setup) OpenGL Vertex Array (Pos & Normal).
         
         AfterDeform : Unused parameter."""
@@ -12135,31 +12135,31 @@ class FBModelVertexData(FBComponent):
         
         return : The number of sub patches."""
         ...
-    def GetSubPatchIndexOffset(self,SubPatchIndex:object=None)->int:
+    def GetSubPatchIndexOffset(self,SubPatchIndex:object)->int:
         """Return the start offset of the indexes for the specified sub patch (see GetIndexArray()).
         
         SubPatchIndex : Index of the sub patch to be queried.
         return : The start offset of the indexes for the specified sub patch, -1 if the specific sub path index is invalid."""
         ...
-    def GetSubPatchIndexSize(self,SubPatchIndex:object=None)->int:
+    def GetSubPatchIndexSize(self,SubPatchIndex:object)->int:
         """Return the size of the indexes for the specified sub patch (see GetIndexArray()).
         
         SubPatchIndex : Index of the sub patch to be queried.
         return : The size of the indexes for the specified sub patch, -1 if the specific sub path index is invalid."""
         ...
-    def GetSubPatchMaterial(self,SubPatchIndex:object=None)->object:
+    def GetSubPatchMaterial(self,SubPatchIndex:object)->object:
         """Return the mapped material for the specified sub patch.
         
         SubPatchIndex : Index of the sub patch to be queried.
         return : The mapped material for the specified sub patch, the default material if the specific sub path index is invalid."""
         ...
-    def GetSubPatchMaterialId(self,SubPatchIndex:object=None)->int:
+    def GetSubPatchMaterialId(self,SubPatchIndex:object)->int:
         """Return the mapped material ID for the specified sub patch.
         
         SubPatchIndex : Index of the sub patch to be queried.
         return : The mapped material ID for the specified sub patch, -1 if the specific sub path index is invalid."""
         ...
-    def GetSubPatchPrimitiveType(self,SubPatchIndex:object=None)->tuple:
+    def GetSubPatchPrimitiveType(self,SubPatchIndex:object)->tuple:
         """Return the primitive type for the specified sub patch.
         Most of the time, kFBGeometry_TRIANGLES will be returned.
         
@@ -12172,13 +12172,13 @@ class FBModelVertexData(FBComponent):
         
         return : The number of sub regions."""
         ...
-    def GetSubRegionMaterial(self,SubRegionIndex:object=None)->object:
+    def GetSubRegionMaterial(self,SubRegionIndex:object)->object:
         """Return the specified sub region's material.
         
         SubRegionIndex : Index of the sub region to be queried.
         return : The sub region's material, the default material if the specific sub region index is invalid."""
         ...
-    def GetUVSetArray(self,TextureMapping:FBTextureMapping=None,UVSet:str=None)->list:
+    def GetUVSetArray(self,TextureMapping:FBTextureMapping,UVSet:str)->list:
         """Return the UV Set array for the specified texture mapping mode.
         
         TextureMapping : Texture mapping mode to be queried.
@@ -12203,35 +12203,35 @@ class FBModelVertexData(FBComponent):
         }
         }"""
         ...
-    def GetUVSetArrayFormat(self,TextureMapping:FBTextureMapping=None,UVSet:str=None)->FBGeometryArrayElementType:
+    def GetUVSetArrayFormat(self,TextureMapping:FBTextureMapping,UVSet:str)->FBGeometryArrayElementType:
         """Return the UV Set array format.
         
         TextureMapping : Unused parameter.
         UVSet : Unused parameter.
         return : The UV Set array format."""
         ...
-    def GetUVSetUVCount(self,TextureMapping:FBTextureMapping=None,UVSet:str=None)->int:
+    def GetUVSetUVCount(self,TextureMapping:FBTextureMapping,UVSet:str)->int:
         """Return the number of UVs in the UV Set for the specified texture mapping mode.
         
         TextureMapping : Texture mapping mode to be queried.
         UVSet : UV Set name to be queried ifTextureMapping is kFBTextureMappingUV, otherwise ignored.
         return : The number of UVs in the UV Set for the specified texture mapping mode."""
         ...
-    def GetUVSetVBOId(self,TextureMapping:FBTextureMapping=None,UVSet:str=None)->int:
+    def GetUVSetVBOId(self,TextureMapping:FBTextureMapping,UVSet:str)->int:
         """Return the UV Set Buffer Object (VBO) Id for the specified texture mapping mode.
         
         TextureMapping : Texture mapping mode to be queried.
         UVSet : UV Set name to be queried ifTextureMapping is kFBTextureMappingUV, otherwise ignored.
         return : The UV Set VBO Id."""
         ...
-    def GetUVSetVBOOffset(self,TextureMapping:FBTextureMapping=None,UVSet:str=None)->int:
+    def GetUVSetVBOOffset(self,TextureMapping:FBTextureMapping,UVSet:str)->int:
         """Return the UV Set Buffer Object (VBO) offset for the specified texture mapping mode.
         
         TextureMapping : Texture mapping mode to be queried.
         UVSet : UV Set name to be queried ifTextureMapping is kFBTextureMappingUV, otherwise ignored.
         return : The UV Set VBO offset (C++: as a pointer, Python: as a kReference)."""
         ...
-    def GetVertexArray(self,ArrayId:FBGeometryArrayID=None,AfterDeform:object=None)->list:
+    def GetVertexArray(self,ArrayId:FBGeometryArrayID,AfterDeform:object)->list:
         """Return the vertex array for the specified vertex array Id.
         
         ArrayId : Vertex array Id type to be queried.
@@ -12245,21 +12245,21 @@ class FBModelVertexData(FBComponent):
         DuplicatedVertexCount : only)DuplicatedVertexCount Out parameter, return the count of those duplicated vertices.
         return : (C++) A pointer to the original vertex ID mapping for those duplicated vertices. (Python) A list containing the vertex ID mapping for those duplicated vertices."""
         ...
-    def GetVertexArrayType(self,ArrayId:FBGeometryArrayID=None,AfterDeform:object=None)->FBGeometryArrayElementType:
+    def GetVertexArrayType(self,ArrayId:FBGeometryArrayID,AfterDeform:object)->FBGeometryArrayElementType:
         """Return the vertex array format for the specified array Id.
         
         ArrayId : Vertex array Id type to be queried.
         AfterDeform : Unused parameter.
         return : The vertex array format for the specified array Id."""
         ...
-    def GetVertexArrayVBOId(self,ArrayId:FBGeometryArrayID=None,AfterDeform:object=None)->int:
+    def GetVertexArrayVBOId(self,ArrayId:FBGeometryArrayID,AfterDeform:object)->int:
         """Return the Vertex Buffer Object (VBO) Id for the specified vertex array Id.
         
         ArrayId : Vertex array Id type to be queried.
         AfterDeform : True to query the deformed position or normal vertex array (model must be deformable and deformation must occur in CPU), false to query the original vertex array.
         return : The vertex array VBO Id. Deformed position & normal vertex VBO Id could be 0 if model use CPU skinning."""
         ...
-    def GetVertexArrayVBOOffset(self,ArrayId:FBGeometryArrayID=None,AfterDeform:object=None)->int:
+    def GetVertexArrayVBOOffset(self,ArrayId:FBGeometryArrayID,AfterDeform:object)->int:
         """Return the Vertex Buffer Object (VBO) offset for the specified vertex array Id.
         
         ArrayId : Vertex array Id type to be queried. Only position or normal vertex array Id types are available.
@@ -12929,13 +12929,13 @@ class FBRigidBody(FBComponent):
 class FBSVector():
     """Three dimensional scaling vector.
     See sample: Vectors.py."""
-    def CopyFrom(self,arg2:FBSVector=None)->FBSVector:...
-    def DotProduct(self,arg2:FBSVector=None)->float:...
+    def CopyFrom(self,arg2:FBSVector)->FBSVector:...
+    def DotProduct(self,arg2:FBSVector)->float:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBSVector=None)->bool:...
+    def IsEqual(self,arg2:FBSVector)->bool:...
     def Length(self)->float:...
     def Normalize(self)->FBSVector:...
-    def NotEqual(self,arg2:FBSVector=None)->bool:...
+    def NotEqual(self,arg2:FBSVector)->bool:...
     def SquareLength(self)->float:...
 class FBScene(FBComponent):
     """Access to the MotionBuilder scene.
@@ -13422,7 +13422,7 @@ class FBShaderShadowLive(FBShader):
     UseGobo:bool
     """Read Write Property: Includes the gobo in the shadow map calculation."""
 class FBSkeletonState():
-    def GetNodeMatrix(self,SkeletonId:FBSkeletonNodeId=None,SkeletonGlobalMatrix:FBMatrix=None):
+    def GetNodeMatrix(self,SkeletonId:FBSkeletonNodeId,SkeletonGlobalMatrix:FBMatrix):
         """Returned global matrix associated to the given Index.
         
         SkeletonId : Index of the skeleton Node
@@ -14018,18 +14018,18 @@ class FBSurface(FBGeometry):
     """Read Write Property: Step in V directions."""
     def ControlPointsBegin(self):...
     def ControlPointsEnd(self):...
-    def GetControlPoint(self,Index:object=None,X:object=None,Y:object=None,Z:object=None,W:object=None):
+    def GetControlPoint(self,Index:object,X:object,Y:object,Z:object,W:object):
         """Index : int
         X : float
         Y : float
         Z : float
         W : float"""
         ...
-    def GetSurfaceCapped(self,UorV:object=None,Direction:object=None)->bool:
+    def GetSurfaceCapped(self,UorV:object,Direction:object)->bool:
         """UorV : int
         Direction : int"""
         ...
-    def SetControlPoint(self,Index:object=None,X:object=None,Y:object=None,Z:object=None,W:object=None):
+    def SetControlPoint(self,Index:object,X:object,Y:object,Z:object,W:object):
         """Index : int
         X : float
         Y : float
@@ -14832,8 +14832,8 @@ class FBFCurve(FBComponent):
         Inclusive : True to include within the time range the keys atStartTime andStopTime, false otherwise.
         return : True if the delete operation is successful, false otherwise (e.g. the FCurve is locked, no keys found within the time range, etc.)."""
         ...
-    def KeyDeleteByIndexRange(self,arg2:object=None,arg3:object=None)->bool:...
-    def KeyDeleteByTimeRange(self,arg2:FBTime=None,arg3:FBTime=None,arg4:object=None)->bool:...
+    def KeyDeleteByIndexRange(self,arg2:object,arg3:object)->bool:...
+    def KeyDeleteByTimeRange(self,arg2:FBTime,arg3:FBTime,arg4:object)->bool:...
     def KeyGetInterpolation(self,Index:int)->FBInterpolation:
         """Get the key interpolation type at the specified index.
         
@@ -15449,11 +15449,11 @@ class FBTreeNode(FBComponent):
     Reference:property
     """Read Write Property: Data to be associated to this node."""
 class FBUV():
-    def CopyFrom(self,arg2:FBUV=None)->FBUV:...
+    def CopyFrom(self,arg2:FBUV)->FBUV:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBUV=None)->bool:...
-    def NotEqual(self,arg2:FBUV=None)->bool:...
+    def IsEqual(self,arg2:FBUV)->bool:...
+    def NotEqual(self,arg2:FBUV)->bool:...
 class FBUndoManager(FBComponent):
     """Access to global undo and redo functionality.
     Users have the possibility of undoing and redoing actions performed using the GUI, and interacting with the undo and redo stacks with custom actions.All undo/redo related functions should only be called inside UI event callback. Users should call TransactionBegin()/TransactionEnd() in pairs, Transaction stack must be closed before UI event callback return.This class cannot be used as a base class. See sample: IndividualUndoCalls.py."""
@@ -15536,11 +15536,11 @@ class FBVector2d():
     
     
     Slicing is not supported by this object."""
-    def CopyFrom(self,arg2:FBVector2d=None)->FBVector2d:...
+    def CopyFrom(self,arg2:FBVector2d)->FBVector2d:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBVector2d=None)->bool:...
-    def NotEqual(self,arg2:FBVector2d=None)->bool:...
+    def IsEqual(self,arg2:FBVector2d)->bool:...
+    def NotEqual(self,arg2:FBVector2d)->bool:...
 class FBVector3d():
     """Vector3d class.
     This class creates a list like object, which can be modified using the list protocol method. But unlike lists, its length is fixed: it always contain 3 floating point values. Thus it does not support the any list methods that would affect its length. The values within can be changed, usually via the bracket operator.
@@ -15553,16 +15553,16 @@ class FBVector3d():
     
     
     Slicing is not supported by this object."""
-    def CopyFrom(self,arg2:FBVector3d=None)->FBVector3d:...
-    def CrossProduct(self,arg2:FBVector3d=None)->FBVector3d:...
-    def Distance(self,arg2:FBVector3d=None)->float:...
-    def DotProduct(self,arg2:FBVector3d=None)->float:...
+    def CopyFrom(self,arg2:FBVector3d)->FBVector3d:...
+    def CrossProduct(self,arg2:FBVector3d)->FBVector3d:...
+    def Distance(self,arg2:FBVector3d)->float:...
+    def DotProduct(self,arg2:FBVector3d)->float:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBVector3d=None)->bool:...
+    def IsEqual(self,arg2:FBVector3d)->bool:...
     def Length(self)->float:...
     def Normalize(self)->FBVector3d:...
-    def NotEqual(self,arg2:FBVector3d=None)->bool:...
+    def NotEqual(self,arg2:FBVector3d)->bool:...
     def SquareLength(self)->float:...
 class FBVector4d():
     """Vector4d class.
@@ -15576,16 +15576,16 @@ class FBVector4d():
     
     
     Slicing is not supported by this object."""
-    def CopyFrom(self,arg2:FBVector4d=None)->FBVector4d:...
-    def CrossProduct(self,arg2:FBVector4d=None)->FBVector4d:...
-    def Distance(self,arg2:FBVector4d=None)->float:...
-    def DotProduct(self,arg2:FBVector4d=None)->float:...
+    def CopyFrom(self,arg2:FBVector4d)->FBVector4d:...
+    def CrossProduct(self,arg2:FBVector4d)->FBVector4d:...
+    def Distance(self,arg2:FBVector4d)->float:...
+    def DotProduct(self,arg2:FBVector4d)->float:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBVector4d=None)->bool:...
+    def IsEqual(self,arg2:FBVector4d)->bool:...
     def Length(self)->float:...
     def Normalize(self)->FBVector4d:...
-    def NotEqual(self,arg2:FBVector4d=None)->bool:...
+    def NotEqual(self,arg2:FBVector4d)->bool:...
     def SquareLength(self)->float:...
 class FBVertex():
     """Vertex class.
@@ -15599,16 +15599,16 @@ class FBVertex():
     
     
     Slicing is not supported by this object."""
-    def CopyFrom(self,arg2:FBVertex=None)->FBVertex:...
-    def CrossProduct(self,arg2:FBVertex=None)->FBVertex:...
-    def Distance(self,arg2:FBVertex=None)->float:...
-    def DotProduct(self,arg2:FBVertex=None)->float:...
+    def CopyFrom(self,arg2:FBVertex)->FBVertex:...
+    def CrossProduct(self,arg2:FBVertex)->FBVertex:...
+    def Distance(self,arg2:FBVertex)->float:...
+    def DotProduct(self,arg2:FBVertex)->float:...
     def GetBufferAddress(self)->int:...
     def GetList(self)->list:...
-    def IsEqual(self,arg2:FBVertex=None)->bool:...
+    def IsEqual(self,arg2:FBVertex)->bool:...
     def Length(self)->float:...
     def Normalize(self)->FBVertex:...
-    def NotEqual(self,arg2:FBVertex=None)->bool:...
+    def NotEqual(self,arg2:FBVertex)->bool:...
     def SquareLength(self)->float:...
 class FBVideo(FBBox):
     """Video media class.
@@ -15663,7 +15663,7 @@ class FBVideoClip(FBVideo):
     """Read Write Property: Temporal offset for beginning of video."""
     Width:property
     """Read Only Property: Width of image."""
-    def DrawImage(self,X:object=None,Y:object=None,W:object=None,H:object=None,Frame:object=None):
+    def DrawImage(self,X:object,Y:object,W:object,H:object,Frame:object):
         """Draw a frame of the image to the current view.
         
         X : X position of image (default=0).
@@ -15672,7 +15672,7 @@ class FBVideoClip(FBVideo):
         H : Height of image (default=-1).
         Frame : Frame to draw (default=-1)."""
         ...
-    def GetEmbeddedTimecode(self,Frame:object=None)->FBTimeCode:
+    def GetEmbeddedTimecode(self,Frame:object)->FBTimeCode:
         """Get the embedded timecode associated to a video clip frame.
         
         Frame : Video clip frame to get timecode for.
@@ -16249,7 +16249,7 @@ class FBSpread(FBVisualComponent):
         String : Text to display with column.
         Ref : User-define column reference number(default=0)."""
         ...
-    def GetCellValue(self,Row:object=None,Column:object=None)->object:
+    def GetCellValue(self,Row:object,Column:object)->object:
         """Get a cell's value.
         
         Row : Row of cell.
@@ -16279,7 +16279,7 @@ class FBSpread(FBVisualComponent):
         Ref : Reference to a row.
         return : A copy of the row."""
         ...
-    def GetSpreadCell(self,Ref:object=None,Column:object=None)->object:
+    def GetSpreadCell(self,Ref:object,Column:object)->object:
         """Get a cell from row and column numbers.
         
         Ref : Row reference.
@@ -16297,7 +16297,7 @@ class FBSpread(FBVisualComponent):
         
         Ascending : If true, sort ascending."""
         ...
-    def SetCellValue(self,Row:object=None,Column:object=None,Value:object=None):
+    def SetCellValue(self,Row:object,Column:object,Value:object):
         """Set a cell's value.
         This will also set the FBSpreadCell.Style to the type ofValue (kFBCellStyleInteger ifValue is an int, kFBCellStyleDouble ifValue is a float, kFBCellStyleString ifValue is a str).
         
@@ -16332,7 +16332,7 @@ class FBScrollBox(FBVisualComponent):
     This class provides a layout that will be automatically managed with a scrollbar according to the specified width and height. This provides a way to add dynamic UI control. See sample: Scrollbox.py."""
     Content:FBLayout
     """Read Property: an empty layout in which you can add scrollable content."""
-    def SetContentSize(self,arg2:object=None,arg3:object=None):...
+    def SetContentSize(self,arg2:object,arg3:object):...
 class FBPropertyConnectionEditor(FBVisualComponent):
     """Property Connection Editor."""
     Property:property
@@ -16823,12 +16823,12 @@ class FBWidgetHolder(FBVisualComponent):
     """Native Widget Holder (can be used to embed native Qt Widget inside MoBu UI elements) A Widget holder provides a bridge to instantiate a Native Qt widget into MB framework.
     This will be used to allow user to create UI with QT designer and hook their created UI into MB. To allow a FBWidgetHolder to work properly, you need to specify a Creator function. This function will be called when needed to instantiate the native Widget.Or override WidgetCreate(QWidget*Parent) function in the subclass./bin/config/Scripts/UI/ToolNativeWidgetHolder.py for python usage example. See samples: MBFileRefDemo.py, ToolNativeWidgetHolder.py."""
     ...
-def CloseTool(arg1:FBTool=None)->bool:...
-def CloseToolByName(arg1:str=None)->bool:...
+def CloseTool(arg1:FBTool)->bool:...
+def CloseToolByName(arg1:str)->bool:...
 def FBActionManager_TypeInfo()->int:...
 def FBActorFace_TypeInfo()->int:...
 def FBActor_TypeInfo()->int:...
-def FBAdd(Result:FBVector4d=None,V1:FBVector4d=None,V2:FBVector4d=None):
+def FBAdd(Result:FBVector4d,V1:FBVector4d,V2:FBVector4d):
     """Add two vectors together (pResult =V1 +V2)
     
     Result : Resulting vector.
@@ -16844,44 +16844,44 @@ def FBAssetFolder_TypeInfo()->int:...
 def FBAssetItem_TypeInfo()->int:...
 def FBAssetMng_TypeInfo()->int:...
 def FBAudioClip_TypeInfo()->int:...
-def FBAudioFmt_AppendFormat(Format:object=None,SrcFormat:object=None,arg3:object=None,arg4:object=None)->int:
+def FBAudioFmt_AppendFormat(Format:object,SrcFormat:object,arg3:object,arg4:object)->int:
     """Append the rendering audio format with another audio format.
     
     Format : Audio format to use.
     SrcFormat : Audio format to be appended.
     return : An audio format object with the specified format."""
     ...
-def FBAudioFmt_ConvertBitDepthMode(BitDepthMode:FBAudioBitDepthMode=None)->int:
+def FBAudioFmt_ConvertBitDepthMode(BitDepthMode:FBAudioBitDepthMode)->int:
     """Converts an FBAudioBitDepthMode enum value to its FBAudioFmt object equivalent.
     
     BitDepthMode : The bit depth mode enum value.
     return : The FBAudioFmt object equivalent to the input bit depth mode enum value."""
     ...
-def FBAudioFmt_ConvertChannelMode(ChannelMode:FBAudioChannelMode=None)->int:
+def FBAudioFmt_ConvertChannelMode(ChannelMode:FBAudioChannelMode)->int:
     """Converts an FBAudioChannelMode enum value to its FBAudioFmt object equivalent.
     
     ChannelMode : The channel mode enum value.
     return : The FBAudioFmt object equivalent to the input channel mode enum value."""
     ...
-def FBAudioFmt_ConvertRateMode(RateMode:FBAudioRateMode=None)->int:
+def FBAudioFmt_ConvertRateMode(RateMode:FBAudioRateMode)->int:
     """Converts an FBAudioRateMode enum value to its FBAudioFmt object equivalent.
     
     RateMode : The rate mode enum value.
     return : The FBAudioFmt object equivalent to the input rate mode enum value."""
     ...
-def FBAudioFmt_GetBitsValue(Format:object=None)->int:
+def FBAudioFmt_GetBitsValue(Format:object)->int:
     """Get the bit depth value of the Audio format object.
     
     Format : Audio format to use.
     return : Bit depth value as an integer value."""
     ...
-def FBAudioFmt_GetBytesValue(Format:object=None)->int:
+def FBAudioFmt_GetBytesValue(Format:object)->int:
     """Get the bytes value of the Audio format object.
     
     Format : Audio format to use.
     return : Bytes value as an integer value."""
     ...
-def FBAudioFmt_GetChannelValue(Format:object=None)->int:
+def FBAudioFmt_GetChannelValue(Format:object)->int:
     """Get the channel value of the Audio format object.
     
     Format : Audio format to use.
@@ -16892,20 +16892,20 @@ def FBAudioFmt_GetDefaultFormat()->int:
     
     return : An audio format object."""
     ...
-def FBAudioFmt_GetRateValue(Format:object=None)->int:
+def FBAudioFmt_GetRateValue(Format:object)->int:
     """Get the rate value of the Audio format object.
     
     Format : Audio format to use.
     return : Audio rate value as an integer value."""
     ...
-def FBAudioFmt_RemoveFormat(Format:object=None,SrcFormat:object=None,arg3:object=None,arg4:object=None)->int:
+def FBAudioFmt_RemoveFormat(Format:object,SrcFormat:object,arg3:object,arg4:object)->int:
     """Remove audio format from another audio format object.
     
     Format : Audio format to use.
     SrcFormat : Audio format to remove.
     return : An audio format object without the specified format settings passed in parameter."""
     ...
-def FBAudioFmt_TestFormat(SrcFormat:object=None,Channels:object=None,Bits:object=None,Rate:object=None)->bool:
+def FBAudioFmt_TestFormat(SrcFormat:object,Channels:object,Bits:object,Rate:object)->bool:
     """Test if the given audio format object contains the channel, bit depth, and rate.
     
     SrcFormat : Audio format to test.
@@ -16934,7 +16934,7 @@ def FBCharacterMarkerSet_TypeInfo()->int:...
 def FBCharacterPose_TypeInfo()->int:...
 def FBCharacterSolver_TypeInfo()->int:...
 def FBCharacter_TypeInfo()->int:...
-def FBClamp(V:object=None,L:object=None,H:object=None)->float:
+def FBClamp(V:object,L:object,H:object)->float:
     """Clamp value.
     
     V : Value to clamp.
@@ -16944,7 +16944,7 @@ def FBClamp(V:object=None,L:object=None,H:object=None)->float:
     ...
 def FBCluster_TypeInfo()->int:...
 def FBComponent_TypeInfo()->int:...
-def FBConnect(Src:FBPlug=None,Dst:FBPlug=None,ConnectionType:FBConnectionType=None)->bool:
+def FBConnect(Src:FBPlug,Dst:FBPlug,ConnectionType:FBConnectionType)->bool:
     """Request the connection two FBPlug objects.
     
     Src : Source plug.
@@ -16958,7 +16958,7 @@ def FBConstraintSolver_TypeInfo()->int:...
 def FBConstraint_TypeInfo()->int:...
 def FBConstructionHistory_TypeInfo()->int:...
 def FBControlSet_TypeInfo()->int:...
-def FBCreateObject(GroupName:str=None,EntryName:str=None,Name:str=None,p3:object=None)->object:
+def FBCreateObject(GroupName:str,EntryName:str,Name:str,p3:object)->object:
     """FBCreateObject.
     
     GroupName : Set the name of the Group.
@@ -16972,13 +16972,13 @@ def FBCycleCreator_TypeInfo()->int:...
 def FBDeck_TypeInfo()->int:...
 def FBDeformerPointCache_TypeInfo()->int:...
 def FBDeformer_TypeInfo()->int:...
-def FBDeleteCharacterPinningPreset(PresetName:str=None)->bool:
+def FBDeleteCharacterPinningPreset(PresetName:str)->bool:
     """Deletes a pinning preset from the Character Controls Tool.
     
     PresetName : The preset name to delete (not the file path nor the filename of the preset).
     return : True if the operation is successful, false otherwise."""
     ...
-def FBDeleteObjectsByName(NamePattern:str=None,NameSpace:str=None,GroupName:str=None)->int:
+def FBDeleteObjectsByName(NamePattern:str,NameSpace:str,GroupName:str)->int:
     """FBDeleteObjectsByName.
     This function will query the system for objects fulfilling a particular name pattern and delete them. specify a namespace preferred, delete all objects with the group name without specified a namespace specified may lead to inconsistent in scene. Wrap multiple calls to FBDeleteObjectsByName() inside pair of FBPreventUIUpdateBegin() / FBPreventUIUpdateEnd() could improve application's performance.
     
@@ -16991,14 +16991,14 @@ def FBDeviceInstrument_TypeInfo()->int:...
 def FBDeviceOpticalMarker_TypeInfo()->int:...
 def FBDeviceOptical_TypeInfo()->int:...
 def FBDevice_TypeInfo()->int:...
-def FBDisconnect(Src:FBPlug=None,Dst:FBPlug=None)->bool:
+def FBDisconnect(Src:FBPlug,Dst:FBPlug)->bool:
     """Connect two FBPlug objects.
     
     Src : Source plug.
     Dst : Destination plug.
     return : A boolean indicating success (True) or failure (False)."""
     ...
-def FBDot(V1:FBVector4d=None,V2:FBVector4d=None)->float:
+def FBDot(V1:FBVector4d,V2:FBVector4d)->float:
     """Calculate the dot product of two vectors.
     
     V1 : 1st vector.
@@ -17024,14 +17024,14 @@ def FBFbxOptions_TypeInfo()->int:...
 def FBFileMonitoringManager_TypeInfo()->int:...
 def FBFileReference_TypeInfo()->int:...
 def FBFilter_TypeInfo()->int:...
-def FBFindModelByLabelName(ModelLabelName:str=None)->object:
+def FBFindModelByLabelName(ModelLabelName:str)->object:
     """Find a model in the scene by its label name.
     Searches the scene for a model, based on the model's label name. Label name is 'NameSpaceName:ObjectName'. also known as 'PrefixName::ObjectName' Full name is 'GroupName::NameSpaceName:ObjectName'.
     
     ModelLabelName : LabelName of model to search for. Specify it with schema like "NameSpaceName:ObjectName",or "ObjectName" if no NameSpaceName.
     return : A handle onto the model with Label name matching, returns NULL if no model was found by the search."""
     ...
-def FBFindModelByUniqueColorId(Color:FBColor=None)->tuple:
+def FBFindModelByUniqueColorId(Color:FBColor)->tuple:
     """Find a model in the scene by its unique color id.
     A model could have a single unique ColorID, but SDK plugin user could request additional ColorID per model to support multi sub items picking. see FBModel::SetAdditionalUniqueColorIDCount().
     
@@ -17039,14 +17039,14 @@ def FBFindModelByUniqueColorId(Color:FBColor=None)->tuple:
     SubItemIndex : Pass out SubImtem index value if not null. In pyfbsdk no such parameter.
     return : A handle onto the model with unique color id matching, returns NULL if no model was found by the search. In pyfbsdk return tuple [model, subItemIndex]"""
     ...
-def FBFindObjectByFullName(ObjectFullName:str=None)->object:
+def FBFindObjectByFullName(ObjectFullName:str)->object:
     """FBFindObjectByFullName.
     This function will query the system for an object with its FullName matching. Full name is 'GroupName::NameSpaceName:ObjectName'. Label name is 'NameSpaceName:ObjectName'. also known as 'PrefixName::ObjectName'
     
     ObjectFullName : Full Name of object to search for. Specify it with schema like "GroupName::NameSpaceName:ObjectName",or "GroupName::ObjectName" if no NameSpaceName.
     return : A handle onto the object with Full name matchingObjectFullName, returns NULL if no object was found by the search."""
     ...
-def FBFindObjectsByName(NamePattern:str=None,List:FBComponentList=None,IncludeNamespace:object=None,ModelsOnly:object=None):
+def FBFindObjectsByName(NamePattern:str,List:FBComponentList,IncludeNamespace:object,ModelsOnly:object):
     """FBFindObjectsByName.
     This function will query the system for objects fulfilling a particular name pattern
     
@@ -17069,13 +17069,13 @@ def FBGetCharacterExternalSolverCount()->int:
     
     return : Number of external character solver available."""
     ...
-def FBGetCharacterExternalSolverIndex(Name:str=None)->int:
+def FBGetCharacterExternalSolverIndex(Name:str)->int:
     """Get character external solver index.
     
     Name : Name of external solver.
     return : Index of external solver specified at the provided name."""
     ...
-def FBGetCharacterExternalSolverName(Index:object=None)->str:
+def FBGetCharacterExternalSolverName(Index:object)->str:
     """Get character external solver name.
     
     Index : Index of external solver.
@@ -17096,13 +17096,13 @@ def FBGetCharactersKeyingMode()->FBCharacterKeyingMode:
     
     return : Keying Mode"""
     ...
-def FBGetConstantKeyReducerThresholdValue(ThresholdType:FBConstantKeyReducerThresholdType=None)->float:
+def FBGetConstantKeyReducerThresholdValue(ThresholdType:FBConstantKeyReducerThresholdType)->float:
     """Return a specific threshold value used by the Constant Key Reducer filter.
     
     ThresholdType : The threshold type to retrieve its value.
     return : The threshold value."""
     ...
-def FBGetContinuousRotation(ROut:FBVector3d=None,R0:FBVector3d=None,R1:FBVector3d=None):
+def FBGetContinuousRotation(ROut:FBVector3d,R0:FBVector3d,R1:FBVector3d):
     """Get a continuous rotation in Euler space.
     This routine will help to avoid gimble locks due to interpolation.
     
@@ -17116,7 +17116,7 @@ def FBGetDisplayInfo()->FBEvaluateInfo:
     
     return : The display evalution structure."""
     ...
-def FBGetEffectorBodyPart(EffectorId:FBEffectorId=None)->FBBodyPartId:
+def FBGetEffectorBodyPart(EffectorId:FBEffectorId)->FBBodyPartId:
     """return BodyPart ID from Effector.
     
     EffectorId : Effector ID.
@@ -17125,7 +17125,7 @@ def FBGetEffectorBodyPart(EffectorId:FBEffectorId=None)->FBBodyPartId:
 def FBGetEvaluationTaskCycle()->FBProfileTaskCycle:
     """Get evaluation task cycle."""
     ...
-def FBGetGlobalMatrix(Matrix:FBMatrix=None,MatrixParent:FBMatrix=None,LocalMatrix:FBMatrix=None):
+def FBGetGlobalMatrix(Matrix:FBMatrix,MatrixParent:FBMatrix,LocalMatrix:FBMatrix):
     """Get global matrix from parent and child matrices.
     From an input referential, this function will calculate the global matrix corresponding to the input local matrix (which is with respect to the parent matrix).
     
@@ -17138,7 +17138,7 @@ def FBGetLastSelectedModel()->object:
     
     return : The last selected model or nullptr (C++) or None (Python) if no model is selected."""
     ...
-def FBGetLocalMatrix(Matrix:FBMatrix=None,MatrixParent:FBMatrix=None,MatrixChild:FBMatrix=None):
+def FBGetLocalMatrix(Matrix:FBMatrix,MatrixParent:FBMatrix,MatrixChild:FBMatrix):
     """Get local matrix from parent and child matrices.
     Will calculate the local matrix from two global matrices. The resulting matrix will be a local matrix containing the local transformations to go from the parent referentialto the child referential.
     
@@ -17168,7 +17168,7 @@ def FBGetMainWindow()->int:
     
     return : The MotionBuilder main window."""
     ...
-def FBGetMultiLangText(Context:FBPlug=None,Key:str=None,FlagReturnKey:object=None)->str:
+def FBGetMultiLangText(Context:FBPlug,Key:str,FlagReturnKey:object)->str:
     """Name lookup in a user defined context context.
     This version of the function is a little less useful as the context string, if not empty, will usually refer to internal class names of objects which is not easily available to the outside world.As a general rule, an SDK object whose class is 'FBObject' will be wrapping an internal object of class 'KObject'. For example an 'FBCamera' is a wrapper around a 'KCamera' object. Similarily an 'FBConstraint' wll wrap a 'KConstraint'. This pattern is not universal and may differ at times, so it will not always be applicable. There are also cases where an 'FB' objects has no corresponding 'K' object, such as in the case of an 'FBSystem' object.On lookup there are potentially two searches made: a first one, using the context if one was provided. Should the first search fail, a second search will be done without using the context.Again the lookup result is dependant on the current language selected, as indicated by the class FBMultiLangManager.The following sample code shows 2 cases that do not use context, and 2 cases that are using a context which are internal class names.Python sample code:
     
@@ -17203,7 +17203,7 @@ def FBGetMultiLangText(Context:FBPlug=None,Key:str=None,FlagReturnKey:object=Non
 def FBGetRenderingTaskCycle()->FBProfileTaskCycle:
     """Get rendering task cycle."""
     ...
-def FBGetSelectedModels(List:FBModelList=None,Parent:FBModel=None,Selected:object=None,SortBySelectOrder:object=None):
+def FBGetSelectedModels(List:FBModelList,Parent:FBModel,Selected:object,SortBySelectOrder:object):
     """Find all models that are selected (ifSelected is true) Searches recursively from a root model for models that are selected, and adds them to a list of models.
     
     List : List to add found models to.
@@ -17225,7 +17225,7 @@ def FBHUD_TypeInfo()->int:...
 def FBHandle_TypeInfo()->int:...
 def FBImageContainer_TypeInfo()->int:...
 def FBImage_TypeInfo()->int:...
-def FBInterpolateRotation(QOut:FBVector3d=None,Q0:FBVector3d=None,Q1:FBVector3d=None,U:object=None):
+def FBInterpolateRotation(QOut:FBVector3d,Q0:FBVector3d,Q1:FBVector3d,U:object):
     """Interpolate a rotation in Quaternion.
     
     QOut : Resulting, interpolated rotation.
@@ -17239,7 +17239,7 @@ def FBLabel_TypeInfo()->int:...
 def FBLayeredTexture_TypeInfo()->int:...
 def FBLayoutRegion_TypeInfo()->int:...
 def FBLayout_TypeInfo()->int:...
-def FBLength(V:FBVector4d=None)->float:
+def FBLength(V:FBVector4d)->float:
     """Get the length of a vertex (from origin)
     
     V : Vertex for which length is to be measured.
@@ -17247,13 +17247,13 @@ def FBLength(V:FBVector4d=None)->float:
     ...
 def FBLight_TypeInfo()->int:...
 def FBList_TypeInfo()->int:...
-def FBLoadCharacterPinningPreset(PresetName:str=None)->bool:
+def FBLoadCharacterPinningPreset(PresetName:str)->bool:
     """Loads a pinning preset in the Character Controls Tool.
     
     PresetName : The preset name to load (not the file path nor the filename of the preset).
     return : True if the operation is successful, false otherwise."""
     ...
-def FBLoadFbxPrimitivesModel(ModelName:str=None)->object:
+def FBLoadFbxPrimitivesModel(ModelName:str)->object:
     """Load a model.
     
     ModelName : Name of primitive model to load.
@@ -17263,38 +17263,38 @@ def FBLogger_TypeInfo()->int:...
 def FBManipulator_TypeInfo()->int:...
 def FBMarkerSet_TypeInfo()->int:...
 def FBMaterial_TypeInfo()->int:...
-def FBMatrixInverse(Matrix:FBMatrix=None,Src:FBMatrix=None):
+def FBMatrixInverse(Matrix:FBMatrix,Src:FBMatrix):
     """Invert a matrix.
     
     Matrix : Calculated inverse matrix.
     Src : Source matrix to invert."""
     ...
-def FBMatrixMult(Matrix:FBMatrix=None,A:FBMatrix=None,B:FBMatrix=None):
+def FBMatrixMult(Matrix:FBMatrix,A:FBMatrix,B:FBMatrix):
     """Multiply two matrices.
     
     Matrix : Calculated resulting matrix.
     A : 1st matrix.
     B : 2nd matrix."""
     ...
-def FBMatrixOrthogonalize(Matrix:FBMatrix=None):
+def FBMatrixOrthogonalize(Matrix:FBMatrix):
     """Make sure that rotation vectors are orthogonal and normalized (fast way for removing scaling from matrix)
     
     Matrix : Rotation Matrix to Orthogonalize."""
     ...
-def FBMatrixToQuaternion(Quaternion:FBVector4d=None,Matrix:FBMatrix=None):
+def FBMatrixToQuaternion(Quaternion:FBVector4d,Matrix:FBMatrix):
     """Get a quaternion from a matrix (potential ).
     
     Quaternion : Calculated quaternion.
     Matrix : Input matrix."""
     ...
-def FBMatrixToRotation(Vector:FBVector3d=None,Matrix:FBMatrix=None,RotationOrder:FBRotationOrder=None):
+def FBMatrixToRotation(Vector:FBVector3d,Matrix:FBMatrix,RotationOrder:FBRotationOrder):
     """Obtain rotation vector from a matrix.
     
     Vector : Extracted rotation vector, ordered the same way as the rotation order specified byRotationOrder.
     Matrix : Input matrix.
     RotationOrder : Rotation order."""
     ...
-def FBMatrixToRotationWithPrecision(Vector:FBVector3d=None,Matrix:FBMatrix=None,RotationOrder:FBRotationOrder=None,Precision:object=None):
+def FBMatrixToRotationWithPrecision(Vector:FBVector3d,Matrix:FBMatrix,RotationOrder:FBRotationOrder,Precision:object):
     """Obtain rotation vector from a matrix.
     
     Vector : Extracted rotation vector.
@@ -17302,13 +17302,13 @@ def FBMatrixToRotationWithPrecision(Vector:FBVector3d=None,Matrix:FBMatrix=None,
     RotationOrder : Rotation Order.
     Precision : Indicate the precision level (pow(10.0, -pPrecision)) used when calculating the threshold value for gimble lock."""
     ...
-def FBMatrixToScaling(Vector:FBSVector=None,Matrix:FBMatrix=None):
+def FBMatrixToScaling(Vector:FBSVector,Matrix:FBMatrix):
     """Obtain scaling vector from a matrix.
     
     Vector : Extracted scaling vector.
     Matrix : Input matrix."""
     ...
-def FBMatrixToTQS(TVector:FBVector4d=None,Quaternion:FBVector4d=None,SVector:FBSVector=None,Matrix:FBMatrix=None):
+def FBMatrixToTQS(TVector:FBVector4d,Quaternion:FBVector4d,SVector:FBSVector,Matrix:FBMatrix):
     """Obtain translation vector, rotation quaternion, and scaling vector from a matrix.
     
     TVector : Extracted translation vector.
@@ -17316,7 +17316,7 @@ def FBMatrixToTQS(TVector:FBVector4d=None,Quaternion:FBVector4d=None,SVector:FBS
     SVector : Extracted scaling vector.
     Matrix : Input matrix."""
     ...
-def FBMatrixToTRS(TVector:FBVector4d=None,RVector:FBVector3d=None,SVector:FBSVector=None,Matrix:FBMatrix=None):
+def FBMatrixToTRS(TVector:FBVector4d,RVector:FBVector3d,SVector:FBSVector,Matrix:FBMatrix):
     """Obtain translation, rotation, and scaling vectors from a matrix.
     
     TVector : Extracted translation vector.
@@ -17324,13 +17324,13 @@ def FBMatrixToTRS(TVector:FBVector4d=None,RVector:FBVector3d=None,SVector:FBSVec
     SVector : Extracted scaling vector.
     Matrix : Input matrix."""
     ...
-def FBMatrixToTranslation(Vector:FBVector4d=None,Matrix:FBMatrix=None):
+def FBMatrixToTranslation(Vector:FBVector4d,Matrix:FBMatrix):
     """Obtain translation vector from a matrix.
     
     Vector : Extracted translation vector.
     Matrix : Input matrix."""
     ...
-def FBMatrixTranspose(Matrix:FBMatrix=None,Src:FBMatrix=None):
+def FBMatrixTranspose(Matrix:FBMatrix,Src:FBMatrix):
     """Transpose a matrix.
     
     Matrix : Calculated transpose matrix.
@@ -17359,7 +17359,7 @@ def FBMergeTransactionIsOn()->bool:
     """Call to tell if system is during Merge transaction."""
     ...
 def FBMesh_TypeInfo()->int:...
-def FBMessageBox(BoxTitle:str=None,Message:str=None,Button1Str:str=None,Button2Str:str=None,Button3Str:str=None,DefaultButton:object=None,ScrolledMessage:object=None)->int:
+def FBMessageBox(BoxTitle:str,Message:str,Button1Str:str,Button2Str:str,Button3Str:str,DefaultButton:object,ScrolledMessage:object)->int:
     """Dialog popup box.
     Opens a message box containing a message and up to three buttons. Waits for the user to click a button.
     
@@ -17372,7 +17372,7 @@ def FBMessageBox(BoxTitle:str=None,Message:str=None,Button1Str:str=None,Button2S
     ScrolledMessage : Scroll message (default is 0).
     return : The number of the button selected."""
     ...
-def FBMessageBoxGetUserValue(BoxTitle:str=None,Message:str=None,Value:object=None,ValueType:FBPopupInputType=None,Button1Str:str=None,Button2Str:str=None,Button3Str:str=None,DefaultButton:object=None,arg9:object=None)->tuple:
+def FBMessageBoxGetUserValue(BoxTitle:str,Message:str,Value:object,ValueType:FBPopupInputType,Button1Str:str,Button2Str:str,Button3Str:str,DefaultButton:object,arg9:object)->tuple:
     """Dialog popup box to get user input.
     Opens a message box, with up to three buttons, asking the user to enter data. The type of data to be entered is specified by theValue andValueType parameters.
     
@@ -17386,7 +17386,7 @@ def FBMessageBoxGetUserValue(BoxTitle:str=None,Message:str=None,Value:object=Non
     DefaultButton : Indicates the default (pre-selected) button(default=0).
     return : A tuple containing the index of the button selected and the value entered by the user, if any."""
     ...
-def FBMessageBoxWithCheck(BoxTitle:str=None,Message:str=None,Button1Str:str=None,Button2Str:str=None,Button3Str:str=None,CheckBoxStr:str=None,CheckBoxValue:object=None,DefaultButton:object=None,ScrolledMessage:object=None)->tuple:
+def FBMessageBoxWithCheck(BoxTitle:str,Message:str,Button1Str:str,Button2Str:str,Button3Str:str,CheckBoxStr:str,CheckBoxValue:object,DefaultButton:object,ScrolledMessage:object)->tuple:
     """Dialog popup box with 'don't show again' option.
     Opens a message box containing a message and up to three buttons. Waits for the user to click a button. This dialog also gives the user the option of never showing the dialog again.
     
@@ -17425,7 +17425,7 @@ def FBModelVertexData_TypeInfo()->int:...
 def FBModel_TypeInfo()->int:...
 def FBMotionClip_TypeInfo()->int:...
 def FBMotionFileOptions_TypeInfo()->int:...
-def FBMult(Result:FBVector4d=None,M:FBVector4d=None,V:object=None):
+def FBMult(Result:FBVector4d,M:FBVector4d,V:object):
     """Calculate the cross product of a Matrix and Scale Vector.
     
     Result : Resulting Matrix.
@@ -17442,47 +17442,47 @@ def FBObjectGetGlobalUniqueId()->int:
 def FBObjectGetLivingCount()->int:
     """Get current total living object count."""
     ...
-def FBObjectLifeLogEnable(Enable:object=None):
+def FBObjectLifeLogEnable(Enable:object):
     """Enable object creation / deletion logging.
     Default logging if off This logging may hurt performance slightly. use it only for debug purpose.
     
     Enable : true to enable logging."""
     ...
 def FBObjectPose_TypeInfo()->int:...
-def FBObjectPrintLivings(StartUniqueId:int=None):
+def FBObjectPrintLivings(StartUniqueId:int):
     """Print those living objects created when logging is enabled.
     
     StartUniqueId : Any living object has been logged and with its uniqueId no less thanStartUniqueId will be printed out."""
     ...
-def FBObject_GetEntryCount(GroupIndex:object=None)->int:
+def FBObject_GetEntryCount(GroupIndex:object)->int:
     """GroupIndex : int"""
     ...
-def FBObject_GetEntryDLLName(GroupIndex:object=None,Index:object=None,nth:object=None)->str:
+def FBObject_GetEntryDLLName(GroupIndex:object,Index:object,nth:object)->str:
     """GroupIndex : int
     Index : int
     nth : int"""
     ...
-def FBObject_GetEntryDescription(GroupIndex:object=None,Index:object=None,nth:object=None)->str:
+def FBObject_GetEntryDescription(GroupIndex:object,Index:object,nth:object)->str:
     """GroupIndex : int
     Index : int
     nth : int"""
     ...
-def FBObject_GetEntryName(GroupIndex:object=None,Index:object=None)->str:
+def FBObject_GetEntryName(GroupIndex:object,Index:object)->str:
     """GroupIndex : int
     Index : int"""
     ...
 def FBObject_GetGroupCount()->int:
     """A set of functions to query the registration table."""
     ...
-def FBObject_GetGroupName(GroupIndex:object=None)->str:
+def FBObject_GetGroupName(GroupIndex:object)->str:
     """GroupIndex : int"""
     ...
-def FBObject_GetIconName(GroupIndex:object=None,Index:object=None,nth:object=None)->str:
+def FBObject_GetIconName(GroupIndex:object,Index:object,nth:object)->str:
     """GroupIndex : int
     Index : int
     nth : int"""
     ...
-def FBObject_GetMultiplicity(GroupIndex:object=None,Index:object=None,nth:object=None)->bool:
+def FBObject_GetMultiplicity(GroupIndex:object,Index:object,nth:object)->bool:
     """GroupIndex : int
     Index : int
     nth : int"""
@@ -17496,7 +17496,7 @@ def FBPlotPopup_TypeInfo()->int:...
 def FBPlug_TypeInfo()->int:...
 def FBPointCacheFile_TypeInfo()->int:...
 def FBPointCacheManager_TypeInfo()->int:...
-def FBPopNormalTool(ToolName:str=None,SetFocus:object=None)->bool:
+def FBPopNormalTool(ToolName:str,SetFocus:object)->bool:
     """This function is used to bring up a specific tool in the GUI.
     
     ToolName : The name of the tool as shown in the Open Reality menu.
@@ -17520,54 +17520,54 @@ def FBProgress_TypeInfo()->int:...
 def FBPropertyConnectionEditor_TypeInfo()->int:...
 def FBPropertyViewManager_TypeInfo()->int:...
 def FBProperty_TypeInfo()->int:...
-def FBQAdd(Result:FBVector4d=None,Q1:FBVector4d=None,Q2:FBVector4d=None):
+def FBQAdd(Result:FBVector4d,Q1:FBVector4d,Q2:FBVector4d):
     """Add two quaternions together (pResult =Q1 +Q2)
     
     Result : Resulting quaternion.
     Q1 : 1st quaternion.
     Q2 : 2nd quaternion."""
     ...
-def FBQDot(Q1:FBVector4d=None,Q2:FBVector4d=None)->float:
+def FBQDot(Q1:FBVector4d,Q2:FBVector4d)->float:
     """Calculate the dot product of two quaternions.
     
     Q1 : 1st quaternion.
     Q2 : 2nd quaternion.
     return : Dot product."""
     ...
-def FBQLength(Q:FBVector4d=None)->float:
+def FBQLength(Q:FBVector4d)->float:
     """Get the length of a quaternion.
     
     Q : Quaternion to calculate length for.
     return : Length of quaternionQ."""
     ...
-def FBQMult(Result:FBVector4d=None,Q1:FBVector4d=None,Q2:object=None):
+def FBQMult(Result:FBVector4d,Q1:FBVector4d,Q2:object):
     """Calculate the cross product of two quaternions.
     
     Result : Resulting quaternion.
     Q1 : 1st quaternion.
     Q2 : 2nd quaternion."""
     ...
-def FBQSub(Result:FBVector4d=None,Q1:FBVector4d=None,Q2:FBVector4d=None):
+def FBQSub(Result:FBVector4d,Q1:FBVector4d,Q2:FBVector4d):
     """SubtractQ2 fromQ1 (pResult =Q1 -Q2)
     
     Result : Resulting quaternion.
     Q1 : 1st quaternion.
     Q2 : 2nd quaternion."""
     ...
-def FBQuaternionToMatrix(Matrix:FBMatrix=None,Quaternion:FBVector4d=None):
+def FBQuaternionToMatrix(Matrix:FBMatrix,Quaternion:FBVector4d):
     """Get a rotation matrix from a quaternion vector.
     
     Matrix : Calculated rotation matrix.
     Quaternion : Input quaternion."""
     ...
-def FBQuaternionToRotation(Vector:FBVector3d=None,Quaternion:FBVector4d=None,RotationOrder:FBRotationOrder=None):
+def FBQuaternionToRotation(Vector:FBVector3d,Quaternion:FBVector4d,RotationOrder:FBRotationOrder):
     """Get a rotation vector from a quaternion vector.
     
     Vector : Calculated rotation vector, ordered the same way as the rotation order specified byRotationOrder.
     Quaternion : Input quaternion.
     RotationOrder : Rotation order."""
     ...
-def FBQuaternionToRotationWithPrecision(Vector:FBVector3d=None,Quaternion:FBVector4d=None,RotationOrder:FBRotationOrder=None,Precision:object=None):
+def FBQuaternionToRotationWithPrecision(Vector:FBVector3d,Quaternion:FBVector4d,RotationOrder:FBRotationOrder,Precision:object):
     """Get a rotation vector from a quaternion vector.
     
     Vector : Calculated rotation vector.
@@ -17579,64 +17579,64 @@ def FBReferenceTime_TypeInfo()->int:...
 def FBRendererCallback_TypeInfo()->int:...
 def FBRenderer_TypeInfo()->int:...
 def FBRigidBody_TypeInfo()->int:...
-def FBRotationToMatrix(Matrix:FBMatrix=None,Vector:FBVector3d=None,RotationOrder:FBRotationOrder=None):
+def FBRotationToMatrix(Matrix:FBMatrix,Vector:FBVector3d,RotationOrder:FBRotationOrder):
     """Convert a rotation vector to a matrix.
     
     Matrix : Calculated resulting matrix.
     Vector : Rotation vector, ordered the same way as the rotation order specified byRotationOrder.
     RotationOrder : Rotation order."""
     ...
-def FBRotationToQuaternion(Quaternion:FBVector4d=None,Vector:FBVector3d=None,RotationOrder:FBRotationOrder=None):
+def FBRotationToQuaternion(Quaternion:FBVector4d,Vector:FBVector3d,RotationOrder:FBRotationOrder):
     """Get a quaternion from a rotation vector.
     
     Quaternion : Calculated quaternion.
     Vector : Input rotation vector, ordered the same way as the rotation order specified byRotationOrder.
     RotationOrder : Rotation order."""
     ...
-def FBSaveCharacterPinningPreset(PresetName:str=None,AllowOverwriting:object=None)->bool:
+def FBSaveCharacterPinningPreset(PresetName:str,AllowOverwriting:object)->bool:
     """Saves a pinning preset from the current pinning values in the Character Controls Tool.
     
     PresetName : The preset name to save (not the file path nor the filename of the preset).
     AllowOverwriting : True to allow overwriting an existing preset having the same name as the one provided, false otherwise.
     return : True if the operation is successful, false otherwise."""
     ...
-def FBScalingToMatrix(Matrix:FBMatrix=None,Vector:FBSVector=None):
+def FBScalingToMatrix(Matrix:FBMatrix,Vector:FBSVector):
     """Convert a scaling vector to a matrix.
     
     Matrix : Calculated resulting matrix.
     Vector : Scaling vector."""
     ...
 def FBScene_TypeInfo()->int:...
-def FBSchedulingDependencyOutput(Enable:object=None):
+def FBSchedulingDependencyOutput(Enable:object):
     """Debug function for MT dependency debug.
     When enabled log file will be created and updated each time MultiThreaded scheduling is happening (scene rebuild)
     
     Enable : ON/OFF switch. This is not stored in config (should be changed only for debug purpose, because slow down rebuild process )"""
     ...
 def FBScrollBox_TypeInfo()->int:...
-def FBSetActorMarkerSetVisibility(Show:object=None)->bool:
+def FBSetActorMarkerSetVisibility(Show:object)->bool:
     """Sets visibility of the marker set of the current actor.
     
     Show : Specifies if the market of the current actor should be visible.
     return : True if the operation is successful, false otherwise."""
     ...
-def FBSetCharacterFingerTipsVisibility(Show:object=None):
+def FBSetCharacterFingerTipsVisibility(Show:object):
     """Sets visibility of the finger-tips of the current character.
     
     Show : Specifies if finger-tips of the current character should be visible."""
     ...
-def FBSetCharacterFloorContactsVisibility(Show:object=None):
+def FBSetCharacterFloorContactsVisibility(Show:object):
     """Sets visibility of the floor contacts of the current character.
     
     Show : Specifies if floor contacts of the current character should be visible."""
     ...
-def FBSetConstantKeyReducerThresholdValue(ThresholdType:FBConstantKeyReducerThresholdType=None,Value:object=None):
+def FBSetConstantKeyReducerThresholdValue(ThresholdType:FBConstantKeyReducerThresholdType,Value:object):
     """Set a specific threshold value used by the Constant Key Reducer filter.
     
     ThresholdType : The threshold type to set its value.
     Value : The new threshold value to set."""
     ...
-def FBSetLastSelectedModel(Model:FBModel=None):
+def FBSetLastSelectedModel(Model:FBModel):
     """Set the given model as the last one selected, so the manipulator in the viewer will then be on that particular model.
     If the model is not selected, it will also be selected.
     
@@ -17646,7 +17646,7 @@ def FBSet_TypeInfo()->int:...
 def FBShaderLighted_TypeInfo()->int:...
 def FBShaderShadowLive_TypeInfo()->int:...
 def FBShader_TypeInfo()->int:...
-def FBSleep(MilliSeconds:int=None):
+def FBSleep(MilliSeconds:int):
     """Sleep function Puts system to sleep for specified time.
     
     MilliSeconds : Time to sleep for."""
@@ -17662,7 +17662,7 @@ def FBStoryFolder_TypeInfo()->int:...
 def FBStoryGroupClip_TypeInfo()->int:...
 def FBStoryTrack_TypeInfo()->int:...
 def FBStory_TypeInfo()->int:...
-def FBSub(Result:FBVector4d=None,V1:FBVector4d=None,V2:FBVector4d=None):
+def FBSub(Result:FBVector4d,V1:FBVector4d,V2:FBVector4d):
     """SubtractV2 fromV1 (pResult =V1 -V2)
     
     Result : Resulting vector.
@@ -17671,7 +17671,7 @@ def FBSub(Result:FBVector4d=None,V1:FBVector4d=None,V2:FBVector4d=None):
     ...
 def FBSurface_TypeInfo()->int:...
 def FBSystem_TypeInfo()->int:...
-def FBTQSToMatrix(Matrix:FBMatrix=None,TVector:FBVector4d=None,Quaternion:FBVector4d=None,SVector:FBSVector=None):
+def FBTQSToMatrix(Matrix:FBMatrix,TVector:FBVector4d,Quaternion:FBVector4d,SVector:FBSVector):
     """Convert translation vector, rotation quaternion, and scaling vector to a matrix.
     
     Matrix : Calculated resulting matrix.
@@ -17679,7 +17679,7 @@ def FBTQSToMatrix(Matrix:FBMatrix=None,TVector:FBVector4d=None,Quaternion:FBVect
     Quaternion : Rotation quaternion.
     SVector : Scaling vector."""
     ...
-def FBTRSToMatrix(Matrix:FBMatrix=None,TVector:FBVector4d=None,RVector:FBVector3d=None,SVector:FBSVector=None):
+def FBTRSToMatrix(Matrix:FBMatrix,TVector:FBVector4d,RVector:FBVector3d,SVector:FBSVector):
     """Convert translation, rotation, and scaling vectors to a matrix.
     
     Matrix : Calculated resulting matrix.
@@ -17694,7 +17694,7 @@ def FBThermometer_TypeInfo()->int:...
 def FBTimeWarpManager_TypeInfo()->int:...
 def FBToolLayoutManager_TypeInfo()->int:...
 def FBTool_TypeInfo()->int:...
-def FBTrace(FormatString:str=None):
+def FBTrace(FormatString:str):
     """This function prints useful debugging strings in the console with kFBNORMAL_TRACE output detailed level.
     
     FormatString : A printf-style format string, to use the following arguments in the list.
@@ -17705,19 +17705,19 @@ def FBTraceGetLevel()->int:
     
     return : Current global trace detailed level."""
     ...
-def FBTraceSetLevel(NewLevel:int=None):
+def FBTraceSetLevel(NewLevel:int):
     """Set Global Trace Detailed Level which affects all the output targets.
     
     NewLevel : Any trace message with detailed level higher than this new level will be ignored, valid value range [kFBNO_TRACE, kFBALL_TRACE]"""
     ...
-def FBTraceWithLevel(Level:int=None,FormatString:str=None):
+def FBTraceWithLevel(Level:int,FormatString:str):
     """This function prints useful debugging strings in the console.
     
     Level : to control trace output detailed level, valid value range [kFBCRITICAL_TRACE, kFBALL_TRACE]
     FormatString : A printf-style format string, to use the following arguments in the list.
     p2 : ..."""
     ...
-def FBTranslationToMatrix(Matrix:FBMatrix=None,Vector:FBVector4d=None):
+def FBTranslationToMatrix(Matrix:FBMatrix,Vector:FBVector4d):
     """Convert a translation vector to a matrix.
     
     Matrix : Calculated resulting matrix.
@@ -17728,14 +17728,14 @@ def FBTreeNode_TypeInfo()->int:...
 def FBTree_TypeInfo()->int:...
 def FBUndoManager_TypeInfo()->int:...
 def FBUserObject_TypeInfo()->int:...
-def FBVectorMatrixMult(OutVector:FBVector4d=None,Matrix:FBMatrix=None,Vector:FBVector4d=None):
+def FBVectorMatrixMult(OutVector:FBVector4d,Matrix:FBMatrix,Vector:FBVector4d):
     """Multiply a vector by a matrix.
     
     OutVector : Resulting vector.
     Matrix : Matrix to affect the vector with.
     Vector : Source vector."""
     ...
-def FBVertexMatrixMult(OutVertex:FBVertex=None,Matrix:FBMatrix=None,Vertex:FBVertex=None):
+def FBVertexMatrixMult(OutVertex:FBVertex,Matrix:FBMatrix,Vertex:FBVertex):
     """Multiply a vertex by a matrix.
     
     OutVertex : Resulting vertex.
@@ -17754,13 +17754,13 @@ def FBVisualComponent_TypeInfo()->int:...
 def FBVisualContainer_TypeInfo()->int:...
 def FBWebView_TypeInfo()->int:...
 def FBWidgetHolder_TypeInfo()->int:...
-def GetToolPosition(arg1:FBTool=None)->tuple:...
-def GetToolPositionByName(arg1:str=None)->tuple:...
-def GetToolSize(arg1:FBTool=None)->tuple:...
-def GetToolSizeByName(arg1:str=None)->tuple:...
-def SetToolPosition(arg1:FBTool=None,arg2:object=None,arg3:object=None):...
-def SetToolPositionByName(arg1:str=None,arg2:object=None,arg3:object=None):...
-def SetToolSize(arg1:FBTool=None,arg2:object=None,arg3:object=None):...
-def SetToolSizeByName(arg1:str=None,arg2:object=None,arg3:object=None):...
-def ShowTool(arg1:FBTool=None,arg2:object=None)->object:...
-def ShowToolByName(arg1:str=None,arg2:object=None)->object:...
+def GetToolPosition(arg1:FBTool)->tuple:...
+def GetToolPositionByName(arg1:str)->tuple:...
+def GetToolSize(arg1:FBTool)->tuple:...
+def GetToolSizeByName(arg1:str)->tuple:...
+def SetToolPosition(arg1:FBTool,arg2:object,arg3:object):...
+def SetToolPositionByName(arg1:str,arg2:object,arg3:object):...
+def SetToolSize(arg1:FBTool,arg2:object,arg3:object):...
+def SetToolSizeByName(arg1:str,arg2:object,arg3:object):...
+def ShowTool(arg1:FBTool,arg2:object)->object:...
+def ShowToolByName(arg1:str,arg2:object)->object:...
