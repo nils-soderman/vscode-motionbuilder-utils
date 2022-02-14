@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.0]
+*(14-02-2022)*
+
+* Re-wrote the pyfbsdk stub file generator. The stub file should now be feature complete with all of the contents from pyfbsdk, including overload functions.
+
 ## [0.1.5]
 *(06-01-2022)*
 
