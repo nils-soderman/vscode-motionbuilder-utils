@@ -17,7 +17,7 @@ def main():
         os.makedirs(OUTPUT_DIR)
 
     # Generate the stub files
-    mobuStubGenerator.GenerateDefaultPackages(OUTPUT_DIR)
+    mobuStubGenerator.GeneratePyfbsdkStub(OUTPUT_DIR)
 
 
 if "builtin" in __name__:
