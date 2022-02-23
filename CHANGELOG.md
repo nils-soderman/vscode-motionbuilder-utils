@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.1]
+*(x-x-2022)*
+
+* Fixed some examples not opening in the editor
+
 ## [1.0.0]
 *(14-02-2022)*
 
