@@ -3,12 +3,13 @@
 ## [1.0.1]
 *(x-x-2022)*
 
-* Fixed some examples not opening in the editor
+- Improved line breaks in the pyfbsdk docstrings
+- Fixed some examples not opening in the editor
 
 ## [1.0.0]
 *(14-02-2022)*
 
-* Re-wrote the pyfbsdk stub file generator. The stub file should now be feature complete with all of the contents from pyfbsdk, including overload functions.
+- Re-wrote the pyfbsdk stub file generator. The stub file should now be feature complete with all of the contents from pyfbsdk, including overload functions.
 
 ## [0.1.5]
 *(06-01-2022)*
