@@ -2,13 +2,11 @@ import * as child_process from "child_process";
 import * as htmlParser from 'node-html-parser';
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as fs from 'fs';
 
 import * as utils from './utils';
 
 
 const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
-// const MOBU_DOCS_URL = AUTODESK_HELP_DOMAIN + "view/MOBPRO/";
 const MOBU_FILE_HOSTING_URL = AUTODESK_HELP_DOMAIN + "cloudhelp/";
 
 
@@ -84,7 +82,6 @@ async function browseDocumentation(types: string[]) {
         return;
     }
 
-    // const relativeURL: string = items[selection]["url"].replace(/\s/g, "%20");
     const relativePageUrl = items[selection]["url"];
     if (!browsingType) {
         browsingType = items[selection]["type"];
