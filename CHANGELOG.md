@@ -1,8 +1,9 @@
 # Change Log
 
 ## [1.0.1]
-*(x-x-2022)*
+*(27-02-2022)*
 
+- <kbd>Ctrl</kbd> + <kbd>F1</kbd> now browses the C++ docs by default, instead of python.
 - Improved line breaks in the pyfbsdk docstrings
 - Fixed some examples not opening in the editor
 
@@ -22,7 +23,6 @@
 
 - Fixed bug when executing selected indented code
 
-
 ## [0.1.3]
 *(06-12-2021)*
 
@@ -31,15 +31,12 @@
 - Added pythonidelib to the auto-completion modules
 - Make sure sdk files are writeable before copying
 
-
 ## [0.1.2]
 *(01-12-2021)*
 
 - AutoCompletion SDK files are now copied to APPDATA by default.
 - Added Configuration:
     - `motionbuilder.autocompletion.sdkCopyPath`: Location where to copy the MoBu SDK autocompletion files
-
-
 
 ## [0.1.1]
 *(25-11-2021)*
@@ -54,7 +51,6 @@
     - `motionbuilder.execute.clearOutput`: Clear output log each time code is executed
     - `motionbuilder.documentation.openExamplesInEditor`: Open up example files from the docs in the editor instead of the web-browser
     - `motionbuilder.autocompletion.patchOnActivated`: Add auto-completion path to `python.analysis.extraPaths` when extention is activated.
-
 
 ## [0.1.0] 
 *(21-11-2021)*

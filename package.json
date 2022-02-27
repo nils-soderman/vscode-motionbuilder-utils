@@ -73,14 +73,14 @@
         "command": "motionbuilder.browseDocumentationFull"
       },
       {
-        "command": "motionbuilder.browseDocumentationC"
+        "command": "motionbuilder.browseDocumentationC",
+        "key": "ctrl+f1"
       },
       {
         "command": "motionbuilder.browseDocumentationExamples"
       },
       {
-        "command": "motionbuilder.browseDocumentationPython",
-        "key": "ctrl+f1"
+        "command": "motionbuilder.browseDocumentationPython"
       }
     ],
     "configuration": [
