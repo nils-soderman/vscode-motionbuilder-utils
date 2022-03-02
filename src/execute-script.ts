@@ -8,7 +8,44 @@ import * as utils from './utils';
 
 const TEMP_FILENAME = "VSCode-MotionBuilder-Exec";
 const TEMP_EXECDATA_FILENAME = "vscode-exec.json";
-const PYTHON_ENTER_FILE = path.join(__dirname, "..", "python", "mb-execute.py");
+const PYTHON_ENTER_FILE = path.join(utils.EXTENSION_PYTHON_DIR, "execute.py");
+
+let gOutputChannel: vscode.OutputChannel;
+
+
+function getOutputChannel(bEnsureChannelExists = true) {
+    if (!gOutputChannel && bEnsureChannelExists) {
+        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
+    }
+    return gOutputChannel;
+}
+
+
+function handleResponse(response: string) {
+    // If user is debugging MB, all output will automatically be appended to the debug console
+    if (vscode.debug.activeDebugSession && vscode.debug.activeDebugSession.name == utils.DEBUG_SESSION_NAME) {
+        return;
+    }
+
+    // Format response
+    response = response.replace(/\n\r/g, "\n");
+
+    const traceBackString = "Traceback (most recent call last):\n";
+    if (response.includes(traceBackString)) {
+        const responseTracebackSplit = response.split(traceBackString, 2);
+        const tracebackMsg = responseTracebackSplit[1].split("\n").slice(2).join("\n");
+        response = responseTracebackSplit[0] + traceBackString + tracebackMsg;
+    }
+
+    // Log the message in the output channel
+    const outputChannel = getOutputChannel();
+    outputChannel.appendLine(response);
+
+
+    if (utils.getExtensionConfig().get("execute.showOutput")) {
+        outputChannel.show(true);
+    }
+}
 
 
 /**
@@ -103,7 +140,14 @@ export async function execute() {
     // File an info file telling mb what script to run, etc.
     writeDataFile(fileToExecute, activeDocuemt.uri.fsPath);
 
-    motionBuilderConsole.runCommand(`with open(r'${PYTHON_ENTER_FILE}','r')as f:exec(f.read())\n`);
+    if (utils.getExtensionConfig().get("execute.clearOutput")) {
+        const outputChannel = getOutputChannel(false);
+        if (outputChannel) {
+            outputChannel.clear();
+        }
+    }
+
+    motionBuilderConsole.executeFile(PYTHON_ENTER_FILE, handleResponse);
 
 }
 

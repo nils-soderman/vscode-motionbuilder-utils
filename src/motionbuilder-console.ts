@@ -1,43 +1,11 @@
 import * as vscode from 'vscode';
-import * as net from 'net';
+import * as net from 'net'; 
 
-import * as utils from './utils';
+const IP = '127.0.0.1';
+const PORT = 4242;
 
-
-const DEFAULT_IP = '127.0.0.1';
-const DEFAULT_PORT = 4242;
-
-let gOutputChannel: vscode.OutputChannel;
 let gSocket: net.Socket | undefined;
-
-
-function getOutputChannel(bEnsureChannelExists = true) {
-    if (!gOutputChannel && bEnsureChannelExists) {
-        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
-    }
-    return gOutputChannel;
-}
-
-
-function handleResponse(response: string) {
-    // Format response
-    response = response.replace(/\n\r/g, "\n");
-
-    const traceBackString = "Traceback (most recent call last):\n";
-    if (response.includes(traceBackString))
-    {
-        const responseTracebackSplit = response.split(traceBackString, 2);
-        const tracebackMsg = responseTracebackSplit[1].split("\n").slice(2).join("\n");
-        response = responseTracebackSplit[0] + traceBackString + tracebackMsg;
-    }
-
-    // Log the message in the output channel
-    const outputChannel = getOutputChannel();
-    outputChannel.appendLine(response);
-    if (utils.getExtensionConfig().get("execute.showOutput")) {
-        outputChannel.show(true);
-    }
-}
+let onDataRecived: Function;
 
 
 async function getSocket() {
@@ -46,7 +14,7 @@ async function getSocket() {
         return gSocket;
     }
 
-    gSocket = net.createConnection(DEFAULT_PORT, DEFAULT_IP);
+    gSocket = net.createConnection(PORT, IP);
 
     gSocket.on('error', (e) => {
         if (e.message.includes("ECONNRESET")) {
@@ -71,8 +39,8 @@ async function getSocket() {
         }
     });
 
-
     let bSocketEstablished = false;
+    
     gSocket.on("data", function (buffer) {
         let dataRecived = buffer.toString("utf8");
 
@@ -95,8 +63,9 @@ async function getSocket() {
             dataRecived = dataRecived.slice(0, -3).trimEnd();
         }
         */
-
-        handleResponse(dataRecived);
+       if (onDataRecived != undefined) {
+            onDataRecived(dataRecived);
+        }
     });
 
     gSocket.on('close', (h: any | undefined) => {
@@ -111,20 +80,19 @@ async function getSocket() {
  * 
  * @param command The command to run
  */
-export async function runCommand(command: string) {
-
-    if (utils.getExtensionConfig().get("execute.clearOutput")) {
-        const outputChannel = getOutputChannel(false);
-        if (outputChannel) {
-            outputChannel.clear();
-        }
-    }
-
+export async function runCommand(command: string, callback: Function) {
     const socket = await getSocket();
     if (!socket) {
         return;
     }
 
+    onDataRecived = callback;
+
     // Send the commmand
     socket.write(command);
+}
+
+
+export async function executeFile(filepath: string, callback: Function) {
+    runCommand(`with open(r'${filepath}','r')as f:exec(f.read())\n`, callback);
 }
