@@ -43,6 +43,11 @@
         "category": "MotionBuilder"
       },
       {
+        "command": "motionbuilder.attach",
+        "title": "Attach",
+        "category": "MotionBuilder"
+      },
+      {
         "command": "motionbuilder.browseDocumentation",
         "title": "Browse Documentation",
         "category": "MotionBuilder"
@@ -68,6 +73,9 @@
         "command": "motionbuilder.execute",
         "key": "ctrl+enter",
         "when": "editorTextFocus && editorLangId == python"
+      },
+      {
+        "command": "motionbuilder.attach"
       },
       {
         "command": "motionbuilder.browseDocumentationFull"
@@ -110,6 +118,11 @@
           "motionbuilder.autocompletion.sdkCopyPath": {
             "type": "string",
             "description": "Where to place the MoBu SDK files. By default they will be placed under APPDATA"
+          },
+          "motionbuilder.debug.port": {
+            "type": "integer",
+            "default": 4243,
+            "description": "The port to use when attaching to MotionBuilder."
           }
         }
       }

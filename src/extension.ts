@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as autocompletion from "./auto-completion";
 import * as documentation from "./documentation";
 import * as execute from "./execute-script";
+import * as MBDebugger from "./debugger";
 import * as utils from './utils';
 
 
@@ -21,6 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
 			execute.execute();
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('motionbuilder.attach', () => {
+			MBDebugger.attachToMotionBuilder();
 		})
 	);
 
