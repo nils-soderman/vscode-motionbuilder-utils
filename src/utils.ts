@@ -4,8 +4,11 @@ import * as path from 'path';
 import * as os from "os";
 import * as fs from 'fs';
 
-
+// Statics
 const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
+const PYTHON_MODULES_FOLDER_NAME = "python-modules";
+export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
+export const EXTENSION_PYTHON_DIR = path.join(__dirname, "..", "python");
 
 
 /**
@@ -66,7 +69,13 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
     return appdataDir;
 }
 
-
+export function getExtensionPythonModulesDir(bEnsureExists = true) {
+    const appdataDir = path.join(getExtensionAppdataFolder(), PYTHON_MODULES_FOLDER_NAME);
+    if (bEnsureExists && !fs.existsSync(appdataDir)) {
+        fs.mkdirSync(appdataDir);
+    }
+    return appdataDir;
+}
 
 /**
  * @returns The workspace configuration for this extension _('motionbuilder')_
