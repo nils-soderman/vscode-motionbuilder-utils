@@ -6,4 +6,4 @@ with open(os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils", 'vsc
     _VsCodeData = json.load(_VsCodeFile)
     __file__ = _VsCodeData.get("__file__", "")
     with open(_VsCodeData["file"], 'r') as _VsCodeFile: 
-        exec(_VsCodeFile.read())
+        exec(compile(_VsCodeFile.read(), __file__, "exec"))
