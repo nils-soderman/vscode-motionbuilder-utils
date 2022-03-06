@@ -9,11 +9,12 @@
     "python",
     "pyfbsdk",
     "autodesk",
-    "autocompletion"
+    "autocompletion",
+    "debug"
   ],
   "qna": "marketplace",
   "icon": "media/mobu-icon.png",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -29,7 +30,8 @@
     "url": "https://github.com/nils-soderman/vscode-motionbuilder/issues"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Debuggers"
   ],
   "activationEvents": [
     "onStartupFinished"
