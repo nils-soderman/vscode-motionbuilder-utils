@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.1.0]
+*(x-03-2022)*
+
+- Added command & hotkey `motionbuilder.attach` that starts a debug session and attaches VSCode to MotionBuilder.
+- Added configuration `motionbuilder.debug.port` to choose what port to run the debug server on, defaults to: `4243`.
+- Improved traceback messages when executing code in MotionBuilder
+- Pyfbsdk stub file improvements:
+    - Removed `typings.List` import
+    - Improved `__getitem__` typehints for FBPropertyLists
+
 ## [1.0.1]
 *(27-02-2022)*
 
