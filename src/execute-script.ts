@@ -96,16 +96,31 @@ function formatSelectedText(text: string, firstCharIndex: number) {
 
 }
 
-
-export async function execute() {
+function getSelectedTextAsExecutableString() {
     if (!vscode.window.activeTextEditor) {
         return;
     }
+
     const activeDocuemt = vscode.window.activeTextEditor.document;
     let selectionText = "";
 
+    let selections:Array<vscode.Selection> = [vscode.window.activeTextEditor.selection];
+    // If there are more than 1 selection, sort them by their start line.
+    if (vscode.window.activeTextEditor.selections.length > 1)
+    {
+        // Add selections into an array that we can run the sort function on
+        selections = [];
+        for (let selection of vscode.window.activeTextEditor.selections) {
+            selections.push(selection);
+        }
+
+        selections = selections.sort(function(a:any, b:any) {
+            return a.start.line - b.start.line;
+        });
+    }
+
     // Combine all user selections into a single string
-    for (let selection of vscode.window.activeTextEditor.selections) {
+    for (let selection of selections) {
         if (!selection.isEmpty) {
 
             // Get the first line that is not empty
@@ -118,11 +133,26 @@ export async function execute() {
                 }
             }
 
-            selectionText += formatSelectedText(activeDocuemt.getText(selection), firstChar) + "\n";
+            const count = selectionText.split("\n").length - 1;
+            let additionalStr = "\n".repeat(selection.start.line - count);
+
+            selectionText += additionalStr + formatSelectedText(activeDocuemt.getText(selection), firstChar);
         }
     }
 
+    return selectionText;
+}
+
+
+export async function execute() {
+    if (!vscode.window.activeTextEditor) {
+        return;
+    }
+    const activeDocuemt = vscode.window.activeTextEditor.document;
+    let selectionText = getSelectedTextAsExecutableString();
+
     let fileToExecute = "";
+
     // If user had any selected text, save the selection as a temp file to execute
     if (selectionText) {
         fileToExecute = utils.saveTempFile(TEMP_FILENAME, selectionText);
