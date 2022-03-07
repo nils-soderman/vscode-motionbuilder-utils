@@ -1,9 +1,17 @@
 import tempfile
-import os
 import json
+import os
 
-with open(os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils", 'vscode-exec.json'), 'r') as _VsCodeFile:
-    _VsCodeData = json.load(_VsCodeFile)
-    __file__ = _VsCodeData.get("__file__", "")
-    with open(_VsCodeData["file"], 'r') as _VsCodeFile: 
-        exec(compile(_VsCodeFile.read(), __file__, "exec"))
+
+# Read settings
+_VsCodeSettingsFile = open(os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils", 'vscode-exec.json'), 'r')
+_VsCodeData = json.load(_VsCodeSettingsFile)
+_VsCodeSettingsFile.close()
+del _VsCodeSettingsFile
+
+# Set __file__
+__file__ = _VsCodeData.get("__file__", "")
+
+with open(_VsCodeData["file"], 'r') as _VsCodeFile:
+    del _VsCodeData
+    exec(compile(_VsCodeFile.read(), __file__, "exec"))
