@@ -6,10 +6,9 @@ Editor features to assist when writing Python code for Autodesk MotionBuilder.
 
 # Features
 
-## Run code in MotionBuilder directly from the editor
+## Execute Code
 
-You no longer need to leave the editor to execute code inside of MotionBuilder.
-Now VSCode can act just like MotionBuilder's Python Editor.
+Run code in MotionBuilder directly from within the editor
 
 ![execute code in MB demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-exec.gif?raw=true)
 
@@ -20,16 +19,25 @@ The selected text will be executed, if nothing is selected the entire document w
 
 <br>
 
-## Better Auto-Completion
+## Intellisense / Auto-Completion
 
-This extention comes with improved stub files for the pyfbsdk module.
+This extention comes with improved stub files for the `pyfbsdk` module.  
 
 ![Better auto-completion demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/auto-completion.jpg?raw=true)
 
 * Feature complete _(contains all of the functions & classes that can be accessed in the pyfbsdk module)_
 * Variable type annotations
-* Better & more readable description
+* Readable descriptions
 
+<br>
+
+## Attach to MotionBuilder
+
+Attach VSCode to MotionBuilder to debug your scripts. Set breakpoints & step through your code.
+
+![Better auto-completion demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-debug.gif?raw=true)
+
+Command: `MotionBuilder: Attach`
 
 <br>
 
