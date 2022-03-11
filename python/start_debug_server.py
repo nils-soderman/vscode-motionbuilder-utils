@@ -7,6 +7,7 @@ Will automatically install debugpy if module cannot be found.
 import subprocess as __subprocess__
 import importlib  as __importlib__
 import tempfile   as __tempfile__
+import socket     as __socket__
 import json       as __json__
 import sys        as __sys__
 import os         as __os__
@@ -81,6 +82,15 @@ def __StartMotionBuilderDebugServer__():
         return Module
 
 
+    def IsPortAvailable(Port):
+        """ Check if a port is avaliable """
+        Socket = __socket__.socket(__socket__.AF_INET, __socket__.SOCK_STREAM)
+        Socket.settimeout(0.05)
+        Response = Socket.connect_ex(("127.0.0.1", Port))
+        Socket.close()
+        return Response != 0
+
+
     def IsDebugServerRunning():
         """ Check if a debug server already has been started in this MB instance """
         return __os__.environ.get(VSCODE_DEBUG_SERVER_ENV_VAR, "") == str(True)
@@ -98,7 +108,11 @@ def __StartMotionBuilderDebugServer__():
         # Attempt to import / install debugpy
         debugpy = InstallAndImportModule("debugpy", Target)
         if not debugpy:
-            print("ERROR: Failed to import/install debugpy.")
+            print("ERROR: Failed to import/install python module 'debugpy'")
+            return False
+
+        if not IsPortAvailable(Port):
+            print("ERROR: Port %s is already in use! Consider configuring VSCode: `motionbuilder.debug.port` to use another port.")
             return False
 
         # Start the debugpy server
