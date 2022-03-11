@@ -1,79 +1,95 @@
-import subprocess
-import importlib
-import tempfile
-import json
-import sys
-import os
+""" 
+Script to start a debugpy server in MotionBuilder.
+Will automatically install debugpy if module cannot be found.
+"""
+
+# Import with private names to exclude them from the debug window
+import subprocess as __subprocess__
+import importlib  as __importlib__
+import tempfile   as __tempfile__
+import json       as __json__
+import sys        as __sys__
+import os         as __os__
 
 
 # Place everything inside a function to avoid creating variables/functions that show up in the debug window
-def StartMotionBuilderDebugServer():
-    
+def __StartMotionBuilderDebugServer__():
     VSCODE_DEBUG_SERVER_ENV_VAR = "MB_Utils_Debug_Enabled"
-    MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
-    VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
-
+    MOBU_PYTHON_EXECUTABLE = __os__.path.join(__os__.path.dirname(__sys__.executable), "mobupy.exe")
+    VSCODE_MOBU_TEMPDIR = __os__.path.join(__tempfile__.gettempdir(), "VSCode-MotionBuilder-Utils")
 
     def GetVSCodeAttachSettings():
         """ Get a dict with settings passed along from VSCode """
-        SettingsFilepath = os.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach.json')
+        SettingsFilepath = __os__.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach.json')
         with open(SettingsFilepath, 'r') as File:
-            return json.load(File)
+            return __json__.load(File)
 
 
-    def IsModuleAvaliable(ModuleName):
-        """ Check if a python module can be imported """
+    def TryImport(ModuleName, Path = ""):
+        """ Attempt to import a module, returns the module if sucessful, else None """
+        bAppendPath = Path and Path not in __sys__.path
+        if bAppendPath:
+            __sys__.path.append(Path)
+        
+        Module = None
         try:
-            exec("import %s" % ModuleName)
-            return True
+            Module = __importlib__.import_module(ModuleName)
         except:
-            return False
+            pass
+        
+        if bAppendPath:
+            __sys__.path.remove(Path)
+        
+        return Module
 
 
     def InstallAndImportModule(PackageName, Target = ""):
-        try:
-            # Try to import it without adding anything to the sys path
-            return importlib.import_module(PackageName)
-        except:
-            try:
-                if Target not in sys.path:
-                    sys.path.append(Target)
-                return importlib.import_module(PackageName)
-            except:
-                ArgTarget = ""
-                if Target:
-                    ArgTarget = "--target=%s" % Target
+        Module = TryImport(PackageName)
+        
+        # Append the target path and try to import again
+        if not Module and Target not in __sys__.path:
+            Module = TryImport(PackageName, Target)
 
-                # Ensure pip is avaliable
-                if not IsModuleAvaliable("pip"):
-                    if not IsModuleAvaliable("ensurepip"):
-                        return False
-                    
-                    TempInstallationDir = os.path.join(VSCODE_MOBU_TEMPDIR, "TempPipInstall")
-                    subprocess.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root", TempInstallationDir])
+        if not Module:
+            ArgTarget = ""
+            if Target:
+                ArgTarget = "--target=%s" % Target
 
-                    pipModulePath = ""
-                    for Root, Directory, Files in os.walk(TempInstallationDir):
-                        if "__init__.py" in Files and os.path.basename(Root) == "pip":
-                            pipModulePath = os.path.join(Root)
-                            break
+            # Ensure pip is avaliable
+            if not TryImport("pip"):
+                if not TryImport("ensurepip"):
+                    return None
+                
+                TempInstallationDir = __os__.path.join(VSCODE_MOBU_TEMPDIR, "TempPipInstall")
+                __subprocess__.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root", TempInstallationDir])
 
-                    if not pipModulePath:
-                        return False
+                pipModulePath = ""
+                for Root, Directory, Files in __os__.walk(TempInstallationDir):
+                    if "__init__.py" in Files and __os__.path.basename(Root) == "pip":
+                        pipModulePath = __os__.path.join(Root)
+                        break
 
-                    subprocess.check_call([MOBU_PYTHON_EXECUTABLE, pipModulePath, "install", ArgTarget, PackageName])
-                else: 
-                    subprocess.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "pip", "install", ArgTarget, PackageName])
+                if not pipModulePath:
+                    return None
 
-        return importlib.import_module(PackageName)
+                __subprocess__.check_call([MOBU_PYTHON_EXECUTABLE, pipModulePath, "install", ArgTarget, PackageName])
+            else:
+                __subprocess__.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "pip", "install", ArgTarget, PackageName])
+
+            Module = TryImport(PackageName, Target)
+
+        return Module
 
 
     def IsDebugServerRunning():
         """ Check if a debug server already has been started in this MB instance """
-        return os.environ.get(VSCODE_DEBUG_SERVER_ENV_VAR, "") == str(True)
+        return __os__.environ.get(VSCODE_DEBUG_SERVER_ENV_VAR, "") == str(True)
 
 
     def EnableDebugServer():
+        """ 
+        Enable a debugpy server, make sure one is not already running using IsDebugServerRunning().
+        """
         # Get settings
         Settings = GetVSCodeAttachSettings()
         Port = Settings.get("port")
@@ -83,13 +99,15 @@ def StartMotionBuilderDebugServer():
         debugpy = InstallAndImportModule("debugpy", Target)
         if not debugpy:
             print("ERROR: Failed to import/install debugpy.")
-            return
+            return False
 
         # Start the debugpy server
         debugpy.configure(python = MOBU_PYTHON_EXECUTABLE)
         debugpy.listen(Port)
 
-        os.environ[VSCODE_DEBUG_SERVER_ENV_VAR] = str(True)
+        __os__.environ[VSCODE_DEBUG_SERVER_ENV_VAR] = str(True)
+        
+        return True
 
 
     # Main entry
@@ -97,10 +115,7 @@ def StartMotionBuilderDebugServer():
         EnableDebugServer()
 
 
-if "builtin" in __name__:
-    StartMotionBuilderDebugServer()
+__StartMotionBuilderDebugServer__()
 
-
-# Clean up global function & imported modules to not have them shown in the debug window
-del subprocess, importlib, tempfile, json, sys, os
-del StartMotionBuilderDebugServer
+# Clean up global function to not have them shown in the debug window
+del __StartMotionBuilderDebugServer__
