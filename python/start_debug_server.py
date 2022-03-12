@@ -112,7 +112,7 @@ def __StartMotionBuilderDebugServer__():
             return False
 
         if not IsPortAvailable(Port):
-            print("ERROR: Port %s is already in use! Consider configuring VSCode: `motionbuilder.debug.port` to use another port.")
+            print("ERROR: Port %s is already in use! Consider configuring VSCode: `motionbuilder.debug.port` to use another port." % Port)
             return False
 
         # Start the debugpy server

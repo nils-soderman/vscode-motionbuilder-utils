@@ -7,6 +7,8 @@ import * as utils from "./utils";
 const TEMP_EXECDATA_FILENAME = "vscode-attach.json";
 const START_DEBUG_SERVER_FILENAME = "start_debug_server.py";
 
+let gLastDebugAttempt: number = 0;
+
 function writeDataFile(port: number, targetInstallDir: String) {
     let data: any = {};
     data["port"] = port;
@@ -15,10 +17,28 @@ function writeDataFile(port: number, targetInstallDir: String) {
 }
 
 function serverStartCallback(data: string) {
-    console.log("data: " + data);
+    const currentTime = new Date().getTime();
+    const deltaTime = (currentTime - gLastDebugAttempt) / 1000;
+    gLastDebugAttempt = currentTime;
+
+    // If a call is made within ~half a second, Then this is the same
+    // call, just more data beeing passed along from the MB python server
+    if (deltaTime < 0.5) {
+        return;
+    }
     
+    if (vscode.debug.activeDebugSession) {
+        return;
+    }
+
+    if (data.startsWith("ERROR:")) {
+        let message = data.replace("ERROR:", "").replace(">>>", "").trim();
+        vscode.window.showErrorMessage(message);
+        return;
+    }
+
     const port: number | undefined = utils.getExtensionConfig().get("debug.port");
-    
+
     // Start debugging
     vscode.debug.startDebugging(undefined, {
         "name": utils.DEBUG_SESSION_NAME,
