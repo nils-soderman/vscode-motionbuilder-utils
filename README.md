@@ -31,9 +31,9 @@ This extention comes with improved stub files for the `pyfbsdk` module.
 
 <br>
 
-## Attach to MotionBuilder
+## Debugging
 
-Attach VSCode to MotionBuilder to debug your scripts. Set breakpoints & step through your code.
+Attach VSCode to MotionBuilder to debug your scripts, set breakpoints & step through the code.
 
 ![Better auto-completion demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-debug.gif?raw=true)
 
