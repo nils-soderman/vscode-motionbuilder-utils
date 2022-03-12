@@ -10,6 +10,7 @@
 - `pyfbsdk` stub file improvements:
     - Removed `typings.List` import
     - Improved `__getitem__` typehints for FBPropertyLists
+    - Added a few missing property typehints & docstrings
 
 ## [1.0.1]
 *(27-02-2022)*

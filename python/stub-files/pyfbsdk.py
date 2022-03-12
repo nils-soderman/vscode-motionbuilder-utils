@@ -3682,7 +3682,8 @@ class FBEventDragAndDrop(FBEvent):
         Number of items in DragAndDrop list."""
         ...
 class FBEventEvalGlobalCallback(FBEvent):
-    Timing:property
+    Timing:FBGlobalEvalCallbackTiming
+    """Get Callback Timing."""
 class FBEventExpose(FBEvent):
     ...
 class FBEventFileChange(FBEvent):
@@ -3756,9 +3757,18 @@ class FBEventTreeSelect(FBEvent):
 class FBEventVideoFrameRendering(FBEvent):
     EState:type
     """video rendering state"""
-    FrameCount:property
-    FrameNumber:property
+    FrameCount:int
+    """returns the total number of frames the video renderer is rendering.
+    ### Returns:
+    the total number of frames."""
+    FrameNumber:int
+    """returns the frame number the video renderer is about to render.
+    ### Returns:
+    the frame number."""
     State:property
+    """returns the current state of the video renderer.
+    ### Returns:
+    the current state."""
     eBeginRendering:EState
     """State before video renderer renders all the frames."""
     eEndRendering:EState
@@ -3779,9 +3789,18 @@ class FBFCurveEvent(FBEvent):
     """Read Only Property: Index of the first key which is involved in the event."""
     KeyIndexStop:int
     """Read Only Property: Index of the last key which is involved in the event."""
-    ParentAnimationNode:property
-    ParentComponent:property
-    ParentProperty:property
+    ParentAnimationNode:FBAnimationNode
+    """Return the parent FBAnimationNode of the curve if possible.
+    ### Returns:
+    FBAnimationNode of the curve if possible, NULL otherwise."""
+    ParentComponent:FBComponent
+    """Return the parent object holding the FBAnimationNode of the curve if possible.
+    ### Returns:
+    Parent ( FBComponent ) of the curve if possible, NULL otherwise."""
+    ParentProperty:FBProperty
+    """Return the parent FBProperty of the curve if possible.
+    ### Returns:
+    FBProperty of the curve if possible, NULL otherwise."""
     def __init__(self):...
 class FBFCurveKey():
     Bias:float
@@ -4258,8 +4277,14 @@ class FBPropertyManager():
 class FBPropertyStateEvent(FBEvent):
     EventType:FBPropertyStateEventType
     """Read Only Property: Event type, please see the FBPropertyStateEventType for the possible types."""
-    ParentComponent:property
-    Property:property
+    ParentComponent:FBComponent
+    """Return the parent object holding the property if possible.
+    ### Returns:
+    Parent ( FBComponent ) of the property if possible, NULL otherwise."""
+    Property:FBProperty
+    """Return the FBProperty related to the event.
+    ### Returns:
+    FBProperty of the event."""
     def __init__(self):...
 class FBPropertyViewDefinition():
     def IsFolder(self)->bool:
@@ -4597,7 +4622,17 @@ class FBRenderOptions():
     def IsOfflineRendering(self)->bool:...
 class FBProperty(FBPlug):
     Data:property
-    Name:property
+    """Get the value of a property.
+    ### Return values:
+    pData Value to fill with property's current value.
+    ### Parameters:
+    pSize Size of pData buffer
+    pEvalInfo Used only with animated properties
+    Reimplemented in FBPropertyAnimatable ."""
+    Name:str
+    """Get the property's name.
+    ### Returns:
+    The property's name."""
     def AllowsLocking(self)->bool:
         """### Returns:
         true if property can be locked"""
@@ -4772,12 +4807,18 @@ class FBProperty(FBPlug):
 class FBComponent(FBPlug):
     Components:FBPropertyListComponent
     """List: List of components."""
-    FullName:property
+    FullName:str
+    """Get the full name.
+    ### Returns:
+    the full name of the component."""
     LongName:str
     """Read Write Property: Name and namespace for object."""
     Name:str
     """Read Write Property: Unique name of object."""
-    OwnerNamespace:property
+    OwnerNamespace:FBNamespace
+    """Get the owner Namespace object.
+    ### Returns:
+    the owner Namespace object"""
     Parents:FBPropertyListComponent
     """List: Parents."""
     PropertyList:FBPropertyManager
@@ -8575,7 +8616,10 @@ class FBModel(FBBox):
     """List: Children for model."""
     ConstrainDeformable:bool
     """Read Write Property: Model constraint deformable. Not Savable"""
-    CullingMode:property
+    CullingMode:FBModelCullingMode
+    """Get Model Culling Mode.
+    ### Returns:
+    Model Culling Mode."""
     Deformers:FBPropertyListDeformer
     """List: Deformers (Skeleton Deformer or Point Cache Deformer)."""
     GeometricRotation:FBVector3d
@@ -10719,7 +10763,10 @@ class FBActorFace(FBComponent):
         - Name: Name of new actor face."""
         ...
 class FBActionManager(FBComponent):
-    CurrentInteractionMode:property
+    CurrentInteractionMode:str
+    """Returns the current selected interaction mode.
+    ### Returns:
+    the current selected interaction mode in string"""
     def __init__(self):...
 class FBConstraintManager(FBComponent):
     @overload
@@ -13038,7 +13085,9 @@ class FBMotionFileOptions(FBComponent):
 class FBNamespace(FBComponent):
     ChildrenNamespaces:FBPropertyListNamespace
     """List: Direct Children Namespace Objects."""
-    ContentCount:property
+    ContentCount:int
+    """Get the namespace content objects count (Not Recursive). \\
+    return content objects count inside this namespace (not recursive)"""
     ContentLocked:bool
     """Read Write Property: Content locking state."""
     def GetContent(self,Index:int)->FBComponent:
@@ -15102,8 +15151,10 @@ class FBTimeCode():
     """-30.0f"""
     FRAMES_5994:float
     """-59.94f"""
-    Frame:property
-    FrameRate:property
+    Frame:float
+    """Return a frame number corresponding to the timecode."""
+    FrameRate:float
+    """Return the rate of the timecode."""
     MPAL_30:float
     """-29.971f Currently not supported : '1' is added just to differentiate from NTSC_FULL(-29.97f)"""
     NTSC_DROP:float
@@ -15113,7 +15164,12 @@ class FBTimeCode():
     """-29.97f"""
     PAL_25:float
     """-25.0f"""
-    TimeCodeString:property
+    TimeCodeString:str
+    """Get time as a string.
+    ### Parameters:
+    pFormat Format to use for the returned string(default= FBTime::eDefaultFormat ).
+    ### Returns:
+    String value of time."""
     def GetRawFrame(self)->float:
         """Get the raw value for the frame.
         ### Returns:
@@ -16790,7 +16846,9 @@ class FBVideoClipImage(FBVideoClip):
     UseSystemFrameRate:property
     def __init__(self,arg2:str):...
 class FBVideoCodecManager():
-    VideoCodecMode:property
+    VideoCodecMode:FBVideoCodecMode
+    """GetVideoCodecMode. \\
+    Get the current codec mode. This decide how the system behaves when ask to render a file (codec dialog, uncompress, use default codec)"""
     def GetCodecIdList(self,FileFormatInfo:str)->list:
         """Get all codec id available for a given file format.
         ### Parameters:
@@ -17378,7 +17436,10 @@ class FBSlider(FBVisualComponent):
     """Read Write Property: Current value."""
     def __init__(self):...
 class FBScrollBox(FBVisualComponent):
-    Content:property
+    Content:FBLayout
+    """Returns an empty layout in which you can add scrollable content.
+    ### Returns:
+    A Layout in which you can add your content."""
     def SetContentSize(self,arg2,arg3):...
     def __init__(self):...
 class FBPropertyConnectionEditor(FBVisualComponent):
