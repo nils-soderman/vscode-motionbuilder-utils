@@ -12,6 +12,7 @@ vsc-extension-quickstart.md
 **/*.gitmodules
 **/*.gitignore
 **/__pycache__
+test.py
 
 build-scripts/**
 media/demo/**
