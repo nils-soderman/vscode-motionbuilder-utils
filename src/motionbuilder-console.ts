@@ -58,12 +58,7 @@ async function getSocket() {
         }
 
         dataRecived = dataRecived.trim();
-        /* If we want to remove the '>>>' logged in output
-        if (dataRecived.endsWith(">>>")) {
-            dataRecived = dataRecived.slice(0, -3).trimEnd();
-        }
-        */
-       if (onDataRecived != undefined) {
+        if (onDataRecived != undefined) {
             onDataRecived(dataRecived);
         }
     });

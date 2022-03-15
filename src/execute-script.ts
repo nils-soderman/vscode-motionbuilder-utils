@@ -20,10 +20,13 @@ function getOutputChannel(bEnsureChannelExists = true) {
     return gOutputChannel;
 }
 
+function isDebuggingMotionBuilder() {
+    return vscode.debug.activeDebugSession && vscode.debug.activeDebugSession.name == utils.DEBUG_SESSION_NAME;
+}
 
 function handleResponse(response: string) {
     // If user is debugging MB, all output will automatically be appended to the debug console
-    if (vscode.debug.activeDebugSession && vscode.debug.activeDebugSession.name == utils.DEBUG_SESSION_NAME) {
+    if (isDebuggingMotionBuilder()) {
         return;
     }
 
@@ -52,11 +55,15 @@ function handleResponse(response: string) {
  * Write a json temp file that can be read by MotionBuilder, to know what script to execute etc.
  * @param fileToExecute The abs filepath to the .py file that should be executed
  * @param originalFilepath The abs filepath to the source filepath, will be used to set the python var `__file__`
+ * @param additionalPrint Additional text to be printed to the output once the code has been executed
  */
-function writeDataFile(fileToExecute: string, originalFilepath: string) {
+function writeDataFile(fileToExecute: string, originalFilepath: string, additionalPrint = "") {
     let data: any = {};
     data["file"] = fileToExecute;
     data["__file__"] = originalFilepath;
+    if (additionalPrint) {
+        data["additionalPrint"] = additionalPrint;
+    }
     utils.saveTempFile(TEMP_EXECDATA_FILENAME, JSON.stringify(data));
 }
 
@@ -168,7 +175,8 @@ export async function execute() {
     }
 
     // File an info file telling mb what script to run, etc.
-    writeDataFile(fileToExecute, activeDocuemt.uri.fsPath);
+    const additionalPrint = isDebuggingMotionBuilder() ? ">>>" : "";
+    writeDataFile(fileToExecute, activeDocuemt.uri.fsPath, additionalPrint);
 
     if (utils.getExtensionConfig().get("execute.clearOutput")) {
         const outputChannel = getOutputChannel(false);

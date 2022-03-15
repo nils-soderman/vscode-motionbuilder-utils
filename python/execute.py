@@ -18,5 +18,6 @@ del __VsCodeSettingsFile__
 __file__ = __VsCodeData__.get("__file__", "")
 
 with open(__VsCodeData__["file"], 'r') as __VsCodeFile__:
-    del __VsCodeData__
     exec(compile(__VsCodeFile__.read(), __file__, "exec"))
+    if "additionalPrint" in __VsCodeData__:
+        print(__VsCodeData__["additionalPrint"])
