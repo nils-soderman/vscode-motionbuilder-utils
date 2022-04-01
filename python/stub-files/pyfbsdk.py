@@ -1,5 +1,5 @@
 """
-Stub file generated for MotionBuilder 2022 using:
+Stub file generated for MotionBuilder 2023 using:
 https://github.com/nils-soderman/pyfbsdk-stub-generator
 """
 from __future__ import annotations
@@ -56,6 +56,10 @@ class FBAnimationNodeConnectorType(_Enum):
     """The animation node input connector has a constant value set to it (valid for input connector only)."""
     kFBAnimationNodeConnectorTypeNone:FBAnimationNodeConnectorType
     """The animation node connector is not connected and doesn't have a constant value set to it."""
+class FBApplicationState(_Enum):
+    kFBBatch:FBApplicationState
+    kFBInteractive:FBApplicationState
+    kFBMobuPy:FBApplicationState
 class FBArrangeMode(_Enum):
     """Modes for arranging objects in schematic view."""
     kHorizontalMode:FBArrangeMode
@@ -4956,6 +4960,7 @@ class FBReferenceTime(FBComponent):
     """Read Write Property: Current reference time ID"""
     ItemIndex:int
     """Read Write Property: Current reference time index. Deprecated, use CurrentTimeReferenceID instead."""
+    UseRelativeLocalTime:property
     def Add(self,Name:str)->int:
         """Add a reference time to list.
         ### Parameters:
@@ -6806,6 +6811,14 @@ class FBBox(FBComponent):
         true if node is user data."""
         ...
     def AnimationNodeOutGet(self)->object:...
+    def FbxGetObjectSubType(self)->str:
+        """returns UniqueName if not overloaded. \\
+        Reimplemented in FBModelMarker , FBModelNull , FBModel , and FBMaterial ."""
+        ...
+    def FbxGetObjectType(self)->str:
+        """Object Type 'Box'. \\
+        Reimplemented in FBModelMarker , FBModelNull , FBModel , FBMaterial , and FBDevice ."""
+        ...
     def GetInConnector(self,Index:int)->FBAnimationNode:
         """Get the animation node input associated with the given index.
         ### Parameters:
@@ -8265,6 +8278,22 @@ class FBDevice(FBBox):
     def AckOneSampleSent(self):
         """Acknowlege that one sample was sent (for statistical purposes)."""
         ...
+    def DeviceOperation(self,Operation:kDeviceOperations)->bool:
+        """Operate device. \\
+        This is an operation such as Init, Start, Done, Reset, etc.
+        ### Parameters:
+        - Operation: Operation to have device perform.
+        
+        ### Returns:
+        Current state : <b true if online. \\
+        Reimplemented in FBDeviceOptical ."""
+        ...
+    def DeviceSendCommand(self,Operation:kDeviceOperations):
+        """Send a command to the device. \\
+        This function will send the Init, Start, etc. commands to the device.
+        ### Parameters:
+        - Operation: Operation for device to perform."""
+        ...
     def ModelBindingCreate(self)->FBModel:
         """Create a new model binding.
         ### Returns:
@@ -8322,16 +8351,6 @@ class FBDeviceOptical(FBDevice):
     """Property: Does the device support occulsion?"""
     UseMarkerTimeStamp:bool
     """Property: Use the individual marker timestamps?"""
-    def DeviceOperation(self,Operation:kDeviceOperations)->bool:
-        """Operate device. \\
-        This is an operation such as Init, Start, Done, Reset, etc.
-        ### Parameters:
-        - Operation: Operation to have device perform.
-        
-        ### Returns:
-        Current state : <b true if online. \\
-        Reimplemented from FBDevice ."""
-        ...
     def DeviceOpticalBeginSetup(self):
         """Begin device setup."""
         ...
@@ -8741,16 +8760,6 @@ class FBModel(FBBox):
         ...
     def ExpandInSchematic(self):
         """Expand the model in the schematic view."""
-        ...
-    def FbxGetObjectSubType(self)->str:
-        """Returns the class sub type inherited by the class of an object, for example: 'Default', 'Mesh'. \\
-        Reimplemented from FBBox . \\
-        Reimplemented in FBModelMarker , and FBModelNull ."""
-        ...
-    def FbxGetObjectType(self)->str:
-        """Returns the class type inherited by the class of an object, for example: 'Model'. \\
-        Reimplemented from FBBox . \\
-        Reimplemented in FBModelMarker , and FBModelNull ."""
         ...
     def ForceAlwaysEvaluate(self):
         """Force Always Evaluate. \\
@@ -9252,6 +9261,7 @@ class FBCamera(FBModel):
     """Read Write Property: Show axis?"""
     ViewShowGrid:bool
     """Read Write Property: Show grid?"""
+    ViewShowManipulators:property
     ViewShowName:bool
     """Read Write Property: Show name?"""
     ViewShowTimeCode:bool
@@ -10198,6 +10208,7 @@ class FBAssetItem(FBComponent):
         A boolean indicating if the operation was successful."""
         ...
 class FBApplication(FBComponent):
+    ApplicationState:property
     CurrentActor:FBActor
     """Read Write Property: Indicate the current actor, as used by the character tool. Can be NULL. If not null, CurrentCharacter must be null, as the character tool works on only one item at a time."""
     CurrentCharacter:FBCharacter
@@ -10680,6 +10691,7 @@ class FBAnimationNode(FBComponent):
     def WriteData(self,arg2:list,arg3:FBEvaluateInfo=None)->int:...
     def __init__(self,arg2:str):...
 class FBAnimationLayer(FBComponent):
+    Color:property
     LayerMode:FBLayerMode
     """Read Write Property: Layer mode. By default, the layer is in kFBLayerModeAdditive mode. Cannot be applied to the BaseAnimation Layer."""
     LayerRotationMode:FBLayerRotationMode
@@ -10767,6 +10779,8 @@ class FBActionManager(FBComponent):
     """Returns the current selected interaction mode.
     ### Returns:
     the current selected interaction mode in string"""
+    def RescanCurrentInteractionModeShortcuts(self)->bool:...
+    def RescanPythonShortcuts(self)->bool:...
     def __init__(self):...
 class FBConstraintManager(FBComponent):
     @overload
@@ -11794,14 +11808,6 @@ class FBGeometry(FBComponent):
         ...
     def ShapeGetCount(self)->int:
         """Get Shape Count."""
-        ...
-    def ShapeGetDiffPoint(self,ShapeIdx:int,DiffIndex:int,OriIndex:int,PosDiff:FBVertex,arg6:FBNormal)->bool:
-        """Get the differentiate point.
-        ### Parameters:
-        - ShapeIdx: The index of the shape
-        - DiffIndex: The index of the diff point in this shape.
-        - OriIndex: The index of the diff point in the original geometry.
-        - PosDiff: The position differentiation."""
         ...
     def ShapeGetDiffPointAsList(self,arg2,arg3,arg4:list,arg5:FBVertex,arg6:FBNormal)->bool:...
     def ShapeGetName(self,ShapeIdx:int)->str:
@@ -12910,6 +12916,37 @@ class FBModelVertexData(FBComponent):
     def PushZDepthClipOverride(self):...
     def VertexArrayMappingRelease(self):...
     def VertexArrayMappingRequest(self):...
+class FBModuleManager(FBComponent):
+    def GetLoadedModuleNames(self)->FBStringList:...
+    def GetModuleModFilePath(self,arg2:str)->str:...
+    def GetModulePath(self,arg2:str)->str:...
+    def GetModuleSearchPaths(self)->FBStringList:...
+    def GetModuleVersion(self,arg2:str)->str:...
+    def __init__(self):...
+class FBMotionBlend(FBComponent):
+    def AddEdit(self,arg2:str=None,arg3=None)->object:...
+    def GetCurrentEdit(self)->object:...
+    def GetEdit(self,arg2)->object:...
+    def GetEditCount(self)->int:...
+    def GetForceTime(self)->bool:...
+    def GetSnapOnFrame(self)->bool:...
+    def GetSyncTakeEditStartEnd(self)->bool:...
+    def RemoveAllEdits(self)->bool:...
+    def RemoveEdit(self,arg2:FBMotionBlendEdit)->bool:...
+    def SetCurrentEdit(self,arg2:FBMotionBlendEdit)->bool:...
+    def SetForceTime(self,arg2)->bool:...
+    def SetSnapOnFrame(self,arg2)->bool:...
+    def SetSyncTakeEditStartEnd(self,arg2)->bool:...
+    def __init__(self):...
+class FBMotionBlendEdit(FBComponent):
+    def Clear(self)->bool:...
+    def GetKeepActive(self)->bool:...
+    def GetName(self)->str:...
+    def GetShowAllGhosts(self)->bool:...
+    def SetKeepActive(self,arg2)->bool:...
+    def SetName(self,arg2:str)->bool:...
+    def SetShowAllGhosts(self,arg2)->bool:...
+    def __init__(self,arg2:str=None,arg3=None):...
 class FBMotionClip(FBComponent):
     Filename:str
     """Read Write Property: Filename and path of motion file. \\
@@ -14144,6 +14181,7 @@ class FBSpreadRow(FBSpreadPart):
     """Read Write Property: Parent of row (reference)."""
     RowSelected:bool
     """Read Write Property: Is row selected?"""
+    RowVisible:property
     def EditCaption(self)->bool:
         """Edit the row caption. \\
         This will initiate the UI edit of a row caption.
@@ -14342,11 +14380,13 @@ class FBStoryClip(FBComponent):
     def GetAssignSourcesToDestinationsInfo(self)->tuple:
         """Returns the information about the current state of Sources to Destinations assignment. The pSrcList, pDefaultDstList & pEffectiveDstList parameters will all be of same size, each index being related to the same index in the other lists. The pAvailableDstList parameter can contains more item than the other lists."""
         ...
+    def GetAssignSourcesToDestinationsInfoEx(self)->tuple:...
     def GetReadOnly(self)->bool:
         """GetReadOnly Retrieves the clip read-only status.
         ### Returns:
         Returns the clip read-only status."""
         ...
+    def GetSourceTimeFromDestinationTime(self,arg2:FBTime)->tuple:...
     def MakeWritable(self)->bool:
         """Imports FCurves from story clip scene making them accessible for the user.
         ### Returns:
@@ -14595,6 +14635,7 @@ class FBStoryTrack(FBConstraint):
     def ChangeDetailsEnd(self):
         """You must call this function after adding/removing any object to the Details list or it won't work."""
         ...
+    @overload
     def CopyTakeIntoTrack(self,TimeSpan:FBTimeSpan,Take:FBTake,OutputOffset:FBTime=0,bMakeUndoable:bool=False)->FBStoryClip:
         """CopyTakeIntoTrack Copy animation from the specified take for affected objects of the track.
         ### Parameters:
@@ -14606,6 +14647,8 @@ class FBStoryTrack(FBConstraint):
         ### Returns:
         Created story clip if the operation succeeded otherwize NULL."""
         ...
+    @overload
+    def CopyTakeIntoTrack(self,arg2:FBTimeSpan,arg3:FBTake,arg4,arg5:FBTime=None,arg6=None)->object:...
     def CreateSubTrack(self,TrackType:FBStoryTrackType,RefMode:FBStoryTrackRefMode)->FBStoryTrack:
         """Create a sub track, Only Character and Animation tracks can have sub-tracks.
         ### Parameters:
@@ -15637,11 +15680,13 @@ class FBFCurve(FBComponent):
     def GetPreExtrapolationMode(self)->FBExtrapolationMode:
         """Get modes for pre extrapolation."""
         ...
-    def KeyAdd(self,Time:FBTime,Value:float)->int:
+    def KeyAdd(self,Time:FBTime,Value:float,Interpolation:FBInterpolation=FBInterpolation.kFBInterpolationCubic,TangentMode:FBTangentMode=FBTangentMode.kFBTangentModeAuto)->int:
         """Add a key at the specified time.
         ### Parameters:
         - Time: Time at which to insert the key.
         - Value: Value of the key.
+        - Interpolation: Interpolation type of the inserted key, default value is Cubic interpolation.
+        - TangentMode: Tangent calculation method of the inserted key, default value is Auto (Smooth).
         
         ### Returns:
         The position of the new key in the list of FCurve keys.
@@ -16002,6 +16047,8 @@ class FBFCurve(FBComponent):
         - Index: Index of the key to set.
         - Value: Value of the key."""
         ...
+    def KeysAdd(self,arg2:list,arg3:list,arg4:list=None,arg5:list=None)->bool:...
+    def KeysSetValues(self,arg2:list,arg3:list,arg4:list=None,arg5:list=None)->bool:...
     def SetPostExtrapolationCount(self,Count:int):
         """Set count for post extrapolation."""
         ...
@@ -16124,11 +16171,14 @@ class FBTimeWarpManager(FBComponent):
         - Take: The Take where the TimeWarp evaluation property connected is in.
         - EvalProp: The evaluation property connected a TimeWarp in the storing property of one take."""
         ...
+    @overload
     def RemoveTimeWarpFromScene(self,TimeWarp:FBAnimationNode):
         """Remove a TimeWarp from Scene.
         ### Parameters:
         - TimeWarp: The TimeWarp to be Removed."""
         ...
+    @overload
+    def RemoveTimeWarpFromScene(self,arg2:FBTake,arg3:FBAnimationNode):...
     def SetTimeWarpNickNumber(self,Take:FBTake,TimeWarp:FBAnimationNode,Number:int)->bool:
         """Set the Nick Number of one TimeWarp in a Take.
         ### Parameters:
@@ -16254,6 +16304,7 @@ class FBToolLayoutManager(FBComponent):
         ### Returns:
         The layout name if the operation is successful, nullptr (C++) or None (Python) otherwise."""
         ...
+    def GetPreventDocking(self)->bool:...
     def RenameLayout(self,OldLayoutName:str,NewLayoutName:str)->str:
         """Rename a layout. \\
         Renaming a factory layout is not permitted.
@@ -16290,6 +16341,7 @@ class FBToolLayoutManager(FBComponent):
         ### Returns:
         True if the operation is successful, false otherwise."""
         ...
+    def SetPreventDocking(self,arg2)->bool:...
     def UpdateCurrentLayout(self)->bool:
         """Update the current layout from the current layout state. \\
         Updating a factory layout is not permitted.
@@ -16844,6 +16896,8 @@ class FBVideoClipImage(FBVideoClip):
     ImageSequence:property
     MaxMipMapResolution:property
     UseSystemFrameRate:property
+    def __init__(self,arg2:str):...
+class FBVideoClipImageDDS(FBVideoClipImage):
     def __init__(self,arg2:str):...
 class FBVideoCodecManager():
     VideoCodecMode:FBVideoCodecMode
@@ -17401,6 +17455,7 @@ class FBSpread(FBVisualComponent):
         A copy of the row."""
         ...
     def GetSpreadCell(self,arg2,arg3)->object:...
+    def Home(self):...
     def RowAdd(self,String:str,Ref=0):
         """Add a row.
         ### Parameters:
@@ -17729,6 +17784,7 @@ class FBImageContainer(FBVisualComponent):
     """Read Write Property: Filename for image."""
     OnDragAndDrop:FBEvent
     """Event: Drag and drop."""
+    UseTransparentBackground:property
     def __init__(self):...
 class FBFCurveEditor(FBVisualComponent):
     def AddAnimationNode(self,Node:FBAnimationNode):
@@ -18260,6 +18316,7 @@ def FBGetActorMarkerSetVisibility()->bool:
     ### Returns:
     True if the marker set of the current actor are visible, or false if it is hidden."""
     ...
+def FBGetCharacterComparisonThresholdValue()->float:...
 def FBGetCharacterExternalSolverCount()->int:...
 def FBGetCharacterExternalSolverIndex(arg1:str)->int:...
 def FBGetCharacterExternalSolverName(arg1)->str:...
@@ -18756,6 +18813,9 @@ def FBModelTransactionEnd():
     ...
 def FBModelVertexData_TypeInfo()->int:...
 def FBModel_TypeInfo()->int:...
+def FBModuleManager_TypeInfo()->int:...
+def FBMotionBlendEdit_TypeInfo()->int:...
+def FBMotionBlend_TypeInfo()->int:...
 def FBMotionClip_TypeInfo()->int:...
 def FBMotionFileOptions_TypeInfo()->int:...
 @overload
@@ -19010,6 +19070,7 @@ def FBSetActorMarkerSetVisibility(bShow:bool)->bool:
     ### Returns:
     True if the operation is successful, false otherwise."""
     ...
+def FBSetCharacterComparisonThresholdValue(arg1):...
 def FBSetCharacterFingerTipsVisibility(bShow:bool):
     """Sets visibility of the finger-tips of the current character.
     ### Parameters:
@@ -19159,6 +19220,7 @@ def FBVertexMatrixMult(OutVertex:FBVertex,Matrix:FBMatrix,Vertex:FBVertex):
     - Matrix: Matrix to affect the vertex with.
     - Vertex: Source vertex."""
     ...
+def FBVideoClipImageDDS_TypeInfo()->int:...
 def FBVideoClipImage_TypeInfo()->int:...
 def FBVideoClip_TypeInfo()->int:...
 def FBVideoGrabber_TypeInfo()->int:...

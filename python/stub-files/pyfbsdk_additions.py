@@ -8,7 +8,6 @@ It also gives functions to create/destroy and manage Tools created in Python.
 
 """
 
-from pyfbsdk23 import *
 import pyfbsdk
 
 # Tool Management
