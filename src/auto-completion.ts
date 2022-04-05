@@ -8,7 +8,7 @@ import * as utils from "./utils";
 
 const PYTHON_CONFIG = "python";
 const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
-const STUB_FILES_PATH = "python/stub-files";
+const STUB_FILES_PATH = "resources/stub-files";
 
 
 function getPythonConfig() {
@@ -16,8 +16,8 @@ function getPythonConfig() {
 }
 
 
-function getSourceAutocompletionDirectory() {
-    return path.join(path.dirname(__dirname), STUB_FILES_PATH);
+function getSourceAutocompletionDirectory(version: number) {
+    return path.join(path.dirname(__dirname), STUB_FILES_PATH, version.toString());
 }
 
 
@@ -41,7 +41,10 @@ function getAutocompletionDirectory(bEnsureExists = true) {
 
 
 function copySDKFiles(targetDirectory: string) {
-    const sdkSourceDirectory = getSourceAutocompletionDirectory();
+    const version = utils.getVersion();
+
+
+    const sdkSourceDirectory = getSourceAutocompletionDirectory(version);
 
     // loop through all of the files under the auto_completion folder
     for (const filepath of fs.readdirSync(sdkSourceDirectory)) {

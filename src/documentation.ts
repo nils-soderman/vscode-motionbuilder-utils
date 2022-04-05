@@ -21,17 +21,17 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
     return MOBU_FILE_HOSTING_URL + version + "/ENU/" + relativePageURL;
 }
 
-function parseGeneratedDocumentationFile(type: string) {
-    const filepath = path.join(__dirname, "..", "documentation", `${type}.json`);
+function parseGeneratedDocumentationFile(type: string, version: number) {
+    const filepath = path.join(__dirname, "..", "resources", "documentation", version.toString(), `${type}.json`);
     return utils.readJson(filepath);
 }
 
-function openPageInBrowser(pageId: string) {
-    const url = getDocumentationPageURL(2022, pageId);
+function openPageInBrowser(pageId: string, version: number) {
+    const url = getDocumentationPageURL(version, pageId);
     child_process.exec(`start ${url}`);
 }
 
-function openExampleInVSCode(url: string, filename:string) {
+function openExampleInVSCode(url: string, filename: string) {
     function handleResponse(data: string, statusCode?: number) {
         // TODO: check statusCode
         const parsedHtml = htmlParser.parse(data);
@@ -59,10 +59,12 @@ function openExampleInVSCode(url: string, filename:string) {
 }
 
 async function browseDocumentation(types: string[]) {
+    let version: number = utils.getVersion();
+
     let items: any = {};
     let browsingType: string = "";
     for (const type of types) {
-        let itemsToAppend = parseGeneratedDocumentationFile(type);
+        let itemsToAppend = parseGeneratedDocumentationFile(type, version);
         if (types.length > 1) {
             const prefix = `${type[0].toUpperCase() + type.slice(1)}: `;
             for (const [key, value] of Object.entries(itemsToAppend)) {
@@ -89,7 +91,7 @@ async function browseDocumentation(types: string[]) {
 
     if (browsingType == FDOCTYPE.example && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        const url = getDocumentationPageURL(2022, relativePageUrl);
+        const url = getDocumentationPageURL(version, relativePageUrl);
 
         // Construct a filename
         let filename = selection.replace(/\//g, "_");
@@ -103,7 +105,7 @@ async function browseDocumentation(types: string[]) {
         openExampleInVSCode(url, "Example_" + filename);
     }
     else {
-        openPageInBrowser(relativePageUrl);
+        openPageInBrowser(relativePageUrl, version);
     }
 }
 

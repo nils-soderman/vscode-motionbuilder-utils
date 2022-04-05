@@ -14,7 +14,7 @@
   ],
   "qna": "marketplace",
   "icon": "media/mobu-icon.png",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -97,6 +97,15 @@
       {
         "title": "MotionBuilder Utils",
         "properties": {
+          "motionbuilder.version": {
+            "type": "integer",
+            "enum": [
+              2022,
+              2023
+            ],
+            "default": 2023,
+            "description": "Which version to use for intellisense & when browsing documentation."
+          },
           "motionbuilder.execute.showOutput": {
             "type": "boolean",
             "default": true,
