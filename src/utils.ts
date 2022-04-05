@@ -9,7 +9,7 @@ const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
 const PYTHON_MODULES_FOLDER_NAME = "python-modules";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
 export const EXTENSION_PYTHON_DIR = path.join(__dirname, "..", "python");
-
+export const DEFAULT_VERSION = 2023;
 
 /**
  * @param bEnsureExists If folder doesn't exist, create it
@@ -42,7 +42,7 @@ export function saveTempFile(filename: string, text: string) {
 export function cleanupTempFiles() {
     const tempDir = getExtentionTempDir();
     if (fs.existsSync(tempDir)) {
-        fs.rmdirSync(tempDir, { recursive: true });
+        fs.rmSync(tempDir, { recursive: true });
     }
 }
 
@@ -82,6 +82,16 @@ export function getExtensionPythonModulesDir(bEnsureExists = true) {
  */
 export function getExtensionConfig() {
     return vscode.workspace.getConfiguration("motionbuilder");
+}
+
+
+export function getVersion() {
+    let version: number | undefined = getExtensionConfig().get("version");
+    if (!version) {
+        return DEFAULT_VERSION;
+    }
+
+    return version;
 }
 
 
