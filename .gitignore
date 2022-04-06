@@ -3,3 +3,5 @@ out
 src/test
 *.vsix
 test.py
+
+site-packages

@@ -4,14 +4,17 @@ import os
 
 from importlib import reload
 
-# Append current script dir to sys paths to be able to import the documentation parser
+# Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
-sys.path.append(CURRENT_DIR)
+SITEPACKAGES_DIR = os.path.join(CURRENT_DIR, "site-packages")
 
-import pyfbsdk_stub_generator.mobu_stub_generator.motionbuilder_documentation_parser as docParser
+if SITEPACKAGES_DIR not in sys.path:
+    sys.path.append(SITEPACKAGES_DIR)
+
+
+import pyfbsdk_stub_generator.motionbuilder_documentation_parser as docParser
 reload(docParser)
 
-OUTPUT_DIR = os.path.join(CURRENT_DIR, "..", "documentation")
 
 # ------------------------------------------
 #            Structs & Enums
@@ -25,21 +28,25 @@ class FDictTags:
 #           Helper Functions
 # ------------------------------------------
 
-def SaveJsonFile(Filename, Content):
-    with open(os.path.join(OUTPUT_DIR, Filename), "w+") as File:
-        json.dump(Content, File)
-
-
 def GetMotionBuilderVersion():
     import pyfbsdk
     """ Get the current version of MotionBuilder """
     return int(2000 + pyfbsdk.FBSystem().Version / 1000)
 
 
+def GetOutputDirectory():
+    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", GetMotionBuilderVersion())
+
+
+def SaveJsonFile(Filename, Content):
+    Filepath = os.path.join(GetOutputDirectory(), Filename)
+    with open(Filepath, "w+") as File:
+        json.dump(Content, File)
+
+
 # ------------------------------------------
 #            Generate Guide TOC
 # ------------------------------------------
-
 
 def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
     ReturnDict = {}
@@ -87,20 +94,21 @@ def GenerateExamplesTOC(Version):
 
     SaveJsonFile("examples.json", Data)
 
+
 # ------------------------------------------
 #                Examples
 # ------------------------------------------
 
-
 def GeneratePythonTOC(Version):
     MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-    
+
     Data = {}
     for Page in MoBuDocumentation.GetPythonSDKTableOfContents().values():
         PageName = Page.Title
         Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
-        
+
     SaveJsonFile("python.json", Data)
+
 
 # ------------------------------------------
 #                Examples
@@ -108,18 +116,18 @@ def GeneratePythonTOC(Version):
 
 def GenerateSDKTOC(Version):
     MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-    
+
     Data = {}
     for Page in MoBuDocumentation.GetSDKTableOfContents().values():
         PageName = Page.Title
         Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
-    
+
     SaveJsonFile("c.json", Data)
+
 
 # ------------------------------------------
 #              Main functions
 # ------------------------------------------
-
 
 def GenerateTableOfContents(Version):
     GenerateGuideTOC(Version)
