@@ -16,7 +16,3 @@ test.py
 
 build-scripts/**
 media/demo/**
-
-**/pyfbsdk_stub_generator/generated-stub-files
-**/pyfbsdk_stub_generator/LICENSE
-**/pyfbsdk_stub_generator/*.md
