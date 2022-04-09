@@ -33,7 +33,7 @@ def main():
     reload(mobuStubGenerator)
 
     # Generate the stub file
-    OutputDir = os.path.join(STUB_FILE_DIR, GetMotionBuilderVersion())
+    OutputDir = os.path.join(STUB_FILE_DIR, str(GetMotionBuilderVersion()))
     mobuStubGenerator.Generate(OutputDir, FileExtension = "py")
 
 

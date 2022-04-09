@@ -35,7 +35,7 @@ def GetMotionBuilderVersion():
 
 
 def GetOutputDirectory():
-    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", GetMotionBuilderVersion())
+    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", str(GetMotionBuilderVersion()))
 
 
 def SaveJsonFile(Filename, Content):
