@@ -39,7 +39,11 @@ def GetOutputDirectory():
 
 
 def SaveJsonFile(Filename, Content):
-    Filepath = os.path.join(GetOutputDirectory(), Filename)
+    Directory = GetOutputDirectory()
+    if not os.path.isdir(Directory):
+        os.makedirs(Directory)
+    
+    Filepath = os.path.join(Directory, Filename)
     with open(Filepath, "w+") as File:
         json.dump(Content, File)
 
