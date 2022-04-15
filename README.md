@@ -1,4 +1,4 @@
-# MotionBuilder Utils (VS Code)
+# MotionBuilder Utils (Visual Studio Code)
 
 Editor features to assist when writing Python code for Autodesk MotionBuilder.
 
