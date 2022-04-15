@@ -1,37 +1,36 @@
 import * as vscode from 'vscode';
 
-import * as autocompletion from "./auto-completion";
 import * as documentation from "./documentation";
-import * as execute from "./execute-script";
-import * as MBDebugger from "./debugger";
-import * as utils from './utils';
+import * as mobuDebugger  from "./debugger";
+import * as stubFiles 	  from "./stub-files";
+import * as execute 	  from "./execute-script";
+import * as utils 		  from './utils';
 
 
 export function activate(context: vscode.ExtensionContext) {
 
-    if (utils.getExtensionConfig().get("autocompletion.patchOnActivated")) {
-		// Make sure auto-completion is setup
-		autocompletion.setupAutocompletion();
-	}
-
+    // Make sure stub files are setup
+	stubFiles.setup();
 	
 	// -------------------------------
 	// 		  	  Commands
 	// -------------------------------
 
+	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
 			execute.execute();
 		})
 	);
 
+	// Debugging
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.attach', () => {
-			MBDebugger.attachToMotionBuilder();
+			mobuDebugger.attachToMotionBuilder();
 		})
 	);
 
-
+	// Documentation
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentation', () => {
 			documentation.browseFullDocumentation();
@@ -52,6 +51,44 @@ export function activate(context: vscode.ExtensionContext) {
 			documentation.browseExamples();
 		})
 	);
+
+	
+	// -------------------------------
+	// 		  	  Events
+	// -------------------------------
+
+	context.subscriptions.push(
+		vscode.workspace.onDidChangeConfiguration(onConfigurationChanged)
+	);
+}
+
+
+/**
+ * Called when some configuration has been changed.
+ * @param event The vscode configuration event
+ */
+async function onConfigurationChanged(event: vscode.ConfigurationChangeEvent) {
+	// Early out if no motionbuilder configuration has been updated
+	if (!event.affectsConfiguration("motionbuilder")) {
+		return;
+	}
+
+	let bReloadRequired = false;
+	
+	// If the MotionBuilder version was changed, update the stub-files
+	if (event.affectsConfiguration("motionbuilder.version")) {
+		await stubFiles.setup(true);
+		bReloadRequired = true;
+	}
+
+	// If needed, ask user to reload VS Code
+	if (bReloadRequired) {
+		let selection = await vscode.window.showInformationMessage("Reload required for changes to take full effect", "Reload", "Close");
+		if (selection == "Reload") {
+			vscode.commands.executeCommand("workbench.action.reloadWindow");
+		}
+	}
+
 }
 
 

@@ -14,7 +14,7 @@
   ],
   "qna": "marketplace",
   "icon": "media/mobu-icon.png",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -98,6 +98,7 @@
         "title": "MotionBuilder Utils",
         "properties": {
           "motionbuilder.version": {
+            "title": "Version",
             "type": "integer",
             "enum": [
               2022,
@@ -106,6 +107,7 @@
             "default": 2023,
             "description": "Which version to use for intellisense & when browsing documentation."
           },
+
           "motionbuilder.execute.showOutput": {
             "type": "boolean",
             "default": true,
@@ -114,26 +116,38 @@
           "motionbuilder.execute.clearOutput": {
             "type": "boolean",
             "default": false,
-            "description": "Clear output each time somethings new is executed."
+            "description": "Clear output log each time somethings new is executed."
           },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
             "description": "Open up the examples files in editor, instead of the web-browser."
           },
-          "motionbuilder.autocompletion.patchOnActivated": {
+
+          "motionbuilder.stubfiles.patchPythonPathConfig": {
             "type": "boolean",
             "default": true,
-            "description": "Patch auto-completion when extention is activated."
+            "description": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubfiles.copyPath`?"
           },
-          "motionbuilder.autocompletion.sdkCopyPath": {
+
+          "motionbuilder.stubfiles.copyOnStartup": {
+            "type": "boolean",
+            "default": true,
+            "description": "Should MotionBuilder stub files be copied to `motionbuilder.stubfiles.copyPath` on startup?"
+          },
+
+          "motionbuilder.stubfiles.copyPath": {
             "type": "string",
-            "description": "Where to place the MoBu SDK files. By default they will be placed under APPDATA"
+            "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
+            "description": "Path where to copy the MoBu Stub files too. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/"
           },
+
           "motionbuilder.debug.port": {
             "type": "integer",
             "default": 4243,
-            "description": "The port to use when attaching to MotionBuilder."
+            "description": "The port to run the debug server on when attaching to MotionBuilder.",
+            "minimum": 0,
+            "maximum": 65353
           }
         }
       }
@@ -145,7 +159,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "vscode:uninstall": "node ./out/hooks/uninstall-hook"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",
