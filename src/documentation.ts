@@ -1,7 +1,8 @@
-import * as child_process from "child_process";
-import * as htmlParser from 'node-html-parser';
 import * as vscode from 'vscode';
-import * as path from 'path';
+
+import * as child_process from "child_process";
+import * as htmlParser    from 'node-html-parser';
+import * as path          from 'path';
 
 import * as utils from './utils';
 
@@ -17,19 +18,23 @@ const FDOCTYPE = {
     python: "python"
 };
 
+
 function getDocumentationPageURL(version: number, relativePageURL: string) {
     return MOBU_FILE_HOSTING_URL + version + "/ENU/" + relativePageURL;
 }
+
 
 function parseGeneratedDocumentationFile(type: string, version: number) {
     const filepath = path.join(__dirname, "..", "resources", "documentation", version.toString(), `${type}.json`);
     return utils.readJson(filepath);
 }
 
+
 function openPageInBrowser(pageId: string, version: number) {
     const url = getDocumentationPageURL(version, pageId);
     child_process.exec(`start ${url}`);
 }
+
 
 function openExampleInVSCode(url: string, filename: string) {
     function handleResponse(data: string, statusCode?: number) {
@@ -57,6 +62,7 @@ function openExampleInVSCode(url: string, filename: string) {
 
     utils.getRequest(url, handleResponse);
 }
+
 
 async function browseDocumentation(types: string[]) {
     let version: number = utils.getVersion();
