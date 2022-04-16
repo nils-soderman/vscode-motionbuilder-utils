@@ -84,7 +84,6 @@ function addPythonAnalysisPath(pathToAdd: string) {
     if (extraPaths) {
         for (const path of extraPaths) {
             if (utils.isPathsSame(path, pathToAdd)) {
-                console.log("path: " + path);
                 return;
             }
         }
