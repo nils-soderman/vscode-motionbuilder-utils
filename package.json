@@ -98,7 +98,6 @@
     ],
     "configuration": [
       {
-        "title": "MotionBuilder Utils",
         "properties": {
           "motionbuilder.version": {
             "title": "Version",
@@ -123,7 +122,7 @@
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
-            "description": "Open up the examples files in editor, instead of the web-browser."
+            "description": "Open up the example files in editor, instead of the web-browser."
           },
           "motionbuilder.stubfiles.patchPythonPathConfig": {
             "type": "boolean",
@@ -138,7 +137,7 @@
           "motionbuilder.stubfiles.copyPath": {
             "type": "string",
             "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "description": "Path where to copy the MoBu Stub files too. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/"
+            "description": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/"
           },
           "motionbuilder.debug.port": {
             "type": "integer",
