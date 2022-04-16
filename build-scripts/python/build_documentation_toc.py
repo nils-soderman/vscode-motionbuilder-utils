@@ -55,13 +55,13 @@ def SaveJsonFile(Filename, Content):
 def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
     ReturnDict = {}
 
-    PageName = CategoryPage.Title
+    PageName = CategoryPage.Title.strip()
     CategoryURL = CategoryPage.GetURLRelativeToENU()
     if CategoryURL and "files/" in CategoryURL.lower():
         ReturnDict[PageName] = {FDictTags.Url: CategoryURL}
 
     for Page in CategoryPage.Pages:
-        PageName = Page.Title
+        PageName = Page.Title.strip()
         PageURL = Page.GetURLRelativeToENU()
         if len(PageName) > 1 and PageURL and "files/" in PageURL.lower():
             ReturnDict[PageName] = {FDictTags.Url: PageURL}
@@ -93,7 +93,7 @@ def GenerateExamplesTOC(Version):
 
     Data = {}
     for ExamplePage in PythonExamples.values():
-        PageName = ExamplePage.Title
+        PageName = ExamplePage.Title.strip()
         Data[PageName] = {FDictTags.Url: ExamplePage.GetURLRelativeToENU()}
 
     SaveJsonFile("examples.json", Data)
@@ -108,7 +108,7 @@ def GeneratePythonTOC(Version):
 
     Data = {}
     for Page in MoBuDocumentation.GetPythonSDKTableOfContents().values():
-        PageName = Page.Title
+        PageName = Page.Title.strip()
         Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
 
     SaveJsonFile("python.json", Data)
@@ -123,7 +123,7 @@ def GenerateSDKTOC(Version):
 
     Data = {}
     for Page in MoBuDocumentation.GetSDKTableOfContents().values():
-        PageName = Page.Title
+        PageName = Page.Title.strip()
         Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
 
     SaveJsonFile("c.json", Data)
