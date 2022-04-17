@@ -23,12 +23,12 @@ function getSourceAutocompletionDirectory(version: number) {
 
 /**
  * Get the absolute path to where the motionbuilder stub files should be placed. 
- * (as defined by the configuration `motionbuilder.bystubfiles.copyPath`)
+ * (as defined by the configuration `motionbuilder.bystubFiles.copyPath`)
  * @param bEnsureExists If folder doesn't exist, create it.
  */
 function getCopyDestinationPath(bEnsureExists = true) {
     // See if there is a custom path defined in the user's settings
-    const customPath: string | undefined = utils.getExtensionConfig().get("stubfiles.copyPath");
+    const customPath: string | undefined = utils.getExtensionConfig().get("stubFiles.copyPath");
     if (customPath) {
         // Expand environment variables
         const absPath = utils.ensureForwardSlashes(utils.expandPath(customPath));
@@ -99,13 +99,13 @@ export async function setup(bForceCopy = false) {
     const destination = getCopyDestinationPath();
     
     // Copy stub files
-    if (utils.getExtensionConfig().get("stubfiles.copyOnStartup")) {
+    if (utils.getExtensionConfig().get("stubFiles.copyOnStartup")) {
         const version = utils.getVersion();
         copyStubFiles(version, destination, bForceCopy);
     }
 
     // Add path to user startup
-    if (utils.getExtensionConfig().get("stubfiles.patchPythonPathConfig")) {
+    if (utils.getExtensionConfig().get("stubFiles.patchPythonPathConfig")) {
         addPythonAnalysisPath(destination);
     }
 }
