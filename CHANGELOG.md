@@ -6,19 +6,19 @@
 
 **Important: Some configurations has been renamed!**
 
-
-* `motionbuilder.autocompletion.patchOnActivated` -> `motionbuilder.stubfiles.patchPythonPathConfig`
-* `motionbuilder.autocompletion.sdkCopyPath` -> `motionbuilder.stubfiles.copyPath`
+* `motionbuilder.autocompletion.patchOnActivated` -> `motionbuilder.stubFiles.patchPythonPathConfig`
+* `motionbuilder.autocompletion.sdkCopyPath` -> `motionbuilder.stubFiles.copyPath`
 
 If you've changed the default values of these properties your settings will have to be updated!
-<br><br>
+
+<br>
 
 - MotionBuilder 2023 support for intellisense & documentation
 - Added configuration `motionbuilder.version` to select what version to use for intellisense & when browsing documentation *(defaults to 2023)*
 - Make sure all files created by this extension get's deleted when un-installed.
-- Added configuration `motionbuilder.stubfiles.copyOnStartup` which is a bool defining if stub files should be copied to `motionbuilder.stubfiles.copyPath` on startup.
+- Added configuration `motionbuilder.stubFiles.copyOnStartup` which is a bool defining if MoBu stub files should be copied to `motionbuilder.stubFiles.copyPath` on startup.
 - Updated icon
-- The extension is now released under the open-source MIT license.
+- This extension is now released under the open-source MIT license.
 
 
 ## [1.1.0]
