@@ -2,7 +2,7 @@
 
 
 ## [1.2.0]
-*(X-04-2022)*
+*(17-04-2022)*
 
 **Important: Some configurations has been renamed!**
 
