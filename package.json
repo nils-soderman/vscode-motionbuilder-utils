@@ -18,7 +18,7 @@
     "debug",
     "intellisense"
   ],
-  "icon": "media/mobu-icon.png",
+  "icon": "media/icon.png",
   "galleryBanner": {
     "color": "#444444",
     "theme": "dark"
