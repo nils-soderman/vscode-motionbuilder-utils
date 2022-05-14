@@ -3,12 +3,12 @@ import * as vscode from 'vscode';
 import * as path from "path";
 import * as fs   from 'fs';
 
-import * as utils from "./utils";
+import * as utils from "../modules/utils";
 
 
 const PYTHON_CONFIG = "python";
 const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
-const STUB_FILES_SRC_PATH = "resources/stub-files";
+const STUB_FILES_FOLDER_NAME = "stub-files";
 
 
 function getPythonConfig() {
@@ -17,7 +17,7 @@ function getPythonConfig() {
 
 
 function getSourceAutocompletionDirectory(version: number) {
-    return path.join(path.dirname(__dirname), STUB_FILES_SRC_PATH, version.toString());
+    return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME, version.toString());
 }
 
 

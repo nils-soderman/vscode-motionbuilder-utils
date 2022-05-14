@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 
-import * as documentation from "./documentation";
-import * as mobuDebugger  from "./debugger";
-import * as stubFiles 	  from "./stub-files";
-import * as execute 	  from "./execute-script";
-import * as utils 		  from './utils';
+import * as documentation from "./scripts/documentation";
+import * as mobuDebugger  from "./scripts/debugger";
+import * as stubFiles 	  from "./scripts/stub-files";
+import * as execute 	  from "./scripts/execute-script";
+import * as utils 		  from './modules/utils';
 
 
 export function activate(context: vscode.ExtensionContext) {

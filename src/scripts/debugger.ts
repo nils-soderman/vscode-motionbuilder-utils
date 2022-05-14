@@ -1,14 +1,16 @@
-import * as vscode  from 'vscode';
+import * as vscode from 'vscode';
 
-import * as path    from "path";
+import * as path from "path";
 
-import * as motionBuilderConsole from './motionbuilder-console';
-import * as utils from "./utils";
+import * as motionBuilderConsole from '../modules/motionbuilder-console';
+import * as utils                from "../modules/utils";
+
 
 const TEMP_EXECDATA_FILENAME = "vscode-attach.json";
 const START_DEBUG_SERVER_FILENAME = "start_debug_server.py";
 
 let gLastDebugAttempt: number = 0;
+
 
 function writeDataFile(port: number, targetInstallDir: String) {
     let data: any = {};
@@ -16,6 +18,7 @@ function writeDataFile(port: number, targetInstallDir: String) {
     data["target"] = targetInstallDir;
     utils.saveTempFile(TEMP_EXECDATA_FILENAME, JSON.stringify(data));
 }
+
 
 function serverStartCallback(data: string) {
     const currentTime = new Date().getTime();
@@ -27,7 +30,7 @@ function serverStartCallback(data: string) {
     if (deltaTime < 0.5) {
         return;
     }
-    
+
     if (vscode.debug.activeDebugSession) {
         return;
     }
@@ -50,6 +53,7 @@ function serverStartCallback(data: string) {
     });
 }
 
+
 export function attachToMotionBuilder() {
     const port: number | undefined = utils.getExtensionConfig().get("debug.port");
     if (!port) {
@@ -70,4 +74,3 @@ export function attachToMotionBuilder() {
     const startDebugPythonFilepath = path.join(utils.EXTENSION_PYTHON_DIR, START_DEBUG_SERVER_FILENAME);
     motionBuilderConsole.executeFile(startDebugPythonFilepath, serverStartCallback);
 }
-

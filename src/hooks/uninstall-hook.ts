@@ -1,7 +1,7 @@
 /**
  * This scripts get's called once this extension has been uninstalled & VS Code restarted (not reloaded).
  * This get's called outside of VS Code's environment & without the extension being loaded,
- * Therefore any custom modules or the vscode api cannot be reached here, only import native nodejs modules! 
+ * Therefore any custom modules nor the vscode api cannot be reached here, only import native nodejs modules! 
  */
 
 import * as fs from 'fs';

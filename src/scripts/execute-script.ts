@@ -2,17 +2,21 @@ import * as vscode from 'vscode';
 
 import * as path from 'path';
 
-import * as motionBuilderConsole from './motionbuilder-console';
-import * as utils from './utils';
+import * as motionBuilderConsole from '../modules/motionbuilder-console';
+import * as utils from '../modules/utils';
 
 
-const TEMP_FILENAME = "VSCode-MotionBuilder-Exec";
+const TEMP_FILENAME = "vscode_motionbuilder_exec.py";
 const TEMP_EXECDATA_FILENAME = "vscode-exec.json";
-const PYTHON_ENTER_FILE = path.join(utils.EXTENSION_PYTHON_DIR, "execute.py");
+const PYTHON_EXEC_FILE = path.join(utils.EXTENSION_PYTHON_DIR, "execute.py");
 
-let gOutputChannel: vscode.OutputChannel;
+let gOutputChannel: vscode.OutputChannel | undefined;
 
 
+/**
+ * Get the output channel for this extension
+ * @param bEnsureChannelExists If channel doesn't exist, create it
+ */
 function getOutputChannel(bEnsureChannelExists = true) {
     if (!gOutputChannel && bEnsureChannelExists) {
         gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
@@ -20,10 +24,14 @@ function getOutputChannel(bEnsureChannelExists = true) {
     return gOutputChannel;
 }
 
+
+/** Check if we're currently attached to a MotionBuilder instance */
 function isDebuggingMotionBuilder() {
     return vscode.debug.activeDebugSession && vscode.debug.activeDebugSession.name == utils.DEBUG_SESSION_NAME;
 }
 
+
+/** Handle data recived from the MotionBuilder python server */
 function handleResponse(response: string) {
     // If user is debugging MB, all output will automatically be appended to the debug console
     if (isDebuggingMotionBuilder()) {
@@ -33,6 +41,7 @@ function handleResponse(response: string) {
     // Format response
     response = response.replace(/\n\r/g, "\n");
 
+    // Remove the first 2 lines in a traceback message, since those will be related to how this code is executed
     const traceBackString = "Traceback (most recent call last):\n";
     if (response.includes(traceBackString)) {
         const responseTracebackSplit = response.split(traceBackString, 2);
@@ -40,13 +49,16 @@ function handleResponse(response: string) {
         response = responseTracebackSplit[0] + traceBackString + tracebackMsg;
     }
 
-    // Log the message in the output channel
+
     const outputChannel = getOutputChannel();
-    outputChannel.appendLine(response);
+    if (outputChannel) {
+        // Add the message to the output channel
+        outputChannel.appendLine(response);
 
-
-    if (utils.getExtensionConfig().get("execute.showOutput")) {
-        outputChannel.show(true);
+        // Bring up the output channel on screen
+        if (utils.getExtensionConfig().get("execute.showOutput")) {
+            outputChannel.show(true);
+        }
     }
 }
 
@@ -70,8 +82,9 @@ function writeDataFile(fileToExecute: string, originalFilepath: string, addition
 
 /**
  * Try to make sure the text is runnable
- * @param text
- * @param firstCharIndex
+ * This includes e.g. making sure that all of the text is not indented
+ * @param text The text to format
+ * @param firstCharIndex Index of the first character (how far it's indented)
  */
 function formatSelectedText(text: string, firstCharIndex: number) {
     if (firstCharIndex <= 0) {
@@ -100,54 +113,60 @@ function formatSelectedText(text: string, firstCharIndex: number) {
     }
 
     return formattedText;
-
 }
 
+
+/**
+ * Get the selection as an python executable string
+ */
 function getSelectedTextAsExecutableString() {
     if (!vscode.window.activeTextEditor) {
         return;
     }
 
     const activeDocuemt = vscode.window.activeTextEditor.document;
-    let selectionText = "";
+    let executableCodeText = "";
 
-    let selections:Array<vscode.Selection> = [vscode.window.activeTextEditor.selection];
-    // If there are more than 1 selection, sort them by their start line.
-    if (vscode.window.activeTextEditor.selections.length > 1)
-    {
+    let selections: Array<vscode.Selection> = [vscode.window.activeTextEditor.selection];
+
+    // If there are more than 1 selection, sort them by their start line number
+    if (vscode.window.activeTextEditor.selections.length > 1) {
         // Add selections into an array that we can run the sort function on
         selections = [];
-        for (let selection of vscode.window.activeTextEditor.selections) {
+        for (const selection of vscode.window.activeTextEditor.selections) {
             selections.push(selection);
         }
 
-        selections = selections.sort(function(a:any, b:any) {
+        selections = selections.sort(function (a: any, b: any) {
             return a.start.line - b.start.line;
         });
     }
 
     // Combine all user selections into a single string
-    for (let selection of selections) {
+    for (const selection of selections) {
         if (!selection.isEmpty) {
 
-            // Get the first line that is not empty
-            let firstChar = -1;
+            // Get the character index of the first character that's not whitespace (on the first line that's not whitespace)
+            let firstCharIndex = -1;
             for (let i = 0; i < selection.end.line - selection.start.line; i++) {
                 const line = activeDocuemt.lineAt(selection.start.line + i);
                 if (!line.isEmptyOrWhitespace) {
-                    firstChar = line.firstNonWhitespaceCharacterIndex;
+                    firstCharIndex = line.firstNonWhitespaceCharacterIndex;
                     break;
                 }
             }
 
-            const count = selectionText.split("\n").length - 1;
-            let additionalStr = "\n".repeat(selection.start.line - count);
+            // Add empty lines to match line numbers with the actual source file.
+            // This is to make sure you get correct line numbers for error messages & to make sure
+            // breakpoints work correctly.
+            const numberOfLines = executableCodeText.split("\n").length - 1;
+            const additionalEmptyLines = "\n".repeat(selection.start.line - numberOfLines);
 
-            selectionText += additionalStr + formatSelectedText(activeDocuemt.getText(selection), firstChar);
+            executableCodeText += additionalEmptyLines + formatSelectedText(activeDocuemt.getText(selection), firstCharIndex);
         }
     }
 
-    return selectionText;
+    return executableCodeText;
 }
 
 
@@ -156,17 +175,17 @@ export async function execute() {
         return;
     }
     const activeDocuemt = vscode.window.activeTextEditor.document;
-    let selectionText = getSelectedTextAsExecutableString();
+    const selectedCode = getSelectedTextAsExecutableString();
 
     let fileToExecute = "";
 
-    // If user had any selected text, save the selection as a temp file to execute
-    if (selectionText) {
-        fileToExecute = utils.saveTempFile(TEMP_FILENAME, selectionText);
+    // If user has any selected text, save the selection as a temp file to execute
+    if (selectedCode) {
+        fileToExecute = utils.saveTempFile(TEMP_FILENAME, selectedCode);
     }
 
+    // If file is dirty, save a copy of the text and execute that copy instead
     else if (activeDocuemt.isDirty) {
-        // File is dirty, save a copy of the currenet text in temp
         fileToExecute = utils.saveTempFile(TEMP_FILENAME, activeDocuemt.getText());
     }
 
@@ -178,6 +197,7 @@ export async function execute() {
     const additionalPrint = isDebuggingMotionBuilder() ? ">>>" : "";
     writeDataFile(fileToExecute, activeDocuemt.uri.fsPath, additionalPrint);
 
+    // Clear the output channel if enabled in user settings
     if (utils.getExtensionConfig().get("execute.clearOutput")) {
         const outputChannel = getOutputChannel(false);
         if (outputChannel) {
@@ -185,7 +205,5 @@ export async function execute() {
         }
     }
 
-    motionBuilderConsole.executeFile(PYTHON_ENTER_FILE, handleResponse);
-
+    motionBuilderConsole.executeFile(PYTHON_EXEC_FILE, handleResponse);
 }
-

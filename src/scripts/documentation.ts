@@ -4,7 +4,7 @@ import * as child_process from "child_process";
 import * as htmlParser    from 'node-html-parser';
 import * as path          from 'path';
 
-import * as utils from './utils';
+import * as utils from '../modules/utils';
 
 
 const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
@@ -25,7 +25,7 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
 
 
 function parseGeneratedDocumentationFile(type: string, version: number) {
-    const filepath = path.join(__dirname, "..", "resources", "documentation", version.toString(), `${type}.json`);
+    const filepath = path.join(utils.EXTENSION_RESOURCES_DIR, "documentation", version.toString(), `${type}.json`);
     return utils.readJson(filepath);
 }
 

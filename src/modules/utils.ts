@@ -5,11 +5,13 @@ import * as path  from 'path';
 import * as os    from "os";
 import * as fs    from 'fs';
 
-// Statics
+// Variables
 const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
 const PYTHON_MODULES_FOLDER_NAME = "python-modules";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
-export const EXTENSION_PYTHON_DIR = path.join(__dirname, "..", "python");
+export const EXTENSION_DIR = path.dirname(path.dirname(__dirname));
+export const EXTENSION_PYTHON_DIR = path.join(EXTENSION_DIR, "python");
+export const EXTENSION_RESOURCES_DIR = path.join(EXTENSION_DIR, "resources");
 export const DEFAULT_VERSION = 2023;
 
 
