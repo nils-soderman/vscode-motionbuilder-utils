@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.1]
+*(17-07-2022)*
+
+- pyfbsdk stub file improvements
+
 
 ## [1.2.0]
 *(17-04-2022)*
