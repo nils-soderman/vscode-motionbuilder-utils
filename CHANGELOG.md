@@ -1,8 +1,9 @@
 # Change Log
 
 ## [1.2.1]
-*(17-07-2022)*
+*(xx-07-2022)*
 
+- Added config `motionbuilder.execute.name` which can be used to set the python variable `__name__` to something unique when executing code through VS Code.
 - pyfbsdk stub file improvements
 
 

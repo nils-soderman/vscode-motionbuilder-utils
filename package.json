@@ -119,6 +119,11 @@
             "default": false,
             "description": "Clear output log each time somethings new is executed."
           },
+          "motionbuilder.execute.name": {
+            "type": "string",
+            "default": "builtins",
+            "markdownDescription": "The value for the Python variable `__name__`."
+          },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,

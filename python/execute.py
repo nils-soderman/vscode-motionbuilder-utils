@@ -14,8 +14,10 @@ __VsCodeData__ = __json__.load(__VsCodeSettingsFile__)
 __VsCodeSettingsFile__.close()
 del __VsCodeSettingsFile__
 
-# Set __file__ variable
+# Set __file__ & __name__ variable
 __file__ = __VsCodeData__.get("__file__", "")
+if "__name__" in __VsCodeData__:
+    __name__ = __VsCodeData__["__name__"]
 
 with open(__VsCodeData__["file"], 'r') as __VsCodeFile__:
     exec(compile(__VsCodeFile__.read(), __file__, "exec"))
