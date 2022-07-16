@@ -72,10 +72,10 @@ async function browseDocumentation(types: string[]) {
     for (const type of types) {
         let itemsToAppend = parseGeneratedDocumentationFile(type, version);
         if (types.length > 1) {
-            const prefix = `${type[0].toUpperCase() + type.slice(1)}: `;
+            const prefix = `${type[0].toUpperCase() + type.slice(1)}`;
             for (const [key, value] of Object.entries(itemsToAppend)) {
                 // @ts-ignore
-                items[prefix + key] = { url: value["url"], type: type };
+                items[`[${prefix}] ${key}`] = { url: value["url"], type: type };
             }
         }
         else {

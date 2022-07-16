@@ -1,8 +1,11 @@
+import time
 import json
 import sys
 import os
+import re
 
 from importlib import reload
+
 
 # Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
@@ -42,14 +45,14 @@ def SaveJsonFile(Filename, Content):
     Directory = GetOutputDirectory()
     if not os.path.isdir(Directory):
         os.makedirs(Directory)
-    
+
     Filepath = os.path.join(Directory, Filename)
     with open(Filepath, "w+") as File:
         json.dump(Content, File)
 
 
 # ------------------------------------------
-#            Generate Guide TOC
+#                 Guide
 # ------------------------------------------
 
 def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
@@ -100,49 +103,78 @@ def GenerateExamplesTOC(Version):
 
 
 # ------------------------------------------
-#                Examples
+#                Python
 # ------------------------------------------
 
 def GeneratePythonTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-
+    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version, bCache = True)
+    Items = MoBuDocumentation.GetPythonSDKTableOfContents()
+    
     Data = {}
-    for Page in MoBuDocumentation.GetPythonSDKTableOfContents().values():
+    for Page, Children in Items:
         PageName = Page.Title.strip()
-        Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
-
+        if PageName.startswith("_"):
+            continue
+        
+        Data[PageName] = { FDictTags.Url: Page.GetURLRelativeToENU() }
+        for ChildPage, ChildChildren in Children:
+            ChildPageName = ChildPage.Title.strip()
+            if ChildPageName.startswith("__"):
+                continue
+            Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
+    
     SaveJsonFile("python.json", Data)
 
 
 # ------------------------------------------
-#                Examples
+#                C++ SDK
 # ------------------------------------------
 
-def GenerateSDKTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-
+def GenerateCTOC(Version):
+    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version, bCache = True)
+    
     Data = {}
-    for Page in MoBuDocumentation.GetSDKTableOfContents().values():
-        PageName = Page.Title.strip()
-        Data[PageName] = {FDictTags.Url: Page.GetURLRelativeToENU()}
-
+    for Page, Children in MoBuDocumentation.GetSDKTableOfContents():
+        PageName: str = Page.Title.strip()
+        if PageName.startswith("_") or PageName.isupper():
+            continue
+        
+        Data[PageName] = { FDictTags.Url: Page.GetURLRelativeToENU() }
+        for ChildPage, ChildChildren in Children:
+            ChildPageName: str = ChildPage.Title.strip()
+            # Skip page names with special characters (except underscores) or private names
+            if ChildPageName.startswith("__") or not re.match(r'^\w+$', ChildPageName):
+                continue
+            Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
+    
     SaveJsonFile("c.json", Data)
-
 
 # ------------------------------------------
 #              Main functions
 # ------------------------------------------
 
 def GenerateTableOfContents(Version):
-    GenerateGuideTOC(Version)
-    GenerateExamplesTOC(Version)
-    GeneratePythonTOC(Version)
-    GenerateSDKTOC(Version)
+    def _TimeIt(Function, *args):
+        StartTime = time.time()
+        Function(*args)
+        DeltaTime = time.time() - StartTime
+        print(f"'{Function.__name__}' took {DeltaTime:.2f} sec.")
+        return DeltaTime
+    
+    _TimeIt(GenerateGuideTOC, Version)
+    _TimeIt(GenerateExamplesTOC, Version)
+    _TimeIt(GeneratePythonTOC, Version)
+    _TimeIt(GenerateCTOC, Version)
 
 
 def main():
+    StartTime = time.time()
+
     MotionBuilderVersion = GetMotionBuilderVersion()
     GenerateTableOfContents(MotionBuilderVersion)
+
+    DeltaTime = time.time() - StartTime
+    print(f"Generating docs took {DeltaTime:.2f} sec in total")
 
 
 if "builtin" in __name__:
