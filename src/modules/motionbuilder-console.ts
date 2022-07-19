@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 
-import * as net from 'net'; 
+import * as net from 'net';
 
 const IP = '127.0.0.1';
 const PORT = 4242;
 
 let gSocket: net.Socket | undefined;
-let onDataRecived: Function;
+let gOnDataRecived: Function;
 
 
 async function getSocket() {
@@ -41,7 +41,7 @@ async function getSocket() {
     });
 
     let bSocketEstablished = false;
-    
+
     gSocket.on("data", function (buffer) {
         let dataRecived = buffer.toString("utf8");
 
@@ -58,9 +58,9 @@ async function getSocket() {
 
         }
 
-        dataRecived = dataRecived.trim();
-        if (onDataRecived != undefined) {
-            onDataRecived(dataRecived);
+        if (gOnDataRecived != undefined) {
+            dataRecived = dataRecived.trim();
+            gOnDataRecived(dataRecived);
         }
     });
 
@@ -82,7 +82,7 @@ export async function runCommand(command: string, callback: Function) {
         return;
     }
 
-    onDataRecived = callback;
+    gOnDataRecived = callback;
 
     // Send the commmand
     socket.write(command);

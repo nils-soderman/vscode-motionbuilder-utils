@@ -1,14 +1,16 @@
 import * as vscode from 'vscode';
 
 import * as path from 'path';
+import * as fs   from 'fs';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
-import * as utils from '../modules/utils';
+import * as utils                from '../modules/utils';
 
 
 const TEMP_FILENAME = "vscode_motionbuilder_exec.py";
 const TEMP_EXECDATA_FILENAME = "vscode-exec.json";
 const PYTHON_EXEC_FILE = path.join(utils.EXTENSION_PYTHON_DIR, "execute.py");
+const OUTPUT_FILEPATH = path.join(utils.getExtentionTempDir(), "vscode-exec-out.txt");
 
 let gOutputChannel: vscode.OutputChannel | undefined;
 
@@ -25,30 +27,32 @@ function getOutputChannel(bEnsureChannelExists = true) {
 }
 
 
-/** Check if we're currently attached to a MotionBuilder instance */
-function isDebuggingMotionBuilder() {
-    return vscode.debug.activeDebugSession && vscode.debug.activeDebugSession.name == utils.DEBUG_SESSION_NAME;
+function readResponse() {
+    if (fs.existsSync(OUTPUT_FILEPATH)) {
+        return fs.readFileSync(OUTPUT_FILEPATH).toString("utf8");
+    }
+    return "";
 }
 
 
 /** Handle data recived from the MotionBuilder python server */
 function handleResponse(response: string) {
     // If user is debugging MB, all output will automatically be appended to the debug console
-    if (isDebuggingMotionBuilder()) {
+    if (utils.isDebuggingMotionBuilder()) {
         return;
+    }
+
+    response = response.trim();
+
+    if (response == ">>>") {
+        const parsedResponse = readResponse();
+        if (parsedResponse) {
+            response = `${parsedResponse}>>>`;
+        }
     }
 
     // Format response
     response = response.replace(/\n\r/g, "\n");
-
-    // Remove the first 2 lines in a traceback message, since those will be related to how this code is executed
-    const traceBackString = "Traceback (most recent call last):\n";
-    if (response.includes(traceBackString)) {
-        const responseTracebackSplit = response.split(traceBackString, 2);
-        const tracebackMsg = responseTracebackSplit[1].split("\n").slice(2).join("\n");
-        response = responseTracebackSplit[0] + traceBackString + tracebackMsg;
-    }
-
 
     const outputChannel = getOutputChannel();
     if (outputChannel) {
@@ -69,11 +73,14 @@ function handleResponse(response: string) {
  * @param originalFilepath The abs filepath to the source filepath, will be used to set the python var `__file__`
  * @param additionalPrint Additional text to be printed to the output once the code has been executed
  */
-function writeDataFile(fileToExecute: string, originalFilepath: string, additionalPrint = "", nameVariable = "") {
+function writeDataFile(fileToExecute: string, originalFilepath: string, bIsDebugging = true, additionalPrint = "", nameVariable = "") {
     let data: any = {};
+    
     data["file"] = fileToExecute;
+    data["is_debugging"] = bIsDebugging;
     data["__file__"] = originalFilepath;
     data["__name__"] = nameVariable;
+    
     if (additionalPrint) {
         data["additionalPrint"] = additionalPrint;
     }
@@ -196,9 +203,11 @@ export async function execute() {
     }
 
     // File an info file telling mb what script to run, etc.
-    const additionalPrint = isDebuggingMotionBuilder() ? ">>>" : "";
+    const bIsDebugging = utils.isDebuggingMotionBuilder();
+    const additionalPrint = bIsDebugging ? ">>>" : "";
     const nameVar: string | undefined = extConfig.get("execute.name");
-    writeDataFile(fileToExecute, activeDocuemt.uri.fsPath, additionalPrint, nameVar);
+
+    writeDataFile(fileToExecute, activeDocuemt.uri.fsPath, bIsDebugging, additionalPrint, nameVar);
 
     // Clear the output channel if enabled in user settings
     if (extConfig.get("execute.clearOutput")) {

@@ -41,6 +41,14 @@ export function saveTempFile(filename: string, text: string) {
 }
 
 
+/** Check if we're currently attached to a MotionBuilder instance */
+export function isDebuggingMotionBuilder() {
+    if (!vscode.debug.activeDebugSession) {
+        return false;
+    }
+    return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
+}
+
 /**
  * Delete the temp folder created by this extension (and all of the files inside of it)
  */

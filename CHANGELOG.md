@@ -3,6 +3,9 @@
 ## [1.2.1]
 *(xx-07-2022)*
 
+- Fixed characters missing from the output when printing large amounts of data.
+- Fixed output not appearing in the output console in MB 2023 if a "Python Editor" window hadn't been spawned
+- The documentation now includes class methods and properties
 - Added config `motionbuilder.execute.name` which can be used to set the python variable `__name__` to something unique when executing code through VS Code.
 - pyfbsdk stub file improvements
 
