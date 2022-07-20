@@ -2,53 +2,72 @@
 Module for executing python code in MotionBuilder
 """
 
-# Importing these with private names to make sure they're hidden in the debug window
-import traceback as __traceback__
-import tempfile  as __tempfile__
-import json      as __json__
-import sys       as __sys__
-import os        as __os__
+import contextlib
+import traceback
+import tempfile
+import json
+import sys
+import os
+
+TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
+OUTPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, "vscode-exec-out.txt")
+INPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, 'vscode-exec.json')
 
 
-def __VsCodeExecuteCode__(Code, Filename, __bVsCodeIsDebugging__):
+def ReadInputData():
+    """ Read input data that was written with typescript (`writeDataFile()` in `execute-script.ts`) """
+    with open(INPUT_FILEPATH, 'r') as VsCodeSettingsFile:
+        return json.load(VsCodeSettingsFile)
+
+
+def GetExecGlobals():
+    """ Get globals to be used in the exec function when executing user scripts """
+    if "__VsCodeVariables__" not in globals():
+        globals()["__VsCodeVariables__"] = {"__builtins__": __builtins__, "__IsVsCodeExec__": True}
+    return globals()["__VsCodeVariables__"]
+
+
+def VsCodeExecuteCode(Code, Filename, bVsCodeIsDebugging):
     try:
-        exec(compile(Code, Filename, "exec"))
+        exec(compile(Code, Filename, "exec"), GetExecGlobals())
     except Exception as e:
-        TracebackLines = __traceback__.format_exception(None, e, e.__traceback__)
+        TracebackLines = traceback.format_exception(None, e, e.__traceback__)
 
         # TODO: Reformat the file URL lines to be clickable line numbers as well
 
-        TracebackMessage = "".join(x for x in TracebackLines if __VsCodeExecuteCode__.__name__ not in x).strip()
-        if __bVsCodeIsDebugging__:
+        TracebackMessage = "".join(x for x in TracebackLines if VsCodeExecuteCode.__name__ not in x).strip()
+        # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
+        if bVsCodeIsDebugging:
             TracebackMessage = '\033[91m' + TracebackMessage + '\033[0m'
 
         print(TracebackMessage)
 
 
-# Read settings that was written by the extension (writeDataFile() in `execute-script.ts`)
-__FolderPath__ = __os__.path.join(__tempfile__.gettempdir(), "VSCode-MotionBuilder-Utils")
-__OutputFilePath__ = __os__.path.join(__FolderPath__, "vscode-exec-out.txt")
-__VsCodeSettingsFile__ = open(__os__.path.join(__FolderPath__, 'vscode-exec.json'), 'r')
-__VsCodeData__ = __json__.load(__VsCodeSettingsFile__)
-__VsCodeSettingsFile__.close()
-del __VsCodeSettingsFile__
+def main():
+    VsCodeData = ReadInputData()
+    bVsCodeDebugging = VsCodeData.get("is_debugging", False)
+    AdditionalPrintStr = VsCodeData.get("additionalPrint", "")
 
-__bVsCodeIsDebugging__ = __VsCodeData__.get("is_debugging", False)
-__VsCodeAdditionalPrint__ = __VsCodeData__.get("additionalPrint")
+    # Set some global variables
+    ExecGlobals = GetExecGlobals()
+    
+    TargetFilepath = VsCodeData.get("__file__", "")
+    ExecGlobals["__file__"] = TargetFilepath
+    
+    if "__name__" in VsCodeData and VsCodeData["__name__"]:
+        ExecGlobals["__name__"] = VsCodeData["__name__"]
 
-# Set __file__ & __name__ variable
-__file__ = __VsCodeData__.get("__file__", "")
-if "__name__" in __VsCodeData__:
-    __name__ = __VsCodeData__["__name__"]
+    # Read the code file and execute it
+    with open(VsCodeData["file"], 'r') as VsCodeInFile:
+        if not bVsCodeDebugging and sys.version_info.major >= 3:
+            # Re-direct the output through a text file
+            with open(OUTPUT_FILEPATH, 'w') as VsCodeOutFile, contextlib.redirect_stdout(VsCodeOutFile):
+                VsCodeExecuteCode(VsCodeInFile.read(), TargetFilepath, bVsCodeDebugging)
+        else:
+            VsCodeExecuteCode(VsCodeInFile.read(), TargetFilepath, bVsCodeDebugging)
 
-with open(__VsCodeData__["file"], 'r') as __VsCodeInFile__:
-    if not __bVsCodeIsDebugging__ and __sys__.version_info.major >= 3:
-        from contextlib import redirect_stdout as __redirect_stdout__
-        with open(__OutputFilePath__, 'w') as __VsCodeOutFile__:
-            with __redirect_stdout__(__VsCodeOutFile__):
-                __VsCodeExecuteCode__(__VsCodeInFile__.read(), __file__, __bVsCodeIsDebugging__)
-    else:
-        __VsCodeExecuteCode__(__VsCodeInFile__.read(), __file__, __bVsCodeIsDebugging__)
+        if AdditionalPrintStr:
+            print(AdditionalPrintStr)
 
-    if __VsCodeAdditionalPrint__:
-        print(__VsCodeAdditionalPrint__)
+
+main()
