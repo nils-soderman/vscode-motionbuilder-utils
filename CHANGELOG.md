@@ -14,6 +14,8 @@
     bIsRunningFromVsCode = globals().get('__IsVsCodeExec__', False)
     ```
 
+- Traceback messages now include the line numbers in the clickable filepath URLs 
+
 - It's now possible to attach to MotionBuilder even if another debug session is already active
 
 - The documentation now includes class methods and properties

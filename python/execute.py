@@ -8,6 +8,7 @@ import tempfile
 import json
 import sys
 import os
+import re
 
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 OUTPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, "vscode-exec-out.txt")
@@ -31,11 +32,22 @@ def VsCodeExecuteCode(Code, Filename, bVsCodeIsDebugging):
     try:
         exec(compile(Code, Filename, "exec"), GetExecGlobals())
     except Exception as e:
-        TracebackLines = traceback.format_exception(None, e, e.__traceback__)
+        TracebackLines = []
 
-        # TODO: Reformat the file URL lines to be clickable line numbers as well
+        for Line in traceback.format_exception(None, e, e.__traceback__):
+            if VsCodeExecuteCode.__name__ in Line:
+                continue
+            
+            # Reformat path to include the file number, example: 'myfile.py:5'
+            if re.findall('file ".*", line \d*, in ', Line.lower()):
+                Components = Line.split(",", 2)
+                LineNumber = "".join(x for x in Components[1] if x.isdigit())
+                Components[0] = '%s:%s"' %(Components[0][:-1], LineNumber)
+                Line = ",".join(Components)
 
-        TracebackMessage = "".join(x for x in TracebackLines if VsCodeExecuteCode.__name__ not in x).strip()
+            TracebackLines.append(Line)
+        
+        TracebackMessage = "".join(TracebackLines).strip()
         # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
         if bVsCodeIsDebugging:
             TracebackMessage = '\033[91m' + TracebackMessage + '\033[0m'
