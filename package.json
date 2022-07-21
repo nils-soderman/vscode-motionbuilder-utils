@@ -121,7 +121,7 @@
           },
           "motionbuilder.execute.name": {
             "type": "string",
-            "default": "builtins",
+            "default": "",
             "markdownDescription": "The value for the Python variable `__name__`."
           },
           "motionbuilder.documentation.openExamplesInEditor": {

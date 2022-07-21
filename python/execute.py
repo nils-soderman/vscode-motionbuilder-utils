@@ -53,10 +53,11 @@ def main():
     
     TargetFilepath = VsCodeData.get("__file__", "")
     ExecGlobals["__file__"] = TargetFilepath
-    
     if "__name__" in VsCodeData and VsCodeData["__name__"]:
         ExecGlobals["__name__"] = VsCodeData["__name__"]
-
+    elif "__name__" in ExecGlobals:
+        ExecGlobals.pop("__name__")
+    
     # Read the code file and execute it
     with open(VsCodeData["file"], 'r') as VsCodeInFile:
         if not bVsCodeDebugging and sys.version_info.major >= 3:
