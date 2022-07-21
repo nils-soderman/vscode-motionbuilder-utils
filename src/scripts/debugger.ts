@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 
 import * as path from "path";
+import * as fs   from "fs";
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as utils                from "../modules/utils";
 
 
 const TEMP_EXECDATA_FILENAME = "vscode-attach.json";
+const TEMP_EXECOUTPUT_FILENAME = "vscode-attach-out.txt";
 const START_DEBUG_SERVER_FILENAME = "start_debug_server.py";
 
 let gLastDebugAttempt: number = 0;
@@ -17,6 +19,15 @@ function writeDataFile(port: number, targetInstallDir: String) {
     data["port"] = port;
     data["target"] = targetInstallDir;
     utils.saveTempFile(TEMP_EXECDATA_FILENAME, JSON.stringify(data));
+}
+
+function readResponse() {
+    const outputFilepath = path.join(utils.getExtentionTempDir(), TEMP_EXECOUTPUT_FILENAME);
+    if (fs.existsSync(outputFilepath)) {
+        const response = fs.readFileSync(outputFilepath).toString("utf8");
+        return response;
+    }
+    return "";
 }
 
 
@@ -31,12 +42,14 @@ function serverStartCallback(data: string) {
         return;
     }
 
-    if (vscode.debug.activeDebugSession) {
+    if (utils.isDebuggingMotionBuilder()) {
         return;
     }
 
-    if (data.startsWith("ERROR:")) {
-        let message = data.replace("ERROR:", "").replace(">>>", "").trim();
+    const response = readResponse();
+
+    if (response.startsWith("ERROR:")) {
+        let message = response.replace("ERROR:", "").replace(">>>", "").trim();
         vscode.window.showErrorMessage(message);
         return;
     }
@@ -60,12 +73,7 @@ export function attachToMotionBuilder() {
         return;
     }
 
-    // Make sure user is not already in a debug session
-    if (vscode.debug.activeDebugSession) {
-        if (vscode.debug.activeDebugSession.name != utils.DEBUG_SESSION_NAME) {
-            // Current debug session is not MotionBuilder, show a warning
-            vscode.window.showErrorMessage("Another debug session is already running.\n Please close the current debug session before attaching to MotionBuilder.");
-        }
+    if (utils.isDebuggingMotionBuilder()) {
         return;
     }
 

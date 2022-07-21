@@ -16,6 +16,12 @@ VSCODE_DEBUG_SERVER_ENV_VAR = "MB_Utils_Debug_Enabled"
 MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
 VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 SETTINGS_FILEPATH = os.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach.json')
+OUTPUT_FILEPATH = os.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach-out.txt')
+
+
+def WriteOutput(String):
+    with open(OUTPUT_FILEPATH, "w+") as File:
+        File.write(str(String))
 
 def GetVSCodeAttachSettings():
     """ Get a dict with settings passed along from VSCode """
@@ -105,12 +111,10 @@ def EnableDebugServer():
     # Attempt to import / install debugpy
     debugpy = InstallAndImportModule("debugpy", Target)
     if not debugpy:
-        print("ERROR: Failed to import/install python module 'debugpy'")
-        return False
+        return "ERROR: Failed to import/install python module 'debugpy'"
 
     if not IsPortAvailable(Port):
-        print("ERROR: Port %s is already in use! Consider configuring VSCode: `motionbuilder.debug.port` to use another port." % Port)
-        return False
+        return "ERROR: Port %s is already in use! Consider configuring VS Code: `motionbuilder.debug.port` to use another port." % Port
 
     # Start the debugpy server
     debugpy.configure(python = MOBU_PYTHON_EXECUTABLE)
@@ -122,8 +126,11 @@ def EnableDebugServer():
 
 
 def main():
-    if not IsDebugServerRunning():
-        EnableDebugServer()
+    if IsDebugServerRunning():
+        WriteOutput(True)
+    else:
+        Response = EnableDebugServer()
+        WriteOutput(Response)
 
 
 main()
