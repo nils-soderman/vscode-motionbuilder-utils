@@ -31,7 +31,7 @@ def GetVSCodeAttachSettings():
 
 def TryImport(ModuleName, Path = ""):
     """ Attempt to import a module, returns the module if sucessful, else None """
-    bAppendPath = Path and Path not in sys.path
+    bAppendPath = Path and Path not in sys.path and os.path.isdir(Path)
     if bAppendPath:
         sys.path.append(Path)
 
@@ -47,7 +47,7 @@ def TryImport(ModuleName, Path = ""):
     return Module
 
 
-def InstallAndImportModule(PackageName, Target = ""):
+def InstallAndImportModule(PackageName, Target = "", Version = ""):
     Module = TryImport(PackageName)
 
     # Append the target path and try to import again
@@ -58,6 +58,9 @@ def InstallAndImportModule(PackageName, Target = ""):
         ArgTarget = ""
         if Target:
             ArgTarget = "--target=%s" % Target
+
+        if Version:
+            PackageName = "%s==%s" % (PackageName, Version)
 
         # Ensure pip is avaliable
         if not TryImport("pip"):
@@ -76,12 +79,12 @@ def InstallAndImportModule(PackageName, Target = ""):
             if not pipModulePath:
                 return None
 
-            subprocess.check_call([MOBU_PYTHON_EXECUTABLE, pipModulePath, "install", ArgTarget, PackageName])
+            subprocess.call([MOBU_PYTHON_EXECUTABLE, pipModulePath, "install", ArgTarget, PackageName])
         else:
-            subprocess.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "pip", "install", ArgTarget, PackageName])
-
+            subprocess.call([MOBU_PYTHON_EXECUTABLE, "-m", "pip", "install", ArgTarget, PackageName])
+        
         Module = TryImport(PackageName, Target)
-
+    
     return Module
 
 
@@ -107,9 +110,11 @@ def EnableDebugServer():
     Settings = GetVSCodeAttachSettings()
     Port = Settings.get("port")
     Target = Settings.get("target")
+    Target = os.path.join(Target, "Python%s%s" % (sys.version_info.major, sys.version_info.minor))
 
     # Attempt to import / install debugpy
-    debugpy = InstallAndImportModule("debugpy", Target)
+    Version = "1.5.1" if sys.version_info.major == 2 else None
+    debugpy = InstallAndImportModule("debugpy", Target, Version)
     if not debugpy:
         return "ERROR: Failed to import/install python module 'debugpy'"
 
