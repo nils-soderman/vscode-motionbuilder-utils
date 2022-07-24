@@ -32,9 +32,10 @@ def VsCodeExecuteCode(Code, Filename, bVsCodeIsDebugging):
     try:
         exec(compile(Code, Filename, "exec"), GetExecGlobals())
     except Exception as e:
+        ExceptionType, Exc, Traceback = sys.exc_info()
+        
         TracebackLines = []
-
-        for Line in traceback.format_exception(None, e, e.__traceback__):
+        for Line in traceback.format_exception(ExceptionType, Exc, Traceback):
             if VsCodeExecuteCode.__name__ in Line:
                 continue
             
