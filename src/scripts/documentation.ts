@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import * as child_process from "child_process";
+import * as child_process from 'child_process';
 import * as htmlParser    from 'node-html-parser';
 import * as path          from 'path';
 
@@ -11,6 +11,7 @@ const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
 const MOBU_FILE_HOSTING_URL = AUTODESK_HELP_DOMAIN + "cloudhelp/";
 
 
+/** Documentation table of content types */
 const FDOCTYPE = {
     c: "c",
     example: "examples",
@@ -19,23 +20,44 @@ const FDOCTYPE = {
 };
 
 
+/**
+ * Get the full URL to the location of the documentation page, from a url relative to the ENU folder.
+ * @param version MotionBuilder version
+ * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
+ */
 function getDocumentationPageURL(version: number, relativePageURL: string) {
     return MOBU_FILE_HOSTING_URL + version + "/ENU/" + relativePageURL;
 }
 
 
+/**
+ * Parse one of the generated json table of content files.
+ * @param type The type of documentation file to parse, should be one of the options in the struct: `FDOCTYPE`
+ * @param version MotionBuilder version 
+ * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
+ */
 function parseGeneratedDocumentationFile(type: string, version: number) {
     const filepath = path.join(utils.EXTENSION_RESOURCES_DIR, "documentation", version.toString(), `${type}.json`);
     return utils.readJson(filepath);
 }
 
 
-function openPageInBrowser(pageId: string, version: number) {
-    const url = getDocumentationPageURL(version, pageId);
+/**
+ * Open a MoBu documentation page in the default web-browser app
+ * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
+ * @param version MotionBuilder version
+ */
+function openPageInBrowser(relativePageURL: string, version: number) {
+    const url = getDocumentationPageURL(version, relativePageURL);
     child_process.exec(`start ${url}`);
 }
 
 
+/**
+ * Open the code from a MotionBuilder example inside the editor
+ * @param url The full URL to the example documentation web-page
+ * @param filename The abs filepath where to save the file on disk
+ */
 function openExampleInVSCode(url: string, filename: string) {
     function handleResponse(data: string, statusCode?: number) {
         // TODO: check statusCode
@@ -50,10 +72,8 @@ function openExampleInVSCode(url: string, filename: string) {
                 content += "\n";
             }
         }
-
-        // Save file
+        
         const filepath = utils.saveTempFile(filename, content);
-
         const openPath = vscode.Uri.file(filepath);
         vscode.workspace.openTextDocument(openPath).then(doc => {
             vscode.window.showTextDocument(doc);
@@ -64,8 +84,12 @@ function openExampleInVSCode(url: string, filename: string) {
 }
 
 
+/**
+ * List all pages from one or multiple documentation types, and open up the page selected by the user
+ * @param types List of types to include, types should be of `FDOCTYPE`
+ */
 async function browseDocumentation(types: string[]) {
-    let version: number = utils.getVersion();
+    let version: number = utils.getMotionBuilderVersion();
 
     let items: any = {};
     let browsingType: string = "";

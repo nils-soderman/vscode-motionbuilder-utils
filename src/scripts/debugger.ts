@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 
-import * as path from "path";
-import * as fs   from "fs";
+import * as path from 'path';
+import * as fs   from 'fs';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
-import * as utils                from "../modules/utils";
+import * as utils                from '../modules/utils';
 
 
-const TEMP_EXECDATA_FILENAME = "vscode-attach.json";
-const TEMP_EXECOUTPUT_FILENAME = "vscode-attach-out.txt";
+const TEMP_DATA_FILENAME = "vscode-attach.json";
+const TEMP_OUTPUT_FILENAME = "vscode-attach-out.txt";
 const START_DEBUG_SERVER_FILENAME = "start_debug_server.py";
 
 let gLastDebugAttempt: number = 0;
@@ -18,11 +18,12 @@ function writeDataFile(port: number, targetInstallDir: String) {
     let data: any = {};
     data["port"] = port;
     data["target"] = targetInstallDir;
-    utils.saveTempFile(TEMP_EXECDATA_FILENAME, JSON.stringify(data));
+    utils.saveTempFile(TEMP_DATA_FILENAME, JSON.stringify(data));
 }
 
+
 function readResponse() {
-    const outputFilepath = path.join(utils.getExtentionTempDir(), TEMP_EXECOUTPUT_FILENAME);
+    const outputFilepath = path.join(utils.getExtentionTempDir(), TEMP_OUTPUT_FILENAME);
     if (fs.existsSync(outputFilepath)) {
         const response = fs.readFileSync(outputFilepath).toString("utf8");
         return response;
@@ -78,7 +79,7 @@ export function attachToMotionBuilder() {
     }
 
     // Start the MB debug server
-    writeDataFile(port, utils.getExtensionPythonModulesDir());
+    writeDataFile(port, utils.getExtensionPythonPackagesDir());
     const startDebugPythonFilepath = path.join(utils.EXTENSION_PYTHON_DIR, START_DEBUG_SERVER_FILENAME);
     motionBuilderConsole.executeFile(startDebugPythonFilepath, serverStartCallback);
 }

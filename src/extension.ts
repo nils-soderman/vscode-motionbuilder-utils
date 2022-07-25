@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import * as documentation from "./scripts/documentation";
-import * as mobuDebugger  from "./scripts/debugger";
-import * as stubFiles 	  from "./scripts/stub-files";
-import * as execute 	  from "./scripts/execute-script";
+import * as documentation from './scripts/documentation';
+import * as mobuDebugger  from './scripts/debugger';
+import * as stubFiles 	  from './scripts/stub-files';
+import * as execute 	  from './scripts/execute-script';
 import * as utils 		  from './modules/utils';
 
 

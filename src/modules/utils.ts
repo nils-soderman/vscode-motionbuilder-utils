@@ -2,12 +2,11 @@ import * as vscode from 'vscode';
 
 import * as https from 'https';
 import * as path  from 'path';
-import * as os    from "os";
+import * as os    from 'os';
 import * as fs    from 'fs';
 
 // Variables
-const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
-const PYTHON_MODULES_FOLDER_NAME = "python-modules";
+const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
 export const EXTENSION_DIR = path.dirname(path.dirname(__dirname));
 export const EXTENSION_PYTHON_DIR = path.join(EXTENSION_DIR, "python");
@@ -20,7 +19,7 @@ export const DEFAULT_VERSION = 2023;
  * @returns absolute path to this extensions tempdir
  */
 export function getExtentionTempDir(bEnsureExists = true) {
-    const tempDir = path.join(os.tmpdir(), TEMPFOLDER_NAME);
+    const tempDir = path.join(os.tmpdir(), EXTENSION_DATA_FOLDER_NAME);
     if (bEnsureExists && !fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir);
     }
@@ -48,6 +47,7 @@ export function isDebuggingMotionBuilder() {
     }
     return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
 }
+
 
 /**
  * Delete the temp folder created by this extension (and all of the files inside of it)
@@ -102,7 +102,7 @@ export function ensureForwardSlashes(path: string) {
  * @param bEnsureExists If folder doesn't exists, create it
  */
 export function getExtensionAppdataFolder(bEnsureExists = true) {
-    const appdataDir = path.join(getAppDataFolder(), TEMPFOLDER_NAME);
+    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
     if (bEnsureExists && !fs.existsSync(appdataDir)) {
         fs.mkdirSync(appdataDir);
     }
@@ -110,12 +110,16 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
 }
 
 
-export function getExtensionPythonModulesDir(bEnsureExists = true) {
-    const appdataDir = path.join(getExtensionAppdataFolder(), PYTHON_MODULES_FOLDER_NAME);
-    if (bEnsureExists && !fs.existsSync(appdataDir)) {
-        fs.mkdirSync(appdataDir);
+/**
+ * Get this extension's folder where python site-packages can be installed
+ * @param bEnsureExists If folder doesn't exists, create it
+ */
+export function getExtensionPythonPackagesDir(bEnsureExists = true) {
+    const sitePackageDir = path.join(getExtensionAppdataFolder(), "python", "site-packages");
+    if (bEnsureExists && !fs.existsSync(sitePackageDir)) {
+        fs.mkdirSync(sitePackageDir);
     }
-    return appdataDir;
+    return sitePackageDir;
 }
 
 
@@ -139,7 +143,7 @@ export function isPathsSame(a: string, b: string) {
 /**
  * Get the MotionBuilder version the user wants to use given by the config
  */
-export function getVersion() {
+export function getMotionBuilderVersion() {
     let version: number | undefined = getExtensionConfig().get("version");
     if (!version) {
         return DEFAULT_VERSION;

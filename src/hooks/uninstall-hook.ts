@@ -4,22 +4,22 @@
  * Therefore any custom modules nor the vscode api cannot be reached here, only import native nodejs modules! 
  */
 
-import * as fs from 'fs';
 import * as path from 'path';
+import * as fs   from 'fs';
 
 
 /** --------------------------------------------------------------------------
  *                      Functions lifted from Utils
  * -------------------------------------------------------------------------- */
 
-const TEMPFOLDER_NAME = "VSCode-MotionBuilder-Utils";
+const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 
 export function getAppDataFolder() {
     return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
 }
 
 export function getExtensionAppdataFolder(bEnsureExists = true) {
-    const appdataDir = path.join(getAppDataFolder(), TEMPFOLDER_NAME);
+    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
     if (bEnsureExists && !fs.existsSync(appdataDir)) {
         fs.mkdirSync(appdataDir);
     }
@@ -32,7 +32,7 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
  * -------------------------------------------------------------------------- */
 
 function main() {
-    // Cleanup all files placed under %AppData%
+    // Cleanup all files placed under %AppData%/VSCode-MotionBuilder-Utils
     const appdataFolder = getExtensionAppdataFolder();
     if (fs.existsSync(appdataFolder)) {
         fs.rmSync(appdataFolder, { recursive: true });

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import * as path from "path";
+import * as path from 'path';
 import * as fs   from 'fs';
 
-import * as utils from "../modules/utils";
+import * as utils from '../modules/utils';
 
 
 const PYTHON_CONFIG = "python";
@@ -11,12 +11,21 @@ const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
 const STUB_FILES_FOLDER_NAME = "stub-files";
 
 
+/**
+ * Get the configuration for the python extension
+ */
 function getPythonConfig() {
     return vscode.workspace.getConfiguration(PYTHON_CONFIG);
 }
 
 
-function getSourceAutocompletionDirectory(version: number) {
+/**
+ * Get the path to where the stub files provided by this extension are located.  
+ * This is the source path and no configurations should point to this path!
+ * Instead the files located here can be copied elsewhere on disk.
+ * @param version MotionBuilder version
+ */
+function getSourceStubFileDirectory(version: number) {
     return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME, version.toString());
 }
 
@@ -57,7 +66,7 @@ function getCopyDestinationPath(bEnsureExists = true) {
  * @param bForceCopy Copy files even if they already exist & we don't have a newer version to copy 
  */
 function copyStubFiles(version:number, targetDirectory: string, bForceCopy = false) {
-    const stubFilesSourceDirectory = getSourceAutocompletionDirectory(version);
+    const stubFilesSourceDirectory = getSourceStubFileDirectory(version);
 
     // Loop through all of the files under the 'stub-files/XXXX/' folder
     for (const filepath of fs.readdirSync(stubFilesSourceDirectory)) {
@@ -78,6 +87,10 @@ function copyStubFiles(version:number, targetDirectory: string, bForceCopy = fal
 }
 
 
+/**
+ * Add a path to the `pyhon.analysis.extraPaths` configuration.
+ * @param pathToAdd The path to add
+ */
 function addPythonAnalysisPath(pathToAdd: string) {
     const pythonConfig = getPythonConfig();
     let extraPaths: Array<string> | undefined = pythonConfig.get(EXTRA_PATHS_CONFIG);
@@ -100,7 +113,7 @@ export async function setup(bForceCopy = false) {
     
     // Copy stub files
     if (utils.getExtensionConfig().get("stubFiles.copyOnStartup")) {
-        const version = utils.getVersion();
+        const version = utils.getMotionBuilderVersion();
         copyStubFiles(version, destination, bForceCopy);
     }
 
