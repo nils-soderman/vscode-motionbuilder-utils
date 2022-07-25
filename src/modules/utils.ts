@@ -117,7 +117,7 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
 export function getExtensionPythonPackagesDir(bEnsureExists = true) {
     const sitePackageDir = path.join(getExtensionAppdataFolder(), "python", "site-packages");
     if (bEnsureExists && !fs.existsSync(sitePackageDir)) {
-        fs.mkdirSync(sitePackageDir);
+        fs.mkdirSync(sitePackageDir, {"recursive": true});
     }
     return sitePackageDir;
 }

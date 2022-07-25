@@ -79,7 +79,7 @@ export function attachToMotionBuilder() {
     }
 
     // Start the MB debug server
-    writeDataFile(port, utils.getExtensionPythonPackagesDir());
+    writeDataFile(port, utils.getExtensionPythonPackagesDir(false));
     const startDebugPythonFilepath = path.join(utils.EXTENSION_PYTHON_DIR, START_DEBUG_SERVER_FILENAME);
     motionBuilderConsole.executeFile(startDebugPythonFilepath, serverStartCallback);
 }
