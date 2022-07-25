@@ -1,9 +1,9 @@
 # Change Log
 
 ## [1.2.1]
-*(xx-07-2022)*
+*(25-07-2022)*
 
-- Fixed characters missing from the output when printing large amounts of data
+- Fixed characters missing from the output when printing large amounts of data _(MotionBuilder 2022+)_
 
 - Fixed output not appearing in the output console in MB 2023 if a "Python Editor" window hadn't been spawned
 
@@ -17,6 +17,8 @@
 - Traceback messages now include the line numbers in the clickable filepath URLs 
 
 - It's now possible to attach to MotionBuilder even if another debug session is already active
+
+- Fixed debugy installation for Python 2.7 when attaching to MotionBuilder
 
 - The documentation now includes class methods and properties
 
