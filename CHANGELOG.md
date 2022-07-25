@@ -9,7 +9,7 @@
 
 - Added config `motionbuilder.execute.name` which can be used to set the python variable `__name__` to something unique when executing code through VS Code
 
-- Added a global variable `__IsVsCodeExec__` which is `True` when executing code through VS Code. Can be used to check if code is executed through VS Code or not, for example:
+- Added a global variable `__IsVsCodeExec__` which is `True` while executing code through VS Code. Example usage:
     ```python
     bIsRunningFromVsCode = globals().get('__IsVsCodeExec__', False)
     ```
