@@ -107,19 +107,19 @@ def GenerateExamplesTOC(Version):
 # ------------------------------------------
 
 def GeneratePythonTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version, bCache = True)
+    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
     Items = MoBuDocumentation.GetPythonSDKTableOfContents()
     
     Data = {}
     for Page, Children in Items:
-        PageName = Page.Title.strip()
+        PageName: str = Page.Title.strip()
         if PageName.startswith("_"):
             continue
         
         Data[PageName] = { FDictTags.Url: Page.GetURLRelativeToENU() }
         for ChildPage, ChildChildren in Children:
-            ChildPageName = ChildPage.Title.strip()
-            if ChildPageName.startswith("__"):
+            ChildPageName: str = ChildPage.Title.strip()
+            if ChildPageName.startswith("__") or ChildPageName == PageName:
                 continue
             Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
     
@@ -131,7 +131,7 @@ def GeneratePythonTOC(Version):
 # ------------------------------------------
 
 def GenerateCTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version, bCache = True)
+    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
     
     Data = {}
     for Page, Children in MoBuDocumentation.GetSDKTableOfContents():
@@ -143,11 +143,12 @@ def GenerateCTOC(Version):
         for ChildPage, ChildChildren in Children:
             ChildPageName: str = ChildPage.Title.strip()
             # Skip page names with special characters (except underscores) or private names
-            if ChildPageName.startswith("__") or not re.match(r'^\w+$', ChildPageName):
+            if ChildPageName.startswith("__") or not re.match(r'^\w+$', ChildPageName) or ChildPageName == PageName:
                 continue
             Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
     
     SaveJsonFile("c.json", Data)
+
 
 # ------------------------------------------
 #              Main functions
