@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.2]
+*(xx-08-2022)*
+
+- Updated the scope of all of the configurations to be at "resource" level
+
+
 ## [1.2.1]
 *(25-07-2022)*
 

@@ -107,49 +107,58 @@
               2023
             ],
             "default": 2023,
-            "description": "Which version to use for intellisense & when browsing documentation."
+            "description": "Which version to use for intellisense & when browsing documentation.",
+            "scope": "resource"
           },
           "motionbuilder.execute.showOutput": {
             "type": "boolean",
             "default": true,
-            "description": "Display the output log when something is executed"
+            "description": "Display the output log when something is executed",
+            "scope": "resource"
           },
           "motionbuilder.execute.clearOutput": {
             "type": "boolean",
             "default": false,
-            "description": "Clear output log each time somethings new is executed."
+            "description": "Clear output log each time somethings new is executed.",
+            "scope": "resource"
           },
           "motionbuilder.execute.name": {
             "type": "string",
             "default": "",
-            "markdownDescription": "The value for the Python variable `__name__`."
+            "markdownDescription": "The value for the Python variable `__name__`.",
+            "scope": "resource"
           },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
-            "description": "Open up the example files in editor, instead of the web-browser."
+            "description": "Open up the example files in editor, instead of the web-browser.",
+            "scope": "resource"
           },
           "motionbuilder.stubFiles.patchPythonPathConfig": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath`?"
+            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath`?",
+            "scope": "resource"
           },
           "motionbuilder.stubFiles.copyOnStartup": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?"
+            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?",
+            "scope": "resource"
           },
           "motionbuilder.stubFiles.copyPath": {
             "type": "string",
             "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "markdownDescription": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/"
+            "markdownDescription": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
+            "scope": "resource"
           },
           "motionbuilder.debug.port": {
             "type": "integer",
             "default": 4243,
             "description": "The port to run the debug server on when attaching to MotionBuilder.",
             "minimum": 0,
-            "maximum": 65353
+            "maximum": 65353,
+            "scope": "resource"
           }
         }
       }
