@@ -36,6 +36,7 @@
   "bugs": {
     "url": "https://github.com/nils-soderman/vscode-motionbuilder/issues"
   },
+  "homepage": "https://nilssoderman.com/downloads/vscode/motionbuilder-utils/",
   "activationEvents": [
     "onStartupFinished"
   ],
