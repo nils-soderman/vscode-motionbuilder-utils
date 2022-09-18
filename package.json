@@ -3,7 +3,7 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder. IntelliSense, debug, execute code in MotionBuilder & browse the documentation with ease.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "categories": [
     "Other",
     "Debuggers"
@@ -138,20 +138,17 @@
           "motionbuilder.stubFiles.patchPythonPathConfig": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath`?",
-            "scope": "resource"
+            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath`?"
           },
           "motionbuilder.stubFiles.copyOnStartup": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?",
-            "scope": "resource"
+            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?"
           },
           "motionbuilder.stubFiles.copyPath": {
             "type": "string",
             "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "markdownDescription": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "scope": "resource"
+            "markdownDescription": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/"
           },
           "motionbuilder.debug.port": {
             "type": "integer",
