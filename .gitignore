@@ -3,5 +3,6 @@ out
 src/test
 *.vsix
 test.py
+builds/**
 
 site-packages

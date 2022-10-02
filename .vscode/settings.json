@@ -6,6 +6,7 @@
         "**/**.vsix": true,
         "package-lock.json": true,
         "**/__pycache__": true,
+        "builds": true
     },
     "search.exclude": {
         "**/**.py": true,
