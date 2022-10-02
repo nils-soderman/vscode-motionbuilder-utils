@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 
 import * as net from 'net';
 
+import * as extensionWiki from './extension-wiki';
+
 const IP = '127.0.0.1';
 const PORT = 4242;
 
@@ -24,8 +26,11 @@ async function getSocket() {
 
         else if (e.message.includes("ECONNREFUSED")) {
             // Failed to connect
-            // TODO: Should probably link to a trouble-shooting page.
-            vscode.window.showErrorMessage(`Failed to connect to MotionBuilder.`);
+            vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((value?: string) => {
+                if (value === "Help") {
+                    extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
+                }
+            });
         }
 
         else {
