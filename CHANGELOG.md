@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.2.3]
+*(02-10-2022)*
+
+### Added: 
+- Added configuration `motionbuilder.execute.enableShortcut` which can be used to disable the `motionbuilder.execute` shortcut in spesific workspaces
+- Added a _"Help"_ button when VS Code fails to connect to MotionBuilder, that will take the user to a troubleshooting web page
+
+### Changed:
+- The command `motionbuilder.execute` is now only enabled when a Python file is opened
+- Sorted the configurations into categories
+
+### Fixed:
+- Mac & Linux support for opening documentation in web-browser
+
+___
+
 ## [1.2.2]
 *(18-09-2022)*
 
