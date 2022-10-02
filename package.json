@@ -3,7 +3,7 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder. IntelliSense, debug, execute code in MotionBuilder & browse the documentation with ease.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "categories": [
     "Other",
     "Debuggers"
@@ -46,7 +46,8 @@
       {
         "command": "motionbuilder.execute",
         "title": "Execute",
-        "category": "MotionBuilder"
+        "category": "MotionBuilder",
+        "enablement": "editorLangId==python"
       },
       {
         "command": "motionbuilder.attach",
@@ -78,27 +79,16 @@
       {
         "command": "motionbuilder.execute",
         "key": "ctrl+enter",
-        "when": "editorTextFocus && editorLangId == python"
-      },
-      {
-        "command": "motionbuilder.attach"
-      },
-      {
-        "command": "motionbuilder.browseDocumentationFull"
+        "when": "editorTextFocus && config.motionbuilder.execute.enableShortcut"
       },
       {
         "command": "motionbuilder.browseDocumentationC",
         "key": "ctrl+f1"
-      },
-      {
-        "command": "motionbuilder.browseDocumentationExamples"
-      },
-      {
-        "command": "motionbuilder.browseDocumentationPython"
       }
     ],
     "configuration": [
       {
+        "order": 0,
         "properties": {
           "motionbuilder.version": {
             "title": "Version",
@@ -109,46 +99,15 @@
             ],
             "default": 2023,
             "description": "Which version to use for intellisense & when browsing documentation.",
-            "scope": "resource"
-          },
-          "motionbuilder.execute.showOutput": {
-            "type": "boolean",
-            "default": true,
-            "description": "Display the output log when something is executed",
-            "scope": "resource"
-          },
-          "motionbuilder.execute.clearOutput": {
-            "type": "boolean",
-            "default": false,
-            "description": "Clear output log each time somethings new is executed.",
-            "scope": "resource"
-          },
-          "motionbuilder.execute.name": {
-            "type": "string",
-            "default": "",
-            "markdownDescription": "The value for the Python variable `__name__`.",
-            "scope": "resource"
+            "scope": "resource",
+            "order": 0
           },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
             "description": "Open up the example files in editor, instead of the web-browser.",
-            "scope": "resource"
-          },
-          "motionbuilder.stubFiles.patchPythonPathConfig": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath`?"
-          },
-          "motionbuilder.stubFiles.copyOnStartup": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?"
-          },
-          "motionbuilder.stubFiles.copyPath": {
-            "type": "string",
-            "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "markdownDescription": "Path where to place the MoBu stub files. By default they will be placed under %APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/"
+            "scope": "resource",
+            "order": 1
           },
           "motionbuilder.debug.port": {
             "type": "integer",
@@ -156,7 +115,66 @@
             "description": "The port to run the debug server on when attaching to MotionBuilder.",
             "minimum": 0,
             "maximum": 65353,
-            "scope": "resource"
+            "scope": "resource",
+            "order": 2
+          }
+        }
+      },
+      {
+        "title": "Execute",
+        "order": 1,
+        "properties": {
+          "motionbuilder.execute.enableShortcut": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Enable the `motionbuilder.execute` command, can be used to disable the command in spesific workspaces.",
+            "scope": "resource",
+            "order": 0
+          },
+          "motionbuilder.execute.showOutput": {
+            "type": "boolean",
+            "default": true,
+            "description": "Display the output log when something is executed",
+            "scope": "resource",
+            "order": 1
+          },
+          "motionbuilder.execute.clearOutput": {
+            "type": "boolean",
+            "default": false,
+            "description": "Clear output log each time somethings new is executed.",
+            "scope": "resource",
+            "order": 2
+          },
+          "motionbuilder.execute.name": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "The value for the Python variable `__name__`",
+            "scope": "resource",
+            "order": 3
+          }
+        }
+      },
+      {
+        "title": "Stub Files",
+        "order": 2,
+        "properties": {
+          "motionbuilder.stubFiles.copyOnStartup": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?",
+            "order": 0
+          },
+          "motionbuilder.stubFiles.patchPythonPathConfig": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath` ?",
+            "order": 1
+          },
+          "motionbuilder.stubFiles.copyPath": {
+            "type": "string",
+            "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
+            "markdownDescription": "Path where to place the motionbuilder stub files.",
+            "order": 2
           }
         }
       }
@@ -188,6 +206,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "node-html-parser": "^5.2.0"
+    "node-html-parser": "^5.2.0",
+    "open": "^8.4.0"
   }
 }
