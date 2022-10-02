@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-import * as child_process from 'child_process';
 import * as htmlParser    from 'node-html-parser';
 import * as path          from 'path';
 import * as open          from 'open';
