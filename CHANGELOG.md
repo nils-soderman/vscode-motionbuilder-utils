@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.2.4]
+*(28-11-2022)*
+
+### Fixed:
+- Encode/decode text sent between MotionBuilder & VS Code using UTF-8
+- Folder settings beeing ignored
+
+___
+
 ## [1.2.3]
 *(02-10-2022)*
 
