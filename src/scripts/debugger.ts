@@ -63,7 +63,7 @@ function serverStartCallback(data: string) {
         "type": "python",
         "request": "attach",
         "port": port,
-        "host": "localhost"
+        "host": "localhost",
     });
 }
 

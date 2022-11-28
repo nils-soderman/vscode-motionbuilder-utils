@@ -30,7 +30,7 @@ function getOutputChannel(bEnsureChannelExists = true) {
 
 function readResponse() {
     if (fs.existsSync(OUTPUT_FILEPATH)) {
-        return fs.readFileSync(OUTPUT_FILEPATH).toString("utf8");
+        return fs.readFileSync(OUTPUT_FILEPATH, {encoding: "utf-8"}).toString();
     }
     return "";
 }

@@ -110,7 +110,7 @@ function formatSelectedText(text: string, firstCharIndex: number) {
  * @returns the absolute filepath of the file
  */
 function saveFile(filepath: string, text: string) {
-    fs.writeFileSync(filepath, text);
+    fs.writeFileSync(filepath, text, { encoding: "utf-8" });
     return filepath;
 }
 

@@ -10,6 +10,7 @@ import sys
 import os
 import re
 
+
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 OUTPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, "vscode-exec-out.txt")
 INPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, 'vscode-exec.json')
@@ -72,16 +73,23 @@ def main():
         ExecGlobals.pop("__name__")
     
     # Read the code file and execute it
-    with open(VsCodeData["file"], 'r') as VsCodeInFile:
-        if not bVsCodeDebugging and sys.version_info.major >= 3:
-            # Re-direct the output through a text file
-            with open(OUTPUT_FILEPATH, 'w') as VsCodeOutFile, contextlib.redirect_stdout(VsCodeOutFile):
+    if sys.version_info.major >= 3:
+        # Python 3
+        with open(VsCodeData["file"], 'r', encoding='utf-8') as VsCodeInFile:
+            if not bVsCodeDebugging:
+                # Re-direct the output through a text file
+                with open(OUTPUT_FILEPATH, 'w', encoding="utf-8") as VsCodeOutFile, contextlib.redirect_stdout(VsCodeOutFile):
+                    VsCodeExecuteCode(VsCodeInFile.read(), TargetFilepath, bVsCodeDebugging)
+            else:
                 VsCodeExecuteCode(VsCodeInFile.read(), TargetFilepath, bVsCodeDebugging)
-        else:
+
+    else:
+        # Python 2
+        with open(VsCodeData["file"], 'r') as VsCodeInFile:
             VsCodeExecuteCode(VsCodeInFile.read(), TargetFilepath, bVsCodeDebugging)
 
-        if AdditionalPrintStr:
-            print(AdditionalPrintStr)
+    if AdditionalPrintStr:
+        print(AdditionalPrintStr)
 
 
 main()
