@@ -127,7 +127,14 @@ export function getExtensionPythonPackagesDir(bEnsureExists = true) {
  * @returns The workspace configuration for this extension _('motionbuilder')_
  */
 export function getExtensionConfig() {
-    return vscode.workspace.getConfiguration("motionbuilder");
+    // Try to get the active workspace folder first, to have it read Folder Settings
+    let workspaceFolder;
+    if (vscode.window.activeTextEditor) {
+        const activeDocumenet = vscode.window.activeTextEditor.document;
+        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
+    }
+
+    return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
 }
 
 
