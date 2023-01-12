@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.2.5]
+*(12-01-2023)*
+
+### Changed:
+- Stub files are now named .pyi
+- Improved pyfbsdk stub file
+
+___
+
 ## [1.2.4]
 *(28-11-2022)*
 

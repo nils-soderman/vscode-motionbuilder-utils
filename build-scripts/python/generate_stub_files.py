@@ -34,7 +34,7 @@ def main():
 
     # Generate the stub file
     OutputDir = os.path.join(STUB_FILE_DIR, str(GetMotionBuilderVersion()))
-    mobuStubGenerator.Generate(OutputDir, FileExtension = "py")
+    mobuStubGenerator.Generate(OutputDir)
 
 
 if "builtin" in __name__:
