@@ -82,7 +82,7 @@
         "when": "editorTextFocus && config.motionbuilder.execute.enableShortcut"
       },
       {
-        "command": "motionbuilder.browseDocumentationC",
+        "command": "motionbuilder.browseDocumentationPython",
         "key": "ctrl+f1"
       }
     ],

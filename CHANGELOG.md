@@ -6,6 +6,7 @@
 ### Changed:
 - Stub files are now named .pyi
 - Improved pyfbsdk stub file
+- "MotionBuilder: Browse Documentation (Python)" is now the default command mapped to <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
 ___
 
