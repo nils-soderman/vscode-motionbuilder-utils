@@ -3,7 +3,7 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder. IntelliSense, debug, execute code in MotionBuilder & browse the documentation with ease.",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "categories": [
     "Other",
     "Debuggers"

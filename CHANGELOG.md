@@ -1,7 +1,7 @@
 # Change Log
 
 ## [1.2.5]
-*(12-01-2023)*
+*(12-02-2023)*
 
 ### Changed:
 - Stub files are now named .pyi
