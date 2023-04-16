@@ -19,111 +19,125 @@ SETTINGS_FILEPATH = os.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach.json')
 OUTPUT_FILEPATH = os.path.join(VSCODE_MOBU_TEMPDIR, 'vscode-attach-out.txt')
 
 
-def WriteOutput(String):
-    with open(OUTPUT_FILEPATH, "w+") as File:
-        File.write(str(String))
+def write_output(string):
+    if sys.version_info.major >= 3:
+        with open(OUTPUT_FILEPATH, "w+", encoding="utf-8") as file:
+            file.write(str(string))
+    else:
+        with open(OUTPUT_FILEPATH, "w+") as file:  # pylint: disable=unspecified-encoding
+            file.write(str(string))
 
-def GetVSCodeAttachSettings():
+
+def get_vscode_attach_settings():
     """ Get a dict with settings passed along from VSCode """
-    with open(SETTINGS_FILEPATH, 'r') as File:
-        return json.load(File)
+    if sys.version_info.major >= 3:
+        with open(SETTINGS_FILEPATH, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    else:
+        with open(SETTINGS_FILEPATH, 'r') as file:  # pylint: disable=unspecified-encoding
+            return json.load(file)
 
 
-def TryImport(ModuleName, Path = ""):
+def try_import(module_name, path=""):
     """ Attempt to import a module, returns the module if sucessful, else None """
-    bAppendPath = Path and Path not in sys.path and os.path.isdir(Path)
-    if bAppendPath:
-        sys.path.append(Path)
+    should_append_path = path and path not in sys.path and os.path.isdir(path)
+    if should_append_path:
+        sys.path.append(path)
 
-    Module = None
+    module = None
     try:
-        Module = importlib.import_module(ModuleName)
-    except:
+        module = importlib.import_module(module_name)
+    except Exception:
         pass
 
-    if bAppendPath:
-        sys.path.remove(Path)
+    if should_append_path:
+        sys.path.remove(path)
 
-    return Module
+    return module
 
 
-def InstallAndImportModule(PackageName, Target = "", Version = ""):
-    Module = TryImport(PackageName)
+def install_and_import_module(package_name, target="", version=""):
+    module = try_import(package_name)
 
     # Append the target path and try to import again
-    if not Module and Target not in sys.path:
-        Module = TryImport(PackageName, Target)
+    if not module and target not in sys.path:
+        module = try_import(package_name, target)
 
-    if not Module:
-        ArgTarget = ""
-        if Target:
-            ArgTarget = "--target=%s" % Target
+    if not module:
+        arg_target = ""
+        if target:
+            arg_target = "--target=%s" % target
 
-        if Version:
-            PackageName = "%s==%s" % (PackageName, Version)
+        if version:
+            package_name = "%s==%s" % (package_name, version)
 
         # Ensure pip is avaliable
-        if not TryImport("pip"):
-            if not TryImport("ensurepip"):
+        if not try_import("pip"):
+            if not try_import("ensurepip"):
                 return None
 
-            TempInstallationDir = os.path.join(VSCODE_MOBU_TEMPDIR, "TempPipInstall")
-            subprocess.check_call([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root", TempInstallationDir])
+            temp_installation_dir = os.path.join(
+                VSCODE_MOBU_TEMPDIR, "TempPipInstall")
+            subprocess.check_call(
+                [MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root", temp_installation_dir])
 
-            pipModulePath = ""
-            for Root, Directory, Files in os.walk(TempInstallationDir):
-                if "__init__.py" in Files and os.path.basename(Root) == "pip":
-                    pipModulePath = os.path.join(Root)
+            pip_module_path = ""
+            for root, directory, files in os.walk(temp_installation_dir):
+                if "__init__.py" in files and os.path.basename(root) == "pip":
+                    pip_module_path = os.path.join(root)
                     break
 
-            if not pipModulePath:
+            if not pip_module_path:
                 return None
 
-            subprocess.call([MOBU_PYTHON_EXECUTABLE, pipModulePath, "install", ArgTarget, PackageName])
+            subprocess.call(
+                [MOBU_PYTHON_EXECUTABLE, pip_module_path, "install", arg_target, package_name])
         else:
-            subprocess.call([MOBU_PYTHON_EXECUTABLE, "-m", "pip", "install", ArgTarget, PackageName])
-        
-        Module = TryImport(PackageName, Target)
-    
-    return Module
+            subprocess.call([MOBU_PYTHON_EXECUTABLE, "-m", "pip",
+                            "install", arg_target, package_name])
+
+        module = try_import(package_name, target)
+
+    return module
 
 
-def IsPortAvailable(Port):
+def is_port_available(port):
     """ Check if a port is avaliable """
-    Socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    Socket.settimeout(0.05)
-    Response = Socket.connect_ex(("127.0.0.1", Port))
-    Socket.close()
-    return Response != 0
+    socket_instance = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket_instance.settimeout(0.05)
+    response = socket_instance.connect_ex(("127.0.0.1", port))
+    socket_instance.close()
+    return response != 0
 
 
-def IsDebugServerRunning():
+def is_debug_server_running():
     """ Check if a debug server already has been started in this MB instance """
     return os.environ.get(VSCODE_DEBUG_SERVER_ENV_VAR, "") == str(True)
 
 
-def EnableDebugServer():
+def enable_debug_server():
     """ 
     Enable a debugpy server, make sure one is not already running using IsDebugServerRunning().
     """
     # Get settings
-    Settings = GetVSCodeAttachSettings()
-    Port = Settings.get("port")
-    Target = Settings.get("target")
-    Target = os.path.join(Target, "Python%s%s" % (sys.version_info.major, sys.version_info.minor))
+    settings = get_vscode_attach_settings()
+    port = settings.get("port")
+    target = settings.get("target")
+    target = os.path.join(target, "Python%s%s" % (
+        sys.version_info.major, sys.version_info.minor))
 
     # Attempt to import / install debugpy
-    Version = "1.5.1" if sys.version_info.major == 2 else None
-    debugpy = InstallAndImportModule("debugpy", Target, Version)
+    version = "1.5.1" if sys.version_info.major == 2 else None
+    debugpy = install_and_import_module("debugpy", target, version)
     if not debugpy:
         return "ERROR: Failed to import/install python module 'debugpy'"
 
-    if not IsPortAvailable(Port):
-        return "ERROR: Port %s is already in use! Consider configuring VS Code: `motionbuilder.debug.port` to use another port." % Port
+    if not is_port_available(port):
+        return "ERROR: Port %s is already in use! Consider configuring VS Code: `motionbuilder.debug.port` to use another port." % port
 
     # Start the debugpy server
-    debugpy.configure(python = MOBU_PYTHON_EXECUTABLE)
-    debugpy.listen(Port)
+    debugpy.configure(python=MOBU_PYTHON_EXECUTABLE)
+    debugpy.listen(port)
 
     os.environ[VSCODE_DEBUG_SERVER_ENV_VAR] = str(True)
 
@@ -131,11 +145,11 @@ def EnableDebugServer():
 
 
 def main():
-    if IsDebugServerRunning():
-        WriteOutput(True)
+    if is_debug_server_running():
+        write_output(True)
     else:
-        Response = EnableDebugServer()
-        WriteOutput(Response)
+        response = enable_debug_server()
+        write_output(response)
 
 
 main()
