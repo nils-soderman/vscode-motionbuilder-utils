@@ -53,7 +53,7 @@
       },
       {
         "command": "motionbuilder.browseDocumentationPython",
-        "title": "Browse Documentation (Python)",
+        "title": "Browse Documentation",
         "category": "MotionBuilder"
       },
       {

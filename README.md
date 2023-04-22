@@ -49,12 +49,14 @@ Quickly search through the official sdk documentation from within the editor, an
 
 Commands: 
 - `MotionBuilder: Browse Documentation`
-- `MotionBuilder: Browse Documentation (Python)`
-- `MotionBuilder: Browse Documentation (Examples)`
-- `MotionBuilder: Browse Documentation (C++)`
+- `MotionBuilder: Browse Examples`
 
 Keyboard Shortcut _(to browse the C++ docs)_: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
+<br>
+
+#### Note:
+Commands can be run from VS Code's command palette, `Show All Commands` _(Default shortcut: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>)_
 
 <br><br>
 
