@@ -84,6 +84,8 @@ def generate_python_toc(version: int):
         # Go through all children of the class
         parsed_page = item.ParsePage()
         for child in parsed_page.Members:
+            if child.Name.startswith("__"):  # Skip private members
+                continue
             child_url = item.RelativeUrl + child.RelativeUrl
             data[f"{item.Name}: {child.Name}"] = {FDictTags.Url: child_url}
 

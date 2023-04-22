@@ -7,8 +7,8 @@ import * as open          from 'open';
 import * as utils from '../modules/utils';
 
 
-const AUTODESK_HELP_DOMAIN = "https://help.autodesk.com/";
-const MOBU_FILE_HOSTING_URL = AUTODESK_HELP_DOMAIN + "cloudhelp/";
+const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
+const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
 
 
 /** Documentation table of content types */
@@ -26,7 +26,7 @@ const FDOCTYPE = {
  * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
  */
 function getDocumentationPageURL(version: number, relativePageURL: string) {
-    return MOBU_FILE_HOSTING_URL + version + "/ENU/" + relativePageURL;
+    return `${AUTODESK_DOCS_URL}${version}/${PYTHON_REF}${relativePageURL}`;
 }
 
 
