@@ -14,9 +14,8 @@ SITEPACKAGES_DIR = os.path.join(CURRENT_DIR, "site-packages")
 if SITEPACKAGES_DIR not in sys.path:
     sys.path.append(SITEPACKAGES_DIR)
 
-
-import pyfbsdk_stub_generator.motionbuilder_documentation_parser as docParser
-reload(docParser)
+import pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.table_of_contents as docScraper
+reload(docScraper)
 
 
 # ------------------------------------------
@@ -31,67 +30,32 @@ class FDictTags:
 #           Helper Functions
 # ------------------------------------------
 
-def GetMotionBuilderVersion():
-    import pyfbsdk
+def get_motionbuilder_version():
     """ Get the current version of MotionBuilder """
+    import pyfbsdk
     return int(2000 + pyfbsdk.FBSystem().Version / 1000)
 
 
-def GetOutputDirectory():
-    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", str(GetMotionBuilderVersion()))
+def get_output_directory():
+    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", str(get_motionbuilder_version()))
 
 
-def SaveJsonFile(Filename, Content):
-    Directory = GetOutputDirectory()
-    if not os.path.isdir(Directory):
-        os.makedirs(Directory)
+def save_json_file(filename, content):
+    directory = get_output_directory()
+    if not os.path.isdir(directory):
+        os.makedirs(directory)
 
-    Filepath = os.path.join(Directory, Filename)
-    with open(Filepath, "w+") as File:
-        json.dump(Content, File)
-
-
-# ------------------------------------------
-#                 Guide
-# ------------------------------------------
-
-def BuildGuideTocDict(CategoryPage: docParser.DocumentationCategory):
-    ReturnDict = {}
-
-    PageName = CategoryPage.Title.strip()
-    CategoryURL = CategoryPage.GetURLRelativeToENU()
-    if CategoryURL and "files/" in CategoryURL.lower():
-        ReturnDict[PageName] = {FDictTags.Url: CategoryURL}
-
-    for Page in CategoryPage.Pages:
-        PageName = Page.Title.strip()
-        PageURL = Page.GetURLRelativeToENU()
-        if len(PageName) > 1 and PageURL and "files/" in PageURL.lower():
-            ReturnDict[PageName] = {FDictTags.Url: PageURL}
-
-    for Child in CategoryPage.SubCategories:
-        if isinstance(Child, docParser.DocumentationCategory):
-            ReturnDict.update(BuildGuideTocDict(Child))
-
-    return ReturnDict
-
-
-def GenerateGuideTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-    TableOfContent = MoBuDocumentation.GetMainTableOfContents()
-    Data = {}
-    for Page in TableOfContent:
-        Data.update(BuildGuideTocDict(Page))
-
-    SaveJsonFile("guide.json", Data)
+    filepath = os.path.join(directory, filename)
+    with open(filepath, "w+", encoding="utf-8") as file:
+        json.dump(content, file)
 
 
 # ------------------------------------------
 #                Examples
 # ------------------------------------------
 
-def GenerateExamplesTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
+def generate_examples_toc(version: int):
+    MoBuDocumentation = docScraper.MotionBuilderDocumentation(version)
     PythonExamples = MoBuDocumentation.GetPythonExamples()
 
     Data = {}
@@ -99,83 +63,57 @@ def GenerateExamplesTOC(Version):
         PageName = ExamplePage.Title.strip()
         Data[PageName] = {FDictTags.Url: ExamplePage.GetURLRelativeToENU()}
 
-    SaveJsonFile("examples.json", Data)
+    save_json_file("examples.json", Data)
 
 
 # ------------------------------------------
 #                Python
 # ------------------------------------------
 
-def GeneratePythonTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-    Items = MoBuDocumentation.GetPythonSDKTableOfContents()
-    
-    Data = {}
-    for Page, Children in Items:
-        PageName: str = Page.Title.strip()
-        if PageName.startswith("_"):
+def generate_python_toc(version: int):
+    python_docs = docScraper.Documentation("pyfbsdk", version, bUseCache=True)
+
+    data = {}
+    for item in python_docs.TableOfContents:
+        data[item.Name] = {FDictTags.Url: item.RelativeUrl}
+
+        is_function = item.RelativeUrl.startswith("namespacepyfbsdk.html")
+        if is_function:
             continue
-        
-        Data[PageName] = { FDictTags.Url: Page.GetURLRelativeToENU() }
-        for ChildPage, ChildChildren in Children:
-            ChildPageName: str = ChildPage.Title.strip()
-            if ChildPageName.startswith("__") or ChildPageName == PageName:
-                continue
-            Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
-    
-    SaveJsonFile("python.json", Data)
 
+        # Go through all children of the class
+        parsed_page = item.ParsePage()
+        for child in parsed_page.Members:
+            child_url = item.RelativeUrl + child.RelativeUrl
+            data[f"{item.Name}: {child.Name}"] = {FDictTags.Url: child_url}
 
-# ------------------------------------------
-#                C++ SDK
-# ------------------------------------------
-
-def GenerateCTOC(Version):
-    MoBuDocumentation = docParser.MotionBuilderDocumentation(Version)
-    
-    Data = {}
-    for Page, Children in MoBuDocumentation.GetSDKTableOfContents():
-        PageName: str = Page.Title.strip()
-        if PageName.startswith("_") or PageName.isupper():
-            continue
-        
-        Data[PageName] = { FDictTags.Url: Page.GetURLRelativeToENU() }
-        for ChildPage, ChildChildren in Children:
-            ChildPageName: str = ChildPage.Title.strip()
-            # Skip page names with special characters (except underscores) or private names
-            if ChildPageName.startswith("__") or not re.match(r'^\w+$', ChildPageName) or ChildPageName == PageName:
-                continue
-            Data[f"{PageName}: {ChildPageName}"] = { FDictTags.Url: ChildPage.GetURLRelativeToENU() }
-    
-    SaveJsonFile("c.json", Data)
+    save_json_file("python.json", data)
 
 
 # ------------------------------------------
 #              Main functions
 # ------------------------------------------
 
-def GenerateTableOfContents(Version):
-    def _TimeIt(Function, *args):
-        StartTime = time.time()
-        Function(*args)
-        DeltaTime = time.time() - StartTime
-        print(f"'{Function.__name__}' took {DeltaTime:.2f} sec.")
-        return DeltaTime
-    
-    _TimeIt(GenerateGuideTOC, Version)
-    _TimeIt(GenerateExamplesTOC, Version)
-    _TimeIt(GeneratePythonTOC, Version)
-    _TimeIt(GenerateCTOC, Version)
+def generate_table_of_contents(version):
+    def _time_it(function, *args):
+        start_time = time.time()
+        function(*args)
+        delta_time = time.time() - start_time
+        print(f"'{function.__name__}' took {delta_time:.2f} sec.")
+        return delta_time
+
+    # _time_it(generate_examples_toc, version)
+    _time_it(generate_python_toc, version)
 
 
 def main():
-    StartTime = time.time()
+    start_time = time.time()
 
-    MotionBuilderVersion = GetMotionBuilderVersion()
-    GenerateTableOfContents(MotionBuilderVersion)
+    mobu_version = get_motionbuilder_version()
+    generate_table_of_contents(mobu_version)
 
-    DeltaTime = time.time() - StartTime
-    print(f"Generating docs took {DeltaTime:.2f} sec in total")
+    delta_time = time.time() - start_time
+    print(f"Generating docs took {delta_time:.2f} sec in total")
 
 
 if "builtin" in __name__:
