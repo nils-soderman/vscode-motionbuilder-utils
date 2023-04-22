@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.3.0]
+*(x-04-2023)*
+
+### Added: 
+- MotionBuilder 2024 stub files & documentation _(Use the new command <Insert Command> to update your stub files)_
+
+### Changed:
+- Renamed command title "Browse Documentation (Examples)" -> "Browse Examples"
+
+### Removed:
+- Removed Commands:
+    - `motionbuilder.browseDocumentation` 
+    - `motionbuilder.browseDocumentationC`
+
+___
+
 ## [1.2.5]
 *(12-02-2023)*
 

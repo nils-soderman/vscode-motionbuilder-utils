@@ -55,23 +55,13 @@
         "category": "MotionBuilder"
       },
       {
-        "command": "motionbuilder.browseDocumentation",
-        "title": "Browse Documentation",
-        "category": "MotionBuilder"
-      },
-      {
         "command": "motionbuilder.browseDocumentationPython",
         "title": "Browse Documentation (Python)",
         "category": "MotionBuilder"
       },
       {
-        "command": "motionbuilder.browseDocumentationC",
-        "title": "Browse Documentation (C++)",
-        "category": "MotionBuilder"
-      },
-      {
         "command": "motionbuilder.browseDocumentationExamples",
-        "title": "Browse Documentation (Examples)",
+        "title": "Browse Examples",
         "category": "MotionBuilder"
       }
     ],

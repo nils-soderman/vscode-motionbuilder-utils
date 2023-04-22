@@ -32,18 +32,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Documentation
 	context.subscriptions.push(
-		vscode.commands.registerCommand('motionbuilder.browseDocumentation', () => {
-			documentation.browseFullDocumentation();
-		})
-	);
-	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationPython', () => {
 			documentation.browsePython();
-		})
-	);
-	context.subscriptions.push(
-		vscode.commands.registerCommand('motionbuilder.browseDocumentationC', () => {
-			documentation.browseC();
 		})
 	);
 	context.subscriptions.push(
