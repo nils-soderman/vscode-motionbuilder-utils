@@ -71,7 +71,7 @@
       {
         "command": "motionbuilder.execute",
         "key": "ctrl+enter",
-        "when": "editorTextFocus && config.motionbuilder.execute.enableShortcut"
+        "when": "editorTextFocus"
       },
       {
         "command": "motionbuilder.browseDocumentationPython",
@@ -117,13 +117,6 @@
         "title": "Execute",
         "order": 1,
         "properties": {
-          "motionbuilder.execute.enableShortcut": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "Enable the `motionbuilder.execute` command, can be used to disable the command in spesific workspaces.",
-            "scope": "resource",
-            "order": 0
-          },
           "motionbuilder.execute.showOutput": {
             "type": "boolean",
             "default": true,

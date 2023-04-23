@@ -14,6 +14,7 @@
 
 ### Removed:
 - Removed Configurations:
+    - `motionbuilder.execute.enableShortcut`
     - `motionbuilder.stubFiles.copyOnStartup`
     - `motionbuilder.stubFiles.patchPythonPathConfig`
     - `motionbuilder.stubFiles.copyPath`
