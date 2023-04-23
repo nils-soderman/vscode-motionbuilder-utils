@@ -10,7 +10,7 @@ Editor features to assist when writing Python code for Autodesk MotionBuilder.
 
 Run code in MotionBuilder directly from within the editor
 
-![execute code in MB demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-exec.gif?raw=true)
+![execute code in MotionBuilder demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-exec.gif?raw=true)
 
 Command: `MotionBuilder: Execute` <br>
 Keyboard Shortcut: <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
@@ -19,7 +19,7 @@ The selected text will be executed, if nothing is selected the entire document w
 
 <br>
 
-## Intellisense / Auto-Completion
+## Code Completion
 
 This extention comes with improved stub files for the `pyfbsdk` module.  
 
@@ -29,13 +29,15 @@ This extention comes with improved stub files for the `pyfbsdk` module.
 * Variable type annotations
 * Readable descriptions
 
+Command _(to setup code completion)_: `MotionBuilder: Setup Code Completion` <br>
+
 <br>
 
 ## Debugging
 
 Attach VS Code to MotionBuilder to debug your scripts, set breakpoints & step through the code.
 
-![Better auto-completion demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-debug.gif?raw=true)
+![Debugging MotionBuilder Python demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-debug.gif?raw=true)
 
 Command: `MotionBuilder: Attach`
 
@@ -45,7 +47,7 @@ Command: `MotionBuilder: Attach`
 
 Quickly search through the official sdk documentation from within the editor, and open the page in a new web-browser tab.
 
-![Browse docs demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-docs.gif?raw=true)
+![Browse MotionBuilder sdk documentation demo](https://github.com/nils-soderman/vscode-motionbuilder-utils/blob/main/media/demo/demo-docs.gif?raw=true)
 
 Commands: 
 - `MotionBuilder: Browse Documentation`
