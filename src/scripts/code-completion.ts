@@ -34,7 +34,7 @@ function getSourceStubFileDirectory(version?: number) {
 
 
 /**
- * Get the absolute path to where the motionbuilder stub files should be placed. 
+ * Get the absolute path to where the motionbuilder stub files should be placed.
  * @param bEnsureExists If folder doesn't exist, create it.
  */
 function getCopyDestinationPath(bEnsureExists = true) {
@@ -54,6 +54,13 @@ function getCopyDestinationPath(bEnsureExists = true) {
  * @param bForceCopy Copy files even if they already exist & we don't have a newer version to copy 
  */
 function copyStubFiles(version: number, targetDirectory: string, bForceCopy = false) {
+    const copyFile = (sourceFilepath: string, targetFilepath: string) => {
+        if (!fs.existsSync(targetDirectory)) {
+            fs.chmodSync(targetFilepath, 0o600); // Make sure file is writeable
+        }
+        fs.copyFile(sourceFilepath, targetFilepath, () => { });
+    };
+
     const stubFilesSourceDirectory = getSourceStubFileDirectory(version);
 
     // Loop through all of the files under the 'stub-files/XXXX/' folder
@@ -64,12 +71,11 @@ function copyStubFiles(version: number, targetDirectory: string, bForceCopy = fa
         if (!bForceCopy && fs.existsSync(targetFilepath)) {
             // if file already exists, check if there if the source is a newer version
             if (fs.statSync(sourceFilepath).mtime > fs.statSync(targetFilepath).mtime) {
-                fs.chmodSync(targetFilepath, 0o600); // Make sure file is writeable
-                fs.copyFile(sourceFilepath, targetFilepath, () => { });
+                copyFile(sourceFilepath, targetFilepath);
             }
         }
         else {
-            fs.copyFile(sourceFilepath, targetFilepath, () => { });
+            copyFile(sourceFilepath, targetFilepath);
         }
     }
 }
@@ -83,6 +89,8 @@ function addPythonAnalysisPath(pathToAdd: string) {
     const pythonConfig = getPythonConfig();
     let extraPaths: Array<string> | undefined = pythonConfig.get(EXTRA_PATHS_CONFIG);
     if (extraPaths) {
+
+        // Check if the path already exists
         for (const path of extraPaths) {
             if (utils.isPathsSame(path, pathToAdd)) {
                 return;
@@ -96,17 +104,33 @@ function addPythonAnalysisPath(pathToAdd: string) {
 }
 
 
-export async function setup(bForceCopy = false) {
+export async function setup() {
     let destination = "";
+    const defaultDestination = getCopyDestinationPath();
 
-    const selected = await vscode.window.showQuickPick([".../AppData/Roaming/VSCode-MotionBuilder-Utils/stubs/", "Choose custom location..."], {
-        placeHolder: "Select where to place the stub files"
-    });
+    const title = "MotionBuilder Code Completion Setup";
+
+    const selected = await vscode.window.showQuickPick(
+        [
+            {
+                label: `$(extensions) ${defaultDestination}`,
+                index: 0
+            },
+            {
+                label: "$(folder) Choose custom location...",
+                index: 1
+            }
+        ],
+        {
+            placeHolder: "Select where to place the stub files",
+            title: `${title} (1/2)`,
+        }
+    );
     if (!selected) {
         return;
     }
 
-    if (selected === "Choose custom location...") {
+    if (selected.index === 1) {
         const result = await vscode.window.showOpenDialog({
             canSelectFiles: false,
             canSelectFolders: true,
@@ -114,9 +138,11 @@ export async function setup(bForceCopy = false) {
             openLabel: "Select"
         });
 
-        if (result && result.length > 0) {
-            destination = result[0].fsPath;
+        if (!result || result.length == 0) {
+            return;
         }
+
+        destination = result[0].fsPath;
     }
     else {
         destination = getCopyDestinationPath();
@@ -124,8 +150,12 @@ export async function setup(bForceCopy = false) {
 
     // Ask user to select a version
     // Get available versions by looking in the resources/stub-files folder
+    // TODO: Allow user to generate stub files for their own version, by pip installing pyfbsdk-stub-generator
     const availableVersions = fs.readdirSync(getSourceStubFileDirectory());
-    const selectedVersion = await vscode.window.showQuickPick(availableVersions);
+    const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
+        placeHolder: "Select the MotionBuilder version to use for code completion",
+        title: `${title} (2/2)`,
+    });
     if (!selectedVersion) {
         return;
     }
@@ -133,7 +163,7 @@ export async function setup(bForceCopy = false) {
     // Copy stub files
     // Convert string to number
     const version = parseInt(selectedVersion);
-    copyStubFiles(version, destination, bForceCopy);
+    copyStubFiles(version, destination, true);
 
     // Add path to user startup
     addPythonAnalysisPath(destination);
