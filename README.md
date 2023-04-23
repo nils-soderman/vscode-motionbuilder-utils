@@ -67,7 +67,6 @@ Commands can be run from VS Code's command palette, `Show All Commands` _(Defaul
 If you have any questions, feature requests or run into any bugs, don't hesitate to get in contact with me:
 
 [Personal Website](https://nilssoderman.com)<br>
-[Twitter](https://twitter.com/nilssoderman "@nilssoderman")<br>
 [Report an issue](https://github.com/nils-soderman/vscode-motionbuilder/issues "Report a bug on the GitHub repository")
 
 <br>
