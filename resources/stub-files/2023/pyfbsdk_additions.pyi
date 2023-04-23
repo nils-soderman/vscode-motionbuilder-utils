@@ -6,7 +6,7 @@ helps to manage region handling and UI control positioning.
 
 It also gives functions to create/destroy and manage Tools created in Python.
 """
-
+# pylint: disable=all
 import pyfbsdk
 
 FBToolList: dict
