@@ -3541,7 +3541,8 @@ class FBCharacterPoseOptions():
     This class exposes the object used to store the options for operations on object poses. Before using a [FBCharacterPoseOptions](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_character_pose_options.html "Stores options for operations on poses."), you need to specify the various members of the object. Here are the default values of a [FBCharacterPoseOptions](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_character_pose_options.html "Stores options for operations on poses.") object: mCharacterPoseKeyingMode = kFBCharacterPoseKeyingModeFullBody mModelToMatch = NULL mMirrorPlaneType = kFBMirrorPlaneTypeAuto mMirrorPlaneEquation = 1.0, 0.0, 0.0, 0.0 mMirrorPlaneTiltAngle = 90.0 mMirrorPlanePanAngle = 0.0 Flag = kFBCharacterPoseNoFlag You need to change at least the Flag value by using [SetFlag()](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_character_pose_options.html#af1e61ff84dbda2a16ac7f0eb5c05f0d4 "Set a flag value.") to set how the pose will be pasted; see the [FBCharacterPoseFlag](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_character_pose_flag.html "Character Pose Options flags.") enum for the various options."""
     mCharacterPoseKeyingMode:FBCharacterPoseKeyingMode
     """CharacterPoseKeyingMode (FullBody or BodyPart)."""
-    mMirrorPlaneEquation:property
+    mMirrorPlaneEquation:FBVector4d
+    """Mirror plane equation (used when mMirrorPlaneType = kFBMirrorPlaneTypeEquation)."""
     mMirrorPlanePanAngle:float
     """Mirror plane pan angle in degrees (used when mMirrorPlaneType = kFBMirrorPlaneTypeUser)."""
     mMirrorPlaneTiltAngle:float
@@ -4693,7 +4694,8 @@ class FBObjectPoseMirrorOptions():
     """[FBObjectPoseMirrorOptions](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_object_pose_mirror_options.html "FBObjectPoseMirrorOptions class.") class.
     
     This class exposes the object used to store the options for the mirror of an object pose."""
-    mMirrorPlaneEquation:property
+    mMirrorPlaneEquation:FBVector4d
+    """Equation of the mirror plane."""
     def ClearFlag(self):
         """Clear all flags."""
         ...
@@ -4763,7 +4765,15 @@ class FBPickInfosList():
     ```"""
     def GetCount(self)->int:...
     def GetPickedModel(self,arg2)->object:...
-    def __getitem__(self,arg2)->tuple:...
+    def __getitem__(self,Index:int)->tuple[FBModel,FBVector3d]:
+        """Returns the ith component Corresponds to python: print l[1].
+        
+        ### Parameters:
+            - Index: Index of the components to get
+        
+        ### Returns:
+        PickInfos element value. A Pick info is a tuple<FBModel, FBVector3d>"""
+        ...
     def __init__(self):...
     def __len__(self)->int:
         """Returns the number of elements.
@@ -6628,7 +6638,12 @@ class FBRenderer(FBComponent):
         ### Returns:
         number of item in the list."""
         ...
-    def GetPaneCount(self)->int:...
+    def GetPaneCount(self)->int:
+        """Return the number of panes displayed in the viewer's layout.
+        
+        ### Returns:
+        The number of panes displayed."""
+        ...
     def GetSchematicBookmarkNames(self)->FBStringList:
         """Return the bookmark names available in the Schematic View.
         
@@ -6668,7 +6683,12 @@ class FBRenderer(FBComponent):
         ### Returns:
         The pane index of the pane displaying the Schematic View, -1 if the Schematic View is currently not displayed in any pane."""
         ...
-    def GetSelectedPaneIndex(self)->int:...
+    def GetSelectedPaneIndex(self)->int:
+        """Return the pane index associated with the selected pane in the active viewer's layout.
+        
+        ### Returns:
+        The selected pane index."""
+        ...
     def GetViewingOptions(self)->FBViewingOptions:
         """Obtain the current viewing options.
         
@@ -9559,7 +9579,13 @@ class FBConstraintRelation(FBConstraint):
         ### Returns:
         The newly created function box, or NULL if the name/group combination was invalid."""
         ...
-    def GetBoxPosition(self,arg2:FBBox)->tuple:...
+    def GetBoxPosition(self,arg2:FBBox)->tuple[bool,int,int]:
+        """Get a box position in the GUI.
+        
+        Get the position of a box within the constraint layout view.
+        ### Returns:
+        A tuple containing: the result of operation (bool), X value (int), and Y value(int)"""
+        ...
     def SetAsSource(self,Source:FBBox)->FBBox:
         """Create a sender box.
         
@@ -10249,7 +10275,12 @@ class FBModel(FBBox):
         ### Returns:
         Additional Unique ColorId."""
         ...
-    def GetAdditionalUniqueColorIDCount(self)->int:...
+    def GetAdditionalUniqueColorIDCount(self)->int:
+        """Get additional unique color count.
+        
+        ### Returns:
+        Additional Unique Color Count."""
+        ...
     def GetBoundingBox(self,Min:FBVector3d,Max:FBVector3d):
         """Get the bounding box of the model.
         
@@ -10258,7 +10289,16 @@ class FBModel(FBBox):
             - Min: Output parameter. Minimum value of the bounding box.
             - Max: Output parameter. Maximum value of the bounding box."""
         ...
-    def GetHierarchyWorldMatrices(self,arg2:int,arg3:FBModelHiercharyTraverserType,arg4:FBEvaluateInfo|None=None)->list:...
+    def GetHierarchyWorldMatrices(self,arg2:int,arg3:FBModelHiercharyTraverserType,arg4:FBEvaluateInfo|None=None)->list:
+        """Computes the global transform matrices between this model and all its children (all levels).
+        
+        The hierarchy world matrix for a model is represented as a global transform matrix applied on an arbitrary root hierarchy node (this model for instance), considered as the world reference.
+        ### Parameters:
+            - MatricesArray: The matrix array (memory already allocated) to fill in with the hierarchy world matrix of all the model's children models
+            - MatricesArrayCount: The size of the matrix array
+            - HiercharyTraverserType: The hierarchy traverser type
+            - EvaluateInfo: EvaluateInfo, Take Display if none specified."""
+        ...
     def GetLocalTransformationMatrixWithGlobalRotationDoF(self,Matrix:FBMatrix,Inverse:bool=False,EvaluateInfo:FBEvaluateInfo|None=None):
         """Get the local transformation (or local inverse transformation) matrix with the global Rotation DoF values from the model.
         
@@ -14263,7 +14303,12 @@ class FBImage(FBComponent):
         ### Returns:
         Return true if the convert was successful."""
         ...
-    def GetBufferAddress(self)->int:...
+    def GetBufferAddress(self)->int:
+        """Access image data buffer, allow modifications.
+        
+        ### Returns:
+        Pointer to the image data, values ranging from 0 to 255."""
+        ...
     def Init(self,Format:FBImageFormat,Width:int,Height:int)->bool:
         """Init.
         
@@ -14272,7 +14317,15 @@ class FBImage(FBComponent):
             - Width: Image width in pixels.
             - Height: Image height in pixels."""
         ...
-    def IsCompressedTif(self,arg2:str)->bool:...
+    def IsCompressedTif(self,FileName:str)->bool:
+        """Query TIF file about its compressed status.
+        
+        ### Parameters:
+            - FileName: Full TIF file path name of the file to query.
+        
+        ### Returns:
+        Return true if the TIF file image data is compressed."""
+        ...
     def VerticalFlip(self):
         """Flip the image vertically."""
         ...
@@ -14289,7 +14342,17 @@ class FBImage(FBComponent):
         ### Returns:
         Return true if the image was successfully written on disk."""
         ...
-    def WriteToTif(self,arg2:str,arg3:str,arg4)->bool:...
+    def WriteToTif(self,FileName:str,Comments:str,Compressed:bool)->bool:
+        """Write image data to a TIF file on disk.
+        
+        ### Parameters:
+            - FileName: Full TIF file path name of the file to write.
+            - Comments: Comments appended to the TIF file.
+            - Compressed: If true, the image data in the file will be compressed.
+        
+        ### Returns:
+        Return true if the image was successfully written on disk."""
+        ...
     def __init__(self,FileName:str):
         """### Parameters:
             - FileName: Path to the image file. If pObject is not NULL, pFileName will be ignored."""
@@ -15086,7 +15149,12 @@ class FBModelVertexData(FBComponent):
         ### Returns:
         The index array size."""
         ...
-    def GetIndexArrayVBOId(self)->int:...
+    def GetIndexArrayVBOId(self)->int:
+        """Return the index array VBO Id.
+        
+        ### Returns:
+        The index array VBO Id."""
+        ...
     def GetSubPatchCount(self)->int:
         """Return the number of sub patches.
         
@@ -15205,7 +15273,16 @@ class FBModelVertexData(FBComponent):
         ### Returns:
         The number of UVs in the UV Set for the specified texture mapping mode."""
         ...
-    def GetUVSetVBOId(self,arg2:FBTextureMapping|None=None,arg3:str|None=None)->int:...
+    def GetUVSetVBOId(self,TextureMapping:FBTextureMapping=FBTextureMapping.kFBTextureMappingUV,UVSet:str|None=None)->int:
+        """Return the UV Set Buffer Object (VBO) Id for the specified texture mapping mode.
+        
+        ### Parameters:
+            - TextureMapping: Texture mapping mode to be queried.
+            - UVSet: UV Set name to be queried if pTextureMapping is kFBTextureMappingUV, otherwise ignored.
+        
+        ### Returns:
+        The UV Set VBO Id."""
+        ...
     def GetUVSetVBOOffset(self,TextureMapping:FBTextureMapping=FBTextureMapping.kFBTextureMappingUV,UVSet:str|None=None)->int:
         """Return the UV Set Buffer Object (VBO) offset for the specified texture mapping mode.
         
@@ -15270,7 +15347,18 @@ class FBModelVertexData(FBComponent):
         ### Note:
         Use [VertexArrayMappingRequest()](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_model_vertex_data.html#ad98d06b4eb79ec2b2218f03be0b13469 "Request deformed vertex array mapping on CPU.") to toggle CPU / GPU skinning per model when necessary."""
         ...
-    def GetVertexArrayVBOId(self,arg2:FBGeometryArrayID,arg3=None)->int:...
+    def GetVertexArrayVBOId(self,ArrayId:FBGeometryArrayID,AfterDeform:bool=True)->int:
+        """Return the Vertex Buffer Object (VBO) Id for the specified vertex array Id.
+        
+        ### Parameters:
+            - ArrayId: Vertex array Id type to be queried.
+            - AfterDeform: True to query the deformed position or normal vertex array (model must be deformable and deformation must occur in CPU), false to query the original vertex array.
+        
+        ### Returns:
+        The vertex array VBO Id. Deformed position & normal vertex VBO Id could be 0 if model use CPU skinning.
+        ### Note:
+        Use [VertexArrayMappingRequest()](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/classpyfbsdk_1_1_f_b_model_vertex_data.html#ad98d06b4eb79ec2b2218f03be0b13469 "Request deformed vertex array mapping on CPU.") to toggle CPU / GPU skinning per model when necessary."""
+        ...
     def GetVertexArrayVBOOffset(self,ArrayId:FBGeometryArrayID,AfterDeform:bool=True)->int:
         """Return the Vertex Buffer Object (VBO) offset for the specified vertex array Id.
         
@@ -17393,7 +17481,8 @@ class FBStoryClip(FBComponent):
     """Read Write Property: Shot clip's 'In/Out Locked' property value. True if the shot clip's In/Out properties (start/stop times of the clip local to its track) are locked, false otherwise."""
     ShowBackplate:bool
     """Read Write Property: Enable/Disable the shot backplate."""
-    ShowEmbeddedTimecode:property
+    ShowEmbeddedTimecode:bool
+    """Read Write Property: Whether to show the embedded timecode (real, if available, or custom) of the video."""
     ShowFrontplate:bool
     """Read Write Property: Enable/Disable the shot frontplate."""
     ShowGhostClipMode:FBStoryClipShowGhostMode
@@ -17475,21 +17564,7 @@ class FBStoryClip(FBComponent):
         ### Python:
         The function takes no parameter and returns a Python list. ex : lArray = lClip.GetAffectedObjects()"""
         ...
-    def GetAssignSourcesToDestinationsInfo(self)->tuple:
-        """GetAssignSourcesToDestinationsInfo.
-        
-        Returns the information about the current state of Sources to Destinations assignment. The pSrcList, pValidAnimatedSrc, pDefaultDstList & pEffectiveDstList parameters will all be of the same size, each index being related to the same index in the other lists/array. The pAvailableDstList & pValidAnimatedDst parameters can contain more items than the other lists. Both will all be of the same size, each index being related to the same index in the other list/array.
-        ### Parameters:
-            - SrcList: (C++ only) String list containing all the sources, will be filled by the method.
-            - ValidAnimatedSrc: (C++ only) Array of bool containing the animated validity state of the sources, will be filled by the method.
-            - AvailableDstList: (C++ only) String list containing all the available destinations, will be filled by the method.
-            - ValidAnimatedDst: (C++ only) Array of bool containing the animated validity state of the available destinations, will be filled by the method.
-            - DefaultDstList: (C++ only) String list containing the default destinations (contains each string item that will be put back when pressing the 'Reset' button in the UI), will be filled by the method.
-            - EffectiveDstList: (C++ only) String list containing the effective destination (destinations currently active), will be filled by the method.
-        
-        ### Returns:
-        (Python only) A tuple with 6 values: (pSrcList, pValidAnimatedSrc, pAvailableDstList, pValidAnimatedDst, pDefaultDstList, pEffectiveDstList)."""
-        ...
+    def GetAssignSourcesToDestinationsInfo(self)->tuple:...
     def GetAssignSourcesToDestinationsInfoEx(self)->tuple:...
     def GetReadOnly(self)->bool:
         """GetReadOnly Retrieves the clip read-only status.
@@ -18089,7 +18164,8 @@ class FBSystem(FBComponent):
     """Read Only Property: Construction History."""
     CurrentTake:FBTake
     """Read Write Property: Current take. [See samples: GoToNextTake.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_tasks_0c_go_to_next_take_8py-example.html)"""
-    DesktopSize:property
+    DesktopSize:FBVector2d
+    """Read Only Property: The width and height of the desktop."""
     FrameRate:float
     """Read Only Property: The frame rate of the viewer."""
     FullScreenViewer:bool
@@ -19693,7 +19769,14 @@ class FBTimeWarpManager(FBComponent):
         ### Returns:
         True if apply successfully."""
         ...
-    def DestroyTimeWarpFromTake(self,arg2:FBTake,arg3:FBAnimationNode):...
+    def DestroyTimeWarpFromTake(self,Take:FBTake,TimeWarp:FBAnimationNode):
+        """Destroy the TimeWarp in a Take, and removed from the DataSet.
+        
+        This one should be called after calling the RemoveTimeWarpFromScene method (the one with one parameter).
+        ### Parameters:
+            - Take: The Take where the TimeWarp in.
+            - TimeWarp: The TimeWarp to be Destroyed."""
+        ...
     def FindTimeWarpNickNumberGlobal(self,TimeWarp:FBAnimationNode)->int:
         """Find the Nick Number of one timewarp globally.
         
@@ -19760,7 +19843,13 @@ class FBTimeWarpManager(FBComponent):
             - EvalProp: The evaluation property connected a TimeWarp in the storing property of one take."""
         ...
     @overload
-    def RemoveTimeWarpFromScene(self,arg2:FBAnimationNode):...
+    def RemoveTimeWarpFromScene(self,TimeWarp:FBAnimationNode):
+        """Remove a TimeWarp from Scene.
+        
+        Any locked properties affected by this TimeWarp will be modified as well.
+        ### Parameters:
+            - TimeWarp: The TimeWarp to be Removed."""
+        ...
     @overload
     def RemoveTimeWarpFromScene(self,Take:FBTake,TimeWarp:FBAnimationNode):
         """Remove the given TimeWarp from scene and delete it from the given Take.
@@ -20861,7 +20950,11 @@ class FBVideoGrabOptions():
     ShowTimeCode:bool
     """Read Write Property: If true, display time code information."""
     StereoDisplayMode:property
-    StillImageCompression:property
+    StillImageCompression:int
+    """Read Write Property:
+    
+    ### **[Deprecated:](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/deprecated.html#_deprecated000001)**:
+    Use StillImageQuality instead."""
     StillImageCompressionType:int
     """Read Write Property: Compression type of image for image formats that support it. Depends on the image format. For "tif": 0 = ( no compression ), 1 = ( LZW-compression )."""
     StillImageQuality:int
@@ -21065,7 +21158,9 @@ class FBViewingOptions():
     def IsInSelectionBufferPicking(self)->bool:
         """Is the rendering routine during picking status with GL selection buffer method."""
         ...
-    def RenderCallbackPrefIndex(self)->int:...
+    def RenderCallbackPrefIndex(self)->int:
+        """Current Render callback Settings Index."""
+        ...
 class FBVisualComponent(FBComponent):
     """Visual Component base class.
     
@@ -23016,8 +23111,43 @@ def FBMessageBox(BoxTitle:str,Message:str,Button1Str:str,Button2Str:str|None=Non
     The number of the button selected.
     [See samples: GetUserValue.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_basic_operations_0c_get_user_value_8py-example.html) [AssignRigidBody.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_tasks_0c_assign_rigid_body_8py-example.html) [BatchExportCharacterAnimationTool.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_tasks_0c_batch_export_character_animation_tool_8py-example.html) [EnableGameModeOnSelectedCharacters\_Z.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_tasks_0c_enable_game_mode_on_selected_characters__z_8py-example.html) [FBMessageBox.py,](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_u_i_0c_f_b_message_box_8py-example.html) [FBMessageBoxGetUserValue.py.](https://help.autodesk.com/cloudhelp/2024/ENU/MotionBuilder-SDK/py_ref/_u_i_0c_f_b_message_box_get_user_value_8py-example.html)"""
     ...
-def FBMessageBoxGetUserValue(arg1:str,arg2:str,arg3,arg4:FBPopupInputType,arg5:str,arg6:str|None=None,arg7:str|None=None,arg8=None,arg9=None)->tuple:...
-def FBMessageBoxWithCheck(arg1:str,arg2:str,arg3:str,arg4:str,arg5:str,arg6:str,arg7,arg8=None,arg9=None)->tuple:...
+def FBMessageBoxGetUserValue(BoxTitle:str,Message:str,Value,ValueType:FBPopupInputType,Button1Str:str,Button2Str:str|None=None,Button3Str:str|None=None,arg8=None,arg9=None)->tuple[int,str]:
+    """Dialog popup box to get user input.
+    
+    Opens a message box, with up to three buttons, asking the user to enter data. The type of data to be entered is specified by the *pValue* and *pValueType* parameters.
+    
+    ### Parameters:
+        - BoxTitle: Title of message box.
+        - Message: Message to place in box.
+        - Value: Value entered by user (must correspond with pValueType).
+        - ValueType: Type of pointer specified in pValue.
+        - Button1Str: String for first button (Cannot be None).
+        - Button2Str: String for second button (None will not create a button).
+        - Button3Str: String for third button (None will not create a button).
+        - DefaultButton: Indicates the default (pre-selected) button(default=0).
+    
+    ### Returns:
+    A tuple containing the index of the button selected and the value entered by the user, if any."""
+    ...
+def FBMessageBoxWithCheck(BoxTitle:str,Message:str,Button1Str:str,Button2Str:str,Button3Str:str,CheckBoxStr:str,CheckBoxValue:bool,DefaultButton:int=0,ScrolledMessage:bool=False)->tuple[int,bool]:
+    """Dialog popup box with 'don't show again' option.
+    
+    Opens a message box containing a message and up to three buttons. Waits for the user to click a button. This dialog also gives the user the option of never showing the dialog again.
+    
+    ### Parameters:
+        - BoxTitle: Title of message box.
+        - Message: Message to place in box.
+        - Button1Str: String for first button (Cannot be None).
+        - Button2Str: String for second button (None will not create a button).
+        - Button3Str: String for third button (None will not create a button).
+        - CheckBoxStr: Check box string (Cannot be None).
+        - CheckBoxValue: Check box value.
+        - DefaultButton: Indicates the default (pre-selected) button (default is 0).
+        - ScrolledMessage: Scroll message (default is False).
+    
+    ### Returns:
+    A tuple containing the index of the button selected and the boolean value of the check box."""
+    ...
 def FBModelCube_TypeInfo()->int:...
 def FBModelMarkerOptical_TypeInfo()->int:...
 def FBModelMarker_TypeInfo()->int:...
@@ -23080,8 +23210,14 @@ def FBMult(arg1:FBMatrix,arg2:FBMatrix,arg3:FBSVector):...
 def FBNamespace_TypeInfo()->int:...
 def FBNote_TypeInfo()->int:...
 def FBNurbs_TypeInfo()->int:...
-def FBObjectGetGlobalUniqueId()->int:...
-def FBObjectGetLivingCount()->int:...
+def FBObjectGetGlobalUniqueId()->int:
+    """Get the global static object unique ID counter.
+    
+    Each new created object will be assigned this global unique ID. Object.UniqueID = GlobalUniqueID++"""
+    ...
+def FBObjectGetLivingCount()->int:
+    """Get current total living object count."""
+    ...
 def FBObjectLifeLogEnable(Enable:bool):
     """Enable object creation / deletion logging.
     
@@ -23388,7 +23524,14 @@ def FBTrace(FormatString:str):
     
     Not thread safe, as an static array is used internally."""
     ...
-def FBTraceGetLevel()->int:...
+def FBTraceGetLevel()->int:
+    """Get Global Trace Detailed Level which affects all the output targets.
+    
+    ### Returns:
+    Current global trace detailed level.
+    ### Note:
+    Python console trace current output level could be queried via pythonidelib.GetTraceLevel()."""
+    ...
 def FBTraceSetLevel(NewLevel:int):
     """Set Global Trace Detailed Level which affects all the output targets.
     
