@@ -2,20 +2,12 @@ import * as vscode from 'vscode';
 
 import * as documentation from './scripts/documentation';
 import * as mobuDebugger  from './scripts/debugger';
-import * as stubFiles 	  from './scripts/stub-files';
+import * as stubFiles 	  from './scripts/code-completion';
 import * as execute 	  from './scripts/execute-script';
 import * as utils 		  from './modules/utils';
 
 
 export function activate(context: vscode.ExtensionContext) {
-
-    // Make sure stub files are setup
-	stubFiles.setup();
-	
-	// -------------------------------
-	// 		  	  Commands
-	// -------------------------------
-
 	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
@@ -27,6 +19,14 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.attach', () => {
 			mobuDebugger.attachToMotionBuilder();
+		})
+	);
+
+	// Setup Code Completion
+	context.subscriptions.push(
+		vscode.commands.registerCommand('motionbuilder.setupCodeCompletion', () => {
+			// Setup the stub files
+			stubFiles.setup();
 		})
 	);
 

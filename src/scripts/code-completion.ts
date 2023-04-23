@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import * as path from 'path';
-import * as fs   from 'fs';
+import * as fs from 'fs';
 
 import * as utils from '../modules/utils';
 
@@ -23,35 +23,23 @@ function getPythonConfig() {
  * Get the path to where the stub files provided by this extension are located.  
  * This is the source path and no configurations should point to this path!
  * Instead the files located here can be copied elsewhere on disk.
- * @param version MotionBuilder version
+ * @param version MotionBuilder version, if version is undefined the folder containing all versions will be returned.
  */
-function getSourceStubFileDirectory(version: number) {
+function getSourceStubFileDirectory(version?: number) {
+    if (version == null) {
+        return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME);
+    }
     return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME, version.toString());
 }
 
 
 /**
  * Get the absolute path to where the motionbuilder stub files should be placed. 
- * (as defined by the configuration `motionbuilder.bystubFiles.copyPath`)
  * @param bEnsureExists If folder doesn't exist, create it.
  */
 function getCopyDestinationPath(bEnsureExists = true) {
-    // See if there is a custom path defined in the user's settings
-    const customPath: string | undefined = utils.getExtensionConfig().get("stubFiles.copyPath");
-    if (customPath) {
-        // Expand environment variables
-        const absPath = utils.ensureForwardSlashes(utils.expandPath(customPath));
-
-        // Make sure folder exists
-        if (bEnsureExists && !fs.existsSync(absPath)) {
-            fs.mkdirSync(absPath, { recursive: true });
-        }
-
-        return absPath;
-    }
-
     // No custom path was found, use the default one under AppData
-    const folderPath = utils.ensureForwardSlashes(path.join(utils.getExtensionAppdataFolder(), "mobu-sdk"));
+    const folderPath = utils.ensureForwardSlashes(path.join(utils.getExtensionAppdataFolder(), "stubs"));
     if (bEnsureExists && !fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath);
     }
@@ -65,7 +53,7 @@ function getCopyDestinationPath(bEnsureExists = true) {
  * @param targetDirectory The directory to copy the files into
  * @param bForceCopy Copy files even if they already exist & we don't have a newer version to copy 
  */
-function copyStubFiles(version:number, targetDirectory: string, bForceCopy = false) {
+function copyStubFiles(version: number, targetDirectory: string, bForceCopy = false) {
     const stubFilesSourceDirectory = getSourceStubFileDirectory(version);
 
     // Loop through all of the files under the 'stub-files/XXXX/' folder
@@ -109,16 +97,44 @@ function addPythonAnalysisPath(pathToAdd: string) {
 
 
 export async function setup(bForceCopy = false) {
-    const destination = getCopyDestinationPath();
-    
-    // Copy stub files
-    if (utils.getExtensionConfig().get("stubFiles.copyOnStartup")) {
-        const version = utils.getMotionBuilderVersion();
-        copyStubFiles(version, destination, bForceCopy);
+    let destination = "";
+
+    const selected = await vscode.window.showQuickPick([".../AppData/Roaming/VSCode-MotionBuilder-Utils/stubs/", "Choose custom location..."], {
+        placeHolder: "Select where to place the stub files"
+    });
+    if (!selected) {
+        return;
     }
 
-    // Add path to user startup
-    if (utils.getExtensionConfig().get("stubFiles.patchPythonPathConfig")) {
-        addPythonAnalysisPath(destination);
+    if (selected === "Choose custom location...") {
+        const result = await vscode.window.showOpenDialog({
+            canSelectFiles: false,
+            canSelectFolders: true,
+            canSelectMany: false,
+            openLabel: "Select"
+        });
+
+        if (result && result.length > 0) {
+            destination = result[0].fsPath;
+        }
     }
+    else {
+        destination = getCopyDestinationPath();
+    }
+
+    // Ask user to select a version
+    // Get available versions by looking in the resources/stub-files folder
+    const availableVersions = fs.readdirSync(getSourceStubFileDirectory());
+    const selectedVersion = await vscode.window.showQuickPick(availableVersions);
+    if (!selectedVersion) {
+        return;
+    }
+
+    // Copy stub files
+    // Convert string to number
+    const version = parseInt(selectedVersion);
+    copyStubFiles(version, destination, bForceCopy);
+
+    // Add path to user startup
+    addPythonAnalysisPath(destination);
 }

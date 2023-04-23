@@ -52,6 +52,11 @@
         "category": "MotionBuilder"
       },
       {
+        "command": "motionbuilder.setupCodeCompletion",
+        "title": "Setup Code Completion",
+        "category": "MotionBuilder"
+      },
+      {
         "command": "motionbuilder.browseDocumentationPython",
         "title": "Browse Documentation",
         "category": "MotionBuilder"
@@ -139,30 +144,6 @@
             "markdownDescription": "The value for the Python variable `__name__`",
             "scope": "resource",
             "order": 3
-          }
-        }
-      },
-      {
-        "title": "Stub Files",
-        "order": 2,
-        "properties": {
-          "motionbuilder.stubFiles.copyOnStartup": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "Should MotionBuilder stub files be copied to `motionbuilder.stubFiles.copyPath` on startup?",
-            "order": 0
-          },
-          "motionbuilder.stubFiles.patchPythonPathConfig": {
-            "type": "boolean",
-            "default": true,
-            "markdownDescription": "On startup, patch config `python.analysis.extraPaths` to include the path given in `motionbuilder.stubFiles.copyPath` ?",
-            "order": 1
-          },
-          "motionbuilder.stubFiles.copyPath": {
-            "type": "string",
-            "default": "%APPDATA%/VSCode-MotionBuilder-Utils/mobu-sdk/",
-            "markdownDescription": "Path where to place the motionbuilder stub files.",
-            "order": 2
           }
         }
       }

@@ -4,12 +4,19 @@
 *(x-04-2023)*
 
 ### Added: 
-- MotionBuilder 2024 stub files & documentation _(Use the new command <Insert Command> to update your stub files)_
+- MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_
+- Added command "MotionBuilder: Setup Code Completion" `motionbuilder.setupCodeCompletion` which can be used setup code completion.
 
 ### Changed:
+- Stub files are no longer automatically copied on startup.
+- Extension is now enabled when a MotionBuilder command is used, instead of on startup.
 - Renamed command title "Browse Documentation (Examples)" -> "Browse Examples"
 
 ### Removed:
+- Removed Configurations:
+    - `motionbuilder.stubFiles.copyOnStartup`
+    - `motionbuilder.stubFiles.patchPythonPathConfig`
+    - `motionbuilder.stubFiles.copyPath`
 - Removed Commands:
     - `motionbuilder.browseDocumentation` 
     - `motionbuilder.browseDocumentationC`
