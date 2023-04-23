@@ -1,6 +1,7 @@
-""" 
+"""
 Build the table of contents for the online documentation, these are located under 'resources/documentation/<version>/'
 """
+import warnings
 import time
 import json
 import sys
@@ -8,8 +9,6 @@ import os
 
 from importlib import reload
 
-import requests
-import js2py
 
 # Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
@@ -17,6 +16,9 @@ SITEPACKAGES_DIR = os.path.join(CURRENT_DIR, "site-packages")
 
 if SITEPACKAGES_DIR not in sys.path:
     sys.path.append(SITEPACKAGES_DIR)
+
+import requests
+import js2py
 
 import pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.table_of_contents as docScraper
 reload(docScraper)
@@ -60,11 +62,13 @@ def save_json_file(filename, content):
 
 def generate_examples_toc(version: int):
     examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MotionBuilder-SDK/py_ref/examples.js"
-    examples_data = requests.get(examples_toc_url, timeout = 10).text
-    if not examples_data:
-        raise RuntimeError(f"Failed to get examples table of contents from '{examples_toc_url}'")
+    examples_response = requests.get(examples_toc_url, timeout = 10)
+    if examples_response.status_code != 200:
+        # Log a warning:
+        warnings.warn(f"Failed to get examples table of contents from '{examples_toc_url}', status code: {examples_response.status_code}")
+        return
 
-    parsed_examples = js2py.eval_js(examples_data)
+    parsed_examples = js2py.eval_js(examples_response)
 
     data = {}
     for title, url, children in parsed_examples:
@@ -92,8 +96,14 @@ def generate_python_toc(version: int):
         # Go through all children of the class
         parsed_page = item.ParsePage()
         for child in parsed_page.Members:
-            if child.Name.startswith("__"):  # Skip private members
+            # Skip private members & operators
+            if child.Name.startswith(("__", "operator")):
                 continue
+
+            # Skip constructors, they are named the same as the class
+            if child.Name == item.Name:
+                continue
+
             child_url = item.RelativeUrl + child.RelativeUrl
             data[f"{item.Name}: {child.Name}"] = {FDictTags.Url: child_url}
 
@@ -113,7 +123,7 @@ def generate_table_of_contents(version):
         return delta_time
 
     _time_it(generate_examples_toc, version)
-    # _time_it(generate_python_toc, version)
+    _time_it(generate_python_toc, version)
 
 
 def main():
