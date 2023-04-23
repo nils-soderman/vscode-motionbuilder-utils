@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
-import * as htmlParser    from 'node-html-parser';
-import * as path          from 'path';
-import * as open          from 'open';
+import * as htmlParser from 'node-html-parser';
+import * as path from 'path';
+import * as open from 'open';
 
 import * as utils from '../modules/utils';
 
@@ -60,19 +60,21 @@ function openPageInBrowser(relativePageURL: string, version: number) {
  */
 function openExampleInVSCode(url: string, filename: string) {
     function handleResponse(data: string, statusCode?: number) {
-        // TODO: check statusCode
+        if (!statusCode || statusCode >= 400) {
+            vscode.window.showErrorMessage(`Failed to get: ${url}`);
+            return;
+        }
+
         const parsedHtml = htmlParser.parse(data);
+
         let content = "";
         for (const line of parsedHtml.querySelectorAll(".line")) {
-            let lineText = line.text.split(/[0-9]\s(.+)/)[1];
-            if (lineText) {
-                content += line.text.split(/[0-9]\s(.+)/)[1] + "\n";
-            }
-            else {
-                content += "\n";
-            }
+            // Remove line numbers
+            line.querySelectorAll(".lineno").forEach(e => e.remove());
+
+            content += line.text + "\n";
         }
-        
+
         const filepath = utils.saveTempFile(filename, content);
         const openPath = vscode.Uri.file(filepath);
         vscode.workspace.openTextDocument(openPath).then(doc => {

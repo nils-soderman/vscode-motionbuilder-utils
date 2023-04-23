@@ -1,11 +1,15 @@
+""" 
+Build the table of contents for the online documentation, these are located under 'resources/documentation/<version>/'
+"""
 import time
 import json
 import sys
 import os
-import re
 
 from importlib import reload
 
+import requests
+import js2py
 
 # Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
@@ -55,15 +59,19 @@ def save_json_file(filename, content):
 # ------------------------------------------
 
 def generate_examples_toc(version: int):
-    MoBuDocumentation = docScraper.MotionBuilderDocumentation(version)
-    PythonExamples = MoBuDocumentation.GetPythonExamples()
+    examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MotionBuilder-SDK/py_ref/examples.js"
+    examples_data = requests.get(examples_toc_url, timeout = 10).text
+    if not examples_data:
+        raise RuntimeError(f"Failed to get examples table of contents from '{examples_toc_url}'")
 
-    Data = {}
-    for ExamplePage in PythonExamples.values():
-        PageName = ExamplePage.Title.strip()
-        Data[PageName] = {FDictTags.Url: ExamplePage.GetURLRelativeToENU()}
+    parsed_examples = js2py.eval_js(examples_data)
 
-    save_json_file("examples.json", Data)
+    data = {}
+    for title, url, children in parsed_examples:
+        title = os.path.splitext(os.path.basename(title))[0]
+        data[title] = {FDictTags.Url: url}
+
+    save_json_file("examples.json", data)
 
 
 # ------------------------------------------
@@ -104,8 +112,8 @@ def generate_table_of_contents(version):
         print(f"'{function.__name__}' took {delta_time:.2f} sec.")
         return delta_time
 
-    # _time_it(generate_examples_toc, version)
-    _time_it(generate_python_toc, version)
+    _time_it(generate_examples_toc, version)
+    # _time_it(generate_python_toc, version)
 
 
 def main():
