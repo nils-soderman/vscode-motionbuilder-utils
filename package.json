@@ -134,7 +134,7 @@
           "motionbuilder.execute.name": {
             "type": "string",
             "default": "",
-            "markdownDescription": "The value for the Python variable `__name__`",
+            "markdownDescription": "The value for the Python variable `__name__` when executing code",
             "scope": "resource",
             "order": 3
           }
