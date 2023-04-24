@@ -38,7 +38,7 @@ export function getSelectedTextAsExecutableString() {
 
             // Get the character index of the first character that's not whitespace (on the first line that's not whitespace)
             let firstCharIndex = -1;
-            for (let i = 0; i < selection.end.line - selection.start.line; i++) {
+            for (let i = 0; i <= (selection.end.line - selection.start.line); i++) {
                 const line = activeDocumenet.lineAt(selection.start.line + i);
                 if (!line.isEmptyOrWhitespace) {
                     firstCharIndex = line.firstNonWhitespaceCharacterIndex;
@@ -110,7 +110,7 @@ function formatSelectedText(text: string, firstCharIndex: number) {
  * @returns the absolute filepath of the file
  */
 function saveFile(filepath: string, text: string) {
-    fs.writeFileSync(filepath, text, { encoding: "utf-8" });
+    fs.writeFileSync(filepath, text);
     return filepath;
 }
 

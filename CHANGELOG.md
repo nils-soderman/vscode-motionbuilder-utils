@@ -12,6 +12,9 @@
 - Extension is now enabled when a MotionBuilder command is used, instead of on startup.
 - Renamed command title "Browse Documentation (Examples)" -> "Browse Examples"
 
+### Fixed:
+- Execution of selected code failing if first line is empty and second line is indented.
+
 ### Removed:
 - Removed Configurations:
     - `motionbuilder.execute.enableShortcut`
