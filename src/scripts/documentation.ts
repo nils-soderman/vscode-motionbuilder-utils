@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import * as htmlParser from 'node-html-parser';
 import * as path from 'path';
+import * as fs from 'fs';
 import * as open from 'open';
 
 import * as utils from '../modules/utils';
@@ -13,9 +14,7 @@ const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
 
 /** Documentation table of content types */
 const FDOCTYPE = {
-    c: "c",
     example: "examples",
-    guide: "guide",
     python: "python"
 };
 
@@ -29,6 +28,17 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
     return `${AUTODESK_DOCS_URL}${version}/${PYTHON_REF}${relativePageURL}`;
 }
 
+/**
+ * Get the directory where the documentation is stored.
+ * @param version MotionBuilder version, if not specified, the base directory containing all versions is returned.
+ */
+function getDocumentationDirectory(version?: number) {
+    let directory = path.join(utils.EXTENSION_RESOURCES_DIR, "documentation");
+    if (version) {
+        directory = path.join(directory, version.toString());
+    }
+    return directory;
+}
 
 /**
  * Parse one of the generated json table of content files.
@@ -37,7 +47,7 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
  * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
  */
 function parseGeneratedDocumentationFile(type: string, version: number) {
-    const filepath = path.join(utils.EXTENSION_RESOURCES_DIR, "documentation", version.toString(), `${type}.json`);
+    const filepath = path.join(getDocumentationDirectory(version), `${type}.json`);
     return utils.readJson(filepath);
 }
 
@@ -85,30 +95,55 @@ function openExampleInVSCode(url: string, filename: string) {
     utils.getRequest(url, handleResponse);
 }
 
+function getAvailableDocumentationVersions() {
+    const documentationDir = getDocumentationDirectory();
+    return fs.readdirSync(documentationDir).map(v => parseInt(v));
+}
+
+function getClosestAvailableVersion(version: number, type: string) {
+    const versions = getAvailableDocumentationVersions();
+    if (versions.includes(version)) {
+        if (fs.existsSync(path.join(getDocumentationDirectory(version), `${type}.json`))) {
+            return version;
+        }
+    }
+
+    // Find the closest version
+    let closestVersion: number | undefined;
+    for (const v of versions) {
+        if (!fs.existsSync(path.join(getDocumentationDirectory(v), `${type}.json`))) {
+            continue;
+        }
+
+        if (!closestVersion) {
+            closestVersion = v;
+            continue;
+        }
+
+        if (Math.abs(v - version) < Math.abs(closestVersion - version)) {
+            closestVersion = v;
+        }
+    }
+
+    return closestVersion;
+}
 
 /**
  * List all pages from one or multiple documentation types, and open up the page selected by the user
- * @param types List of types to include, types should be of `FDOCTYPE`
+ * @param type List of types to include, types should be of `FDOCTYPE`
  */
-async function browseDocumentation(types: string[]) {
-    let version: number = utils.getMotionBuilderVersion();
+async function browseDocumentation(type: string) {
+    const version = getClosestAvailableVersion(utils.getMotionBuilderVersion(), type);
+    if (!version) {
+        return;
+    }
 
     let items: any = {};
     let browsingType: string = "";
-    for (const type of types) {
-        let itemsToAppend = parseGeneratedDocumentationFile(type, version);
-        if (types.length > 1) {
-            const prefix = `${type[0].toUpperCase() + type.slice(1)}`;
-            for (const [key, value] of Object.entries(itemsToAppend)) {
-                // @ts-ignore
-                items[`[${prefix}] ${key}`] = { url: value["url"], type: type };
-            }
-        }
-        else {
-            items = Object.assign(items, itemsToAppend);
-            browsingType = type;
-        }
-    }
+
+    let itemsToAppend = parseGeneratedDocumentationFile(type, version);
+    items = Object.assign(items, itemsToAppend);
+    browsingType = type;
 
     const selectableItems = Object.keys(items);
     const selection = await vscode.window.showQuickPick(selectableItems);
@@ -143,25 +178,10 @@ async function browseDocumentation(types: string[]) {
 
 
 export async function browseExamples() {
-    return browseDocumentation([FDOCTYPE.example]);
+    return browseDocumentation(FDOCTYPE.example);
 }
 
 
 export async function browsePython() {
-    return browseDocumentation([FDOCTYPE.python]);
-}
-
-
-export async function browseC() {
-    return browseDocumentation([FDOCTYPE.c]);
-}
-
-
-export async function browseGuide() {
-    return browseDocumentation([FDOCTYPE.guide]);
-}
-
-
-export async function browseFullDocumentation() {
-    return browseDocumentation([FDOCTYPE.guide, FDOCTYPE.c, FDOCTYPE.python, FDOCTYPE.example]);
+    return browseDocumentation(FDOCTYPE.python);
 }
