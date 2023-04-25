@@ -1,7 +1,7 @@
 # Change Log
 
 ## [1.3.0]
-*(x-04-2023)*
+*(25-04-2023)*
 
 ### Added: 
 - MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_
@@ -14,6 +14,7 @@
 
 ### Fixed:
 - Execution of selected code failing if first line is empty and second line is indented.
+- Browse examples not working with 2022 & 2023 due to examples missing from those documentation versions.
 
 ### Removed:
 - Removed Configurations:
