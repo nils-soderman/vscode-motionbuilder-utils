@@ -161,7 +161,7 @@ async function browseDocumentation(type: string) {
         const url = getDocumentationPageURL(version, relativePageUrl);
 
         // Construct a filename
-        let filename = selection.replace(/\//g, "_");
+        let filename = selection.replace(/[/\\]/g, "_");
         if (!filename.endsWith(".py")) {
             filename += ".py";
         }

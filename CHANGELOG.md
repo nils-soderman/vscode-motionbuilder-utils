@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.3.1]
+
+### Fixed:
+- Opening examples in the editor not working
+
+
+___
+
 ## [1.3.0]
 *(25-04-2023)*
 
