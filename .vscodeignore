@@ -17,3 +17,4 @@ test.py
 build-scripts/**
 media/demo/**
 builds/**
+.pylintrc
