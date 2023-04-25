@@ -68,11 +68,10 @@ def generate_examples_toc(version: int):
         warnings.warn(f"Failed to get examples table of contents from '{examples_toc_url}', status code: {examples_response.status_code}")
         return
 
-    parsed_examples = js2py.eval_js(examples_response)
+    parsed_examples = js2py.eval_js(examples_response.text)
 
     data = {}
     for title, url, children in parsed_examples:
-        title = os.path.splitext(os.path.basename(title))[0]
         data[title] = {FDictTags.Url: url}
 
     save_json_file("examples.json", data)
@@ -123,7 +122,7 @@ def generate_table_of_contents(version):
         return delta_time
 
     _time_it(generate_examples_toc, version)
-    _time_it(generate_python_toc, version)
+    # _time_it(generate_python_toc, version)
 
 
 def main():
