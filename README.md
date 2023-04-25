@@ -53,7 +53,7 @@ Commands:
 - `MotionBuilder: Browse Documentation`
 - `MotionBuilder: Browse Examples`
 
-Keyboard Shortcut _(to browse the C++ docs)_: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
+Keyboard Shortcut _(to browse the Python docs)_: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
 <br>
 
