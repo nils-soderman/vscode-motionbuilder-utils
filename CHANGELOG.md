@@ -1,6 +1,10 @@
 # Change Log
 
 ## [1.3.1]
+*(x-05-2023)*
+
+### Added:
+- Icons to items for when browsing the documentation
 
 ### Fixed:
 - Opening examples in the editor not working

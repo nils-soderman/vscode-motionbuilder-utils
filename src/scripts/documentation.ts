@@ -11,6 +11,10 @@ import * as utils from '../modules/utils';
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
 const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
 
+interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
+    url: string;
+}
+
 
 /** Documentation table of content types */
 const FDOCTYPE = {
@@ -46,7 +50,9 @@ function getDocumentationDirectory(version?: number) {
  * @param version MotionBuilder version 
  * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
  */
-function parseGeneratedDocumentationFile(type: string, version: number) {
+function parseGeneratedDocumentationFile(type: string, version: number): {
+    items: IDocumentationQuickPickItem[],
+} {
     const filepath = path.join(getDocumentationDirectory(version), `${type}.json`);
     return utils.readJson(filepath);
 }
@@ -138,30 +144,20 @@ async function browseDocumentation(type: string) {
         return;
     }
 
-    let items: any = {};
-    let browsingType: string = "";
-
-    let itemsToAppend = parseGeneratedDocumentationFile(type, version);
-    items = Object.assign(items, itemsToAppend);
-    browsingType = type;
-
-    const selectableItems = Object.keys(items);
-    const selection = await vscode.window.showQuickPick(selectableItems);
+    const data = parseGeneratedDocumentationFile(type, version);
+    const selection = await vscode.window.showQuickPick(data.items);
     if (!selection) {
         return;
     }
 
-    const relativePageUrl = items[selection]["url"];
-    if (!browsingType) {
-        browsingType = items[selection]["type"];
-    }
+    const relativePageUrl = selection.url;
 
-    if (browsingType == FDOCTYPE.example && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
+    if (type == FDOCTYPE.example && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
         const url = getDocumentationPageURL(version, relativePageUrl);
 
         // Construct a filename
-        let filename = selection.replace(/[/\\]/g, "_");
+        let filename = selection.label.replace(/[/\\]/g, "_");
         if (!filename.endsWith(".py")) {
             filename += ".py";
         }
