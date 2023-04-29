@@ -4,7 +4,7 @@
 *(29-04-2023)*
 
 ### Added:
-- Icons to items for when browsing the documentation
+- Icons to items when browsing the documentation
 
 ### Fixed:
 - Opening examples in the editor not working
