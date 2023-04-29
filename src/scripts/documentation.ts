@@ -138,21 +138,25 @@ function getClosestAvailableVersion(version: number, type: string) {
  * List all pages from one or multiple documentation types, and open up the page selected by the user
  * @param type List of types to include, types should be of `FDOCTYPE`
  */
-async function browseDocumentation(type: string) {
+async function browseDocumentation(type: string, bExampels = false) {
     const version = getClosestAvailableVersion(utils.getMotionBuilderVersion(), type);
     if (!version) {
         return;
     }
+    
+    const placeHolder = bExampels ? `Search the MotionBuilder ${version} examples` : `Search the MotionBuilder ${version} ${type} documentation`;
 
     const data = parseGeneratedDocumentationFile(type, version);
-    const selection = await vscode.window.showQuickPick(data.items);
+    const selection = await vscode.window.showQuickPick(data.items, {
+        placeHolder
+    });
     if (!selection) {
         return;
     }
 
     const relativePageUrl = selection.url;
 
-    if (type == FDOCTYPE.example && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
+    if (bExampels && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
         // Open in VSCode
         const url = getDocumentationPageURL(version, relativePageUrl);
 
@@ -174,7 +178,7 @@ async function browseDocumentation(type: string) {
 
 
 export async function browseExamples() {
-    return browseDocumentation(FDOCTYPE.example);
+    return browseDocumentation(FDOCTYPE.example, true);
 }
 
 
