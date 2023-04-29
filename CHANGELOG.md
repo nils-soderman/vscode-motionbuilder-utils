@@ -1,7 +1,7 @@
 # Change Log
 
 ## [1.3.1]
-*(x-05-2023)*
+*(29-04-2023)*
 
 ### Added:
 - Icons to items for when browsing the documentation
