@@ -11,6 +11,10 @@ def GetEventSource(source, eventtype) -> Any:
 def NotifyEventSource(source, event):
     ...
 class EventSource(object):
+    control: pyfbsdk.FBPlug
+    eventtype: pyfbsdk.FBEventName
+    callbacks: list[pyfbsdk.FBCallback]
+    
     def __init__(self, control, eventtype):
         ...
     def Add(self, toCall: Callable):
