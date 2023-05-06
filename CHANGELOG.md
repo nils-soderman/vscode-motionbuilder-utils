@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.2]
+*(x-x-2023)*
+
+### Changed:
+- Updated stub files
+
+
 ## [1.3.1]
 *(29-04-2023)*
 
