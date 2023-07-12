@@ -4,6 +4,9 @@ export class MotionBuilderSocket {
     private socket?: net.Socket;
     private isReady = false;
 
+    private commandQueue: { command: string, resolve: (value: string) => void, reject: (error: Error) => void }[] = [];
+    private isExecuting = false;
+
     constructor(
         public readonly ip = '127.0.0.1',
         public readonly port = 4242
@@ -22,8 +25,13 @@ export class MotionBuilderSocket {
         this.socket?.destroy();
     }
 
+
     private onClose() {
         this.socket = undefined;
+    }
+
+    public on(event: 'close', listener: (...args: any[]) => void) {
+        this.socket?.on(event, listener);
     }
 
     /**
@@ -62,20 +70,41 @@ export class MotionBuilderSocket {
 
     /**
      * Write to the socket and wait for a response.
-     * Consider using exec() instead if you want to run a command.
      * @param buffer The data to write to the socket
      * @returns 
      */
-    write(buffer: string | Uint8Array): Promise<string> {
+    private write(buffer: string | Uint8Array): Promise<string> {
         return new Promise((resolve, reject) => {
             if (!this.socket || !this.isReady) {
                 reject(new Error('Socket is not ready, you must wait for the open promise to resolve.'));
                 return;
             }
 
-            this.socket.write(buffer, (error) => {
+            const commandPromise = { command: buffer.toString(), resolve, reject };
+            this.commandQueue.push(commandPromise);
+
+            if (!this.isExecuting) {
+                this.executeNextCommand().catch(console.error);
+            }
+        });
+    }
+
+    private executeNextCommand(): Promise<void> {
+        return new Promise((resolve) => {
+            if (this.commandQueue.length === 0) {
+                this.isExecuting = false;
+                resolve();
+                return;
+            }
+
+            this.isExecuting = true;
+
+            const { command, resolve: commandResolve, reject: commandReject } = this.commandQueue.shift()!;
+
+            this.socket?.write(command, (error) => {
                 if (error) {
-                    reject(error);
+                    commandReject(error);
+                    this.executeNextCommand().catch(console.error);
                     return;
                 }
             });
@@ -86,7 +115,8 @@ export class MotionBuilderSocket {
 
                 if (recivedBuffer.trimEnd().endsWith('>>>')) {
                     this.socket?.removeAllListeners('data');
-                    resolve(recivedBuffer);
+                    commandResolve(recivedBuffer);
+                    this.executeNextCommand().catch(console.error);
                 }
             });
         });
@@ -98,10 +128,6 @@ export class MotionBuilderSocket {
      * @returns Python output such as print statements or errors
      */
     exec(command: string): Promise<string> {
-        if (!command.endsWith('\n')) {
-            command += '\n';
-        }
-
         return this.write(command);
     }
 }
