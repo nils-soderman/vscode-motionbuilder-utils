@@ -1,14 +1,17 @@
 # Change Log
 
-## [1.3.2]
-*(x-x-2023)*
+## [1.4.0] - 2023-XX-XX
 
 ### Changed:
 - Updated stub files
+- Rewrote how data is handled between the extension and MotionBuilder.
+  motionbuilder-socket is now a standalone npm module that can be used in other projects if needed.
+
+### Fixed:
+- Running multiple commands too fast resulting in an error.
 
 
-## [1.3.1]
-*(29-04-2023)*
+## [1.3.1] - 2023-04-29
 
 ### Added:
 - Icons to items when browsing the documentation
@@ -17,13 +20,10 @@
 - Opening examples in the editor not working
 
 
-___
-
-## [1.3.0]
-*(25-04-2023)*
+## [1.3.0] - 2023-04-25
 
 ### Added: 
-- MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_
+- MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_ 
 - Added command "MotionBuilder: Setup Code Completion" `motionbuilder.setupCodeCompletion` which can be used setup code completion.
 
 ### Changed:
@@ -45,29 +45,23 @@ ___
     - `motionbuilder.browseDocumentation` 
     - `motionbuilder.browseDocumentationC`
 
-___
 
-## [1.2.5]
-*(12-02-2023)*
+## [1.2.5] - 2023-02-12
 
 ### Changed:
 - Stub files are now named .pyi
 - Improved pyfbsdk stub file
 - "MotionBuilder: Browse Documentation (Python)" is now the default command mapped to <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
-___
 
-## [1.2.4]
-*(28-11-2022)*
+## [1.2.4] - 2022-11-28
 
 ### Fixed:
 - Encode/decode text sent between MotionBuilder & VS Code using UTF-8
 - Folder settings beeing ignored
 
-___
 
-## [1.2.3]
-*(02-10-2022)*
+## [1.2.3] - 2022-10-02
 
 ### Added: 
 - Added configuration `motionbuilder.execute.enableShortcut` which can be used to disable the `motionbuilder.execute` shortcut in spesific workspaces
@@ -80,21 +74,17 @@ ___
 ### Fixed:
 - Mac & Linux support for opening documentation in web-browser
 
-___
 
-## [1.2.2]
-*(18-09-2022)*
+## [1.2.2] - 2022-09-18
 
 - Fixed bug when executing selected indented code
 
 - Updated the scope of most of the configurations to be at "resource" level
 
-___
 
-## [1.2.1]
-*(25-07-2022)*
+## [1.2.1] - 2022-07-25
 
-- Fixed characters missing from the output when printing large amounts of data _(MotionBuilder 2022+)_
+- Fixed characters missing from the output when printing large amounts of data _(MotionBuilder 2022+)_ 
 
 - Fixed output not appearing in the output console in MB 2023 if a "Python Editor" window hadn't been spawned
 
@@ -115,10 +105,8 @@ ___
 
 - pyfbsdk stub file improvements
 
-___
 
-## [1.2.0]
-*(17-04-2022)*
+## [1.2.0] - 2022-04-17
 
 **Important: Some configurations has been renamed!**
 
@@ -142,10 +130,8 @@ If you've changed the default values of these properties your settings will have
 
 - This extension is now released under the open-source MIT license.
 
-___
 
-## [1.1.0]
-*(13-03-2022)*
+## [1.1.0] - 2022-03-13
 
 - Added command & hotkey `motionbuilder.attach` that starts a debug session and attaches VS Code to MotionBuilder.
 
@@ -162,10 +148,8 @@ ___
     
     - Added a few missing property typehints & docstrings
 
-___
 
-## [1.0.1]
-*(27-02-2022)*
+## [1.0.1] - 2022-02-27
 
 - <kbd>Ctrl</kbd> + <kbd>F1</kbd> now browses the C++ docs by default, instead of python.
 
@@ -173,33 +157,25 @@ ___
 
 - Fixed some examples not opening in the editor
 
-___
 
-## [1.0.0]
-*(14-02-2022)*
+## [1.0.0] - 2022-02-14
 
 - Re-wrote the pyfbsdk stub file generator. The stub file should now be feature complete with all of the contents from pyfbsdk, including overload functions.
 
-___
 
-## [0.1.5]
-*(06-01-2022)*
+## [0.1.5] - 2022-01-06
 
 - Improved the pyfbsdk stub file _(for improved auto-completion & linting)_
 
 - Browsing documentation now uses the MotionBuilder 2022 documentation
 
-___
 
-## [0.1.4]
-*(06-12-2021)*
+## [0.1.4] - 2021-12-06
 
 - Fixed bug when executing selected indented code
 
-___
 
-## [0.1.3]
-*(06-12-2021)*
+## [0.1.3] - 2021-12-06
 
 - Selected indented code can now be executed
 
@@ -209,20 +185,16 @@ ___
 
 - Make sure sdk files are writeable before copying
 
-___
 
-## [0.1.2]
-*(01-12-2021)*
+## [0.1.2] - 2021-12-01
 
 - AutoCompletion SDK files are now copied to APPDATA by default.
 
 - Added Configuration:
     - `motionbuilder.autocompletion.sdkCopyPath`: Location where to copy the MoBu SDK autocompletion files
 
-___
 
-## [0.1.1]
-*(25-11-2021)*
+## [0.1.1] - 2021-11-25
 
 - Fixed \_\_file\_\_ variable not beeing set when executing code
 
@@ -243,9 +215,7 @@ ___
 
     - `motionbuilder.autocompletion.patchOnActivated`: Add auto-completion path to `python.analysis.extraPaths` when extention is activated.
 
-___
 
-## [0.1.0] 
-*(21-11-2021)*
+## [0.1.0] - 2021-11-21
 
 - Initial release
