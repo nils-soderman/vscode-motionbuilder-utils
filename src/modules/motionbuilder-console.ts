@@ -19,7 +19,6 @@ async function getSocket() {
 
     try {
         await socket.open();
-        gSocket = socket;
     }
     catch (e: any) { // TODO: Don't use type any
         if (e.code === "ECONNREFUSED") {
@@ -32,7 +31,14 @@ async function getSocket() {
         else {
             vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.message}`);
         }
+
+        return null;
     }
+
+    socket.on("close", () => {
+        gSocket = null;
+    });
+    gSocket = socket;
 
     return gSocket;
 }

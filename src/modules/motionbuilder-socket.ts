@@ -14,14 +14,6 @@ export class MotionBuilderSocket {
     }
 
     private onError(e: Error) {
-        if (e.message.includes("ECONNRESET")) {
-            // Connection interupted. MotionBuilder was most likely closed
-        }
-
-        else {
-            // Something has gone wrong
-        }
-
         this.socket?.destroy();
     }
 
@@ -44,45 +36,39 @@ export class MotionBuilderSocket {
                 return;
             }
 
-            const commandPromise = { command: buffer.toString(), resolve, reject };
-            this.writeQueue.push(commandPromise);
+            this.writeQueue.push({ command: buffer.toString(), resolve, reject });
 
             if (!this.isExecuting) {
-                this.executeNextCommand().catch(console.error);
+                this.executeNextCommand();
             }
         });
     }
 
-    private executeNextCommand(): Promise<void> {
-        return new Promise((resolve) => {
-            if (this.writeQueue.length === 0) {
-                this.isExecuting = false;
-                resolve();
+    private executeNextCommand() {
+        const command = this.writeQueue.shift();
+        if (!command || !this.isOpen()) {
+            this.isExecuting = false;
+            return;
+        }
+        this.isExecuting = true;
+
+        this.socket?.write(command.command, (error) => {
+            if (error) {
+                command.reject(error);
+                this.executeNextCommand();
                 return;
             }
+        });
 
-            this.isExecuting = true;
+        let recivedBuffer = '';
+        this.socket?.on('data', (chunk: Buffer) => {
+            recivedBuffer += chunk.toString('utf8');
 
-            const { command, resolve: commandResolve, reject: commandReject } = this.writeQueue.shift()!;
-
-            this.socket?.write(command, (error) => {
-                if (error) {
-                    commandReject(error);
-                    this.executeNextCommand().catch(console.error);
-                    return;
-                }
-            });
-
-            let recivedBuffer = '';
-            this.socket?.on('data', (chunk: Buffer) => {
-                recivedBuffer += chunk.toString('utf8');
-
-                if (recivedBuffer.trimEnd().endsWith('>>>')) {
-                    this.socket?.removeAllListeners('data');
-                    commandResolve(recivedBuffer);
-                    this.executeNextCommand().catch(console.error);
-                }
-            });
+            if (recivedBuffer.trimEnd().endsWith('>>>')) {
+                this.socket?.removeAllListeners('data');
+                command.resolve(recivedBuffer);
+                this.executeNextCommand();
+            }
         });
     }
 
