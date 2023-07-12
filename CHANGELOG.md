@@ -4,11 +4,12 @@
 
 ### Changed:
 - Updated stub files
-- Rewrote how data is handled between the extension and MotionBuilder.
-  motionbuilder-socket is now a standalone npm module that can be used in other projects if needed.
+- If trying to attach without `debugpy` being installed, the extension will now ask before installing the module.
+- How data is handled between the extension and MotionBuilder.
+  - motionbuilder-socket is now a standalone npm module that can be used in other projects if needed.
 
 ### Fixed:
-- Running multiple commands too fast resulting in an error.
+- Running multiple commands too fast resulting in an error or output not correctly shown.
 
 
 ## [1.3.1] - 2023-04-29
