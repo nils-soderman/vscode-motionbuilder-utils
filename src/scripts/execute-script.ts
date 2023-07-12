@@ -65,7 +65,7 @@ function handleResponse(response: string, id: string) {
 
     // Format response
     response = response.replace(/\n\r/g, "\n");
-    response = `${response}>>>`;
+    response = `${response}\n>>>`;
 
     if (outputChannel) {
         // Add the message to the output channel
