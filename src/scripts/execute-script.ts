@@ -61,11 +61,11 @@ function handleResponse(response: string, id: string) {
     if (fs.existsSync(outputFilepath)) {
         response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
         fs.unlink(outputFilepath, () => { });  // Delete the file
-        response = `${response}>>>`;
     }
 
     // Format response
     response = response.replace(/\n\r/g, "\n");
+    response = `${response}>>>`;
 
     if (outputChannel) {
         // Add the message to the output channel
