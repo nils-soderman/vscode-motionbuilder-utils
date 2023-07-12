@@ -1,99 +1,85 @@
 import * as vscode from 'vscode';
 
-import * as net from 'net';
-
 import * as extensionWiki from './extension-wiki';
-
-const IP = '127.0.0.1';
-const PORT = 4242;
-
-let gSocket: net.Socket | undefined;
-let gOnDataRecived: Function;
+import { MotionBuilderSocket } from './motionbuilder-socket';
 
 
+let gSocket: MotionBuilderSocket | null = null;
+
+/**
+ * Get a global socket connection to MotionBuilder
+ */
 async function getSocket() {
-    if (gSocket !== undefined) {
+    if (gSocket) {
         // TODO: Validate connection, may not be needed. As if we drop connection we now set gSocket to be undefined
         return gSocket;
     }
 
-    gSocket = net.createConnection(PORT, IP);
+    const socket = new MotionBuilderSocket();
 
-    gSocket.on('error', (e) => {
-        if (e.message.includes("ECONNRESET")) {
-            // Connection interupted. MotionBuilder was most likely closed
-        }
-
-        else if (e.message.includes("ECONNREFUSED")) {
-            // Failed to connect
+    try {
+        await socket.open();
+        gSocket = socket;
+    }
+    catch (e: any) { // TODO: Don't use type any
+        if (e.code === "ECONNREFUSED") {
             vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((value?: string) => {
                 if (value === "Help") {
                     extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
                 }
             });
         }
-
         else {
-            // Something has gone wrong, print error
-            // TODO: option to show a more detailed error log
-            vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.stack}`);
-            console.log(e.stack);
+            vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.message}`);
         }
-
-        if (gSocket) {
-            gSocket.destroy();
-        }
-    });
-
-    let bSocketEstablished = false;
-
-    gSocket.on("data", function (buffer) {
-        let dataRecived = buffer.toString("utf8");
-
-        if (!bSocketEstablished) {
-            if (!dataRecived.includes(">>>")) {
-                return;
-            }
-
-            bSocketEstablished = true;
-            dataRecived = dataRecived.split(">>>", 1)[1];
-            if (!dataRecived) {
-                return;
-            }
-
-        }
-
-        if (gOnDataRecived != undefined) {
-            dataRecived = dataRecived.trim();
-            gOnDataRecived(dataRecived);
-        }
-    });
-
-    gSocket.on('close', (h: any | undefined) => {
-        gSocket = undefined;
-    });
+    }
 
     return gSocket;
 }
 
 
+
 /**
- * 
+ * Run a command in MotionBuilder
  * @param command The command to run
+ * @returns Python output e.g: print statements or errors
  */
-export async function runCommand(command: string, callback: Function) {
+export async function runCommand(command: string) {
     const socket = await getSocket();
     if (!socket) {
-        return;
+        return null;
     }
 
-    gOnDataRecived = callback;
-
-    // Send the commmand
-    socket.write(command);
+    const data = await socket.exec(command);
+    return data;
 }
 
 
-export async function executeFile(filepath: string, callback: Function) {
-    runCommand(`with open(r'${filepath}','r')as f:exec(f.read())\n`, callback);
+/**
+ * Execute a file in MotionBuilder
+ * @param filepath Absolute path to the file
+ * @param variables Global variables to set before executing the file
+ * @returns Python output e.g: print statements or errors
+ */
+export async function executeFile(filepath: string, variables = {}) {
+    // Construct a string with all of the global variables, e.g: "x=1;y='Hello';"
+    let variableString = "";
+
+    for (const [key, value] of Object.entries(variables)) {
+        let safeValueStr = value;
+        if (typeof value === "string") {
+            // Append single quotes ' to the start & end of the value
+            safeValueStr = `r'${value}'`;
+        } else if (typeof value === "boolean") {
+            // Convert boolean to string
+            safeValueStr = value ? "True" : "False";
+        }
+
+        variableString += `${key}=${safeValueStr};`;
+    }
+
+    // const command = `with open(r'${filepath}','r')as f:exec(f.read())\n`;
+    const command = `${variableString}f=open(r'${filepath}','r');exec(f.read());f.close()\n`;
+
+    return runCommand(command);
 }

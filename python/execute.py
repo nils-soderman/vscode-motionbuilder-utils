@@ -5,25 +5,16 @@ Module for executing python code in MotionBuilder
 import contextlib
 import traceback
 import tempfile
-import json
 import sys
 import os
 import re
 
 
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
-OUTPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, "vscode-exec-out.txt")
-INPUT_FILEPATH = os.path.join(TEMP_FOLDERPATH, 'vscode-exec.json')
 
 
-def read_input_data():
-    """ Read input data that was written with typescript (`writeDataFile()` in `execute-script.ts`) """
-    if sys.version_info.major >= 3:
-        with open(INPUT_FILEPATH, 'r', encoding='utf-8') as settings_file:
-            return json.load(settings_file)
-    else:
-        with open(INPUT_FILEPATH, 'r') as settings_file:  # pylint: disable=unspecified-encoding
-            return json.load(settings_file)
+def get_output_filepath(command_id):
+    return os.path.join(TEMP_FOLDERPATH, "exec-out-%s.txt" % command_id)
 
 
 def get_exec_globals():
@@ -48,7 +39,7 @@ def execute_code(code, filename, vs_code_is_debugging):
             if re.findall(r'file ".*", line \d*, in ', line.lower()):
                 components = line.split(",", 2)
                 line_number = "".join(x for x in components[1] if x.isdigit())
-                components[0] = '%s:%s"' %(components[0][:-1], line_number)
+                components[0] = '%s:%s"' % (components[0][:-1], line_number)
                 line = ",".join(components)
 
             traceback_lines.append(line)
@@ -62,38 +53,37 @@ def execute_code(code, filename, vs_code_is_debugging):
 
 
 def main():
-    vs_code_data = read_input_data()
-    vscode_debugging = vs_code_data.get("is_debugging", False)
-    additional_print_str = vs_code_data.get("additionalPrint", "")
+    filepath = globals().get("vsc_file")
+    filename = globals().get("vsc_filename")
+    command_id = globals().get("vsc_id")
+    name = globals().get("vsc_name", None)
+    vscode_debugging = globals().get("vsc_is_debugging", False)
 
     # Set some global variables
     exec_globals = get_exec_globals()
 
-    target_filepath = vs_code_data.get("__file__", "")
-    exec_globals["__file__"] = target_filepath
-    if "__name__" in vs_code_data and vs_code_data["__name__"]:
-        exec_globals["__name__"] = vs_code_data["__name__"]
+    exec_globals["__file__"] = filename
+
+    if name:
+        exec_globals["__name__"] = name
     elif "__name__" in exec_globals:
         exec_globals.pop("__name__")
 
     # Read the code file and execute it
-    if sys.version_info.major >= 3:
-        # Python 3
-        with open(vs_code_data["file"], 'r', encoding='utf-8') as vs_code_in_file:
+    if sys.version_info.major >= 3:  # Python 3
+        with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
             if not vscode_debugging:
                 # Re-direct the output through a text file
-                with open(OUTPUT_FILEPATH, 'w', encoding="utf-8") as vs_code_out_file, contextlib.redirect_stdout(vs_code_out_file):
-                    execute_code(vs_code_in_file.read(), target_filepath, vscode_debugging)
+                output_filepath = get_output_filepath(command_id)
+                with open(output_filepath, 'w', encoding="utf-8") as vs_code_out_file, contextlib.redirect_stdout(vs_code_out_file):
+                    execute_code(vs_code_in_file.read(), filename, vscode_debugging)
             else:
-                execute_code(vs_code_in_file.read(), target_filepath, vscode_debugging)
+                execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+                print(">>>")
 
-    else:
-        # Python 2
-        with open(vs_code_data["file"], 'r') as vs_code_in_file:  # pylint: disable=unspecified-encoding
-            execute_code(vs_code_in_file.read(), target_filepath, vscode_debugging)
-
-    if additional_print_str:
-        print(additional_print_str)
+    else:  # Python 2
+        with open(filepath, 'r') as vs_code_in_file:  # pylint: disable=unspecified-encoding
+            execute_code(vs_code_in_file.read(), filename, vscode_debugging)
 
 
 main()

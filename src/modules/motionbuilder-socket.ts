@@ -47,7 +47,7 @@ export class MotionBuilderSocket {
                 }
             });
 
-            this.socket?.on('error', (error: any) => {
+            this.socket?.once('error', (error: any) => {
                 reject(error);
             });
         });
