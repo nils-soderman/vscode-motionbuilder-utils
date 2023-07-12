@@ -66,8 +66,8 @@ export class MotionBuilderSocket {
 
             if (recivedBuffer.trimEnd().endsWith('>>>')) {
                 this.socket?.removeAllListeners('data');
-                const data = recivedBuffer.trimEnd().slice(0, -3); // Remove the >>> from the end
-                command.resolve(data);
+                const outputData = recivedBuffer.trimEnd().slice(0, -3).trimEnd(); // Remove the >>> & trailing whitespace
+                command.resolve(outputData);
                 this.executeNextCommand();
             }
         });

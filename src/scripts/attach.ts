@@ -1,63 +1,111 @@
 import * as vscode from 'vscode';
 
 import * as path from 'path';
-import * as fs   from 'fs';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
-import * as utils                from '../modules/utils';
+import * as utils from '../modules/utils';
 
+function getDebugScriptPath(filename: string) {
+    return path.join(utils.EXTENSION_PYTHON_DIR, "debug", filename);
+}
 
-const TEMP_DATA_FILENAME = "vscode-attach.json";
-const TEMP_OUTPUT_FILENAME = "vscode-attach-out.txt";
-const START_DEBUG_SERVER_FILENAME = "start_debug_server.py";
+async function isDebugpyInstalled() {
+    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
 
-let gLastDebugAttempt: number = 0;
+    const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
+    const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
+    return response == "True";
+}
 
-function writeDataFile(port: number, targetInstallDir: String) {
-    let data: any = {};
-    data["port"] = port;
-    data["target"] = targetInstallDir;
-    utils.saveTempFile(TEMP_DATA_FILENAME, JSON.stringify(data));
+async function installDebugpy() {
+    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
+    const scriptPath = getDebugScriptPath("install_debugpy.py");
+    const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
+
+    return response == "True";
+}
+
+async function startDebugpyServer(port: number) {
+    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
+    const scriptPath = getDebugScriptPath("start_debugpy_server.py");
+    const response = await motionBuilderConsole.executeFile(scriptPath, { port: port, ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
+
+    return response == "True";
+}
+
+async function getCurrentDebugPort() {
+    const scriptPath = getDebugScriptPath("get_current_debug_port.py");
+    const response = await motionBuilderConsole.executeFile(scriptPath);
+    if (response && response != "None") {
+        return parseInt(response);
+    }
 }
 
 
-function readResponse() {
-    const outputFilepath = path.join(utils.getExtentionTempDir(), TEMP_OUTPUT_FILENAME);
-    if (fs.existsSync(outputFilepath)) {
-        const response = fs.readFileSync(outputFilepath).toString("utf8");
-        return response;
+async function getWantedPort() {
+    const extConfig = utils.getExtensionConfig();
+    const port: number | undefined = extConfig.get("debug.port");
+    if (!port) {
+        return null;
     }
-    return "";
+
+    if (await utils.isPortAvailable(port)) {
+        return port;
+    }
+
+    if (extConfig.get("debug.autoPort")) {
+        const freePort = await utils.findFreePort(port, 100);
+        if (freePort) {
+            return freePort;
+        }
+
+        vscode.window.showErrorMessage(`Failed to find a free port between ${port} and ${port + 100}. Please change the port in the extension settings`);
+    }
+    else {
+        vscode.window.showErrorMessage(`Port ${port} is already in use. Please change the port in the extension settings or enable 'Auto Port'`);
+    }
+
+    return null;
 }
 
 
-function serverStartCallback(data: string) {
-    const currentTime = new Date().getTime();
-    const deltaTime = (currentTime - gLastDebugAttempt) / 1000;
-    gLastDebugAttempt = currentTime;
-
-    // If a call is made within ~half a second, Then this is the same
-    // call, just more data beeing passed along from the MB python server
-    if (deltaTime < 0.5) {
-        return;
-    }
-
+export async function attachToMotionBuilder() {
     if (utils.isDebuggingMotionBuilder()) {
         return;
     }
 
-    const response = readResponse();
+    // Make sure debugpy is installed
+    if (!await isDebugpyInstalled()) {
+        const selectedInstallOption = await vscode.window.showWarningMessage(
+            "Python module 'debugpy' is required for debugging",
+            "Install"
+        );
 
-    if (response.startsWith("ERROR:")) {
-        let message = response.replace("ERROR:", "").replace(">>>", "").trim();
-        vscode.window.showErrorMessage(message);
-        return;
+        if (selectedInstallOption == "Install") {
+            if (!await installDebugpy()) {
+                vscode.window.showErrorMessage("Failed to install 'debugpy'");
+                return;
+            }
+        }
+        else {
+            return;
+        }
+
     }
 
-    const port: number | undefined = utils.getExtensionConfig().get("debug.port");
+    let port = await getCurrentDebugPort();
+    if (!port) {
+        const port = await getWantedPort();
+        if (!port) {
+            return;
+        }
 
-    // Start debugging
+        if (!await startDebugpyServer(port)) {
+            return;
+        }
+    }
+
     vscode.debug.startDebugging(undefined, {
         "name": utils.DEBUG_SESSION_NAME,
         "type": "python",
@@ -65,21 +113,4 @@ function serverStartCallback(data: string) {
         "port": port,
         "host": "localhost",
     });
-}
-
-
-export function attachToMotionBuilder() {
-    const port: number | undefined = utils.getExtensionConfig().get("debug.port");
-    if (!port) {
-        return;
-    }
-
-    if (utils.isDebuggingMotionBuilder()) {
-        return;
-    }
-
-    // Start the MB debug server
-    writeDataFile(port, utils.getExtensionPythonPackagesDir(false));
-    const startDebugPythonFilepath = path.join(utils.EXTENSION_PYTHON_DIR, START_DEBUG_SERVER_FILENAME);
-    motionBuilderConsole.executeFile(startDebugPythonFilepath, serverStartCallback);
 }

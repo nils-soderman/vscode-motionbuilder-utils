@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import * as tcpPortUsed from 'tcp-port-used';
 import * as https from 'https';
 import * as path  from 'path';
 import * as os    from 'os';
@@ -183,4 +184,38 @@ export function getRequest(url: string, callback?: Function) {
             }
         });
     });
+}
+
+
+// -----------------------------------------------------------------------------------------
+//                                          Misc
+// -----------------------------------------------------------------------------------------
+
+
+/** 
+ * Check if a port is taken 
+ * @param port The port to check
+ * @param host The ip, will default to localhost
+ */
+export async function isPortAvailable(port: number, host?: string) {
+    return !await tcpPortUsed.check(port, host);
+}
+
+
+/**  
+ * Check the ports between `startPort` -> `startPort + num`, and return the first one that's free
+ * @param startPort The port to start itterating from
+ * @param num How many ports to check
+ * @param host The ip, will default to localhost
+ * @returns The port as a number, or `null` if all ports were taken
+ */
+export async function findFreePort(startPort: number, num: number, host?: string) {
+    for (let i = 0; i < num; i++) {
+        const port = startPort + i;
+        if (await isPortAvailable(port, host)) {
+            return port;
+        }
+    }
+
+    return null;
 }
