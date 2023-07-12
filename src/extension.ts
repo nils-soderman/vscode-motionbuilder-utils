@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 import * as codeCompletion from './scripts/code-completion';
 import * as documentation from './scripts/documentation';
-import * as mobuDebugger from './scripts/debugger';
+import * as attach from './scripts/attach';
 import * as execute from './scripts/execute-script';
 import * as utils from './modules/utils';
 
@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Debugging
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.attach', () => {
-			mobuDebugger.attachToMotionBuilder();
+			attach.attachToMotionBuilder();
 		})
 	);
 
