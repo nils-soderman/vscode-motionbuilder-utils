@@ -9,8 +9,32 @@ import sys
 import os
 import re
 
+from io import StringIO
+
 
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
+
+
+class OutputRedirector():
+    def __init__(self, command_id):
+        self.command_id = command_id
+        self.output = StringIO()
+        self.original_output = sys.stdout
+
+    def __enter__(self):
+        sys.stdout = self.output
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        sys.stdout = self.original_output
+        output_str = self.output.getvalue()
+
+        # If output is larger than 955 bytes, it'll get corruped when transfered over the socket, so write to a file instead
+        if sys.getsizeof(output_str) >= 955:
+            output_filepath = get_output_filepath(self.command_id)
+            with open(output_filepath, 'w', encoding="utf-8") as out_file:
+                out_file.write(output_str)
+        else:
+            print(output_str.rstrip())
 
 
 def get_output_filepath(command_id):
@@ -73,9 +97,7 @@ def main():
     if sys.version_info.major >= 3:  # Python 3
         with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
             if not vscode_debugging:
-                # Re-direct the output through a text file
-                output_filepath = get_output_filepath(command_id)
-                with open(output_filepath, 'w', encoding="utf-8") as vs_code_out_file, contextlib.redirect_stdout(vs_code_out_file):
+                with OutputRedirector(command_id):
                     execute_code(vs_code_in_file.read(), filename, vscode_debugging)
             else:
                 execute_code(vs_code_in_file.read(), filename, vscode_debugging)
