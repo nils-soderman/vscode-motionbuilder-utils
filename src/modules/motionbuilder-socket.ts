@@ -1,5 +1,11 @@
 import * as net from 'net';
 
+class ErrorWithCode extends Error {
+    constructor(message: string, public code?: string) {
+        super(message);
+    }
+}
+
 export class MotionBuilderSocket {
     private socket?: net.Socket;
     private isReady = false;
@@ -83,26 +89,37 @@ export class MotionBuilderSocket {
 
     /**
      * Opens a connection to MotionBuilder, this must be called before any other methods.
+     * @param timeoutInSeconds How long to wait for a connection before timing out. Set to 0 to disable timeout.
      * @returns A promise that resolves when the connection is ready.
      */
-    open(): Promise<void> {
+    open(timeoutInSeconds = 10): Promise<void> {
         this.socket = net.createConnection(this.port, this.ip);
 
         this.socket.on('error', this.onError);
         this.socket.on("close", this.onClose);
 
         return new Promise((resolve, reject: (error: Error) => void) => {
+            let timeout: NodeJS.Timeout | undefined = undefined;
+            if (timeoutInSeconds > 0) {
+                timeout = setTimeout(() => {
+                    reject(new ErrorWithCode('Connection timed out', "ETIMEDOUT"));
+                    this.socket?.destroy();
+                }, timeoutInSeconds * 1000);
+            }
+
             this.socket?.on('data', (data) => {
                 const dataStr = data.toString().trimEnd();
 
                 if (dataStr.endsWith('>>>')) {
                     this.socket?.removeAllListeners('data');
                     this.isReady = true;
+                    clearTimeout(timeout);
                     resolve();
                 }
             });
 
             this.socket?.once('error', (error: any) => {
+                clearTimeout(timeout);
                 reject(error);
             });
         });

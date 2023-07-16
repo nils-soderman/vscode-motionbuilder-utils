@@ -20,13 +20,15 @@ async function getSocket() {
     try {
         await socket.open();
     }
-    catch (e: any) { // TODO: Don't use type any
+    catch (e: any) {
         if (e.code === "ECONNREFUSED") {
-            vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((value?: string) => {
-                if (value === "Help") {
-                    extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
-                }
-            });
+            const selectedValue = await vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help");
+            if (selectedValue === "Help") {
+                extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
+            }
+        }
+        else if (e.code === "ETIMEDOUT") {
+            vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
         }
         else {
             vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.message}`);
