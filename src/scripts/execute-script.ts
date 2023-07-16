@@ -20,8 +20,8 @@ let gOutputChannel: vscode.OutputChannel | undefined;
  * Get the output channel for this extension
  * @param bEnsureChannelExists If channel doesn't exist, create it
  */
-function getOutputChannel(bEnsureChannelExists = true) {
-    if (!gOutputChannel && bEnsureChannelExists) {
+function getOutputChannel() {
+    if (!gOutputChannel) {
         gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
     }
     return gOutputChannel;
@@ -51,9 +51,7 @@ function handleResponse(response: string, id: string) {
 
     // Clear the output channel if enabled in user settings
     if (extConfig.get("execute.clearOutput")) {
-        if (outputChannel) {
-            outputChannel.clear();
-        }
+        outputChannel.clear();
     }
 
     // If the response was written to a file use that instead
@@ -64,17 +62,18 @@ function handleResponse(response: string, id: string) {
     }
 
     // Format response
-    response = response.replace(/\n\r/g, "\n");
-    response = `${response}\n>>>`;
+    if (response) {
+        response = response.replace(/\n\r/g, "\n");
+        response += "\n";
+    }
+    response += ">>>";
 
-    if (outputChannel) {
-        // Add the message to the output channel
-        outputChannel.appendLine(response);
+    // Add the message to the output channel
+    outputChannel.appendLine(response);
 
-        // Bring up the output channel on screen
-        if (extConfig.get("execute.showOutput")) {
-            outputChannel.show(true);
-        }
+    // Bring up the output channel on screen
+    if (extConfig.get("execute.showOutput")) {
+        outputChannel.show(true);
     }
 }
 
@@ -101,7 +100,7 @@ export async function execute() {
     globals["vsc_id"] = id;
 
     const response = await motionBuilderConsole.executeFile(PYTHON_EXEC_FILE, globals);
-    if (response) {
+    if (response !== null) {
         handleResponse(response, id);
     }
 }
