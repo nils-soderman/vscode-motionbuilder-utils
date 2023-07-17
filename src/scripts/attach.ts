@@ -22,7 +22,7 @@ async function installDebugpy() {
     const pythonPackages = utils.getExtensionPythonPackagesDir(false);
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
-
+    
     return response === "True";
 }
 
@@ -83,7 +83,7 @@ export async function attachToMotionBuilder() {
             "Install"
         );
 
-        if (selectedInstallOption == "Install") {
+        if (selectedInstallOption === "Install") {
             if (!await installDebugpy()) {
                 vscode.window.showErrorMessage("Failed to install 'debugpy'");
                 return;

@@ -40,7 +40,7 @@ def install_pip():
 
 
 def install_debugpy(target=""):
-    args = [MOBU_PYTHON_EXECUTABLE]
+    args = ['"%s"' % MOBU_PYTHON_EXECUTABLE]
 
     # Make sure pip is installed
     if not is_pip_installed():
@@ -54,26 +54,18 @@ def install_debugpy(target=""):
 
     args.extend(("install", "debugpy"))
     if target:
-        args.append(f'--target="{target}"')
+        args.append('--target="%s"' % target)
 
-    subprocess.call(args)
+    return_code = subprocess.call(" ".join(args))
 
-    # Check if installation was sucessfull by trying to import debugpy
-    try:
-        import debugpy
-    except ModuleNotFoundError:
-        return False
-
-    return True
+    return return_code == 0
 
 
 def main():
     ext_packages_dir = globals().get("ext_packages_dir")
     install_dir = os.path.join(ext_packages_dir, "Python%s%s" % (sys.version_info.major, sys.version_info.minor))
-    success = install_debugpy(install_dir)
 
-    # Output is read by the VS Code extension
-    print(success)
+    return install_debugpy(install_dir)
 
 
-main()
+print(main())  # Output is read by the VS Code extension
