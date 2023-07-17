@@ -26,15 +26,15 @@ class OutputRedirector():
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         sys.stdout = self.original_output
-        output_str = self.output.getvalue()
+        output_str = self.output.getvalue().rstrip()
 
         # If output is larger than 955 bytes, it'll get corruped when transfered over the socket, so write to a file instead
-        if sys.getsizeof(output_str) >= 955:
+        if sys.getsizeof(output_str) >= 950:
             output_filepath = get_output_filepath(self.command_id)
             with open(output_filepath, 'w', encoding="utf-8") as out_file:
                 out_file.write(output_str)
         else:
-            print(output_str.rstrip())
+            print(output_str)
 
 
 def get_output_filepath(command_id):
