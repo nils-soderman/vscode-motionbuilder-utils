@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import * as extensionWiki from './extension-wiki';
-import { MotionBuilderSocket } from './motionbuilder-socket';
+import { MotionBuilderSocket } from 'motionbuilder-socket';
 
 
 let gSocket: MotionBuilderSocket | null = null;
