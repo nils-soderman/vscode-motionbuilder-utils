@@ -40,6 +40,7 @@ async function getCurrentDebugPort() {
     if (response && response != "None") {
         return parseInt(response);
     }
+    return null;
 }
 
 
@@ -96,7 +97,7 @@ export async function attachToMotionBuilder() {
 
     let port = await getCurrentDebugPort();
     if (!port) {
-        const port = await getWantedPort();
+        port = await getWantedPort();
         if (!port) {
             return;
         }
@@ -110,7 +111,11 @@ export async function attachToMotionBuilder() {
         "name": utils.DEBUG_SESSION_NAME,
         "type": "python",
         "request": "attach",
-        "port": port,
-        "host": "localhost",
+        "connect": {
+            "host": "localhost",
+            "port": port
+        }
     });
+
+
 }

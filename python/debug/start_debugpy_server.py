@@ -28,8 +28,6 @@ def start_debug_server(port, debugpy_install_dir=""):
 
 def main():
     port = globals().get("port")
-    print(port)
-    print(type(port))
 
     ext_packages_dir = globals().get("ext_packages_dir")
     debugpy_install_dir = os.path.join(ext_packages_dir, "Python%s%s" %
@@ -40,5 +38,4 @@ def main():
     return is_server_running
 
 
-# output is read by the VSCode extension
-print(main())
+print(main())  # output is read by the VSCode extension
