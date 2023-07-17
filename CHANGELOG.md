@@ -4,12 +4,13 @@
 
 ### Changed:
 - Updated stub files
-- If trying to attach without `debugpy` being installed, the extension will now ask before installing the module.
-- How data is handled between the extension and MotionBuilder.
-  - [motionbuilder-socket](https://www.npmjs.com/package/motionbuilder-socket) is now a standalone NodeJS module that can be used in other projects if needed.
+- If trying to attach without `debugpy` being installed, the extension will now ask before installing the module
+- How data is handled between the extension and MotionBuilder
+  - Most data is now sent through the socket instead of being written to disk
+  - [motionbuilder-socket](https://www.npmjs.com/package/motionbuilder-socket) is now a standalone NodeJS module
 
 ### Fixed:
-- Running multiple commands too fast resulting in an error or output not correctly shown.
+- Running multiple commands too fast either resulting in an error or output not correctly shown.
 
 
 ## [1.3.1] - 2023-04-29
