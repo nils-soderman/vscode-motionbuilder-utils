@@ -15,7 +15,7 @@ async function isDebugpyInstalled() {
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
-    return response == "True";
+    return response === "True";
 }
 
 async function installDebugpy() {
@@ -23,7 +23,7 @@ async function installDebugpy() {
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
-    return response == "True";
+    return response === "True";
 }
 
 async function startDebugpyServer(port: number) {
@@ -31,7 +31,7 @@ async function startDebugpyServer(port: number) {
     const scriptPath = getDebugScriptPath("start_debugpy_server.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { port: port, ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
-    return response == "True";
+    return response === "True";
 }
 
 async function getCurrentDebugPort() {

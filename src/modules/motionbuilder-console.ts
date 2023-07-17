@@ -58,8 +58,8 @@ export async function runCommand(command: string) {
         return null;
     }
 
-    const data = await socket.exec(command);
-    return data;
+    const response = await socket.exec(command);
+    return response;
 }
 
 
@@ -70,24 +70,11 @@ export async function runCommand(command: string) {
  * @returns Python output e.g: print statements or errors
  */
 export async function executeFile(filepath: string, variables = {}) {
-    // Construct a string with all of the global variables, e.g: "x=1;y='Hello';"
-    let variableString = "";
-
-    for (const [key, value] of Object.entries(variables)) {
-        let safeValueStr = value;
-        if (typeof value === "string") {
-            // Append single quotes ' to the start & end of the value
-            safeValueStr = `r'${value}'`;
-        } else if (typeof value === "boolean") {
-            // Convert boolean to string
-            safeValueStr = value ? "True" : "False";
-        }
-
-        variableString += `${key}=${safeValueStr};`;
+    const socket = await getSocket();
+    if (!socket) {
+        return null;
     }
 
-    // const command = `with open(r'${filepath}','r')as f:exec(f.read())\n`;
-    const command = `${variableString}f=open(r'${filepath}','r');exec(f.read());f.close()\n`;
-
-    return runCommand(command);
+    const response = await socket.execFile(filepath, variables);
+    return response;
 }
