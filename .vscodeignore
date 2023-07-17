@@ -1,6 +1,7 @@
 .vscode/**
 .vscode-test/**
 src/**
+test/**
 .yarnrc
 vsc-extension-quickstart.md
 **/tsconfig.json
@@ -12,7 +13,6 @@ vsc-extension-quickstart.md
 **/*.gitmodules
 **/*.gitignore
 **/__pycache__
-test.py
 
 build-scripts/**
 media/demo/**
