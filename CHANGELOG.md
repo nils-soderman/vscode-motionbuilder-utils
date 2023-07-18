@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.4.0] - 2023-XX-XX
+## [1.4.0] - 2023-07-18
 
 ### Changed:
 - Updated stub files
