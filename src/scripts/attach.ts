@@ -14,6 +14,9 @@ async function isDebugpyInstalled() {
 
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
+    if (!response) {
+        return "MoBu2023"; // In Mobu 2023, the response might be empty if the Python Editor window is not open
+    }
 
     return response === "True";
 }
@@ -79,7 +82,14 @@ export async function attachToMotionBuilder() {
     let port = await getCurrentDebugPort();
     if (!port) {
         // Make sure debugpy is installed
-        if (!await isDebugpyInstalled()) {
+        const bIsDebugpyInstalled = await isDebugpyInstalled();
+        if (bIsDebugpyInstalled === "MoBu2023") {
+            // In Mobu 2023, the response might be empty if the Python Editor window is not open
+            vscode.window.showErrorMessage('Due to a bug in MoBu 2023 the MotionBuilder window "Python Editor" must be open before attaching.');
+            return;
+        }
+
+        if (!bIsDebugpyInstalled) {
             const selectedInstallOption = await vscode.window.showWarningMessage(
                 "Python module 'debugpy' is required for debugging",
                 "Install"
