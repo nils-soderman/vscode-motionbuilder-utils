@@ -1,3 +1,6 @@
+"""
+Start a debugpy server on the given port.
+"""
 import sys
 import os
 
@@ -12,11 +15,17 @@ def start_debug_server(port, debugpy_install_dir=""):
     except ModuleNotFoundError:
         # Retry with the debugpy_install_dir added to sys.path
         if debugpy_install_dir:
+            # Add an extra forwardslash to the path to make it a "new" directory.
+            # Otherwise because we may have added this dir in is_debugpy_installed.py,
+            # it won't be re-scannedand debugpy won't be found.
+            debugpy_install_dir = debugpy_install_dir + "/"
             sys.path.append(debugpy_install_dir)
             try:
                 import debugpy
             except ModuleNotFoundError:
                 return False
+            finally:
+                sys.path.remove(debugpy_install_dir)
 
     debugpy.configure(python=MOBU_PYTHON_EXECUTABLE)
     debugpy.listen(port)

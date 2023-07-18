@@ -12,16 +12,17 @@ def is_debugpy_installed(extra_sys_path=""):
         pass
 
     if extra_sys_path and extra_sys_path not in sys.path:
-        sys.path.append(extra_sys_path)
-        is_installed = False
-        try:
-            import debugpy
-            is_installed = True
-        except ModuleNotFoundError:
-            pass
+        if os.path.isdir(extra_sys_path):
+            sys.path.append(extra_sys_path)
+            is_installed = False
+            try:
+                import debugpy
+                is_installed = True
+            except ModuleNotFoundError:
+                pass
 
-        sys.path.remove(extra_sys_path)
-        return is_installed
+            sys.path.remove(extra_sys_path)
+            return is_installed
 
     return False
 
