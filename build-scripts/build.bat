@@ -1,7 +1,7 @@
 cd "%~dp0../"
 rmdir /S /Q "./out/"
 
-set OutDir="./builds/"
+set OutDir="./dist/"
 
 if not exist %OutDir% (
     mkdir %OutDir%

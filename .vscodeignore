@@ -16,5 +16,5 @@ vsc-extension-quickstart.md
 
 build-scripts/**
 media/demo/**
-builds/**
+dist/**
 .pylintrc
