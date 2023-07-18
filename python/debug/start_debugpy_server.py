@@ -24,8 +24,6 @@ def start_debug_server(port, debugpy_install_dir=""):
                 import debugpy
             except ModuleNotFoundError:
                 return False
-            finally:
-                sys.path.remove(debugpy_install_dir)
 
     debugpy.configure(python=MOBU_PYTHON_EXECUTABLE)
     debugpy.listen(port)
