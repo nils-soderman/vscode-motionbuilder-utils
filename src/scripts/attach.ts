@@ -22,7 +22,7 @@ async function installDebugpy() {
     const pythonPackages = utils.getExtensionPythonPackagesDir(false);
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
-    
+
     return response === "True";
 }
 
@@ -76,27 +76,27 @@ export async function attachToMotionBuilder() {
         return;
     }
 
-    // Make sure debugpy is installed
-    if (!await isDebugpyInstalled()) {
-        const selectedInstallOption = await vscode.window.showWarningMessage(
-            "Python module 'debugpy' is required for debugging",
-            "Install"
-        );
-
-        if (selectedInstallOption === "Install") {
-            if (!await installDebugpy()) {
-                vscode.window.showErrorMessage("Failed to install 'debugpy'");
-                return;
-            }
-        }
-        else {
-            return;
-        }
-
-    }
-
     let port = await getCurrentDebugPort();
     if (!port) {
+        // Make sure debugpy is installed
+        if (!await isDebugpyInstalled()) {
+            const selectedInstallOption = await vscode.window.showWarningMessage(
+                "Python module 'debugpy' is required for debugging",
+                "Install"
+            );
+
+            if (selectedInstallOption === "Install") {
+                if (!await installDebugpy()) {
+                    vscode.window.showErrorMessage("Failed to install 'debugpy'");
+                    return;
+                }
+            }
+            else {
+                return;
+            }
+
+        }
+
         port = await getWantedPort();
         if (!port) {
             return;

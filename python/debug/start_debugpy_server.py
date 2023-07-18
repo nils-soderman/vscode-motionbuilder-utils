@@ -11,7 +11,7 @@ MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.e
 
 def start_debug_server(port, debugpy_install_dir=""):
     try:
-        import debugpy
+        import debugpy  # type: ignore
     except ModuleNotFoundError:
         # Retry with the debugpy_install_dir added to sys.path
         if debugpy_install_dir:
@@ -21,7 +21,7 @@ def start_debug_server(port, debugpy_install_dir=""):
             debugpy_install_dir = debugpy_install_dir + "/"
             sys.path.append(debugpy_install_dir)
             try:
-                import debugpy
+                import debugpy  # type: ignore
             except ModuleNotFoundError:
                 return False
 

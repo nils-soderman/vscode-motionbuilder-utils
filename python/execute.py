@@ -2,7 +2,6 @@
 Module for executing python code in MotionBuilder
 """
 
-import contextlib
 import traceback
 import tempfile
 import sys
