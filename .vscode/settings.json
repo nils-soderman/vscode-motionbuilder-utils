@@ -6,12 +6,14 @@
         "**/**.vsix": true,
         "package-lock.json": true,
         "**/__pycache__": true,
-        "builds": true
+        "builds": true,
+        "test/**": true,
+        "dist/**": true,
     },
     "search.exclude": {
         "**/**.py": true,
-        "**/**.json": true,
         "media/**": true,
+        "**/**.json": true,
         "**/**ignore": true,
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts

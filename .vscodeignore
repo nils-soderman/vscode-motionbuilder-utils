@@ -18,3 +18,6 @@ build-scripts/**
 media/demo/**
 dist/**
 .pylintrc
+
+node_modules/
+!node_modules/**/*LICENSE*
