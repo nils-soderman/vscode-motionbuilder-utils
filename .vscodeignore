@@ -20,4 +20,4 @@ dist/**
 .pylintrc
 
 node_modules/
-!node_modules/**/*LICENSE*
+!**/[lL][iI][cC][eE][nN][sS][eE]*
