@@ -1,8 +1,9 @@
 # Change Log
 
-## [1.4.1] - 2023-XX-XX
+## [2024.0.0] - 2023-07-19
 
 ### Changed:
+- Versioning scheme to match the currently latest version of MotionBuilder that the extension officially supports
 - Bundle the compiled code using esbuild for faster startup time & smaller file size
 
 
