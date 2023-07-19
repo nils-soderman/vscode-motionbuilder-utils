@@ -3,10 +3,10 @@ import * as vscode from 'vscode';
 import * as htmlParser from 'node-html-parser';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as open from 'open';
 
 import * as utils from '../modules/utils';
 
+import open = require('open');
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
 const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
@@ -37,7 +37,7 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
  * @param version MotionBuilder version, if not specified, the base directory containing all versions is returned.
  */
 function getDocumentationDirectory(version?: number) {
-    let directory = path.join(utils.EXTENSION_RESOURCES_DIR, "documentation");
+    let directory = path.join(utils.getResourcesDir(), "documentation");
     if (version) {
         directory = path.join(directory, version.toString());
     }

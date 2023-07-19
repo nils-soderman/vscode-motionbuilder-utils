@@ -6,7 +6,7 @@ import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as utils from '../modules/utils';
 
 function getDebugScriptPath(filename: string) {
-    return path.join(utils.EXTENSION_PYTHON_DIR, "debug", filename);
+    return path.join(utils.getPythonDir(), "debug", filename);
 }
 
 async function isDebugpyInstalled() {

@@ -1,4 +1,4 @@
-import * as open from 'open';
+import open = require('open');
 
 export const WIKI_URL = "https://github.com/nils-soderman/vscode-motionbuilder-utils/wiki/";
 

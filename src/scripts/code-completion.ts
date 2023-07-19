@@ -27,9 +27,9 @@ function getPythonConfig() {
  */
 function getSourceStubFileDirectory(version?: number) {
     if (version == null) {
-        return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME);
+        return path.join(utils.getResourcesDir(), STUB_FILES_FOLDER_NAME);
     }
-    return path.join(utils.EXTENSION_RESOURCES_DIR, STUB_FILES_FOLDER_NAME, version.toString());
+    return path.join(utils.getResourcesDir(), STUB_FILES_FOLDER_NAME, version.toString());
 }
 
 

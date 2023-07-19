@@ -8,6 +8,8 @@ import * as utils from './modules/utils';
 
 
 export function activate(context: vscode.ExtensionContext) {
+	utils.setExtensionDir(context.extensionPath);
+
 	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
@@ -25,7 +27,6 @@ export function activate(context: vscode.ExtensionContext) {
 	// Setup Code Completion
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.setupCodeCompletion', () => {
-			// Setup the stub files
 			codeCompletion.setup();
 		})
 	);

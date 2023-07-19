@@ -11,9 +11,9 @@ import * as utils from '../modules/utils';
 
 
 const TEMP_FILENAME = "vscode_motionbuilder_exec";
-const PYTHON_EXEC_FILE = path.join(utils.EXTENSION_PYTHON_DIR, "execute.py");
 
 let gOutputChannel: vscode.OutputChannel | undefined;
+
 
 
 /**
@@ -99,7 +99,9 @@ export async function execute() {
     globals["vsc_name"] = extConfig.get("execute.name");
     globals["vsc_id"] = id;
 
-    const response = await motionBuilderConsole.executeFile(PYTHON_EXEC_FILE, globals);
+
+    const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");
+    const response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
     if (response !== null) {
         handleResponse(response, id);
     }

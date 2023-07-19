@@ -2,18 +2,54 @@ import * as vscode from 'vscode';
 
 import * as tcpPortUsed from 'tcp-port-used';
 import * as https from 'https';
-import * as path  from 'path';
-import * as os    from 'os';
-import * as fs    from 'fs';
+import * as path from 'path';
+import * as os from 'os';
+import * as fs from 'fs';
 
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
-export const EXTENSION_DIR = path.dirname(path.dirname(__dirname));
-export const EXTENSION_PYTHON_DIR = path.join(EXTENSION_DIR, "python");
-export const EXTENSION_RESOURCES_DIR = path.join(EXTENSION_DIR, "resources");
 export const DEFAULT_VERSION = 2023;
 
+
+// -----------------------------------------------------------------------------------------
+//                                 Extension Directories
+// -----------------------------------------------------------------------------------------
+
+let _extensionDir: string | undefined; // Stores the absolute path to this extension's directory, set on activation
+
+/**
+ * This function should only be called once, on activation
+ * @param dir Should be: `ExtensionContext.extensionPath`
+ */
+export function setExtensionDir(dir: string) {
+    _extensionDir = dir;
+}
+
+/**
+ * This function cannot be called in top-level. It must be called after the extension has been activated
+ * @returns The absolute path to this extension's directory
+ */
+export function getExtensionDir() {
+    if (!_extensionDir) {
+        throw Error("Extension Dir hasn't been set yet! This should be set on activation. This function cannot be called in top-level.");
+    }
+    return _extensionDir;
+}
+
+/**
+ * @returns The absolute path to this extension's python directory
+ */
+export function getPythonDir() {
+    return path.join(getExtensionDir(), "python");
+}
+
+/**
+ * @returns The absolute path to this extension's resources directory
+ */
+export function getResourcesDir() {
+    return path.join(getExtensionDir(), "resources");
+}
 
 /**
  * @param bEnsureExists If folder doesn't exist, create it
@@ -27,6 +63,78 @@ export function getExtentionTempDir(bEnsureExists = true) {
     return tempDir;
 }
 
+/**
+ * Get the Appdata folder path
+ */
+export function getAppDataFolder() {
+    return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
+}
+
+/**
+ * Get this extension's subfolder under AppData which can be used to store files in
+ * @param bEnsureExists If folder doesn't exists, create it
+ */
+export function getExtensionAppdataFolder(bEnsureExists = true) {
+    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
+    if (bEnsureExists && !fs.existsSync(appdataDir)) {
+        fs.mkdirSync(appdataDir);
+    }
+    return appdataDir;
+}
+
+/**
+ * Get this extension's folder where python site-packages can be installed
+ * @param bEnsureExists If folder doesn't exists, create it
+ */
+export function getExtensionPythonPackagesDir(bEnsureExists = true) {
+    const sitePackageDir = path.join(getExtensionAppdataFolder(), "python", "site-packages");
+    if (bEnsureExists && !fs.existsSync(sitePackageDir)) {
+        fs.mkdirSync(sitePackageDir, { "recursive": true });
+    }
+    return sitePackageDir;
+}
+
+// -----------------------------------------------------------------------------------------
+//                                     Extension
+// -----------------------------------------------------------------------------------------
+
+/** Check if we're currently attached to a MotionBuilder instance */
+export function isDebuggingMotionBuilder() {
+    if (!vscode.debug.activeDebugSession) {
+        return false;
+    }
+    return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
+}
+
+/**
+ * @returns The workspace configuration for this extension _('motionbuilder')_
+ */
+export function getExtensionConfig() {
+    // Try to get the active workspace folder first, to have it read Folder Settings
+    let workspaceFolder;
+    if (vscode.window.activeTextEditor) {
+        const activeDocumenet = vscode.window.activeTextEditor.document;
+        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
+    }
+
+    return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
+}
+
+/**
+ * Get the MotionBuilder version the user wants to use given by the config
+ */
+export function getMotionBuilderVersion() {
+    let version: number | undefined = getExtensionConfig().get("version");
+    if (!version) {
+        return DEFAULT_VERSION;
+    }
+    return version;
+}
+
+
+// -----------------------------------------------------------------------------------------
+//                                    Filesystem
+// -----------------------------------------------------------------------------------------
 
 /**
  * Write a temp file inside of this extensions temp directory
@@ -38,15 +146,6 @@ export function saveTempFile(filename: string, text: string) {
     const filepath = path.join(getExtentionTempDir(), filename);
     fs.writeFileSync(filepath, text);
     return filepath;
-}
-
-
-/** Check if we're currently attached to a MotionBuilder instance */
-export function isDebuggingMotionBuilder() {
-    if (!vscode.debug.activeDebugSession) {
-        return false;
-    }
-    return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
 }
 
 
@@ -70,15 +169,6 @@ export function readJson(filepath: string) {
     return JSON.parse(fileContent.toString());
 }
 
-
-/**
- * Get the Appdata folder path
- */
-export function getAppDataFolder() {
-    return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
-}
-
-
 /**
  * Expand a path's environment variables  
  * Example:   
@@ -89,53 +179,11 @@ export function expandPath(path: string) {
     return path.replace(/%([^%]+)%/g, (_, n) => process.env[n]);
 }
 
-
 /**
  * Ensure a path uses forward slashes
  */
 export function ensureForwardSlashes(path: string) {
     return path.replace(/\\/g, "/").replace(/\/\//g, "/");
-}
-
-
-/**
- * Get this extension's subfolder under AppData which can be used to store files in
- * @param bEnsureExists If folder doesn't exists, create it
- */
-export function getExtensionAppdataFolder(bEnsureExists = true) {
-    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
-    if (bEnsureExists && !fs.existsSync(appdataDir)) {
-        fs.mkdirSync(appdataDir);
-    }
-    return appdataDir;
-}
-
-
-/**
- * Get this extension's folder where python site-packages can be installed
- * @param bEnsureExists If folder doesn't exists, create it
- */
-export function getExtensionPythonPackagesDir(bEnsureExists = true) {
-    const sitePackageDir = path.join(getExtensionAppdataFolder(), "python", "site-packages");
-    if (bEnsureExists && !fs.existsSync(sitePackageDir)) {
-        fs.mkdirSync(sitePackageDir, {"recursive": true});
-    }
-    return sitePackageDir;
-}
-
-
-/**
- * @returns The workspace configuration for this extension _('motionbuilder')_
- */
-export function getExtensionConfig() {
-    // Try to get the active workspace folder first, to have it read Folder Settings
-    let workspaceFolder;
-    if (vscode.window.activeTextEditor) {
-        const activeDocumenet = vscode.window.activeTextEditor.document;
-        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
-    }
-
-    return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
 }
 
 
@@ -148,17 +196,9 @@ export function isPathsSame(a: string, b: string) {
 }
 
 
-/**
- * Get the MotionBuilder version the user wants to use given by the config
- */
-export function getMotionBuilderVersion() {
-    let version: number | undefined = getExtensionConfig().get("version");
-    if (!version) {
-        return DEFAULT_VERSION;
-    }
-    return version;
-}
-
+// -----------------------------------------------------------------------------------------
+//                                        Network
+// -----------------------------------------------------------------------------------------
 
 /**
  * Do a web get-request
@@ -185,11 +225,6 @@ export function getRequest(url: string, callback?: Function) {
         });
     });
 }
-
-
-// -----------------------------------------------------------------------------------------
-//                                          Misc
-// -----------------------------------------------------------------------------------------
 
 
 /** 
