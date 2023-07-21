@@ -1,6 +1,6 @@
 # Change Log
 
-## [2024.0.0] - 2023-07-19
+## [2024.0.0] - 2023-07-21
 
 ### Changed:
 - Versioning scheme to match the currently latest version of MotionBuilder that the extension officially supports
