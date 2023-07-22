@@ -14,7 +14,7 @@ vsc-extension-quickstart.md
 **/*.gitignore
 **/__pycache__
 
-build-scripts/**
+dev/**
 media/demo/**
 dist/**
 .pylintrc
