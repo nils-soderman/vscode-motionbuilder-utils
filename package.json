@@ -171,7 +171,6 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
     "@types/tcp-port-used": "^1.0.1",
-    "@types/uuid": "^9.0.2",
     "@types/vscode": "^1.62.0",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
@@ -186,7 +185,6 @@
     "motionbuilder-socket": "^0.1.1",
     "node-html-parser": "^5.2.0",
     "open": "^8.4.0",
-    "tcp-port-used": "^1.0.2",
-    "uuid": "^9.0.0"
+    "tcp-port-used": "^1.0.2"
   }
 }

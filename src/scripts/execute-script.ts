@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
 
+import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
-
-import * as uuid from 'uuid';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as vsCodeExec from '../modules/code-exec';
@@ -31,7 +30,7 @@ function getOutputChannel() {
 function getTempFilepath(id: string) {
     // replace all dashes in the uuid with underscores
     id = id.replace(/-/g, "_");
-    return path.join(utils.getExtentionTempDir(), `${TEMP_FILENAME}-${id}.py`);
+    return path.join(utils.getExtentionTempDir(), `${TEMP_FILENAME}_${id}.py`);
 }
 
 function getOutputFilepath(id: string) {
@@ -81,7 +80,7 @@ export async function execute() {
     if (!vscode.window.activeTextEditor) {
         return;
     }
-    const id = uuid.v4();
+    const id = crypto.randomUUID();
 
     const extConfig = utils.getExtensionConfig();
     const activeDocuemt = vscode.window.activeTextEditor.document;
