@@ -23,8 +23,34 @@ export async function main() {
     if (!response)
         return;
 
-    // Show a status bar message with the result
-    const [numReloads, time] =  response.split(",");
-    const message = `Reloaded ${numReloads} modules in ${time} seconds`;
-    vscode.window.setStatusBarMessage(message, 5000);
+    // Parse the response
+    const [reloadInfo, reloadedPaths] = response.split("-", 2);
+    const [numReloads, time] = reloadInfo.split(",", 2);
+
+    // Show info regarding the reloaded modules in the status bar
+    const status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
+    status.text = `Reloaded ${numReloads} modules in ${time} seconds`;
+
+    // Show the reloaded modules if the user clicks on the status bar message
+    const commandId = "motionbuilder.reloadModulesShowInfo";
+    const command = vscode.commands.registerCommand(commandId, async () =>{
+        // Create a new document and show reloaded modules
+        const reloadedPathsStr = reloadedPaths.replace(/,/g, "\n"); 
+        const document = await vscode.workspace.openTextDocument({
+            language: "text",
+            content: `Reloaded modules in ${time} seconds\n\n${reloadedPathsStr}`
+        });
+        vscode.window.showTextDocument(document);
+
+        status.dispose();
+        command.dispose();
+    });
+    status.command = commandId;
+    
+    setTimeout(() => {
+        status.dispose();
+        command.dispose();
+    }, 5000);
+
+    status.show();
 }

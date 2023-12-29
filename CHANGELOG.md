@@ -4,7 +4,7 @@
 
 ### Added:
 - Comand `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
-- Setting `motionbuilder.reload.ignore` which is a list of glob patterns of files to ingore when reloading modules.
+- Setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ingore when reloading modules.
 
 
 ## [2024.0.0] - 2023-07-21

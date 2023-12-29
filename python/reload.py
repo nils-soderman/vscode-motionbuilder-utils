@@ -11,7 +11,7 @@ import site
 
 def main():
     start_time = time.perf_counter()
-    num_reloads = 0
+    reloaded_paths = []
 
     glob_patterns = globals().get("vsc_reload_ignore", [])
 
@@ -39,12 +39,12 @@ def main():
 
         try:
             importlib.reload(variable)
-            num_reloads += 1
+            reloaded_paths.append(filepath)
         except Exception as e:
             pass
 
     elapsed_time = time.perf_counter() - start_time
-    print(f"{num_reloads},{elapsed_time:.2f}")
-
+    reloaded_paths_str = ",".join(reloaded_paths)
+    print(f"{len(reloaded_paths)},{elapsed_time:.2f}-{reloaded_paths_str}")
 
 main()
