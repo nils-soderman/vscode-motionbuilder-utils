@@ -69,7 +69,8 @@
       {
         "command": "motionbuilder.reloadModules",
         "title": "Reload Imported Modules",
-        "category": "MotionBuilder"
+        "category": "MotionBuilder",
+        "enablement": "editorLangId==python"
       }
     ],
     "keybindings": [
