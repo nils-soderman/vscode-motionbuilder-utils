@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
+import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
 
 export async function main() {
@@ -23,34 +24,87 @@ export async function main() {
     if (!response)
         return;
 
+    if (response.startsWith("Traceback")) {
+        logging.showErrorMessage(
+            "Failed to reload modules, ran into an unexpected error.",
+            `${reloadScriptPath}\n${response}`
+        );
+        return;
+    }
+
     // Parse the response
-    const [reloadInfo, reloadedPaths] = response.split("-", 2);
-    const [numReloads, time] = reloadInfo.split(",", 2);
+    const [reloadTimeRaw, reloadedPathsRaw, failedPathsRaw] = response.split("|");
+
+    const reloadTime = parseFloat(reloadTimeRaw);
+    const reloadedPaths = reloadedPathsRaw.split(",");
+    const failedPaths = failedPathsRaw ? failedPathsRaw.split(",") : [];
+
+    const statusBarItemIcon = failedPaths.length > 0 ? "$(error)" : "$(check)";
 
     // Show info regarding the reloaded modules in the status bar
     const status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
-    status.text = `Reloaded ${numReloads} modules in ${time} seconds`;
+    status.text = `${statusBarItemIcon} Reloaded ${reloadedPaths.length} modules in ${reloadTime} ms`;
 
-    // Show the reloaded modules if the user clicks on the status bar message
+    // Command to show more info about the reload
     const commandId = "motionbuilder.reloadModulesShowInfo";
-    const command = vscode.commands.registerCommand(commandId, async () =>{
+    const command = vscode.commands.registerCommand(commandId, () => {
         // Create a new document and show reloaded modules
-        const reloadedPathsStr = reloadedPaths.replace(/,/g, "\n"); 
-        const document = await vscode.workspace.openTextDocument({
-            language: "plaintext",
-            content: `Reloaded modules in ${time} seconds\n\n${reloadedPathsStr}`
-        });
-        vscode.window.showTextDocument(document);
+        showReloadInfo(reloadTimeRaw, reloadedPaths, failedPaths);
 
         status.dispose();
         command.dispose();
     });
     status.command = commandId;
-    
+
     setTimeout(() => {
         status.dispose();
         command.dispose();
     }, 5000);
 
     status.show();
+}
+
+
+/**
+ * Log the reload info and show it to the user
+ * @param time Total time it took to reload the modules (in ms)
+ * @param reloadedPaths Number of modules that were reloaded (as a string)
+ * @param failedPaths Content to show in the markdown preview
+ */
+function showReloadInfo(time: string, reloadedPaths: Array<string>, failedPaths: Array<string>) {
+    let lines = [`========== Reloaded ${reloadedPaths.length} modules in ${time} ms ==========\n`];
+
+    if (failedPaths.length > 0) {
+        lines.push(
+            "Failed to reload the following modules:",
+            ...failedPaths,
+            "\n"
+        );
+    }
+
+    const reloadInfo = [];
+    let maxTimeLength = 0; // used for padding
+    for (const moduleInfo of reloadedPaths) {
+        const [time, path] = utils.splitAtFirstOccurrence(moduleInfo, "-");
+        reloadInfo.push([time, path]);
+
+        maxTimeLength = Math.max(maxTimeLength, time.length);
+    }
+
+    const tableTitleTime = "Time (ms)";
+    maxTimeLength = Math.max(maxTimeLength, tableTitleTime.length);
+
+    lines.push(
+        "Successfully reloaded the following modules:\n",
+        tableTitleTime.padEnd(maxTimeLength, " ") + " | Path",
+        "".padEnd(maxTimeLength, "-") + " | -----------------"
+    );
+
+    for (const [time, path] of reloadInfo) {
+        const paddedTime = time.padEnd(maxTimeLength, ' ');
+        lines.push(`${paddedTime} | ${path}`);
+    }
+
+    const message = lines.join("\n");
+    logging.logMessage(message, true);
 }

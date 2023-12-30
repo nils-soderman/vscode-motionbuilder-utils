@@ -204,14 +204,14 @@ export function isPathsSame(a: string, b: string) {
  * Do a web get-request
  * @param url The url whose content to fetch
  * @param callback Callback function to call with the response. Will be called with 2 parameters: (data: string, statusCode: number)
- */
+*/
 export function getRequest(url: string, callback?: Function) {
     https.get(url, (res) => {
         let data = '';
         res.on('data', (chunk) => {
             data += chunk;
         });
-
+        
         res.on("end", () => {
             if (callback) {
                 callback(data, res.statusCode);
@@ -231,7 +231,7 @@ export function getRequest(url: string, callback?: Function) {
  * Check if a port is taken 
  * @param port The port to check
  * @param host The ip, will default to localhost
- */
+*/
 export async function isPortAvailable(port: number, host?: string) {
     return !await tcpPortUsed.check(port, host);
 }
@@ -243,7 +243,7 @@ export async function isPortAvailable(port: number, host?: string) {
  * @param num How many ports to check
  * @param host The ip, will default to localhost
  * @returns The port as a number, or `null` if all ports were taken
- */
+*/
 export async function findFreePort(startPort: number, num: number, host?: string) {
     for (let i = 0; i < num; i++) {
         const port = startPort + i;
@@ -251,6 +251,19 @@ export async function findFreePort(startPort: number, num: number, host?: string
             return port;
         }
     }
-
+    
     return null;
+}
+
+
+// -----------------------------------------------------------------------------------------
+//                                        Misc
+// -----------------------------------------------------------------------------------------
+
+/**
+ * Split a string at the first occurence of a separator
+ */
+export function splitAtFirstOccurrence(str: string, separator: string) {
+    const index = str.indexOf(separator);
+    return [str.slice(0, index), str.slice(index + 1)];
 }
