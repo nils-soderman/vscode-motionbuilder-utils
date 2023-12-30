@@ -1,6 +1,8 @@
 """
 Reloads all imported modules that are not standard library modules
 """
+from __future__ import annotations
+
 import importlib
 import time
 import glob
@@ -11,7 +13,7 @@ import site
 
 def main():
     start_time = time.perf_counter()
-    reloaded_paths = []
+    reloaded_paths: list[tuple[str, str]] = []
 
     glob_patterns = globals().get("vsc_reload_ignore", [])
 
@@ -37,14 +39,20 @@ def main():
         if any(glob.fnmatch.fnmatch(filepath, pattern) for pattern in glob_patterns):
             continue
 
+        start_time_module_reload = time.perf_counter()
         try:
             importlib.reload(variable)
-            reloaded_paths.append(filepath)
         except Exception as e:
             pass
 
+        elapsed_time_module_reload = time.perf_counter() - start_time_module_reload
+        reloaded_paths.append((f"{elapsed_time_module_reload * 1000:.2f}", f"| {filepath}"))
+
+    padding = max(len(x[0]) for x in reloaded_paths)
+    paths_table = [f"{reload_time:{padding}} ms {path}" for reload_time, path in reloaded_paths]
+
     elapsed_time = time.perf_counter() - start_time
-    reloaded_paths_str = ",".join(reloaded_paths)
+    reloaded_paths_str = ",".join(paths_table)
     print(f"{len(reloaded_paths)},{elapsed_time:.2f}-{reloaded_paths_str}")
 
 main()

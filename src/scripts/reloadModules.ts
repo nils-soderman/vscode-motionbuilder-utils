@@ -37,7 +37,7 @@ export async function main() {
         // Create a new document and show reloaded modules
         const reloadedPathsStr = reloadedPaths.replace(/,/g, "\n"); 
         const document = await vscode.workspace.openTextDocument({
-            language: "text",
+            language: "plaintext",
             content: `Reloaded modules in ${time} seconds\n\n${reloadedPathsStr}`
         });
         vscode.window.showTextDocument(document);
