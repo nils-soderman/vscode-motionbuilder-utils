@@ -7,7 +7,7 @@ import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
 
 export async function main() {
-    const ignorePatterns = utils.getExtensionConfig().get<Array<string>>("reload.ignore");
+    const ignorePatterns = utils.getExtensionConfig().get<Array<string>>("reload.ignore") || [];
 
     const disposableStatusMessage = vscode.window.setStatusBarMessage("$(sync~spin) Reloading modules...", 10000);
 
@@ -49,7 +49,7 @@ export async function main() {
     const commandId = "motionbuilder.reloadModulesShowInfo";
     const command = vscode.commands.registerCommand(commandId, () => {
         // Create a new document and show reloaded modules
-        showReloadInfo(reloadTimeRaw, reloadedPaths, failedPaths);
+        showReloadInfo(reloadTimeRaw, reloadedPaths, failedPaths, ignorePatterns);
 
         status.dispose();
         command.dispose();
@@ -71,8 +71,11 @@ export async function main() {
  * @param reloadedPaths Number of modules that were reloaded (as a string)
  * @param failedPaths Content to show in the markdown preview
  */
-function showReloadInfo(time: string, reloadedPaths: Array<string>, failedPaths: Array<string>) {
+function showReloadInfo(time: string, reloadedPaths: Array<string>, failedPaths: Array<string>, ignorePatterns: Array<string>) {
     let lines = [`========== Reloaded ${reloadedPaths.length} modules in ${time} ms ==========\n`];
+
+    const ignorePatternsStr = ignorePatterns.map(pattern => `"${pattern}"`).join(", ");
+    lines.push(`Ignored patterns: ${ignorePatternsStr}\n`);
 
     if (failedPaths.length > 0) {
         lines.push(
