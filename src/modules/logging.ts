@@ -4,7 +4,7 @@ let gOutputChannel: vscode.OutputChannel | undefined;
 
 export function getOutputChannel() {
     if (!gOutputChannel)
-        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder Utils Log");
+        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder Log");
 
     return gOutputChannel;
 }

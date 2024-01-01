@@ -21,7 +21,7 @@ let gOutputChannel: vscode.OutputChannel | undefined;
  */
 function getOutputChannel() {
     if (!gOutputChannel) {
-        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder");
+        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder Output");
     }
     return gOutputChannel;
 }

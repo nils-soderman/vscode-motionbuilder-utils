@@ -11,7 +11,7 @@ export async function main() {
 
     const disposableStatusMessage = vscode.window.setStatusBarMessage("$(sync~spin) Reloading modules...", 10000);
 
-    const reloadScriptPath = path.join(utils.getPythonDir(), "reload.py");
+    const reloadScriptPath = path.join(utils.getPythonDir(), "reload_modules.py");
     const response = await motionBuilderConsole.executeFile(
         reloadScriptPath,
         {
