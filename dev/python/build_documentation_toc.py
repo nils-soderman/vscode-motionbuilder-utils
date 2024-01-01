@@ -60,7 +60,7 @@ def get_motionbuilder_version():
 
 
 def get_output_directory():
-    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation", str(get_motionbuilder_version()))
+    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation")
 
 
 def save_items(filename, items: list):
