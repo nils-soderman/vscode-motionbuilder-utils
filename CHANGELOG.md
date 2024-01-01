@@ -1,10 +1,14 @@
 # Change Log
 
-## [2024.1.0] - UNRELEASED
+## [2024.1.0] - 2024-01-01
 
 ### Added:
 - Comand `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
 - Setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ingore when reloading modules.
+
+### Changed:
+- Renamed output channel to "MotionBuilder Output"
+- Updated 2024 stub files
 
 
 ## [2024.0.0] - 2023-07-21

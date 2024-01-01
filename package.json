@@ -2,8 +2,8 @@
   "name": "mobu-utils",
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
-  "description": "Features to assist when writing Python code for Autodesk MotionBuilder. IntelliSense, debug, execute code in MotionBuilder & browse the documentation with ease.",
-  "version": "2024.0.0",
+  "description": "Features to assist when writing Python code for Autodesk MotionBuilder.",
+  "version": "2024.1.0",
   "categories": [
     "Other",
     "Debuggers"
