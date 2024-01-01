@@ -3,8 +3,8 @@
 ## [2024.1.0] - 2024-01-01
 
 ### Added:
-- Comand `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
-- Setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ingore when reloading modules.
+- Command `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
+- Setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ignore when reloading modules.
 
 ### Changed:
 - Renamed output channel to "MotionBuilder Output"
