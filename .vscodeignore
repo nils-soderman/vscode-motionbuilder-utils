@@ -10,6 +10,7 @@ vsc-extension-quickstart.md
 **/*.ts
 **/**.vsix
 **/*.git
+**/.github/**
 **/*.gitmodules
 **/*.gitignore
 **/__pycache__
@@ -20,4 +21,4 @@ dist/**
 .pylintrc
 
 node_modules/
-!**/[lL][iI][cC][eE][nN][sS][eE]*
+!node_modules/**/[lL][iI][cC][eE][nN][sS][eE]*
