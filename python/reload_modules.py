@@ -4,11 +4,11 @@ Reloads all imported modules that are not standard library modules
 from __future__ import annotations
 
 import importlib
+import site
 import time
 import glob
 import sys
 import os
-import site
 
 
 EXCLUDE_MODULES = [
@@ -57,9 +57,7 @@ def main():
             continue
 
         elapsed_time_module_reload_ms = (time.perf_counter() - start_time_module_reload) * 1000
-        info_reloaded_paths.append(
-            f"{elapsed_time_module_reload_ms:.2f}-{filepath}"
-        )
+        info_reloaded_paths.append(f"{elapsed_time_module_reload_ms:.2f}-{filepath}")
 
     elapsed_time_ms = int((time.perf_counter() - start_time) * 1000)
 
