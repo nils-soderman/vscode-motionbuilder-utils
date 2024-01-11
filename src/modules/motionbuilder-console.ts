@@ -22,10 +22,11 @@ async function getSocket() {
     }
     catch (e: any) {
         if (e.code === "ECONNREFUSED") {
-            const selectedValue = await vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help");
-            if (selectedValue === "Help") {
-                extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
-            }
+            vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((selectedValue) => {
+                if (selectedValue === "Help") {
+                    extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
+                }
+            });
         }
         else if (e.code === "ETIMEDOUT") {
             vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
