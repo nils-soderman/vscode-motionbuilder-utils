@@ -9,10 +9,7 @@ import * as vsCodeExec from '../modules/code-exec';
 import * as utils from '../modules/utils';
 
 
-const TEMP_FILENAME = "vscode_motionbuilder_exec";
-
 let gOutputChannel: vscode.OutputChannel | undefined;
-
 
 
 /**
@@ -26,20 +23,22 @@ function getOutputChannel() {
     return gOutputChannel;
 }
 
-
-function getTempFilepath(id: string) {
-    // replace all dashes in the uuid with underscores
-    id = id.replace(/-/g, "_");
-    return path.join(utils.getExtentionTempDir(), `${TEMP_FILENAME}_${id}.py`);
-}
-
 function getOutputFilepath(id: string) {
     return path.join(utils.getExtentionTempDir(), `exec-out-${id}.txt`);
 }
 
+export function getExecBaseFilename(id: string) {
+    // replace all dashes in the uuid with underscores
+    id = id.replace(/-/g, "_");
+    return `vscode_motionbuilder_exec_${id}.py`;
+}
+
+function getExecTempFilepath(id: string) {
+    return path.join(utils.getExtentionTempDir(), getExecBaseFilename(id));
+}
 
 /** Handle data recived from the MotionBuilder python server */
-function handleResponse(response: string, id: string) {
+function handleResponse(response: string) {
     // If user is debugging MB, all output will automatically be appended to the debug console
     if (utils.isDebuggingMotionBuilder()) {
         return;
@@ -51,13 +50,6 @@ function handleResponse(response: string, id: string) {
     // Clear the output channel if enabled in user settings
     if (extConfig.get("execute.clearOutput")) {
         outputChannel.clear();
-    }
-
-    // If the response was written to a file use that instead
-    const outputFilepath = getOutputFilepath(id);
-    if (fs.existsSync(outputFilepath)) {
-        response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
-        fs.unlink(outputFilepath, () => { });  // Delete the file
     }
 
     // Format response
@@ -76,32 +68,61 @@ function handleResponse(response: string, id: string) {
     }
 }
 
-export async function execute() {
+export async function executeCurrentDocument() {
     if (!vscode.window.activeTextEditor) {
         return;
     }
     const id = crypto.randomUUID();
 
-    const extConfig = utils.getExtensionConfig();
     const activeDocuemt = vscode.window.activeTextEditor.document;
 
-    const tempFilepath = getTempFilepath(id);
+    const tempFilepath = getExecTempFilepath(id);
     const fileToExecute = vsCodeExec.getFileToExecute(tempFilepath);
     if (!fileToExecute) {
         return;
     }
 
-    let globals: any = {};
-    globals["vsc_file"] = fileToExecute;
-    globals["vsc_is_debugging"] = utils.isDebuggingMotionBuilder();
-    globals["vsc_filename"] = activeDocuemt.uri.fsPath;
-    globals["vsc_name"] = extConfig.get("execute.name");
-    globals["vsc_id"] = id;
+    const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, utils.isDebuggingMotionBuilder());
+    if (response !== null) {
+        handleResponse(response);
+    }
+}
 
+
+/**
+ * 
+ * @param filepath The absolute filepath to the file containing the code to execute
+ * @param filename The absolute filepath to use as the __file__ variable in the python script
+ * @param id UUID to use for the output file
+ * @param bIsDebugging If true, the python script will assume debugpy handles the output
+ * @returns The output from the python script
+ */
+export async function executeFile(filepath: string, filename: string, id: string, bIsDebugging: boolean) {
+    const extConfig = utils.getExtensionConfig();
+
+    /* eslint-disable @typescript-eslint/naming-convention */
+    const globals: any = {
+        "vsc_file": filepath,
+        "vsc_is_debugging": bIsDebugging,
+        "vsc_filename": filename,
+        "vsc_name": extConfig.get("execute.name"),
+        "vsc_id": id
+    };
+    /* eslint-enable @typescript-eslint/naming-convention */
 
     const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");
-    const response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
-    if (response !== null) {
-        handleResponse(response, id);
+    let response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
+    if (response === null)
+        return null;
+
+    // If the response was written to a file use that instead
+    const outputFilepath = getOutputFilepath(id);
+    if (fs.existsSync(outputFilepath)) {
+        response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
+        fs.unlink(outputFilepath, () => { });  // Delete the file
     }
+
+    response = response.replace(/\n\r/g, "\n");
+
+    return response;
 }

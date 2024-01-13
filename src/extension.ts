@@ -6,6 +6,7 @@ import * as reloadModules from './scripts/reloadModules';
 import * as attach from './scripts/attach';
 import * as execute from './scripts/execute-script';
 import * as utils from './modules/utils';
+import * as notebook from './modules/notebook';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -14,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
-			execute.execute();
+			execute.executeCurrentDocument();
 		})
 	);
 	context.subscriptions.push(
@@ -48,6 +49,9 @@ export function activate(context: vscode.ExtensionContext) {
 			documentation.browseExamples();
 		})
 	);
+
+	// Setup Notebook
+	notebook.setupNotebook(context);
 }
 
 
