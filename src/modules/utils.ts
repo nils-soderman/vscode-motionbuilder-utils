@@ -111,10 +111,10 @@ export function isDebuggingMotionBuilder() {
  */
 export function getExtensionConfig() {
     // Try to get the active workspace folder first, to have it read Folder Settings
-    let workspaceFolder;
+    let workspaceFolder: vscode.Uri | undefined;
     if (vscode.window.activeTextEditor) {
         const activeDocumenet = vscode.window.activeTextEditor.document;
-        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
+        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri)?.uri;
     }
 
     return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
