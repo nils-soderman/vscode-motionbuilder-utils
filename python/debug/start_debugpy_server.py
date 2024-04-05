@@ -34,15 +34,17 @@ def start_debug_server(port, debugpy_install_dir=""):
 
 
 def main():
-    port = globals().get("port")
+    port = globals().get("vsc_port")
 
-    ext_packages_dir = globals().get("ext_packages_dir")
+    ext_packages_dir = globals().get("vsc_ext_packages_dir")
     debugpy_install_dir = os.path.join(ext_packages_dir, "Python%s%s" %
                                        (sys.version_info.major, sys.version_info.minor))
 
     is_server_running = start_debug_server(port, debugpy_install_dir)
+    if not is_server_running:
+        return "Failed to start debugpy server"
 
-    return is_server_running
+    return globals().get("vsc_suceess_id")
 
 
 print(main())  # output is read by the VSCode extension

@@ -32,7 +32,9 @@ def main():
     installed = is_module_installed("debugpy", debugpy_install_dir)
 
     # output is sent back to VS Code
-    print(installed)
+    if installed:
+        return globals().get("vsc_suceess_id")
 
+    return False
 
-main()
+print(main())

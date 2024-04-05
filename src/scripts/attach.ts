@@ -1,55 +1,154 @@
 import * as vscode from 'vscode';
 
+import * as crypto from 'crypto';
 import * as path from 'path';
+
+import * as logging from '../modules/logging';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as utils from '../modules/utils';
 
+
+/**
+ * Get the abs path to a debug script
+ * @param filename The name of the script
+ */
 function getDebugScriptPath(filename: string) {
     return path.join(utils.getPythonDir(), "debug", filename);
 }
 
+
+/**
+ * Split the response into lines and return an array of lines
+ */
+function parseResponse(responseRaw: string | null) {
+    const response = responseRaw?.split("\n\r");
+    if (!response) {
+        return null;
+    }
+    return response;
+}
+
+
+/**
+ * Check if the response contains the successId, and log all other lines
+ * @param response The parsed response from MotionBuilder
+ * @param successId if this string is found in the response, return true
+ * @param failId don't log this string
+ * @param bLog Log all lines that are not the successId/failId
+ * @returns True if the successId was found in the response
+ */
+function checkForSuccess(response: string[] | null, successId: string, failId: string = "False", bLog: boolean = true) {
+    if (!response) {
+        return false;
+    }
+
+    let bSuccess = false;
+    for (const line of response) {
+        if (line === successId)
+            bSuccess = true;
+        else if (bLog && line !== failId)
+            logging.log(line);
+    }
+
+    return bSuccess;
+}
+
+
+/**
+ * Check if debugpy python module is installed
+ */
 async function isDebugpyInstalled() {
     const pythonPackages = utils.getExtensionPythonPackagesDir(false);
 
+    logging.log("Checking if debugpy is installed");
+
+    const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
-    const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
-    if (!response) {
-        return "MoBu2023"; // In Mobu 2023, the response might be empty if the Python Editor window is not open
+
+    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
+        ext_packages_dir: pythonPackages,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
+    });
+
+    // In Mobu 2023, the response might be empty if the Python Editor window is not open
+    if (!responseRaw) {
+        return "MoBu2023";
     }
 
-    return response === "True";
+    return checkForSuccess(parseResponse(responseRaw), successId);
 }
 
+
+/**
+ * Install the debugpy python module
+ */
 async function installDebugpy() {
     const pythonPackages = utils.getExtensionPythonPackagesDir(false);
-    const scriptPath = getDebugScriptPath("install_debugpy.py");
-    const response = await motionBuilderConsole.executeFile(scriptPath, { ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
-    return response === "True";
+    logging.log(`Installing debugpy in ${pythonPackages}`);
+
+
+    const successId = crypto.randomUUID();
+    const scriptPath = getDebugScriptPath("install_debugpy.py");
+    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
+        ext_packages_dir: pythonPackages, // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
+    });
+
+    return checkForSuccess(parseResponse(responseRaw), successId);
 }
 
+
+/**
+ * Start the debugpy server in MotionBuilder
+ * @param port The port to start the server on
+ * @returns True if the server was started successfully
+ */
 async function startDebugpyServer(port: number) {
     const pythonPackages = utils.getExtensionPythonPackagesDir(false);
     const scriptPath = getDebugScriptPath("start_debugpy_server.py");
-    const response = await motionBuilderConsole.executeFile(scriptPath, { port: port, ext_packages_dir: pythonPackages }); // eslint-disable-line @typescript-eslint/naming-convention
 
-    return response === "True";
+    const successId = crypto.randomUUID();
+
+    logging.log(`Starting debugpy server on port ${port}`);
+
+    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
+        vsc_port: port,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_ext_packages_dir: pythonPackages,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
+    });
+
+    return checkForSuccess(parseResponse(responseRaw), successId);
 }
 
+
+/**
+ * Check if debugpy is already running in MotionBuilder, and if so return the port it's using
+ */
 async function getCurrentDebugPort() {
     const scriptPath = getDebugScriptPath("get_current_debug_port.py");
-    const response = await motionBuilderConsole.executeFile(scriptPath);
-    if (response && response != "None") {
-        return parseInt(response);
+    const responseRaw = await motionBuilderConsole.executeFile(scriptPath);
+    const lines = parseResponse(responseRaw);
+    if (!lines)
+        return null;
+
+    for (const line of lines) {
+        const port = parseInt(line);
+        if (port)
+            return port;
     }
+
     return null;
 }
 
 
+/**
+ * Get a free port to use for the debugpy server
+ */
 async function getWantedPort() {
     const extConfig = utils.getExtensionConfig();
-    const port: number | undefined = extConfig.get("debug.port");
+    const port = extConfig.get<number>("debug.port");
     if (!port) {
         return null;
     }
@@ -58,7 +157,7 @@ async function getWantedPort() {
         return port;
     }
 
-    if (extConfig.get("debug.autoPort")) {
+    if (extConfig.get<boolean>("debug.autoPort")) {
         const freePort = await utils.findFreePort(port, 100);
         if (freePort) {
             return freePort;
@@ -76,11 +175,16 @@ async function getWantedPort() {
 
 export async function attachToMotionBuilder() {
     if (utils.isDebuggingMotionBuilder()) {
+        logging.log("Already debugging MotionBuilder, aborting attach attempt.");
         return;
     }
 
+    logging.log("Checking if debugpy is already running");
     let port = await getCurrentDebugPort();
-    if (!port) {
+    if (port) {
+        logging.log(`debugpy is running on port ${port}`);
+    }
+    else {
         // Make sure debugpy is installed
         const bIsDebugpyInstalled = await isDebugpyInstalled();
         if (bIsDebugpyInstalled === "MoBu2023") {
@@ -90,6 +194,7 @@ export async function attachToMotionBuilder() {
         }
 
         if (!bIsDebugpyInstalled) {
+            logging.log("debugpy is not installed");
             const selectedInstallOption = await vscode.window.showWarningMessage(
                 "Python module 'debugpy' is required for debugging",
                 "Install"
@@ -97,7 +202,7 @@ export async function attachToMotionBuilder() {
 
             if (selectedInstallOption === "Install") {
                 if (!await installDebugpy()) {
-                    vscode.window.showErrorMessage("Failed to install 'debugpy'");
+                    logging.showErrorMessage("Failed to install debugpy", "Failed to install debugpy");
                     return;
                 }
             }
@@ -117,7 +222,7 @@ export async function attachToMotionBuilder() {
         }
     }
 
-    vscode.debug.startDebugging(undefined, {
+    const configuration: vscode.DebugConfiguration = {
         "name": utils.DEBUG_SESSION_NAME,
         "type": "python",
         "request": "attach",
@@ -125,7 +230,9 @@ export async function attachToMotionBuilder() {
             "host": "localhost",
             "port": port
         }
-    });
+    };
 
+    logging.log(`Starting debug session with configuration:\n${JSON.stringify(configuration, null, 2)}`);
 
+    vscode.debug.startDebugging(undefined, configuration);
 }
