@@ -9,7 +9,6 @@ import * as fs from 'fs';
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
-export const MOTIONBUILDER_VERSION = 2024;
 
 
 // -----------------------------------------------------------------------------------------

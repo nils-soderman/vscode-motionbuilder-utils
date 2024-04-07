@@ -80,8 +80,11 @@ def save_items(filename, items: list):
 # ------------------------------------------
 
 def generate_examples_toc(version: int):
-    examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MotionBuilder-SDK/py_ref/examples.js"
-    examples_response = requests.get(examples_toc_url, timeout=10)
+    if version <= 2024:
+        examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MotionBuilder-SDK/py_ref/examples.js"  # url used for 2024 and below
+    else:
+        examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MOBU-PYTHON-API-REF/examples.js"
+    examples_response = requests.get(examples_toc_url, timeout=10)  
     if examples_response.status_code != 200:
         # Log a warning:
         warnings.warn(

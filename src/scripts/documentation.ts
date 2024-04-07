@@ -9,7 +9,8 @@ import * as utils from '../modules/utils';
 import open = require('open');
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
-const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
+const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
+const MOTIONBUILDER_VERSION = 2025;
 
 interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
     url: string;
@@ -115,7 +116,7 @@ async function browseDocumentation(type: string, bExampels = false) {
 
     if (bExampels && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        const url = getDocumentationPageURL(utils.MOTIONBUILDER_VERSION, relativePageUrl);
+        const url = getDocumentationPageURL(MOTIONBUILDER_VERSION, relativePageUrl);
 
         // Construct a filename
         let filename = selection.label.replace(/[/\\]/g, "_");
@@ -129,7 +130,7 @@ async function browseDocumentation(type: string, bExampels = false) {
         openExampleInVSCode(url, "Example_" + filename);
     }
     else {
-        openPageInBrowser(relativePageUrl, utils.MOTIONBUILDER_VERSION);
+        openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
     }
 }
 
