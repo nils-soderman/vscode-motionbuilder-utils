@@ -1,9 +1,13 @@
 # Change Log
 
-## [2024.1.1] - UNRELEASED
+## [2025.0.0] - UNRELEASED
+
+### Changed:
+- The documentation & examples now browses the 2025 docs
 
 ### Fixed:
-- Folder settings being ignored when a workspace is opened.
+- Bug preventing VS Code from attaching to MoBu 2025
+- Folder settings potentially being ignored when a workspace is opened.
 
 ## [2024.1.0] - 2024-01-01
 
