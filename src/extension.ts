@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Setup Code Completion
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.setupCodeCompletion', () => {
-			codeCompletion.setup();
+			codeCompletion.main();
 		})
 	);
 

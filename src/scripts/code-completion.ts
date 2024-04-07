@@ -4,11 +4,54 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 import * as utils from '../modules/utils';
+import * as logging from '../modules/logging';
 
 
 const PYTHON_CONFIG = "python";
 const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
-const STUB_FILES_FOLDER_NAME = "stub-files";
+const RESOURCES_STUBS_FOLDER_NAME = "stub-files";
+
+const GITHUB_API_URL = "https://api.github.com/repos";
+const GITHUB_API_HEADERS = {
+    'User-Agent': 'VSCode-MotionBuilder-Extension'  // eslint-disable-line @typescript-eslint/naming-convention
+};
+
+const REPOSITORY_URL = "nils-soderman/pyfbsdk-stub-generator";
+const REPOSITORY_GENERATED_FILES_DIR = "generated-stub-files";
+
+
+/* eslint-disable @typescript-eslint/naming-convention */
+interface IGitHubApiContent {
+    name: string;
+    path: string;
+    sha: string;
+    size: number;
+    url: string;
+    git_url: string;
+    download_url: string;
+    type: string;
+    _links: {
+        self: string;
+        git: string;
+        html: string;
+    };
+}
+/* eslint-enable @typescript-eslint/naming-convention */
+
+
+interface IVersionQuickPick {
+    label: string;
+    path: string;
+}
+
+
+/**
+ * Make sure that the file at the given path is writable
+ */
+function ensureWritable(path: string) {
+    if (fs.existsSync(path))
+        fs.chmodSync(path, 0o600);
+}
 
 
 /**
@@ -25,57 +68,155 @@ function getPythonConfig() {
  * Instead the files located here can be copied elsewhere on disk.
  * @param version MotionBuilder version, if version is undefined the folder containing all versions will be returned.
  */
-function getSourceStubFileDirectory(version?: number) {
-    if (version == null) {
-        return path.join(utils.getResourcesDir(), STUB_FILES_FOLDER_NAME);
-    }
-    return path.join(utils.getResourcesDir(), STUB_FILES_FOLDER_NAME, version.toString());
+function getSourceStubFileDirectory() {
+    return path.join(utils.getResourcesDir(), RESOURCES_STUBS_FOLDER_NAME);
 }
 
 
 /**
- * Get the absolute path to where the motionbuilder stub files should be placed.
- * @param bEnsureExists If folder doesn't exist, create it.
+ * Get the absolute path to the default directory where we should place the stub files.
  */
-function getCopyDestinationPath(bEnsureExists = true) {
+function getDefaultStubDestination() {
     // No custom path was found, use the default one under AppData
     const folderPath = utils.ensureForwardSlashes(path.join(utils.getExtensionAppdataFolder(), "stubs"));
-    if (bEnsureExists && !fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath);
-    }
     return folderPath;
 }
 
 
 /**
- * Copy stub files from 'resources/stub-files/XXXX/' -> `targetDirectory`
- * @param version MotionBuilder version of stub files to copy
- * @param targetDirectory The directory to copy the files into
- * @param bForceCopy Copy files even if they already exist & we don't have a newer version to copy 
+ * Parse the data from the GitHub API into an array of IGitHubApiContent objects.
  */
-function copyStubFiles(version: number, targetDirectory: string, bForceCopy = false) {
-    const copyFile = (sourceFilepath: string, targetFilepath: string) => {
-        if (!fs.existsSync(targetDirectory)) {
-            fs.chmodSync(targetFilepath, 0o600); // Make sure file is writeable
-        }
-        fs.copyFile(sourceFilepath, targetFilepath, () => { });
-    };
+function parseGitHubApiContent(data: string): Array<IGitHubApiContent> {
+    try {
+        return JSON.parse(data) as Array<IGitHubApiContent>;
+    }
+    catch (error) {
+        const err = error as Error;
+        logging.showErrorMessage("Failed to parse available versions", `${err.message}\nJSON:\n${data}`);
+        throw err;
+    }
+}
 
-    const stubFilesSourceDirectory = getSourceStubFileDirectory(version);
+
+/**
+ * Get the available versions of the stub files from the GitHub repository.
+ * @returns A QuickPick friendly array of available versions
+ */
+async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
+    const url = `${GITHUB_API_URL}/${REPOSITORY_URL}/contents/${REPOSITORY_GENERATED_FILES_DIR}`;
+
+    let data: string;
+
+    try {
+        data = await utils.getRequest(url, GITHUB_API_HEADERS);
+    }
+    catch (error) {
+        const err = error as Error;
+        logging.showErrorMessage("Failed to fetch available versions", err.message);
+        throw err;
+    }
+
+    const parsedData = parseGitHubApiContent(data);
+
+    return parsedData
+        .filter(content => content.type === "dir")
+        .map(content => ({
+            label: content.name.split("-")[1],
+            path: content.path
+        })).reverse();
+}
+
+
+/**
+ * Download the stub files for a specific version from the GitHub repository.
+ * @param version The version to download
+ * @param destination The destination folder to save the files to
+ * @returns An array of downloaded files
+ */
+async function downloadStubFiles(version: IVersionQuickPick, destination: string) {
+    const url = `${GITHUB_API_URL}/${REPOSITORY_URL}/contents/${version.path}`;
+
+    let data: string;
+
+    try {
+        data = await utils.getRequest(url, GITHUB_API_HEADERS);
+    } catch (error) {
+        const err = error as Error;
+        logging.showErrorMessage(`Failed to fetch stub file for ${version.label}`, err.message);
+        throw err;
+    }
+
+    const parsedData = parseGitHubApiContent(data);
+
+    let downloadedFiles = [];
+    for (const file of parsedData) {
+        if (file.type !== "file")
+            continue;
+
+        const filename = path.join(destination, file.name);
+
+        try {
+            const fileData = await utils.getRequest(file.download_url, GITHUB_API_HEADERS);
+
+            if (fs.existsSync(filename))
+                ensureWritable(filename);
+
+            fs.writeFileSync(filename, fileData);
+            downloadedFiles.push(filename);
+        }
+        catch (error) {
+            const err = error as Error;
+            logging.showErrorMessage(`Failed to download file ${file.name}`, err.message);
+        }
+    }
+
+    return downloadedFiles;
+}
+
+
+/**
+ * Copy local stub files that comes with the extension from 'resources/stub-files/' -> `targetDirectory`
+ * @param targetDirectory The directory to copy the files into
+ */
+function copyLocalStubFiles(targetDirectory: string): string[] {
+    const stubFilesSourceDirectory = getSourceStubFileDirectory();
+
+    const filesCopied: string[] = [];
 
     // Loop through all of the files under the 'stub-files/XXXX/' folder
     for (const filepath of fs.readdirSync(stubFilesSourceDirectory)) {
         const targetFilepath = path.join(targetDirectory, filepath);
         const sourceFilepath = path.join(stubFilesSourceDirectory, filepath);
 
-        if (!bForceCopy && fs.existsSync(targetFilepath)) {
-            // if file already exists, check if there if the source is a newer version
-            if (fs.statSync(sourceFilepath).mtime > fs.statSync(targetFilepath).mtime) {
-                copyFile(sourceFilepath, targetFilepath);
+        if (fs.existsSync(targetFilepath)) {
+            // Check if the stub file we're about to copy is newer than the one we already have
+            if (fs.statSync(sourceFilepath).mtime <= fs.statSync(targetFilepath).mtime) {
+                continue;
             }
+
+            ensureWritable(targetFilepath);
         }
-        else {
-            copyFile(sourceFilepath, targetFilepath);
+
+        fs.copyFileSync(sourceFilepath, targetFilepath);
+        filesCopied.push(targetFilepath);
+    }
+
+    return filesCopied;
+}
+
+
+/**
+ * Ensure that the given .pyi files has a corresponding .py file in the same directory
+ * If not generate an empty .py file.
+ */
+function ensurePyFilesExist(files: string[]) {
+    for (const file of files) {
+        if (!file.endsWith(".pyi")) {
+            continue;
+        }
+        const pyFile = file.replace(".pyi", ".py");
+        if (!fs.existsSync(pyFile)) {
+            fs.writeFileSync(pyFile, "");
         }
     }
 }
@@ -87,9 +228,8 @@ function copyStubFiles(version: number, targetDirectory: string, bForceCopy = fa
  */
 function addPythonAnalysisPath(pathToAdd: string) {
     const pythonConfig = getPythonConfig();
-    let extraPaths: Array<string> | undefined = pythonConfig.get(EXTRA_PATHS_CONFIG);
+    let extraPaths = pythonConfig.get<string[]>(EXTRA_PATHS_CONFIG);
     if (extraPaths) {
-
         // Check if the path already exists
         for (const path of extraPaths) {
             if (utils.isPathsSame(path, pathToAdd)) {
@@ -104,13 +244,12 @@ function addPythonAnalysisPath(pathToAdd: string) {
 }
 
 
-export async function setup() {
-    let destination = "";
-    const defaultDestination = getCopyDestinationPath();
+export async function main() {
+    const defaultDestination = getDefaultStubDestination();
 
     const title = "MotionBuilder Code Completion Setup";
 
-    const selected = await vscode.window.showQuickPick(
+    const selectedDestination = await vscode.window.showQuickPick(
         [
             {
                 label: `$(extensions) ${defaultDestination}`,
@@ -126,11 +265,11 @@ export async function setup() {
             title: `${title} (1/2)`,
         }
     );
-    if (!selected) {
+    if (!selectedDestination)
         return;
-    }
 
-    if (selected.index === 1) {
+    let destination = "";
+    if (selectedDestination.index === 1) {
         const result = await vscode.window.showOpenDialog({
             canSelectFiles: false,
             canSelectFolders: true,
@@ -145,26 +284,37 @@ export async function setup() {
         destination = result[0].fsPath;
     }
     else {
-        destination = getCopyDestinationPath();
+        destination = defaultDestination;
+    }
+
+    if (!fs.existsSync(destination)) {
+        logging.log(`Creating directory: ${destination}`);
+        fs.mkdirSync(destination);
     }
 
     // Ask user to select a version
-    // Get available versions by looking in the resources/stub-files folder
-    // TODO: Allow user to generate stub files for their own version, by pip installing pyfbsdk-stub-generator
-    const availableVersions = fs.readdirSync(getSourceStubFileDirectory());
+    const availableVersions = await getAvailableVersions();
     const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
         placeHolder: "Select the MotionBuilder version to use for code completion",
         title: `${title} (2/2)`,
     });
-    if (!selectedVersion) {
+    if (!selectedVersion)
+        return;
+
+    // Download the stub files
+    const downloadedFiles = await downloadStubFiles(selectedVersion, destination);
+    if (downloadedFiles.length === 0) {
+        logging.log("No stub files were downloaded.");
         return;
     }
 
     // Copy stub files
-    // Convert string to number
-    const version = parseInt(selectedVersion);
-    copyStubFiles(version, destination, true);
+    const copiedFiles = copyLocalStubFiles(destination);
 
-    // Add path to user startup
+    // Ensure that the .py files exists
+    // These are needed for the python extension to not throw warnings
+    ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
+
+    // Add path to python analysis
     addPythonAnalysisPath(destination);
 }

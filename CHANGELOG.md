@@ -3,6 +3,7 @@
 ## [2025.0.0] - UNRELEASED
 
 ### Changed:
+- `motionbuilder.setupCodeCompletion` now downloads the latest stubs from [pyfbsdk-stub-generator/generated-stub-files](https://github.com/nils-soderman/pyfbsdk-stub-generator/tree/main/generated-stub-files)
 - The documentation & examples now browses the 2025 docs
 
 ### Fixed:

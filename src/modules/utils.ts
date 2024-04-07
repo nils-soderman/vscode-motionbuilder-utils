@@ -192,9 +192,9 @@ export function isPathsSame(a: string, b: string) {
  * Do a web get-request
  * @param url The url whose content to fetch
 */
-export function getRequest(url: string): Promise<string> {
+export function getRequest(url: string, headers?: any): Promise<string> {
     return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
+        https.get(url, {headers}, (res) => {
             let data = '';
             res.on('data', (chunk) => {
                 data += chunk;
