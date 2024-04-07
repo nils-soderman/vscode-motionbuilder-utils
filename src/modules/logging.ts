@@ -10,7 +10,7 @@ export function getOutputChannel() {
 }
 
 
-export function logMessage(message: string, bShowLog = false) {
+export function log(message: string, bShowLog = false) {
     message = message.replace(/\n\r/g, "\n");
     
     const outputChannel = getOutputChannel();
@@ -26,5 +26,5 @@ export async function showErrorMessage(message: string, fullError: string) {
 
     const selectedValue = await vscode.window.showErrorMessage(message, "Show error");
     if (selectedValue == "Show error")
-        logMessage(fullError, true);
+        log(fullError, true);
 }

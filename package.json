@@ -88,25 +88,12 @@
       {
         "order": 0,
         "properties": {
-          "motionbuilder.version": {
-            "title": "Version",
-            "type": "integer",
-            "enum": [
-              2022,
-              2023,
-              2024
-            ],
-            "default": 2024,
-            "description": "Which version to use when browsing the documentation.",
-            "scope": "resource",
-            "order": 0
-          },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
             "description": "Open up the example files in editor, instead of the web-browser.",
             "scope": "resource",
-            "order": 1
+            "order": 0
           },
           "motionbuilder.reload.ignore": {
             "type": "array",
@@ -115,7 +102,7 @@
             ],
             "description": "Glob patterns for files to ignore when reloading modules. Pattern will be matched against the full filepath of the module.",
             "scope": "resource",
-            "order": 2
+            "order": 1
           }
         }
       },

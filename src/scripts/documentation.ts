@@ -9,7 +9,8 @@ import * as utils from '../modules/utils';
 import open = require('open');
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
-const PYTHON_REF = "ENU/MotionBuilder-SDK/py_ref/";
+const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
+const MOTIONBUILDER_VERSION = 2025;
 
 interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
     url: string;
@@ -34,26 +35,20 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
 
 /**
  * Get the directory where the documentation is stored.
- * @param version MotionBuilder version, if not specified, the base directory containing all versions is returned.
  */
-function getDocumentationDirectory(version?: number) {
-    let directory = path.join(utils.getResourcesDir(), "documentation");
-    if (version) {
-        directory = path.join(directory, version.toString());
-    }
-    return directory;
+function getDocumentationDirectory() {
+    return path.join(utils.getResourcesDir(), "documentation");
 }
 
 /**
  * Parse one of the generated json table of content files.
  * @param type The type of documentation file to parse, should be one of the options in the struct: `FDOCTYPE`
- * @param version MotionBuilder version 
  * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
  */
-function parseGeneratedDocumentationFile(type: string, version: number): {
+function parseGeneratedDocumentationFile(type: string): {
     items: IDocumentationQuickPickItem[],
 } {
-    const filepath = path.join(getDocumentationDirectory(version), `${type}.json`);
+    const filepath = path.join(getDocumentationDirectory(), `${type}.json`);
     return utils.readJson(filepath);
 }
 
@@ -101,52 +96,15 @@ function openExampleInVSCode(url: string, filename: string) {
     utils.getRequest(url, handleResponse);
 }
 
-function getAvailableDocumentationVersions() {
-    const documentationDir = getDocumentationDirectory();
-    return fs.readdirSync(documentationDir).map(v => parseInt(v));
-}
-
-function getClosestAvailableVersion(version: number, type: string) {
-    const versions = getAvailableDocumentationVersions();
-    if (versions.includes(version)) {
-        if (fs.existsSync(path.join(getDocumentationDirectory(version), `${type}.json`))) {
-            return version;
-        }
-    }
-
-    // Find the closest version
-    let closestVersion: number | undefined;
-    for (const v of versions) {
-        if (!fs.existsSync(path.join(getDocumentationDirectory(v), `${type}.json`))) {
-            continue;
-        }
-
-        if (!closestVersion) {
-            closestVersion = v;
-            continue;
-        }
-
-        if (Math.abs(v - version) < Math.abs(closestVersion - version)) {
-            closestVersion = v;
-        }
-    }
-
-    return closestVersion;
-}
 
 /**
  * List all pages from one or multiple documentation types, and open up the page selected by the user
  * @param type List of types to include, types should be of `FDOCTYPE`
  */
 async function browseDocumentation(type: string, bExampels = false) {
-    const version = getClosestAvailableVersion(utils.getMotionBuilderVersion(), type);
-    if (!version) {
-        return;
-    }
-    
-    const placeHolder = bExampels ? `Search the MotionBuilder ${version} examples` : `Search the MotionBuilder ${version} ${type} documentation`;
+    const placeHolder = bExampels ? `Search the MotionBuilder examples` : `Search the MotionBuilder ${type} documentation`;
 
-    const data = parseGeneratedDocumentationFile(type, version);
+    const data = parseGeneratedDocumentationFile(type);
     const selection = await vscode.window.showQuickPick(data.items, {
         placeHolder
     });
@@ -156,9 +114,9 @@ async function browseDocumentation(type: string, bExampels = false) {
 
     const relativePageUrl = selection.url;
 
-    if (bExampels && utils.getExtensionConfig().get("documentation.openExamplesInEditor")) {
+    if (bExampels && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        const url = getDocumentationPageURL(version, relativePageUrl);
+        const url = getDocumentationPageURL(MOTIONBUILDER_VERSION, relativePageUrl);
 
         // Construct a filename
         let filename = selection.label.replace(/[/\\]/g, "_");
@@ -172,7 +130,7 @@ async function browseDocumentation(type: string, bExampels = false) {
         openExampleInVSCode(url, "Example_" + filename);
     }
     else {
-        openPageInBrowser(relativePageUrl, version);
+        openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
     }
 }
 

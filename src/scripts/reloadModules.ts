@@ -109,5 +109,5 @@ function showReloadInfo(time: string, reloadedPaths: Array<string>, failedPaths:
     }
 
     const message = lines.join("\n");
-    logging.logMessage(message, true);
+    logging.log(message, true);
 }

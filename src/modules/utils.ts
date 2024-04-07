@@ -9,7 +9,6 @@ import * as fs from 'fs';
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
-export const DEFAULT_VERSION = 2023;
 
 
 // -----------------------------------------------------------------------------------------
@@ -118,17 +117,6 @@ export function getExtensionConfig() {
     }
 
     return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
-}
-
-/**
- * Get the MotionBuilder version the user wants to use given by the config
- */
-export function getMotionBuilderVersion() {
-    let version: number | undefined = getExtensionConfig().get("version");
-    if (!version) {
-        return DEFAULT_VERSION;
-    }
-    return version;
 }
 
 
