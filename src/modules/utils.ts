@@ -191,25 +191,27 @@ export function isPathsSame(a: string, b: string) {
 /**
  * Do a web get-request
  * @param url The url whose content to fetch
- * @param callback Callback function to call with the response. Will be called with 2 parameters: (data: string, statusCode: number)
 */
-export function getRequest(url: string, callback?: Function) {
-    https.get(url, (res) => {
-        let data = '';
-        res.on('data', (chunk) => {
-            data += chunk;
-        });
-        
-        res.on("end", () => {
-            if (callback) {
-                callback(data, res.statusCode);
-            }
-        });
+export function getRequest(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        https.get(url, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
 
-        res.on('error', () => {
-            if (callback) {
-                callback(data, res.statusCode);
-            }
+            res.on('end', () => {
+                if (!res.statusCode || res.statusCode >= 400) {
+                    reject(new Error(`${url} returned with status code: ${res.statusCode}\nHeaders:\n${JSON.stringify(res.headers, null, 2)}\nBody:\n${data}`));
+                    return;
+                }
+                else
+                    resolve(data);
+            });
+
+            res.on('error', (err) => {
+                reject(err);
+            });
         });
     });
 }

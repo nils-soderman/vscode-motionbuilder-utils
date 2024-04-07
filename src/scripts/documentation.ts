@@ -2,11 +2,12 @@ import * as vscode from 'vscode';
 
 import * as htmlParser from 'node-html-parser';
 import * as path from 'path';
-import * as fs from 'fs';
 
 import * as utils from '../modules/utils';
+import * as logging from '../modules/logging';
 
 import open = require('open');
+
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
 const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
@@ -70,30 +71,26 @@ function openPageInBrowser(relativePageURL: string, version: number) {
  * @param filename The abs filepath where to save the file on disk
  */
 function openExampleInVSCode(url: string, filename: string) {
-    function handleResponse(data: string, statusCode?: number) {
-        if (!statusCode || statusCode >= 400) {
-            vscode.window.showErrorMessage(`Failed to get: ${url}`);
-            return;
-        }
+    utils.getRequest(url).then(
+        (data) => {
+            const parsedHtml = htmlParser.parse(data);
 
-        const parsedHtml = htmlParser.parse(data);
+            let content = "";
+            for (const line of parsedHtml.querySelectorAll(".line")) {
+                // Remove line numbers
+                line.querySelectorAll(".lineno").forEach(e => e.remove());
 
-        let content = "";
-        for (const line of parsedHtml.querySelectorAll(".line")) {
-            // Remove line numbers
-            line.querySelectorAll(".lineno").forEach(e => e.remove());
+                content += line.text + "\n";
+            }
 
-            content += line.text + "\n";
-        }
-
-        const filepath = utils.saveTempFile(filename, content);
-        const openPath = vscode.Uri.file(filepath);
-        vscode.workspace.openTextDocument(openPath).then(doc => {
-            vscode.window.showTextDocument(doc);
-        });
-    }
-
-    utils.getRequest(url, handleResponse);
+            const filepath = utils.saveTempFile(filename, content);
+            const openPath = vscode.Uri.file(filepath);
+            vscode.workspace.openTextDocument(openPath).then(doc => {
+                vscode.window.showTextDocument(doc);
+            });
+        },
+        (err) => logging.showErrorMessage(`Failed to get: ${url}`, err)
+    );
 }
 
 
