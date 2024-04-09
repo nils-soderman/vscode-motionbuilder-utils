@@ -74,16 +74,6 @@ function getSourceStubFileDirectory() {
 
 
 /**
- * Get the absolute path to the default directory where we should place the stub files.
- */
-function getDefaultStubDestination() {
-    // No custom path was found, use the default one under AppData
-    const folderPath = utils.ensureForwardSlashes(path.join(utils.getExtensionAppdataFolder(), "stubs"));
-    return folderPath;
-}
-
-
-/**
  * Parse the data from the GitHub API into an array of IGitHubApiContent objects.
  */
 function parseGitHubApiContent(data: string): Array<IGitHubApiContent> {
@@ -244,8 +234,8 @@ function addPythonAnalysisPath(pathToAdd: string) {
 }
 
 
-export async function main() {
-    const defaultDestination = getDefaultStubDestination();
+export async function main(context: vscode.ExtensionContext) {
+    const defaultDestination = path.join(context.globalStorageUri.fsPath, "stubs");
 
     const title = "MotionBuilder Code Completion Setup";
 
