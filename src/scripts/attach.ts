@@ -57,17 +57,16 @@ function checkForSuccess(response: string[] | null, successId: string, failId: s
 
 /**
  * Check if debugpy python module is installed
+ * @param pythonPackageDir The path to the extension can install python packages
  */
-async function isDebugpyInstalled() {
-    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
-
+async function isDebugpyInstalled(pythonPackageDir: string) {
     logging.log("Checking if debugpy is installed");
 
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: pythonPackages,  // eslint-disable-line @typescript-eslint/naming-convention
+        ext_packages_dir: pythonPackageDir,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -82,17 +81,16 @@ async function isDebugpyInstalled() {
 
 /**
  * Install the debugpy python module
+ * @param pythonPackageDir The path to the extension can install python packages
  */
-async function installDebugpy() {
-    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
-
-    logging.log(`Installing debugpy in ${pythonPackages}`);
+async function installDebugpy(pythonPackageDir: string) {
+    logging.log(`Installing debugpy in ${pythonPackageDir}`);
 
 
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: pythonPackages, // eslint-disable-line @typescript-eslint/naming-convention
+        ext_packages_dir: pythonPackageDir, // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -103,10 +101,10 @@ async function installDebugpy() {
 /**
  * Start the debugpy server in MotionBuilder
  * @param port The port to start the server on
+ * @param pythonPackageDir The path to the extension can install python packages
  * @returns True if the server was started successfully
  */
-async function startDebugpyServer(port: number) {
-    const pythonPackages = utils.getExtensionPythonPackagesDir(false);
+async function startDebugpyServer(port: number, pythonPackageDir: string) {
     const scriptPath = getDebugScriptPath("start_debugpy_server.py");
 
     const successId = crypto.randomUUID();
@@ -115,7 +113,7 @@ async function startDebugpyServer(port: number) {
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
         vsc_port: port,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_ext_packages_dir: pythonPackages,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_ext_packages_dir: pythonPackageDir,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -173,7 +171,7 @@ async function getWantedPort() {
 }
 
 
-export async function attachToMotionBuilder() {
+export async function main(context: vscode.ExtensionContext) {
     if (utils.isDebuggingMotionBuilder()) {
         logging.log("Already debugging MotionBuilder, aborting attach attempt.");
         return;
@@ -185,8 +183,10 @@ export async function attachToMotionBuilder() {
         logging.log(`debugpy is running on port ${port}`);
     }
     else {
+        const pythonPackageDir = path.join(context.globalStorageUri.fsPath, "site-packages");
+
         // Make sure debugpy is installed
-        const bIsDebugpyInstalled = await isDebugpyInstalled();
+        const bIsDebugpyInstalled = await isDebugpyInstalled(pythonPackageDir);
         if (bIsDebugpyInstalled === "MoBu2023") {
             // In Mobu 2023, the response might be empty if the Python Editor window is not open
             vscode.window.showErrorMessage('Due to a bug in MoBu 2023 the MotionBuilder window "Python Editor" must be open before attaching.');
@@ -201,7 +201,7 @@ export async function attachToMotionBuilder() {
             );
 
             if (selectedInstallOption === "Install") {
-                if (!await installDebugpy()) {
+                if (!await installDebugpy(pythonPackageDir)) {
                     logging.showErrorMessage("Failed to install debugpy", "Failed to install debugpy");
                     return;
                 }
@@ -217,7 +217,7 @@ export async function attachToMotionBuilder() {
             return;
         }
 
-        if (!await startDebugpyServer(port)) {
+        if (!await startDebugpyServer(port, pythonPackageDir)) {
             return;
         }
     }

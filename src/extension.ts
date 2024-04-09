@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Debugging
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.attach', () => {
-			attach.attachToMotionBuilder();
+			attach.main(context);
 		})
 	);
 

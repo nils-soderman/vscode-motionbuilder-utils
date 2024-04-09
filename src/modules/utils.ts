@@ -62,36 +62,6 @@ export function getExtentionTempDir(bEnsureExists = true) {
     return tempDir;
 }
 
-/**
- * Get the Appdata folder path
- */
-export function getAppDataFolder() {
-    return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
-}
-
-/**
- * Get this extension's subfolder under AppData which can be used to store files in
- * @param bEnsureExists If folder doesn't exists, create it
- */
-export function getExtensionAppdataFolder(bEnsureExists = true) {
-    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
-    if (bEnsureExists && !fs.existsSync(appdataDir)) {
-        fs.mkdirSync(appdataDir);
-    }
-    return appdataDir;
-}
-
-/**
- * Get this extension's folder where python site-packages can be installed
- * @param bEnsureExists If folder doesn't exists, create it
- */
-export function getExtensionPythonPackagesDir(bEnsureExists = true) {
-    const sitePackageDir = path.join(getExtensionAppdataFolder(), "python", "site-packages");
-    if (bEnsureExists && !fs.existsSync(sitePackageDir)) {
-        fs.mkdirSync(sitePackageDir, { "recursive": true });
-    }
-    return sitePackageDir;
-}
 
 // -----------------------------------------------------------------------------------------
 //                                     Extension
