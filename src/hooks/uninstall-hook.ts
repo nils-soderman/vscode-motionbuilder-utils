@@ -12,18 +12,13 @@ import * as fs   from 'fs';
  *                      Functions lifted from Utils
  * -------------------------------------------------------------------------- */
 
-const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 
 export function getAppDataFolder() {
     return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
 }
 
-export function getExtensionAppdataFolder(bEnsureExists = true) {
-    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
-    if (bEnsureExists && !fs.existsSync(appdataDir)) {
-        fs.mkdirSync(appdataDir);
-    }
-    return appdataDir;
+export function getExtensionAppdataFolder() {
+    return path.join(getAppDataFolder(), "Code", "User", "globalStorage", "nilssoderman.mobu-utils");
 }
 
 
@@ -32,7 +27,7 @@ export function getExtensionAppdataFolder(bEnsureExists = true) {
  * -------------------------------------------------------------------------- */
 
 function main() {
-    // Cleanup all files placed under %AppData%/VSCode-MotionBuilder-Utils
+    // Cleanup all files placed in the extension's appdata folder
     const appdataFolder = getExtensionAppdataFolder();
     if (fs.existsSync(appdataFolder)) {
         fs.rmSync(appdataFolder, { recursive: true });
