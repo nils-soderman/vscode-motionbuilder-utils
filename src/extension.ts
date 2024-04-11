@@ -6,6 +6,10 @@ import * as reloadModules from './scripts/reloadModules';
 import * as attach from './scripts/attach';
 import * as execute from './scripts/execute-script';
 import * as utils from './modules/utils';
+import * as logging from './modules/logging';
+
+
+import * as fs   from 'fs';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -48,10 +52,26 @@ export function activate(context: vscode.ExtensionContext) {
 			documentation.browseExamples();
 		})
 	);
+
+
+	deleteOldExtensionData();
 }
 
 
 export function deactivate() {
 	// Remove all temp files created by this extension
 	utils.cleanupTempFiles();
+}
+
+
+// TODO: Remove this cleanup function in a future release
+/**
+ * Delete the old appdata folder. Used in versions before 2025.0.0
+ */
+function deleteOldExtensionData() {
+	const appdataFolder = utils.getExtensionAppdataFolder();
+	if (fs.existsSync(appdataFolder)) {
+		logging.log("Deleting old extension data folder: " + appdataFolder);
+		fs.rmSync(appdataFolder, { recursive: true });
+	}
 }
