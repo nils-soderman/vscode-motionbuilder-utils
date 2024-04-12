@@ -134,24 +134,38 @@
         }
       },
       {
-        "title": "Debug",
+        "title": "Attach",
         "order": 2,
         "properties": {
           "motionbuilder.debug.port": {
             "type": "integer",
             "default": 4243,
-            "description": "The port to run the debug server on when attaching to MotionBuilder.",
+            "description": "The port to run the debugpy server on",
+            "scope": "resource",
+            "deprecationMessage": "Use `motionbuilder.attach.port` instead"
+          },
+          "motionbuilder.attach.port": {
+            "type": "integer",
+            "default": 4243,
+            "description": "The port to run the debugpy server on",
             "minimum": 0,
             "maximum": 65353,
             "scope": "resource",
             "order": 0
           },
+          "motionbuilder.attach.autoPort": {
+            "type": "boolean",
+            "default": true,
+            "description": "Automatically find a free port to run the debugpy server on",
+            "scope": "resource",
+            "order": 1
+          },
           "motionbuilder.debug.autoPort": {
             "type": "boolean",
             "default": true,
-            "description": "Automatically find a free port to run the debug server on when attaching to MotionBuilder.",
+            "description": "Automatically find a free port to run the debugpy server on",
             "scope": "resource",
-            "order": 1
+            "deprecationMessage": "Use `motionbuilder.attach.autoPort` instead"
           }
         }
       }

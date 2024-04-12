@@ -3,6 +3,9 @@
 ## [2025.0.0] - UNRELEASED
 
 ### Changed:
+- Renamed setting:
+    - `motionbuilder.debug.port` -> `motionbuilder.attach.port`
+    - `motionbuilder.debug.autoPort` -> `motionbuilder.attach.autoPort`
 - `motionbuilder.setupCodeCompletion` now downloads the latest stubs from [pyfbsdk-stub-generator/generated-stub-files](https://github.com/nils-soderman/pyfbsdk-stub-generator/tree/main/generated-stub-files)
 - The documentation & examples now browses the 2025 docs
 - Extension appdata is now stored in VS Code's user-data folder
