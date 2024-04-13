@@ -1,6 +1,6 @@
 # Change Log
 
-## [2025.0.0] - UNRELEASED
+## [2025.0.0] - 2024-04-13
 
 ### Changed:
 - Renamed setting:
@@ -13,6 +13,7 @@
 ### Fixed:
 - Bug preventing VS Code from attaching to MoBu 2025
 - Folder settings potentially being ignored when a workspace is opened.
+- Python 2.7 support for `motionbuilder.attach`
 
 ## [2024.1.0] - 2024-01-01
 
