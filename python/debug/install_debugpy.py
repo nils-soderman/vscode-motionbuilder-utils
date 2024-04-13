@@ -8,6 +8,11 @@ import os
 MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
 VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 
+# for Python 2 compatibility
+try:
+    ModuleNotFoundError
+except NameError:
+    ModuleNotFoundError = ImportError
 
 def is_pip_installed():
     """ Check if pip is installed """
@@ -71,7 +76,12 @@ def install_debugpy(target=""):
     else:
         args.extend(("-m", "pip"))
 
-    args.extend(("install", "debugpy"))
+    if sys.version_info.major == 2:
+        package = "debugpy==1.5.1"
+    else:
+        package = "debugpy"
+
+    args.extend(("install", package))
     if target:
         args.append('--target="%s"' % target)
 

@@ -4,6 +4,11 @@ import importlib
 import sys
 import os
 
+# for Python 2 compatibility
+try:
+    ModuleNotFoundError
+except NameError:
+    ModuleNotFoundError = ImportError
 
 def is_module_installed(module, extra_sys_path=""):
     try:
