@@ -3,7 +3,7 @@
 ## [2025.0.1] - 2024-04-17
 
 ### Fixed:
-- `motionbuilder.setupCodeCompletion` failing to create the default directory for the stub files
+- `motionbuilder.setupCodeCompletion` failing to create the default directory for the stub files [#9](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/9)
 
 ## [2025.0.0] - 2024-04-13
 
