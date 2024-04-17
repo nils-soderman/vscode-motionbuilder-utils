@@ -190,7 +190,15 @@ function copyLocalStubFiles(targetDirectory: string): string[] {
             ensureWritable(targetFilepath);
         }
 
-        fs.copyFileSync(sourceFilepath, targetFilepath);
+        try {
+            fs.copyFileSync(sourceFilepath, targetFilepath);
+        }
+        catch (error) {
+            const err = error as Error;
+            logging.showErrorMessage(`Failed to copy file ${filepath}`, err.message);
+            continue;
+        }
+
         filesCopied.push(targetFilepath);
 
         logging.log(`Copied ${filepath} to ${targetFilepath}`);
@@ -211,7 +219,14 @@ function ensurePyFilesExist(files: string[]) {
         }
         const pyFile = file.replace(".pyi", ".py");
         if (!fs.existsSync(pyFile)) {
-            fs.writeFileSync(pyFile, "");
+            try {
+                fs.writeFileSync(pyFile, "");
+            }
+            catch (error) {
+                const err = error as Error;
+                logging.showErrorMessage(`Failed to create .py file for ${file}`, err.message);
+                continue;
+            }
         }
     }
 }
