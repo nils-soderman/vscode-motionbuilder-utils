@@ -153,6 +153,8 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: string
 
             fs.writeFileSync(filename, fileData);
             downloadedFiles.push(filename);
+
+            logging.log(`Downloaded "${filename}"`);
         }
         catch (error) {
             const err = error as Error;
@@ -181,6 +183,7 @@ function copyLocalStubFiles(targetDirectory: string): string[] {
         if (fs.existsSync(targetFilepath)) {
             // Check if the stub file we're about to copy is newer than the one we already have
             if (fs.statSync(sourceFilepath).mtime <= fs.statSync(targetFilepath).mtime) {
+                logging.log(`"${targetFilepath}" already exists and is up to date`);
                 continue;
             }
 
@@ -189,6 +192,8 @@ function copyLocalStubFiles(targetDirectory: string): string[] {
 
         fs.copyFileSync(sourceFilepath, targetFilepath);
         filesCopied.push(targetFilepath);
+
+        logging.log(`Copied ${filepath} to ${targetFilepath}`);
     }
 
     return filesCopied;
@@ -223,6 +228,7 @@ function addPythonAnalysisPath(pathToAdd: string) {
         // Check if the path already exists
         for (const path of extraPaths) {
             if (utils.isPathsSame(path, pathToAdd)) {
+                logging.log(`Path "${pathToAdd}" already exists in 'python.${EXTRA_PATHS_CONFIG}'`);
                 return;
             }
         }
@@ -230,6 +236,8 @@ function addPythonAnalysisPath(pathToAdd: string) {
         // Add the path to extraPaths
         extraPaths.push(pathToAdd);
         pythonConfig.update(EXTRA_PATHS_CONFIG, extraPaths, true);
+
+        logging.log(`Added path "${pathToAdd}" to 'python.${EXTRA_PATHS_CONFIG}'`);
     }
 }
 
@@ -278,8 +286,13 @@ export async function main(context: vscode.ExtensionContext) {
     }
 
     if (!fs.existsSync(destination)) {
-        logging.log(`Creating directory: ${destination}`);
-        fs.mkdirSync(destination);
+        try {
+            fs.mkdirSync(destination, { recursive: true });
+        } catch (error) {
+            const err = error as Error;
+            logging.showErrorMessage(`Failed to create directory ${destination}`, err.message);
+            return;
+        }
     }
 
     // Ask user to select a version
@@ -291,13 +304,15 @@ export async function main(context: vscode.ExtensionContext) {
     if (!selectedVersion)
         return;
 
+    logging.log(`Placing stub files in: "${destination}"`);
+
     // Download the stub files
     const downloadedFiles = await downloadStubFiles(selectedVersion, destination);
     if (downloadedFiles.length === 0) {
         logging.log("No stub files were downloaded.");
         return;
     }
-
+    
     // Copy stub files
     const copiedFiles = copyLocalStubFiles(destination);
 
