@@ -7,7 +7,6 @@
         "package-lock.json": true,
         "**/__pycache__": true,
         "builds": true,
-        "test/**": true,
         "dist/**": true,
     },
     "search.exclude": {
