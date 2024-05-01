@@ -164,8 +164,6 @@ function getDeprecatedSetting<T>(key: string, deprecatedKey: string): T | undefi
  * Get a free port to use for the debugpy server
  */
 async function getWantedPort() {
-    const extConfig = utils.getExtensionConfig();
-    // const port = extConfig.get<number>("attach.port");
     const port = getDeprecatedSetting<number>("attach.port", "debug.port");
     if (!port) {
         return null;
@@ -175,7 +173,6 @@ async function getWantedPort() {
         return port;
     }
 
-    // if (extConfig.get<boolean>("attach.autoPort")) {
     if (getDeprecatedSetting<boolean>("attach.autoPort", "debug.autoPort")) {
         const freePort = await utils.findFreePort(port, 100);
         if (freePort) {
