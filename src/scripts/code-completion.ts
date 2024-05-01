@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import * as utils from '../modules/utils';
 import * as logging from '../modules/logging';
+import * as utils from '../modules/utils';
 
 
 const PYTHON_CONFIG = "python";
@@ -51,14 +51,6 @@ interface IVersionQuickPick {
 function ensureWritable(path: string) {
     if (fs.existsSync(path))
         fs.chmodSync(path, 0o600);
-}
-
-
-/**
- * Get the configuration for the python extension
- */
-function getPythonConfig() {
-    return vscode.workspace.getConfiguration(PYTHON_CONFIG);
 }
 
 
@@ -233,27 +225,74 @@ function ensurePyFilesExist(files: string[]) {
 
 
 /**
- * Add a path to the `pyhon.analysis.extraPaths` configuration.
+ * Add a path to the `python.analysis.extraPaths` configuration.
  * @param pathToAdd The path to add
  */
 function addPythonAnalysisPath(pathToAdd: string) {
-    const pythonConfig = getPythonConfig();
-    let extraPaths = pythonConfig.get<string[]>(EXTRA_PATHS_CONFIG);
-    if (extraPaths) {
-        // Check if the path already exists
-        for (const path of extraPaths) {
-            if (utils.isPathsSame(path, pathToAdd)) {
-                logging.log(`Path "${pathToAdd}" already exists in 'python.${EXTRA_PATHS_CONFIG}'`);
-                return;
+    const fullConfigName = `${PYTHON_CONFIG}.${EXTRA_PATHS_CONFIG}`;
+
+    const activeWorkspaceFolder = utils.getActiveWorkspaceFolder();
+    const pythonConfig = vscode.workspace.getConfiguration(PYTHON_CONFIG, activeWorkspaceFolder?.uri);
+
+    let extraPathsConfig = pythonConfig.inspect<string[]>(EXTRA_PATHS_CONFIG);
+    if (!extraPathsConfig) {
+        return;
+    }
+
+    // Use the global scope as default
+    let settingsInfo = {
+        niceName: "User",
+        paths: extraPathsConfig.globalValue,
+        scope: vscode.ConfigurationTarget.Global,
+        openSettingsCommand: "workbench.action.openSettings"
+    };
+
+    // Search through the different scopes to find the first one that has a custom value
+    const valuesToCheck = [
+        {
+            niceName: "Folder",
+            paths: extraPathsConfig.workspaceFolderValue,
+            scope: vscode.ConfigurationTarget.WorkspaceFolder,
+            openSettingsCommand: "workbench.action.openFolderSettings"
+        },
+        {
+            niceName: "Workspace",
+            paths: extraPathsConfig.workspaceValue,
+            scope: vscode.ConfigurationTarget.Workspace,
+            openSettingsCommand: "workbench.action.openWorkspaceSettings"
+        }
+    ];
+
+    for (const value of valuesToCheck) {
+        if (value.paths && value.paths !== extraPathsConfig.defaultValue) {
+            settingsInfo = value;
+            break;
+        }
+    }
+
+    // Create a new list that will contain the old paths and the new one
+    let newPathsValue = settingsInfo.paths ? [...settingsInfo.paths] : [];
+
+    // Check if the path already exists
+    if (newPathsValue.some(path => utils.isPathsSame(path, pathToAdd))) {
+        logging.log(`Path "${pathToAdd}" already exists in '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
+        return;
+    }
+
+    // Add the new path and update the configuration
+    newPathsValue.push(pathToAdd);
+    pythonConfig.update(EXTRA_PATHS_CONFIG, newPathsValue, settingsInfo.scope);
+
+    // Show a message to the user
+    logging.log(`Added path "${pathToAdd}" to '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
+
+    vscode.window.showInformationMessage(`Updated '${fullConfigName}' in ${settingsInfo.niceName} settings.`, "Show Settings").then(
+        (value) => {
+            if (value === "Show Settings") {
+                vscode.commands.executeCommand(settingsInfo.openSettingsCommand, `${fullConfigName}`);
             }
         }
-
-        // Add the path to extraPaths
-        extraPaths.push(pathToAdd);
-        pythonConfig.update(EXTRA_PATHS_CONFIG, extraPaths, true);
-
-        logging.log(`Added path "${pathToAdd}" to 'python.${EXTRA_PATHS_CONFIG}'`);
-    }
+    );
 }
 
 
@@ -327,7 +366,7 @@ export async function main(context: vscode.ExtensionContext) {
         logging.log("No stub files were downloaded.");
         return;
     }
-    
+
     // Copy stub files
     const copiedFiles = copyLocalStubFiles(destination);
 

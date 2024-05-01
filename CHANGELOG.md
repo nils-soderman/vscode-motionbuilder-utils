@@ -1,5 +1,11 @@
 # Change Log
 
+## [2025.1.0] - UNRELEASED
+
+### Fixed:
+- `motionbuilder.setupCodeCompletion` will now correctly insert the path in the correct setting scope _(user/workspace/folder)_
+
+
 ## [2025.0.1] - 2024-04-17
 
 ### Fixed:

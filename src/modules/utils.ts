@@ -92,18 +92,20 @@ export function isDebuggingMotionBuilder() {
     return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
 }
 
+export function getActiveWorkspaceFolder(): vscode.WorkspaceFolder | undefined {
+    if (vscode.window.activeTextEditor) {
+        const activeDocumenet = vscode.window.activeTextEditor.document;
+        return vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
+    }
+}
+
 /**
  * @returns The workspace configuration for this extension _('motionbuilder')_
  */
 export function getExtensionConfig() {
     // Try to get the active workspace folder first, to have it read Folder Settings
-    let workspaceFolder: vscode.Uri | undefined;
-    if (vscode.window.activeTextEditor) {
-        const activeDocumenet = vscode.window.activeTextEditor.document;
-        workspaceFolder = vscode.workspace.getWorkspaceFolder(activeDocumenet.uri)?.uri;
-    }
-
-    return vscode.workspace.getConfiguration("motionbuilder", workspaceFolder);
+    const activeWorkspaceFolder = getActiveWorkspaceFolder()?.uri;
+    return vscode.workspace.getConfiguration("motionbuilder", activeWorkspaceFolder);
 }
 
 
@@ -181,7 +183,7 @@ export function isPathsSame(a: string, b: string) {
 */
 export function getRequest(url: string, headers?: any): Promise<string> {
     return new Promise((resolve, reject) => {
-        https.get(url, {headers}, (res) => {
+        https.get(url, { headers }, (res) => {
             let data = '';
             res.on('data', (chunk) => {
                 data += chunk;
@@ -228,7 +230,7 @@ export async function findFreePort(startPort: number, num: number, host?: string
             return port;
         }
     }
-    
+
     return null;
 }
 
