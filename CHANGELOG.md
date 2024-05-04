@@ -7,6 +7,7 @@
 
 ### Fixed:
 - `motionbuilder.setupCodeCompletion` will now correctly insert the path in the correct setting scope _(user/workspace/folder)_
+- Traceback messages potentially having the wrong line number in the clickable URL
 
 
 ## [2025.0.1] - 2024-04-17
