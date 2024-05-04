@@ -60,11 +60,12 @@ def execute_code(code, filename, vs_code_is_debugging):
                 continue
 
             # Reformat path to include the file number, example: 'myfile.py:5'
+            # This is to make VS Code recognize this as a link to a spesific line number
             if re.findall(r'file ".*", line \d*, in ', line.lower()):
-                components = line.split(",", 2)
-                line_number = "".join(x for x in components[1] if x.isdigit())
-                components[0] = '%s:%s"' % (components[0][:-1], line_number)
-                line = ",".join(components)
+                file_desc, _, number_and_module = line.partition(",")
+                line_number = "".join(x for x in number_and_module.partition(",")[0] if x.isdigit())
+                file_desc = '%s:%s"' % (file_desc[:-1], line_number)
+                line = file_desc + "," + number_and_module
 
             traceback_lines.append(line)
 
