@@ -82,6 +82,12 @@ def main():
     command_id = globals().get("vsc_id")
     name = globals().get("vsc_name", None)
     vscode_debugging = globals().get("vsc_is_debugging", False)
+    additional_sys_paths = globals().get("vsc_paths", [])
+
+    if additional_sys_paths:
+        for path in additional_sys_paths:
+            if path not in sys.path:
+                sys.path.append(path)
 
     # Set some global variables
     exec_globals = get_exec_globals()

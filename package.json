@@ -3,7 +3,7 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder.",
-  "version": "2025.0.1",
+  "version": "2025.1.0",
   "categories": [
     "Other",
     "Debuggers"
@@ -130,6 +130,13 @@
             "markdownDescription": "The value for the Python variable `__name__` when executing code",
             "scope": "resource",
             "order": 3
+          },
+          "motionbuilder.execute.addWorkspaceToPath": {
+            "type": "boolean",
+            "default": false,
+            "markdownDescription": "Add the workspace path(s) to the `sys.path` when executing code.",
+            "scope": "resource",
+            "order": 4
           }
         }
       },

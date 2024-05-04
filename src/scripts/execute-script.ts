@@ -33,6 +33,7 @@ function getTempFilepath(id: string) {
     return path.join(utils.getExtentionTempDir(), `${TEMP_FILENAME}_${id}.py`);
 }
 
+
 function getOutputFilepath(id: string) {
     return path.join(utils.getExtentionTempDir(), `exec-out-${id}.txt`);
 }
@@ -76,6 +77,20 @@ function handleResponse(response: string, id: string) {
     }
 }
 
+
+/**
+ * Get all current workspace folders as an array of strings
+ */
+function getWorkspaceFolders(): string[] {
+    const folders = vscode.workspace.workspaceFolders;
+    if (!folders) {
+        return [];
+    }
+
+    return folders.map((folder) => folder.uri.fsPath);
+}
+
+
 export async function execute() {
     if (!vscode.window.activeTextEditor) {
         return;
@@ -97,6 +112,9 @@ export async function execute() {
     globals["vsc_filename"] = activeDocuemt.uri.fsPath;
     globals["vsc_name"] = extConfig.get("execute.name");
     globals["vsc_id"] = id;
+
+    if (extConfig.get<boolean>("execute.addWorkspaceToPath"))
+        globals["vsc_paths"] = getWorkspaceFolders();
 
 
     const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");

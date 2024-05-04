@@ -2,6 +2,9 @@
 
 ## [2025.1.0] - UNRELEASED
 
+### Added:
+- `motionbuilder.execute.addWorkspaceToPath` setting which will add the workspace folder(s) to sys.path. Defaults to `false`
+
 ### Fixed:
 - `motionbuilder.setupCodeCompletion` will now correctly insert the path in the correct setting scope _(user/workspace/folder)_
 
@@ -10,6 +13,7 @@
 
 ### Fixed:
 - `motionbuilder.setupCodeCompletion` failing to create the default directory for the stub files [#9](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/9)
+
 
 ## [2025.0.0] - 2024-04-13
 
@@ -25,6 +29,7 @@
 - Bug preventing VS Code from attaching to MoBu 2025
 - Folder settings potentially being ignored when a workspace is opened.
 - Python 2.7 support for `motionbuilder.attach`
+
 
 ## [2024.1.0] - 2024-01-01
 
