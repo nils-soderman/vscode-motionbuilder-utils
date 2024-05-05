@@ -14,7 +14,7 @@ import * as utils from '../modules/utils';
  * @param filename The name of the script
  */
 function getDebugScriptPath(filename: string) {
-    return path.join(utils.getPythonDir(), "debug", filename);
+    return path.join(utils.getPythonDir(), "attach", filename);
 }
 
 
