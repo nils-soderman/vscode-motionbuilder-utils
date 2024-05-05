@@ -1,5 +1,10 @@
 # Change Log
 
+## [2025.0.3] - UNRELEASED
+
+### Fixed:
+- "Show Setting" after running `motionbuilder.setupCodeCompletion` not always showing the correct setting
+
 ## [2025.0.2] - 2024-05-05
 
 ### Added:

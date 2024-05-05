@@ -227,16 +227,20 @@ function ensurePyFilesExist(files: string[]) {
 /**
  * Add a path to the `python.analysis.extraPaths` configuration.
  * @param pathToAdd The path to add
+ * @returns "add" if the path was added, "exists" if the path already exists, false if the path could not be added
  */
-function addPythonAnalysisPath(pathToAdd: string) {
+function addPythonAnalysisPath(pathToAdd: string): "add" | "exists" | false {
     const fullConfigName = `${PYTHON_CONFIG}.${EXTRA_PATHS_CONFIG}`;
 
     const activeWorkspaceFolder = utils.getActiveWorkspaceFolder();
     const pythonConfig = vscode.workspace.getConfiguration(PYTHON_CONFIG, activeWorkspaceFolder?.uri);
 
+    const bHasWorkspaceFileOpen = vscode.workspace.workspaceFile !== undefined;
+
     let extraPathsConfig = pythonConfig.inspect<string[]>(EXTRA_PATHS_CONFIG);
     if (!extraPathsConfig) {
-        return;
+        logging.showErrorMessage(`Failed to get the config '${fullConfigName}'`, `Failed to inspect config: '${fullConfigName}'`);
+        return false;
     }
 
     // Use the global scope as default
@@ -253,7 +257,7 @@ function addPythonAnalysisPath(pathToAdd: string) {
             niceName: "Folder",
             paths: extraPathsConfig.workspaceFolderValue,
             scope: vscode.ConfigurationTarget.WorkspaceFolder,
-            openSettingsCommand: "workbench.action.openFolderSettings"
+            openSettingsCommand: bHasWorkspaceFileOpen ? "workbench.action.openFolderSettings" : "workbench.action.openWorkspaceSettings"
         },
         {
             niceName: "Workspace",
@@ -276,7 +280,7 @@ function addPythonAnalysisPath(pathToAdd: string) {
     // Check if the path already exists
     if (newPathsValue.some(path => utils.isPathsSame(path, pathToAdd))) {
         logging.log(`Path "${pathToAdd}" already exists in '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
-        return;
+        return "exists";
     }
 
     // Add the new path and update the configuration
@@ -286,13 +290,15 @@ function addPythonAnalysisPath(pathToAdd: string) {
     // Show a message to the user
     logging.log(`Added path "${pathToAdd}" to '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
 
-    vscode.window.showInformationMessage(`Updated '${fullConfigName}' in ${settingsInfo.niceName} settings.`, "Show Settings").then(
+    vscode.window.showInformationMessage(`Updated '${fullConfigName}' in ${settingsInfo.niceName} settings.`, "Show Setting").then(
         (value) => {
-            if (value === "Show Settings") {
+            if (value === "Show Setting") {
                 vscode.commands.executeCommand(settingsInfo.openSettingsCommand, `${fullConfigName}`);
             }
         }
     );
+
+    return "add";
 }
 
 
@@ -375,5 +381,8 @@ export async function main(context: vscode.ExtensionContext) {
     ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
 
     // Add path to python analysis
-    addPythonAnalysisPath(destination);
+    const result = addPythonAnalysisPath(destination);
+    if (result == "exists") {
+        vscode.window.showInformationMessage(`Updated stub files in '${destination}'`);
+    }
 }
