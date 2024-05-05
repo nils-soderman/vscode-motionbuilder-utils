@@ -105,13 +105,16 @@ export async function execute() {
     if (!fileToExecute) {
         return;
     }
-
-    let globals: any = {};
-    globals["vsc_file"] = fileToExecute;
-    globals["vsc_is_debugging"] = utils.isDebuggingMotionBuilder();
-    globals["vsc_filename"] = activeDocuemt.uri.fsPath;
-    globals["vsc_name"] = extConfig.get("execute.name");
-    globals["vsc_id"] = id;
+    
+    /* eslint-disable @typescript-eslint/naming-convention */
+    let globals: any = {
+        vsc_id: id,
+        vsc_file: fileToExecute,
+        vsc_is_debugging: utils.isDebuggingMotionBuilder(),
+        vsc_filename: activeDocuemt.uri.fsPath,
+        vsc_name: extConfig.get("execute.name"),
+    };
+    /* eslint-enable @typescript-eslint/naming-convention */
 
     if (extConfig.get<boolean>("execute.addWorkspaceToPath"))
         globals["vsc_paths"] = getWorkspaceFolders();
