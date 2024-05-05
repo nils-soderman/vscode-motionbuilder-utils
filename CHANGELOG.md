@@ -1,6 +1,6 @@
 # Change Log
 
-## [2025.1.0] - UNRELEASED
+## [2025.0.2] - 2024-05-05
 
 ### Added:
 - `motionbuilder.execute.addWorkspaceToPath` setting which will add the workspace folder(s) to sys.path. Defaults to `false`
