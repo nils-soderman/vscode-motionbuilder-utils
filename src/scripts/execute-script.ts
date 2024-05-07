@@ -82,7 +82,8 @@ export async function executeCurrentDocument() {
         return;
     }
 
-    const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, utils.isDebuggingMotionBuilder());
+    const bIsDebugging = utils.isDebuggingMotionBuilder();
+    const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
     if (response !== null) {
         handleResponse(response);
     }
@@ -97,7 +98,7 @@ export async function executeCurrentDocument() {
  * @param bIsDebugging If true, the python script will assume debugpy handles the output
  * @returns The output from the python script
  */
-export async function executeFile(filepath: string, filename: string, id: string, bIsDebugging: boolean) {
+export async function executeFile(filepath: string, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
     const extConfig = utils.getExtensionConfig();
 
     /* eslint-disable @typescript-eslint/naming-convention */
@@ -106,7 +107,8 @@ export async function executeFile(filepath: string, filename: string, id: string
         "vsc_is_debugging": bIsDebugging,
         "vsc_filename": filename,
         "vsc_name": extConfig.get("execute.name"),
-        "vsc_id": id
+        "vsc_id": id,
+        "vsc_use_colors": bUseColors
     };
     /* eslint-enable @typescript-eslint/naming-convention */
 

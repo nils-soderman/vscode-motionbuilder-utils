@@ -48,19 +48,36 @@ def get_exec_globals():
     return globals()["__VsCodeVariables__"]
 
 
-def execute_code(code, filename, vs_code_is_debugging):
+def execute_code(code, filename, use_colors):
     try:
         exec(compile(code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
         exception_type, exception, traceback_ = sys.exc_info()
 
+        skipNextLines = -1
         traceback_lines = []
         for line in traceback.format_exception(exception_type, exception, traceback_):
             if execute_code.__name__ in line:
                 continue
 
+            if skipNextLines > 0:
+                skipNextLines -= 1
+                continue
+
+            # Check if the line is of a notebook cell, and if so use the code to get the correct line text
+            # TODO: This is all very hacky, look into a better solution for formatting the traceback
+            if re.findall(r'file ".*\.ipynb", line \d*', line.lower()):
+                line = line.partition("\n")[0]
+                if not re.findall(r'file ".*\.ipynb", line \d*, in', line.lower()):
+                    skipNextLines = 2
+
+                filepath_str, _, line_str = line.partition(",")
+                line_number = "".join(x for x in line_str if x.isdigit())
+                codeline = code.splitlines()[int(line_number) - 1]
+                line = "%s\n    %s\n" % (line, codeline)
+
             # Reformat path to include the file number, example: 'myfile.py:5'
-            if re.findall(r'file ".*", line \d*, in ', line.lower()):
+            elif re.findall(r'file ".*", line \d*, in ', line.lower()):
                 components = line.split(",", 2)
                 line_number = "".join(x for x in components[1] if x.isdigit())
                 components[0] = '%s:%s"' % (components[0][:-1], line_number)
@@ -70,7 +87,7 @@ def execute_code(code, filename, vs_code_is_debugging):
 
         traceback_message = "".join(traceback_lines).strip()
         # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
-        if vs_code_is_debugging:
+        if use_colors:
             traceback_message = '\033[91m' + traceback_message + '\033[0m'
 
         print(traceback_message)
@@ -82,6 +99,7 @@ def main():
     command_id = globals().get("vsc_id")
     name = globals().get("vsc_name", None)
     vscode_debugging = globals().get("vsc_is_debugging", False)
+    use_colors = globals().get("vsc_use_colors", False)
 
     # Set some global variables
     exec_globals = get_exec_globals()
@@ -98,14 +116,14 @@ def main():
         with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
             if not vscode_debugging:
                 with OutputRedirector(command_id):
-                    execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+                    execute_code(vs_code_in_file.read(), filename, use_colors)
             else:
-                execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+                execute_code(vs_code_in_file.read(), filename, use_colors)
                 print(">>>")
 
     else:  # Python 2
         with open(filepath, 'r') as vs_code_in_file:  # pylint: disable=unspecified-encoding
-            execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+            execute_code(vs_code_in_file.read(), filename, use_colors)
 
 
 main()
