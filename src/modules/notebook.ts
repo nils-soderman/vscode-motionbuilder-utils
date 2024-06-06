@@ -13,9 +13,6 @@ import * as utils from '../modules/utils';
 let cachedIsIPythonInstalled: boolean | null = null;
 
 
-
-
-
 /**
  * Check if IPython is installed in the Python environment.
  * @returns True if IPython is installed, false if it is not, and null if it could not be determined.
@@ -48,11 +45,6 @@ async function isIPythonInstalled(): Promise<boolean | null> {
 }
 
 
-function patchTracebackMessage(response: string, code: string) {
-
-}
-
-
 /**
  * Execute the cells in the notebook without IPython
  */
@@ -79,8 +71,6 @@ async function executeHandlerNoIPython(cells: vscode.NotebookCell[], notebook: v
             execution.end(false);
             return;
         }
-
-        const patchedResponse = patchTracebackMessage(rawResponse, code);
 
         const outputItem = new vscode.NotebookCellOutputItem(new TextEncoder().encode(rawResponse), 'text/plain');
 

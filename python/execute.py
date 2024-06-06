@@ -48,44 +48,56 @@ def get_exec_globals():
     return globals()["__VsCodeVariables__"]
 
 
+def format_exception(e, code):
+    messages = []
+    
+    seen_exceptions = set()
+    while e:
+        if id(e) in seen_exceptions:
+            break
+        seen_exceptions.add(id(e))
+
+
+        if isinstance(e, SyntaxError):
+            e.text = code.splitlines()[e.lineno - 1]
+            e.filename += ":%s" % e.lineno
+
+        # For each traceback, we want to append the exception message
+        tas = []
+        for ta in traceback.extract_tb(e.__traceback__):
+            if ta.filename == "<string>" and ta.name == execute_code.__name__:
+                continue
+
+            if ta.filename.endswith(".ipynb"):
+                linenum = ta.lineno
+
+                code_lines = code.splitlines()
+                code_line = code_lines[linenum - 1]
+
+                ta._line = code_line
+
+            else:
+                ta.filename += ":%s" % ta.lineno
+
+            tas.append(ta)
+
+        text = "Traceback (most recent call last):\n"
+        text += "".join(traceback.format_list(tas))
+        text += "".join(traceback.format_exception_only(type(e), e))
+
+        messages.append(text)
+
+        e = e.__context__
+
+    return "\nDuring handling of the above exception, another exception occurred:\n\n".join(reversed(messages))
+
+
 def execute_code(code, filename, use_colors):
     try:
         exec(compile(code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-        exception_type, exception, traceback_ = sys.exc_info()
+        traceback_message = format_exception(caught_exception, code)
 
-        skipNextLines = -1
-        traceback_lines = []
-        for line in traceback.format_exception(exception_type, exception, traceback_):
-            if execute_code.__name__ in line:
-                continue
-
-            if skipNextLines > 0:
-                skipNextLines -= 1
-                continue
-
-            # Check if the line is of a notebook cell, and if so use the code to get the correct line text
-            # TODO: This is all very hacky, look into a better solution for formatting the traceback
-            if re.findall(r'file ".*\.ipynb", line \d*', line.lower()):
-                line = line.partition("\n")[0]
-                if not re.findall(r'file ".*\.ipynb", line \d*, in', line.lower()):
-                    skipNextLines = 2
-
-                filepath_str, _, line_str = line.partition(",")
-                line_number = "".join(x for x in line_str if x.isdigit())
-                codeline = code.splitlines()[int(line_number) - 1]
-                line = "%s\n    %s\n" % (line, codeline)
-
-            # Reformat path to include the file number, example: 'myfile.py:5'
-            elif re.findall(r'file ".*", line \d*, in ', line.lower()):
-                components = line.split(",", 2)
-                line_number = "".join(x for x in components[1] if x.isdigit())
-                components[0] = '%s:%s"' % (components[0][:-1], line_number)
-                line = ",".join(components)
-
-            traceback_lines.append(line)
-
-        traceback_message = "".join(traceback_lines).strip()
         # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
         if use_colors:
             traceback_message = '\033[91m' + traceback_message + '\033[0m'
