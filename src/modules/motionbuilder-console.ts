@@ -1,7 +1,12 @@
 import * as vscode from 'vscode';
 
-import * as extensionWiki from './extension-wiki';
+import * as path from 'path';
+
 import { MotionBuilderSocket } from 'motionbuilder-socket';
+
+import * as extensionWiki from './extension-wiki';
+import * as logging from '../modules/logging';
+import * as utils from './utils';
 
 
 let gSocket: MotionBuilderSocket | null = null;
@@ -15,10 +20,12 @@ async function getSocket() {
         return gSocket;
     }
 
+    logging.log("Connecting to MotionBuilder...");
+
     const socket = new MotionBuilderSocket();
 
     try {
-        await socket.open();
+        await socket.open(10);
     }
     catch (e: any) {
         if (e.code === "ECONNREFUSED") {
@@ -32,9 +39,11 @@ async function getSocket() {
             vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
         }
         else {
-            vscode.window.showErrorMessage(`MotionBuilder: Something went wrong when trying to connect to MB.\n${e.message}`);
+            logging.showErrorMessage(`Failed to connect to MotionBuilder with error code: ${e.code}`, JSON.stringify(e));
+            return null;
         }
 
+        logging.log(JSON.stringify(e));
         return null;
     }
 
@@ -43,9 +52,42 @@ async function getSocket() {
     });
     gSocket = socket;
 
+    logging.log("Connection established");
+
+    await onSocketConnected(socket);
+
     return gSocket;
 }
 
+/**
+ * Called when a socket connection is established
+ */
+async function onSocketConnected(socket: MotionBuilderSocket) {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (workspaceFolders) {
+        let foldersToAddToPath: string[] = [];
+        for (const folder of workspaceFolders) {
+            const config = vscode.workspace.getConfiguration("motionbuilder", folder.uri);
+            if (config.get<boolean>('environment.addWorkspaceToPath', false)) {
+                foldersToAddToPath.push(folder.uri.fsPath);
+            }
+        }
+
+        if (foldersToAddToPath.length > 0) {
+            const scriptPath = path.join(utils.getPythonDir(), "add_sys_path.py");
+
+            const response = await executeFile(
+                scriptPath,
+                {
+                    vsc_paths: foldersToAddToPath // eslint-disable-line @typescript-eslint/naming-convention
+                }
+            );
+
+            if (response)
+                logging.log(response);
+        }
+    }
+}
 
 
 /**
@@ -55,9 +97,8 @@ async function getSocket() {
  */
 export async function runCommand(command: string) {
     const socket = await getSocket();
-    if (!socket) {
+    if (!socket)
         return null;
-    }
 
     const response = await socket.exec(command);
     return response;
@@ -70,11 +111,10 @@ export async function runCommand(command: string) {
  * @param variables Global variables to set before executing the file
  * @returns Python output e.g: print statements or errors
  */
-export async function executeFile(filepath: string, variables = {}) {
+export async function executeFile(filepath: string, variables: { [key: string]: any } = {}) {
     const socket = await getSocket();
-    if (!socket) {
+    if (!socket)
         return null;
-    }
 
     const response = await socket.execFile(filepath, variables);
     return response;

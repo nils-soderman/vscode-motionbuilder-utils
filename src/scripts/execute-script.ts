@@ -105,9 +105,9 @@ export async function execute() {
     if (!fileToExecute) {
         return;
     }
-    
+
     /* eslint-disable @typescript-eslint/naming-convention */
-    let globals: any = {
+    const globals: any = {
         vsc_id: id,
         vsc_file: fileToExecute,
         vsc_is_debugging: utils.isDebuggingMotionBuilder(),
@@ -115,10 +115,6 @@ export async function execute() {
         vsc_name: extConfig.get("execute.name"),
     };
     /* eslint-enable @typescript-eslint/naming-convention */
-
-    if (extConfig.get<boolean>("execute.addWorkspaceToPath"))
-        globals["vsc_paths"] = getWorkspaceFolders();
-
 
     const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");
     const response = await motionBuilderConsole.executeFile(pythonExecFile, globals);

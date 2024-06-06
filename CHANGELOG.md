@@ -2,8 +2,15 @@
 
 ## [2025.0.3] - UNRELEASED
 
+### Changed:
+- `motionbuilder.execute.addWorkspaceToPath` renamed to `motionbuilder.environment.addWorkspaceToPath`
+- `motionbuilder.environment.addWorkspaceToPath` now defaults to `true`
+- Workspace paths are now added to sys.path when VS Code first connects to MotionBuilder
+- Added a timeout of 10 seconds when connecting to MotionBuilder
+
 ### Fixed:
 - "Show Setting" after running `motionbuilder.setupCodeCompletion` not always showing the correct setting
+
 
 ## [2025.0.2] - 2024-05-05
 

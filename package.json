@@ -88,12 +88,19 @@
       {
         "order": 0,
         "properties": {
+          "motionbuilder.environment.addWorkspaceToPath": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Add the workspace path(s) to the `sys.path` when executing code",
+            "scope": "resource",
+            "order": 0
+          },
           "motionbuilder.documentation.openExamplesInEditor": {
             "type": "boolean",
             "default": true,
             "description": "Open up the example files in editor, instead of the web-browser.",
             "scope": "resource",
-            "order": 0
+            "order": 1
           },
           "motionbuilder.reload.ignore": {
             "type": "array",
@@ -102,7 +109,7 @@
             ],
             "description": "Glob patterns for files to ignore when reloading modules. Pattern will be matched against the full filepath of the module.",
             "scope": "resource",
-            "order": 1
+            "order": 2
           }
         }
       },
@@ -130,13 +137,6 @@
             "markdownDescription": "The value for the Python variable `__name__` when executing code",
             "scope": "resource",
             "order": 3
-          },
-          "motionbuilder.execute.addWorkspaceToPath": {
-            "type": "boolean",
-            "default": false,
-            "markdownDescription": "Add the workspace path(s) to the `sys.path` when executing code.",
-            "scope": "resource",
-            "order": 4
           }
         }
       },

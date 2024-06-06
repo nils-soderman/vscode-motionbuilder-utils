@@ -48,6 +48,25 @@ def get_exec_globals():
     return globals()["__VsCodeVariables__"]
 
 
+def find_package(filepath):
+    """ Find the expected __package__ value for the executed file, so relative imports work """
+    normalized_filepath = os.path.normpath(filepath).lower()
+    
+    valid_packages = []
+    for path in sys.path:
+        normalized_path = os.path.normpath(path).lower()
+        if normalized_filepath.startswith(normalized_path):
+            package = os.path.relpath(os.path.dirname(filepath), path).replace(os.sep, ".")
+            if package != ".":
+                valid_packages.append(package)
+
+    # If there are multiple valid packages, choose the shortest one
+    if valid_packages:
+        return min(valid_packages, key=len)
+
+    return ""
+
+
 def execute_code(code, filename, vs_code_is_debugging):
     try:
         exec(compile(code, filename, "exec"), get_exec_globals())
@@ -83,12 +102,6 @@ def main():
     command_id = globals().get("vsc_id")
     name = globals().get("vsc_name", None)
     vscode_debugging = globals().get("vsc_is_debugging", False)
-    additional_sys_paths = globals().get("vsc_paths", [])
-
-    if additional_sys_paths:
-        for path in additional_sys_paths:
-            if path not in sys.path:
-                sys.path.append(path)
 
     # Set some global variables
     exec_globals = get_exec_globals()
@@ -99,6 +112,8 @@ def main():
         exec_globals["__name__"] = name
     elif "__name__" in exec_globals:
         exec_globals.pop("__name__")
+
+    exec_globals["__package__"] = find_package(filename)
 
     # Read the code file and execute it
     if sys.version_info.major >= 3:  # Python 3
