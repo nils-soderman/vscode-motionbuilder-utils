@@ -109,6 +109,23 @@ export function getExtensionConfig() {
 }
 
 
+function getDeprecatedConfig<T>(key: string, deprecatedKey: string): T | undefined {
+    const extConfig = getExtensionConfig();
+
+    const value = extConfig.get<T>(key);
+    if (value !== undefined && value !== extConfig.inspect(key)?.defaultValue) {
+        return value;
+    }
+
+    const deprecatedValue = extConfig.get<T>(deprecatedKey);
+    if (deprecatedValue !== undefined && deprecatedValue !== extConfig.inspect(deprecatedKey)?.defaultValue) {
+        vscode.window.showWarningMessage(`The setting 'motionbuilder.${deprecatedKey}' is deprecated, please use 'motionbuilder.${key}' instead`);
+        return deprecatedValue;
+    }
+
+    return value;
+}
+
 // -----------------------------------------------------------------------------------------
 //                                    Filesystem
 // -----------------------------------------------------------------------------------------

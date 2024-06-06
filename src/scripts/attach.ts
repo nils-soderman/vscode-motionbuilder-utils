@@ -141,30 +141,13 @@ async function getCurrentDebugPort() {
 }
 
 
-// TODO: Remove this function when the deprecated setting is removed
-function getDeprecatedSetting<T>(key: string, deprecatedKey: string): T | undefined {
-    const extConfig = utils.getExtensionConfig();
-
-    const value = extConfig.get<T>(key);
-    if (value !== undefined && value !== extConfig.inspect(key)?.defaultValue) {
-        return value;
-    }
-
-    const deprecatedValue = extConfig.get<T>(deprecatedKey);
-    if (deprecatedValue !== undefined && deprecatedValue !== extConfig.inspect(deprecatedKey)?.defaultValue) {
-        vscode.window.showWarningMessage(`The setting 'motionbuilder.${deprecatedKey}' is deprecated, please use 'motionbuilder.${key}' instead`);
-        return deprecatedValue;
-    }
-
-    return value;
-}
-
-
 /**
  * Get a free port to use for the debugpy server
  */
 async function getWantedPort() {
-    const port = getDeprecatedSetting<number>("attach.port", "debug.port");
+    const extConfig = utils.getExtensionConfig();
+
+    const port = extConfig.get<number>("attach.port");
     if (!port) {
         return null;
     }
@@ -173,7 +156,7 @@ async function getWantedPort() {
         return port;
     }
 
-    if (getDeprecatedSetting<boolean>("attach.autoPort", "debug.autoPort")) {
+    if (extConfig.get<boolean>("attach.autoPort")) {
         const freePort = await utils.findFreePort(port, 100);
         if (freePort) {
             return freePort;
