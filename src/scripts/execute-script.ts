@@ -23,7 +23,7 @@ function getOutputChannel() {
     return gOutputChannel;
 }
 
-function getOutputFilepath(id: string) {
+export function getOutputFilepath(id: string) {
     return path.join(utils.getExtentionTempDir(), `exec-out-${id}.txt`);
 }
 

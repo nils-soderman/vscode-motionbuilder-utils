@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import * as crypto from 'crypto';
 import * as path from 'path';
+import * as fs from 'fs';
 
 import { TextEncoder } from 'util';
 
@@ -48,29 +49,25 @@ async function isIPythonInstalled(): Promise<boolean | null> {
 /**
  * Execute the cells in the notebook without IPython
  */
-async function executeHandlerNoIPython(cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) {
+async function executeHandlerBasic(cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) {
     for (let cell of cells) {
-        const execution = controller.createNotebookCellExecution(cell);
-        execution.start();
-
         const id = crypto.randomUUID();
         const baseFilename = executeScript.getExecBaseFilename(id);
 
         const code = cell.document.getText();
         const filepath = utils.saveTempFile(baseFilename, code);
 
-        // const pythonExecFile = path.join(utils.getPythonDir(), "notebook", "notebook.py");
+        const execution = controller.createNotebookCellExecution(cell);
 
-        // const response = await motionBuilderConsole.executeFile(pythonExecFile, {
-        //     vsc_code: code // eslint-disable-line @typescript-eslint/naming-convention
-        // });
-        // console.log("response: " + response);
+        execution.start(new Date().getTime());
 
         const rawResponse = await executeScript.executeFile(filepath, notebook.uri.fsPath, id, false, true);
         if (rawResponse === null) {
             execution.end(false);
             return;
         }
+
+        const executionStopTime = new Date().getTime();
 
         const outputItem = new vscode.NotebookCellOutputItem(new TextEncoder().encode(rawResponse), 'text/plain');
 
@@ -79,9 +76,87 @@ async function executeHandlerNoIPython(cells: vscode.NotebookCell[], notebook: v
 
         execution.replaceOutput([output]);
 
-        execution.end(true);
+        execution.end(true, executionStopTime);
     }
 }
+
+
+/**
+ * Execute the cells in the notebook with IPython features
+ */
+async function executeHandlerIPython(cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) {
+    for (let cell of cells) {
+        const execution = controller.createNotebookCellExecution(cell);
+        execution.start(new Date().getTime());
+
+        const id = crypto.randomUUID();
+        const baseFilename = executeScript.getExecBaseFilename(id);
+
+        const code = cell.document.getText();
+        const filepath = utils.saveTempFile(baseFilename, code);
+
+        const pythonExecFile = path.join(utils.getPythonDir(), "notebook", "notebook.py");
+
+        let response = await motionBuilderConsole.executeFile(pythonExecFile, {
+            vsc_code: code, // eslint-disable-line @typescript-eslint/naming-convention
+            vsc_command_id: id, // eslint-disable-line @typescript-eslint/naming-convention
+        });
+
+        const executionStopTime = new Date().getTime();
+
+        if (response === null) {
+            execution.end(false);
+            return;
+        }
+
+        const outputFilepath = executeScript.getOutputFilepath(id);
+        if (fs.existsSync(outputFilepath)) {
+            response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
+            fs.unlink(outputFilepath, () => { });  // Delete the file
+        }
+
+        console.log(response);
+
+        // Parse the response
+        let responseObj = [];
+        try{
+            responseObj = JSON.parse(response);
+        }
+        catch (e) {
+            logging.logMessage(`Error parsing response: ${e}`);
+            execution.end(false);
+            return;
+        }
+        let outputs = [];
+
+        // Replace the cell's output with the response
+        for (const key in responseObj) {
+            const outputItems: vscode.NotebookCellOutputItem[] = [];
+            const value = responseObj[key]; // = {"text/plain": "<IPython.core.display.Markdown object>", "text/markdown": "## Hello World!"}
+            for (const mimeType in value) {
+                const data = value[mimeType];
+
+                let outputItem: vscode.NotebookCellOutputItem;
+                if (mimeType === 'image/png' || mimeType === 'image/jpeg' || mimeType === 'image/svg+xml') {
+                    const buffer = Buffer.from(data, 'base64');
+                    outputItem = new vscode.NotebookCellOutputItem(buffer, mimeType);
+                }
+                else {
+                    outputItem = new vscode.NotebookCellOutputItem(new TextEncoder().encode(data), mimeType);
+                }
+
+                outputItems.push(outputItem);
+            }
+            const output = new vscode.NotebookCellOutput(outputItems);
+            outputs.push(output);
+        }
+
+        execution.replaceOutput(outputs);
+
+        execution.end(true, executionStopTime);
+    }
+}
+
 
 
 async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) {
@@ -89,12 +164,11 @@ async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.Not
         cachedIsIPythonInstalled = await isIPythonInstalled();
     }
 
-    if (!cachedIsIPythonInstalled || true) {
-        executeHandlerNoIPython(cells, notebook, controller);
-        return;
+    if (!cachedIsIPythonInstalled) {
+        executeHandlerBasic(cells, notebook, controller);
     }
     else {
-        // executeHandlerIPython(cells, notebook, controller);
+        executeHandlerIPython(cells, notebook, controller);
     }
 }
 
