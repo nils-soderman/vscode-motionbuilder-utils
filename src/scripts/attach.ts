@@ -22,7 +22,7 @@ function getDebugScriptPath(filename: string) {
  * Split the response into lines and return an array of lines
  */
 function parseResponse(responseRaw: string | null) {
-    const response = responseRaw?.split("\n\r");
+    const response = responseRaw?.split("\n");
     if (!response) {
         return null;
     }

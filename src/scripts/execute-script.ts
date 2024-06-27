@@ -63,7 +63,6 @@ function handleResponse(response: string, id: string) {
 
     // Format response
     if (response) {
-        response = response.replace(/\n\r/g, "\n");
         response += "\n";
     }
     response += ">>>";

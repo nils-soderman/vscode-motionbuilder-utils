@@ -10,9 +10,7 @@ export function getOutputChannel() {
 }
 
 
-export function log(message: string, bShowLog = false) {
-    message = message.replace(/\n\r/g, "\n");
-    
+export function log(message: string, bShowLog = false) {    
     const outputChannel = getOutputChannel();
     outputChannel.appendLine(message);
 
