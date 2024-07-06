@@ -50,23 +50,6 @@ export function getResourcesDir() {
     return path.join(getExtensionDir(), "resources");
 }
 
-// TODO: These functions were deprecated in version 2025.0.0. Remove them in the future.
-/**
- * @deprecated Will be removed in the future.
- */
-export function getAppDataFolder() {
-    return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
-}
-
-/**
- * @deprecated Will be removed in the future. Use `context.globalStoragePath` instead
- */
-export function getExtensionAppdataFolder() {
-    const appdataDir = path.join(getAppDataFolder(), EXTENSION_DATA_FOLDER_NAME);
-    return appdataDir;
-}
-
-
 /**
  * @param bEnsureExists If folder doesn't exist, create it
  * @returns absolute path to this extensions tempdir

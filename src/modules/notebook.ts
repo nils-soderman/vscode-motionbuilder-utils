@@ -1,14 +1,10 @@
 import * as vscode from 'vscode';
 
 import * as crypto from 'crypto';
-import * as path from 'path';
-import * as fs from 'fs';
 
 import { TextEncoder } from 'util';
 
-import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as executeScript from '../scripts/execute-script';
-import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
 
 
