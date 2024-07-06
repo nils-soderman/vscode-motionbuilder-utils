@@ -6,13 +6,14 @@
 - Notebook controller that executes the cells in MotionBuilder
 
 ### Changed:
-- `motionbuilder.execute.addWorkspaceToPath` renamed to `motionbuilder.environment.addWorkspaceToPath`
+- Renamed `motionbuilder.execute.addWorkspaceToPath` to `motionbuilder.environment.addWorkspaceToPath`
 - `motionbuilder.environment.addWorkspaceToPath` now defaults to `true`
 - Workspace paths are now added to sys.path when VS Code first connects to MotionBuilder
 - Added a timeout of 10 seconds when connecting to MotionBuilder
 
 ### Fixed:
 - "Show Setting" after running `motionbuilder.setupCodeCompletion` not always showing the correct setting
+- Stepping over indented code not always working correctly
 
 ### Removed:
 - Deprecated settings: `motionbuilder.debug.port` & `motionbuilder.debug.autoPort`
