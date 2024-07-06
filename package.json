@@ -47,7 +47,7 @@
         "command": "motionbuilder.execute",
         "title": "Execute",
         "category": "MotionBuilder",
-        "enablement": "editorLangId==python && resourceExtname != .ipynb"
+        "enablement": "editorLangId==python && activeEditor != workbench.editor.notebook"
       },
       {
         "command": "motionbuilder.attach",
