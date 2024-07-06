@@ -2,6 +2,9 @@
 
 ## [2025.0.3] - UNRELEASED
 
+### Added:
+- Notebook controller that executes the cells in MotionBuilder
+
 ### Changed:
 - `motionbuilder.execute.addWorkspaceToPath` renamed to `motionbuilder.environment.addWorkspaceToPath`
 - `motionbuilder.environment.addWorkspaceToPath` now defaults to `true`

@@ -9,8 +9,6 @@ import * as vsCodeExec from '../modules/code-exec';
 import * as utils from '../modules/utils';
 
 
-const TEMP_FILENAME = "vscode_motionbuilder_exec";
-
 let gOutputChannel: vscode.OutputChannel | undefined;
 
 
@@ -27,10 +25,15 @@ function getOutputChannel() {
 }
 
 
-function getTempFilepath(id: string) {
+export function getExecBaseFilename(id: string) {
     // replace all dashes in the uuid with underscores
     id = id.replace(/-/g, "_");
-    return path.join(utils.getExtentionTempDir(), `${TEMP_FILENAME}_${id}.py`);
+    return `vscode_motionbuilder_exec_${id}.py`;
+}
+
+
+function getExecAbsFilepath(id: string) {
+    return path.join(utils.getExtentionTempDir(), getExecBaseFilename(id));
 }
 
 
@@ -76,48 +79,62 @@ function handleResponse(response: string, id: string) {
     }
 }
 
-
-/**
- * Get all current workspace folders as an array of strings
- */
-function getWorkspaceFolders(): string[] {
-    const folders = vscode.workspace.workspaceFolders;
-    if (!folders) {
-        return [];
-    }
-
-    return folders.map((folder) => folder.uri.fsPath);
-}
-
-
-export async function execute() {
+export async function executeCurrentDocument() {
     if (!vscode.window.activeTextEditor) {
         return;
     }
     const id = crypto.randomUUID();
 
-    const extConfig = utils.getExtensionConfig();
     const activeDocuemt = vscode.window.activeTextEditor.document;
 
-    const tempFilepath = getTempFilepath(id);
+    const tempFilepath = getExecAbsFilepath(id);
     const fileToExecute = vsCodeExec.getFileToExecute(tempFilepath);
     if (!fileToExecute) {
         return;
     }
 
+    const bIsDebugging = utils.isDebuggingMotionBuilder();
+    const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
+    if (response !== null) {
+        handleResponse(response, id);
+    }
+}
+
+
+/**
+ * @param filepath The absolute filepath to the file containing the code to execute
+ * @param filename The absolute filepath to use as the __file__ variable in the python script
+ * @param id UUID to use for the output file
+ * @param bIsDebugging If true, the python script will assume debugpy handles the output
+ * @returns The output from the python script
+ */
+export async function executeFile(filepath: string, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
+    const extConfig = utils.getExtensionConfig();
+
     /* eslint-disable @typescript-eslint/naming-convention */
-    const globals: any = {
-        vsc_id: id,
-        vsc_file: fileToExecute,
-        vsc_is_debugging: utils.isDebuggingMotionBuilder(),
-        vsc_filename: activeDocuemt.uri.fsPath,
-        vsc_name: extConfig.get("execute.name"),
+    const globals = {
+        "vsc_file": filepath,
+        "vsc_is_debugging": bIsDebugging,
+        "vsc_filename": filename,
+        "vsc_name": extConfig.get("execute.name"),
+        "vsc_id": id,
+        "vsc_use_colors": bUseColors
     };
     /* eslint-enable @typescript-eslint/naming-convention */
 
     const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");
-    const response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
-    if (response !== null) {
-        handleResponse(response, id);
+    let response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
+    if (response === null)
+        return null;
+
+    // If the response was written to a file use that instead
+    const outputFilepath = getOutputFilepath(id);
+    if (fs.existsSync(outputFilepath)) {
+        response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
+        fs.unlink(outputFilepath, () => { });  // Delete the file
     }
+
+    response = response.replace(/\n\r/g, "\n");
+
+    return response;
 }

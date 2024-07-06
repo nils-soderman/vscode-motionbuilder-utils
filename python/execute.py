@@ -67,30 +67,58 @@ def find_package(filepath):
     return ""
 
 
-def execute_code(code, filename, vs_code_is_debugging):
+def format_exception(exception, code):
+    messages = []
+
+    seen_exceptions = set()
+    while exception:
+        if id(exception) in seen_exceptions:
+            break
+        seen_exceptions.add(id(exception))
+
+        if isinstance(exception, SyntaxError):
+            exception.text = code.splitlines()[exception.lineno - 1]
+            exception.filename += ":%s" % exception.lineno
+
+        # For each traceback, we want to append the exception message
+        traceback_stack = []
+        for frame_summary in traceback.extract_tb(exception.__traceback__):
+            if frame_summary.filename == "<string>" and frame_summary.name == execute_code.__name__:
+                continue
+
+            if frame_summary.filename.endswith(".ipynb"):
+                linenum = frame_summary.lineno
+
+                code_lines = code.splitlines()
+                code_line = code_lines[linenum - 1]
+
+                frame_summary._line = code_line + "\n"
+
+            else:
+                frame_summary.filename += ":%s" % frame_summary.lineno
+
+            traceback_stack.append(frame_summary)
+
+        text = "Traceback (most recent call last):\n"
+        text += "".join(traceback.format_list(traceback_stack))
+        text += "".join(traceback.format_exception_only(type(exception), exception))
+
+        messages.append(text)
+
+        exception = exception.__context__
+
+    return "\nDuring handling of the above exception, another exception occurred:\n\n".join(reversed(messages))
+
+
+def execute_code(code, filename, use_colors):
     try:
         exec(compile(code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-        exception_type, exception, traceback_ = sys.exc_info()
 
-        traceback_lines = []
-        for line in traceback.format_exception(exception_type, exception, traceback_):
-            if execute_code.__name__ in line:
-                continue
+        traceback_message = format_exception(caught_exception, code)
 
-            # Reformat path to include the file number, example: 'myfile.py:5'
-            # This is to make VS Code recognize this as a link to a spesific line number
-            if re.findall(r'file ".*", line \d*, in ', line.lower()):
-                file_desc, _, number_and_module = line.partition(",")
-                line_number = "".join(x for x in number_and_module.partition(",")[0] if x.isdigit())
-                file_desc = '%s:%s"' % (file_desc[:-1], line_number)
-                line = file_desc + "," + number_and_module
-
-            traceback_lines.append(line)
-
-        traceback_message = "".join(traceback_lines).strip()
         # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
-        if vs_code_is_debugging:
+        if use_colors:
             traceback_message = '\033[91m' + traceback_message + '\033[0m'
 
         print(traceback_message)
@@ -102,6 +130,7 @@ def main():
     command_id = globals().get("vsc_id")
     name = globals().get("vsc_name", None)
     vscode_debugging = globals().get("vsc_is_debugging", False)
+    use_colors = globals().get("vsc_use_colors", False)
 
     # Set some global variables
     exec_globals = get_exec_globals()
@@ -120,14 +149,14 @@ def main():
         with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
             if not vscode_debugging:
                 with OutputRedirector(command_id):
-                    execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+                    execute_code(vs_code_in_file.read(), filename, use_colors)
             else:
-                execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+                execute_code(vs_code_in_file.read(), filename, use_colors)
                 print(">>>")
 
     else:  # Python 2
         with open(filepath, 'r') as vs_code_in_file:  # pylint: disable=unspecified-encoding
-            execute_code(vs_code_in_file.read(), filename, vscode_debugging)
+            execute_code(vs_code_in_file.read(), filename, use_colors)
 
 
 main()

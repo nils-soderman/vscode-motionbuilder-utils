@@ -1,12 +1,15 @@
 import * as vscode from 'vscode';
 
+import * as notebook from './modules/notebook';
+import * as logging from './modules/logging';
+import * as utils from './modules/utils';
+
 import * as codeCompletion from './scripts/code-completion';
 import * as documentation from './scripts/documentation';
 import * as reloadModules from './scripts/reload-modules';
-import * as attach from './scripts/attach';
 import * as execute from './scripts/execute-script';
-import * as utils from './modules/utils';
-import * as logging from './modules/logging';
+import * as attach from './scripts/attach';
+
 
 
 import * as fs   from 'fs';
@@ -18,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
-			execute.execute();
+			execute.executeCurrentDocument();
 		})
 	);
 	context.subscriptions.push(
@@ -53,6 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+	notebook.setupNotebook(context);
 
 	deleteOldExtensionData();
 }

@@ -38,6 +38,9 @@
   },
   "homepage": "https://nilssoderman.com/downloads/vscode/motionbuilder-utils/",
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onNotebook:jupyter-notebook"
+  ],
   "contributes": {
     "commands": [
       {
