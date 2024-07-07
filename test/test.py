@@ -15,6 +15,7 @@ print(__name__)
 
 def error():
     print("Hello World")
+
     print(1 / 0)
 
 
