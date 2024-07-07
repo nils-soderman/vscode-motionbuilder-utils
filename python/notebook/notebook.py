@@ -1,23 +1,26 @@
+import tempfile
+import base64
 import json
-
-from IPython.utils.capture import capture_output
-
-from IPython.core.interactiveshell import InteractiveShell
-
-import matplotlib.pyplot as plt
-import matplotlib.backends.backend_agg as agg
+import sys
 import io
 import os
-import base64
-import sys
-import tempfile
-
 import re
 
+from IPython.core.interactiveshell import InteractiveShell
+from IPython.utils.capture import capture_output
 
+use_matplotlib = False
 
-import matplotlib
-matplotlib.use('Agg')
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib.backends.backend_agg as agg
+    import matplotlib
+
+    matplotlib.use('Agg')
+
+    use_matplotlib = True
+except ModuleNotFoundError:
+    pass
 
 TEMP_FOLDERPATH = os.path.join(
     tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
@@ -56,38 +59,36 @@ def execute(code):
     shell = InteractiveShell.instance()
     shell.colors = 'NoColor'
 
-    if not code:
-        return
-
     with capture_output() as captured:
-        res = shell.run_cell(code)
+        shell.run_cell(code)
 
     response = []
     for output in captured.outputs:
         response.append(output.data)
 
-    
-    for fignum in plt.get_fignums():
-        buf = io.BytesIO()
-        canvas = agg.FigureCanvasAgg(plt.figure(fignum))
-        canvas.draw()
-        canvas.print_png(buf)
-        png_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-        response.append({
-            'image/png': png_data
-        })
-        plt.close(fignum)
-        
+    if use_matplotlib:
+        for fignum in plt.get_fignums():
+            image_buffer = io.BytesIO()
+            fig = plt.figure(fignum)
+            canvas = agg.FigureCanvasAgg(fig)
+            canvas.draw()
+            # canvas.print_png(image_buffer)
+            # png_data = base64.b64encode(image_buffer.getvalue()).decode('utf-8')
+            png_data = base64.b64encode(canvas.buffer_rgba()).decode('utf-8')
+            response.append({
+                'image/png': png_data
+            })
+            plt.close(fignum)
 
     # This regular expression matches ANSI escape codes
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
     # Use the sub method to replace the escape codes with an empty string
     no_color_stdout = ansi_escape.sub('', captured.stdout)
-
-    response.append({
-        'text/plain': no_color_stdout
-    })
+    if no_color_stdout:
+        response.append({
+            'text/plain': no_color_stdout
+        })
 
     return json.dumps(response)
 
@@ -95,6 +96,8 @@ def execute(code):
 def main():
     # Define the code to be executed
     code = globals().get("vsc_code")
+    if not code:
+        return
 
     command_id = globals().get("vsc_command_id")
 

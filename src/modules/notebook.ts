@@ -123,7 +123,7 @@ async function executeHandlerIPython(cells: vscode.NotebookCell[], notebook: vsc
             responseObj = JSON.parse(response);
         }
         catch (e) {
-            logging.logMessage(`Error parsing response: ${e}`);
+            logging.logMessage(`Error parsing response: ${response}\n${e}`);
             execution.end(false);
             return;
         }
