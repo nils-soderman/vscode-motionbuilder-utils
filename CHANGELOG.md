@@ -1,6 +1,6 @@
 # Change Log
 
-## [2025.0.3] - 2024-07-07
+## [2025.1.0] - 2024-07-07
 
 ### Added:
 - Notebook controller that executes the cells in MotionBuilder
