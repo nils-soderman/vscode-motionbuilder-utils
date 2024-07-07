@@ -168,7 +168,7 @@
     ]
   },
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.90.0"
   },
   "scripts": {
     "vscode:uninstall": "node ./out/hooks/uninstall-hook",
