@@ -1,5 +1,6 @@
 .vscode/**
 .vscode-test/**
+.vscode-test.*
 src/**
 test/**
 .yarnrc
@@ -19,6 +20,9 @@ dev/**
 media/demo/**
 dist/**
 .pylintrc
+
+out/**
+!out/extension.js
 
 node_modules/
 !node_modules/**/[lL][iI][cC][eE][nN][sS][eE]*
