@@ -70,27 +70,31 @@ function openPageInBrowser(relativePageURL: string, version: number) {
  * @param url The full URL to the example documentation web-page
  * @param filename The abs filepath where to save the file on disk
  */
-function openExampleInVSCode(url: string, filename: string) {
-    utils.getRequest(url).then(
-        (data) => {
-            const parsedHtml = htmlParser.parse(data);
+async function openExampleInVSCode(url: string, filename: string) {
+    let data: string;
+    try {
+        data = await utils.getRequest(url);
+    }
+    catch (err: any) {
+        logging.showErrorMessage(`Failed to get: ${url}`, err.message);
+        return;
+    }
 
-            let content = "";
-            for (const line of parsedHtml.querySelectorAll(".line")) {
-                // Remove line numbers
-                line.querySelectorAll(".lineno").forEach(e => e.remove());
+    const parsedHtml = htmlParser.parse(data);
 
-                content += line.text + "\n";
-            }
+    let content = "";
+    for (const line of parsedHtml.querySelectorAll(".line")) {
+        // Remove line numbers
+        line.querySelectorAll(".lineno").forEach(e => e.remove());
 
-            const filepath = utils.saveTempFile(filename, content);
-            const openPath = vscode.Uri.file(filepath);
-            vscode.workspace.openTextDocument(openPath).then(doc => {
-                vscode.window.showTextDocument(doc);
-            });
-        },
-        (err) => logging.showErrorMessage(`Failed to get: ${url}`, err)
-    );
+        content += line.text + "\n";
+    }
+
+    const filepath = utils.saveTempFile(filename, content);
+    const openPath = vscode.Uri.file(filepath);
+    const doc = await vscode.workspace.openTextDocument(openPath);
+
+    return await vscode.window.showTextDocument(doc);
 }
 
 
@@ -124,7 +128,7 @@ async function browseDocumentation(type: string, bExampels = false) {
             filename = filename.split(":")[1].trimStart();
         }
 
-        openExampleInVSCode(url, "Example_" + filename);
+        await openExampleInVSCode(url, "Example_" + filename);
     }
     else {
         openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
@@ -133,10 +137,10 @@ async function browseDocumentation(type: string, bExampels = false) {
 
 
 export async function browseExamples() {
-    return browseDocumentation(FDOCTYPE.example, true);
+    return await browseDocumentation(FDOCTYPE.example, true);
 }
 
 
 export async function browsePython() {
-    return browseDocumentation(FDOCTYPE.python);
+    return await browseDocumentation(FDOCTYPE.python);
 }
