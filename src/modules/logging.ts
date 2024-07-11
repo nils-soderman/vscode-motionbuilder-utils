@@ -9,20 +9,23 @@ export function getOutputChannel() {
     return gOutputChannel;
 }
 
+export function showLog() {
+    const outputChannel = getOutputChannel();
+    outputChannel.show(true);
+}
 
-export function log(message: string, bShowLog = false) {    
+
+export function log(message: string) {
     const outputChannel = getOutputChannel();
     outputChannel.appendLine(message);
-
-    if (bShowLog)
-        outputChannel.show(true);
 }
 
 export async function showErrorMessage(message: string, fullError: string) {
     const additionalInfo = "Please consider opening an issue on GitHub with the error message above.";
     fullError = fullError + "\n\n" + additionalInfo;
+    log(fullError);
 
     const selectedValue = await vscode.window.showErrorMessage(message, "Show log");
     if (selectedValue == "Show log")
-        log(fullError, true);
+        showLog();
 }
