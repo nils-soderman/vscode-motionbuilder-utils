@@ -137,10 +137,10 @@ async function browseDocumentation(type: string, bExampels = false) {
 
 
 export async function browseExamples() {
-    return await browseDocumentation(FDOCTYPE.example, true);
+    return browseDocumentation(FDOCTYPE.example, true);
 }
 
 
 export async function browsePython() {
-    return await browseDocumentation(FDOCTYPE.python);
+    return browseDocumentation(FDOCTYPE.python);
 }
