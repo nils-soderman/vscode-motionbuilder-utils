@@ -6,8 +6,9 @@
         "**/**.vsix": true,
         "package-lock.json": true,
         "**/__pycache__": true,
-        "builds": true,
         "dist/**": true,
+        "LICENSE": true,
+        ".vscode-test": true,
     },
     "search.exclude": {
         "media/**": true,

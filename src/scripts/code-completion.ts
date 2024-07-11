@@ -229,7 +229,7 @@ function ensurePyFilesExist(files: string[]) {
  * @param pathToAdd The path to add
  * @returns "add" if the path was added, "exists" if the path already exists, false if the path could not be added
  */
-function addPythonAnalysisPath(pathToAdd: string): "add" | "exists" | false {
+export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | "add" | "exists"> {
     const fullConfigName = `${PYTHON_CONFIG}.${EXTRA_PATHS_CONFIG}`;
 
     const activeWorkspaceFolder = utils.getActiveWorkspaceFolder();
@@ -285,7 +285,15 @@ function addPythonAnalysisPath(pathToAdd: string): "add" | "exists" | false {
 
     // Add the new path and update the configuration
     newPathsValue.push(pathToAdd);
-    pythonConfig.update(EXTRA_PATHS_CONFIG, newPathsValue, settingsInfo.scope);
+    try {
+        await pythonConfig.update(EXTRA_PATHS_CONFIG, newPathsValue, settingsInfo.scope);
+    }
+    catch (error) {
+        const err = error as Error;
+        logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err.message);
+        
+        return false;
+    }
 
     // Show a message to the user
     logging.log(`Added path "${pathToAdd}" to '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
@@ -381,7 +389,7 @@ export async function main(context: vscode.ExtensionContext) {
     ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
 
     // Add path to python analysis
-    const result = addPythonAnalysisPath(destination);
+    const result = await addPythonAnalysisPath(destination);
     if (result == "exists") {
         vscode.window.showInformationMessage(`Updated stub files in '${destination}'`);
     }

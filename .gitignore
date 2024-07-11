@@ -1,6 +1,7 @@
+.vscode-test
+
 node_modules
 out
-src/test
 *.vsix
 dist/**
 
