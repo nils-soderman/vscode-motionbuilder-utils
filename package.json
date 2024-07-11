@@ -179,7 +179,6 @@
     "test": "tsc -p ./ && vscode-test"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
     "@types/mocha": "^9.0.0",
     "@types/node": "20.x",
     "@types/sinon": "^17.0.3",
