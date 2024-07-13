@@ -1,4 +1,5 @@
-import open = require('open');
+import * as vscode from "vscode";
+
 
 export const WIKI_URL = "https://github.com/nils-soderman/vscode-motionbuilder-utils/wiki/";
 
@@ -10,7 +11,7 @@ export function getPageUrl(page: string) {
     return WIKI_URL + page;
 }
 
-export function openPageInBrowser(page: string) {
+export async function openPageInBrowser(page: string) {
     const url = getPageUrl(page);
-    open(url);
+    return await vscode.env.openExternal(vscode.Uri.parse(url));
 }

@@ -6,8 +6,6 @@ import * as path from 'path';
 import * as utils from '../modules/utils';
 import * as logging from '../modules/logging';
 
-import open = require('open');
-
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
 const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
@@ -59,9 +57,9 @@ function parseGeneratedDocumentationFile(type: string): {
  * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
  * @param version MotionBuilder version
  */
-function openPageInBrowser(relativePageURL: string, version: number) {
+async function openPageInBrowser(relativePageURL: string, version: number) {
     const url = getDocumentationPageURL(version, relativePageURL);
-    open(url);
+    return await vscode.env.openExternal(vscode.Uri.parse(url));
 }
 
 
@@ -131,7 +129,7 @@ async function browseDocumentation(type: string, bExampels = false) {
         await openExampleInVSCode(url, "Example_" + filename);
     }
     else {
-        openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
+        await openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
     }
 }
 

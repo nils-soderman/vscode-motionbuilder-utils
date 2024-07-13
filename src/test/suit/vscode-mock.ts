@@ -4,6 +4,7 @@
 import * as vscode from 'vscode';
 
 import sinon from 'sinon';
+import * as https from 'https';
 
 
 export class ConfigMock {
@@ -80,4 +81,23 @@ export function stubGetConfiguration(config: Record<string, ConfigMock>) {
     });
 
     return getConfigurationStub;
+}
+
+export function mockOpenExternal() {
+    const stubOpenExternal = sinon.stub(vscode.env, "openExternal");
+    stubOpenExternal.callsFake((uri: vscode.Uri): Promise<boolean> => {
+        return new Promise((resolve, reject) => {
+            https.get(uri.toString(), (res) => {
+                if (res.statusCode === 200) {
+                    resolve(true);
+                } else {
+                    reject(`Url ${uri.toString()} return with status code ${res.statusCode}, expected 200`);
+                }
+            }).on('error', (e) => {
+                reject(`Failed to make a GET request to ${uri.toString()}: ${e.message}`);
+            });
+        });
+    });
+
+    return stubOpenExternal;
 }
