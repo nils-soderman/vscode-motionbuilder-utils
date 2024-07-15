@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import * as https from 'https';
 
 
-export class ConfigMock {
+export class ConfigMock implements vscode.WorkspaceConfiguration {
     globalValue: Record<string, any>;
     workspaceValue: Record<string, any>;
     workspaceFolderValue: Record<string, any>;
@@ -54,11 +54,51 @@ export class ConfigMock {
     }
 }
 
+
+export class MockOutputChannel implements vscode.OutputChannel {
+    bVisible = false;
+    output: string[] = [];
+    disposed = false;
+    name: string = "";
+
+    logLevel: vscode.LogLevel = vscode.LogLevel.Info;
+
+    appendLine(line: string) {
+        this.output.push(line + "\n");
+    }
+
+    clear() {
+        this.output = [];
+    }
+
+    show() {
+        this.bVisible = true;
+    }
+
+    hide() {
+        this.bVisible = false;
+    }
+
+    append(value: string): void {
+        this.output.push(value);
+    }
+
+    replace(value: string): void {
+        this.output = [value];
+    }
+
+    dispose(): void {
+        this.output = [];
+        this.bVisible = false;
+        this.disposed = true;
+    }
+}
+
 /**
  * Create a stub for vscode.window.showQuickPick that returns the first item in the list
  */
 export function stubShowQuickPick() {
-    let showQuickPickStub = sinon.stub(vscode.window, 'showQuickPick');
+    const showQuickPickStub = sinon.stub(vscode.window, 'showQuickPick');
 
     showQuickPickStub.callsFake(async (items: readonly vscode.QuickPickItem[] | Thenable<readonly vscode.QuickPickItem[]>, options: vscode.QuickPickOptions | undefined, token?: vscode.CancellationToken | undefined) => {
         return new Promise(async (resolve) => {

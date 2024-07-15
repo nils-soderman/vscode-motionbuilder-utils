@@ -11,3 +11,7 @@ export function initializeExtension() {
     const extensionDir = path.join(__dirname, '..', '..', '..');
     utils.setExtensionDir(extensionDir);
 }
+
+export function getPythonTestFilepath(filename: string): string {
+    return path.join(utils.getPythonDir(), "test", filename);
+}

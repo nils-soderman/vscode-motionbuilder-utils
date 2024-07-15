@@ -246,3 +246,14 @@ export function splitAtFirstOccurrence(str: string, separator: string) {
     const index = str.indexOf(separator);
     return [str.slice(0, index), str.slice(index + 1)];
 }
+
+
+let gOutputChannel: vscode.OutputChannel | undefined;
+
+/** Get the output channel for this extension */
+export function getOutputChannel() {
+    if (!gOutputChannel) {
+        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder Output");
+    }
+    return gOutputChannel;
+}

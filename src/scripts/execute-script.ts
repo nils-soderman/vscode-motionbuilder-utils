@@ -9,22 +9,6 @@ import * as vsCodeExec from '../modules/code-exec';
 import * as utils from '../modules/utils';
 
 
-let gOutputChannel: vscode.OutputChannel | undefined;
-
-
-
-/**
- * Get the output channel for this extension
- * @param bEnsureChannelExists If channel doesn't exist, create it
- */
-function getOutputChannel() {
-    if (!gOutputChannel) {
-        gOutputChannel = vscode.window.createOutputChannel("MotionBuilder Output");
-    }
-    return gOutputChannel;
-}
-
-
 export function getExecBaseFilename(id: string) {
     // replace all dashes in the uuid with underscores
     id = id.replace(/-/g, "_");
@@ -50,18 +34,11 @@ function handleResponse(response: string, id: string) {
     }
 
     const extConfig = utils.getExtensionConfig();
-    const outputChannel = getOutputChannel();
+    const outputChannel = utils.getOutputChannel();
 
     // Clear the output channel if enabled in user settings
     if (extConfig.get("execute.clearOutput")) {
         outputChannel.clear();
-    }
-
-    // If the response was written to a file use that instead
-    const outputFilepath = getOutputFilepath(id);
-    if (fs.existsSync(outputFilepath)) {
-        response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
-        fs.unlink(outputFilepath, () => { });  // Delete the file
     }
 
     // Format response
@@ -80,18 +57,17 @@ function handleResponse(response: string, id: string) {
 }
 
 export async function executeCurrentDocument() {
-    if (!vscode.window.activeTextEditor) {
+    if (!vscode.window.activeTextEditor)
         return;
-    }
+
     const id = crypto.randomUUID();
 
     const activeDocuemt = vscode.window.activeTextEditor.document;
 
     const tempFilepath = getExecAbsFilepath(id);
     const fileToExecute = vsCodeExec.getFileToExecute(tempFilepath);
-    if (!fileToExecute) {
+    if (!fileToExecute)
         return;
-    }
 
     const bIsDebugging = utils.isDebuggingMotionBuilder();
     const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
@@ -131,10 +107,9 @@ export async function executeFile(filepath: string, filename: string, id: string
     const outputFilepath = getOutputFilepath(id);
     if (fs.existsSync(outputFilepath)) {
         response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
+        response = response.replace(/\r\n/g, "\n");
         fs.unlink(outputFilepath, () => { });  // Delete the file
     }
-
-    response = response.replace(/\n\r/g, "\n");
 
     return response;
 }
