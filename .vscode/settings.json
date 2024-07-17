@@ -1,20 +1,19 @@
-// Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
-        "out": true,
         "node_modules": true,
         "**/**.vsix": true,
         "package-lock.json": true,
         "**/__pycache__": true,
-        "dist/**": true,
         "LICENSE": true,
         ".vscode-test": true,
+        "debug-workspace": true
     },
     "search.exclude": {
         "media/**": true,
         "**/**ignore": true,
-        "resources/**": true,
+        "resources/**": true
     },
+
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
 
@@ -25,7 +24,6 @@
     "python.formatting.autopep8Args": [
         "--max-line-length=120",
         "--ignore=E402",
-
     ],
 
     "python.analysis.extraPaths": [
