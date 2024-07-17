@@ -34,10 +34,12 @@ suite('Documentation', () => {
         });
     });
 
-    teardown(() => {
+    teardown(async () => {
         showQuickPickStub.restore();
         getConfigurationStub.restore();
         stubOpenExternal.restore();
+
+        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     });
 
     test('Open Example In Editor', async function () {

@@ -3,8 +3,14 @@
  */
 import * as vscode from 'vscode';
 
-import sinon from 'sinon';
 import * as https from 'https';
+import * as path from 'path';
+import * as os from 'os';
+
+import sinon from 'sinon';
+
+
+export const TEST_UUID = crypto.randomUUID();
 
 
 export class ConfigMock implements vscode.WorkspaceConfiguration {
@@ -140,4 +146,18 @@ export function mockOpenExternal() {
     });
 
     return stubOpenExternal;
+}
+
+
+export function getTempDir(name: string): string {
+    return path.resolve(path.join(os.tmpdir(), "mobu-utils-test-" + TEST_UUID, name));
+}
+
+
+export function getExtensionContext() {
+    const globalStorageTempDir = getTempDir("globalStorage");
+
+    return {
+        globalStorageUri: vscode.Uri.parse(globalStorageTempDir),
+    } as vscode.ExtensionContext;
 }

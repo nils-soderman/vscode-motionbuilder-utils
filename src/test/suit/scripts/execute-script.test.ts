@@ -24,7 +24,6 @@ function checkOutput(outputChannel: vscodeMock.MockOutputChannel, expected: stri
 suite('Execute', function () {
     this.timeout(20000);
 
-    let showQuickPickStub: sinon.SinonStub;
     let getConfigurationStub: sinon.SinonStub;
     let stubGetOutputChannel: sinon.SinonStub;
 
@@ -46,7 +45,6 @@ suite('Execute', function () {
         const document = await vscode.workspace.openTextDocument(filepath);
         editor = await vscode.window.showTextDocument(document);
 
-        showQuickPickStub = vscodeMock.stubShowQuickPick();
 
         getConfigurationStub = vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
@@ -57,7 +55,6 @@ suite('Execute', function () {
     });
 
     teardown(async () => {
-        showQuickPickStub.restore();
         getConfigurationStub.restore();
         stubGetOutputChannel.restore();
 

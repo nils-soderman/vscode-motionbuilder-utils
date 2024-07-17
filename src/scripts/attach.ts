@@ -59,7 +59,7 @@ function checkForSuccess(response: string[] | null, successId: string, failId: s
  * Check if debugpy python module is installed
  * @param pythonPackageDir The path to the extension can install python packages
  */
-async function isDebugpyInstalled(pythonPackageDir: string) {
+export async function isDebugpyInstalled(pythonPackageDir: string) {
     logging.log("Checking if debugpy is installed");
 
     const successId = crypto.randomUUID();
@@ -81,16 +81,16 @@ async function isDebugpyInstalled(pythonPackageDir: string) {
 
 /**
  * Install the debugpy python module
- * @param pythonPackageDir The path to the extension can install python packages
+ * @param target The directory to install the module in
  */
-async function installDebugpy(pythonPackageDir: string) {
-    logging.log(`Installing debugpy in ${pythonPackageDir}`);
+export async function installDebugpy(target: string) {
+    logging.log(`Installing debugpy in ${target}`);
 
 
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: pythonPackageDir, // eslint-disable-line @typescript-eslint/naming-convention
+        ext_packages_dir: target, // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -124,7 +124,7 @@ async function startDebugpyServer(port: number, pythonPackageDir: string) {
 /**
  * Check if debugpy is already running in MotionBuilder, and if so return the port it's using
  */
-async function getCurrentDebugPort() {
+export async function getCurrentDebugPort() {
     const scriptPath = getDebugScriptPath("get_current_debug_port.py");
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath);
     const lines = parseResponse(responseRaw);
@@ -144,7 +144,7 @@ async function getCurrentDebugPort() {
 /**
  * Get a free port to use for the debugpy server
  */
-async function getWantedPort() {
+export async function getWantedPort() {
     const extConfig = utils.getExtensionConfig();
 
     const port = extConfig.get<number>("attach.port");
@@ -172,10 +172,10 @@ async function getWantedPort() {
 }
 
 
-export async function main(context: vscode.ExtensionContext) {
+export async function main(context: vscode.ExtensionContext): Promise<boolean> {
     if (utils.isDebuggingMotionBuilder()) {
         logging.log("Already debugging MotionBuilder, aborting attach attempt.");
-        return;
+        return true;
     }
 
     logging.log("Checking if debugpy is already running");
@@ -191,7 +191,7 @@ export async function main(context: vscode.ExtensionContext) {
         if (bIsDebugpyInstalled === "MoBu2023") {
             // In Mobu 2023, the response might be empty if the Python Editor window is not open
             vscode.window.showErrorMessage('Due to a bug in MoBu 2023 the MotionBuilder window "Python Editor" must be open before attaching.');
-            return;
+            return false;
         }
 
         if (!bIsDebugpyInstalled) {
@@ -204,22 +204,22 @@ export async function main(context: vscode.ExtensionContext) {
             if (selectedInstallOption === "Install") {
                 if (!await installDebugpy(pythonPackageDir)) {
                     logging.showErrorMessage("Failed to install debugpy", "Failed to install debugpy");
-                    return;
+                    return false;
                 }
             }
             else {
-                return;
+                return false;
             }
 
         }
 
         port = await getWantedPort();
         if (!port) {
-            return;
+            return false;
         }
 
         if (!await startDebugpyServer(port, pythonPackageDir)) {
-            return;
+            return false;
         }
     }
 
@@ -235,5 +235,5 @@ export async function main(context: vscode.ExtensionContext) {
 
     logging.log(`Starting debug session with configuration:\n${JSON.stringify(configuration, null, 2)}`);
 
-    vscode.debug.startDebugging(undefined, configuration);
+    return vscode.debug.startDebugging(undefined, configuration);
 }

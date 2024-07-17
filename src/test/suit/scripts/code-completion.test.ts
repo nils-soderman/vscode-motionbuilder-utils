@@ -28,7 +28,7 @@ suite('Setup Code Completion', () => {
     let showQuickPickStub: sinon.SinonStub;
     let getConfigurationStub: sinon.SinonStub;
 
-    const globalStoragePath = path.join(os.tmpdir(), crypto.randomUUID());;
+    const extensionContext = vscodeMock.getExtensionContext();
 
     const pythonConfig = new vscodeMock.ConfigMock({
         [PYTHON_CONFIG_KEY]: []
@@ -48,15 +48,10 @@ suite('Setup Code Completion', () => {
         showQuickPickStub.restore();
         getConfigurationStub.restore();
 
-        fs.rmSync(globalStoragePath, { recursive: true, force: true });
+        fs.rmSync(extensionContext.globalStorageUri.fsPath, { recursive: true, force: true });
     });
 
     test('Setup Code Completion', async function () {
-        // The stub files will be setup in this folder
-        const extensionContext = {
-            globalStorageUri: vscode.Uri.parse(globalStoragePath),
-        } as vscode.ExtensionContext;
-
         this.timeout(20000); // Because it downloads a file we need a generous timeout
         await codeCompletion.main(extensionContext);
 
@@ -81,8 +76,8 @@ suite('Setup Code Completion', () => {
     test('addPythonAnalysisPath - global', async function () {
         pythonConfig.reset();
 
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "add");
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "exists");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "add");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "exists");
 
         assert.strictEqual(pythonConfig.globalValue[PYTHON_CONFIG_KEY].length, 1);
     });
@@ -90,16 +85,16 @@ suite('Setup Code Completion', () => {
     test('addPythonAnalysisPath - workspace', async function () {
         pythonConfig.workspaceValue[PYTHON_CONFIG_KEY] = ['helloWorld'];
 
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "add");
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "exists");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "add");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "exists");
         assert.strictEqual(pythonConfig.workspaceValue[PYTHON_CONFIG_KEY].length, 2);
     });
 
     test('addPythonAnalysisPath - workspaceFolder', async function () {
         pythonConfig.workspaceFolderValue[PYTHON_CONFIG_KEY] = ['helloWorld'];
 
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "add");
-        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(globalStoragePath), "exists");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "add");
+        assert.strictEqual(await codeCompletion.addPythonAnalysisPath(extensionContext.globalStorageUri.fsPath), "exists");
         assert.strictEqual(pythonConfig.workspaceFolderValue[PYTHON_CONFIG_KEY].length, 2);
     });
 });
