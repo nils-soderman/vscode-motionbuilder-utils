@@ -1,5 +1,5 @@
 """
-Module used for tesing various features.
+File used for tesing/debugging various features.
 To test a function select the code inside it and execute it.
 """
 
