@@ -21,8 +21,6 @@ export function log(message: string) {
 }
 
 export async function showErrorMessage(message: string, fullError: string) {
-    const additionalInfo = "Please consider opening an issue on GitHub with the error message above.";
-    fullError = fullError + "\n\n" + additionalInfo;
     log(fullError);
 
     const selectedValue = await vscode.window.showErrorMessage(message, "Show log");
