@@ -71,7 +71,7 @@ async function openPageInBrowser(relativePageURL: string, version: number) {
 async function openExampleInVSCode(url: string, filename: string) {
     let data: string;
     try {
-        data = await utils.getRequest(url);
+        data = await utils.getRequest(url, { timeout: 10_000 });
     }
     catch (err: any) {
         logging.showErrorMessage(`Failed to get: ${url}`, err.message);
