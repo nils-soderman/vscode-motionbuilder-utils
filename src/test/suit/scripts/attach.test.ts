@@ -6,7 +6,7 @@ import * as path from 'path';
 
 import sinon from 'sinon';
 
-import * as testInitialize from '../extension-initialize';
+import * as testUtils from '../test-utils';
 import * as vscodeMock from '../vscode-mock';
 
 import * as utils from '../../../modules/utils';
@@ -21,28 +21,25 @@ const CONFIG_KEYS = {
 suite('Attach', function () {
     this.timeout(30 * 1000);
 
-    let getConfigurationStub: sinon.SinonStub;
-
     const extensionConfig = new vscodeMock.ConfigMock({
         [CONFIG_KEYS.port]: 4243,
         [CONFIG_KEYS.autoPort]: true
     });
 
-    let extensionContext: any; // = vscodeMock.getExtensionContext();
-    
-    let tempDebugpyInstallDir: any;// = path.join(extensionContext.globalStorageUri.fsPath, "site-packages");
+    let extensionContext: vscode.ExtensionContext;
+    let tempDebugpyInstallDir: string;
     
     suiteTeardown(async () => {
         await vscode.workspace.fs.delete(vscode.Uri.file(tempDebugpyInstallDir), { recursive: true });
     });
     
     setup(() => {
-        testInitialize.initializeExtension();
+        testUtils.initializeExtension();
 
         extensionContext = vscodeMock.getExtensionContext();
         tempDebugpyInstallDir = path.join(extensionContext.globalStorageUri.fsPath, "site-packages");
 
-        getConfigurationStub = vscodeMock.stubGetConfiguration({
+        vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
         });
     });

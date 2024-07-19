@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 import sinon from 'sinon';
 
-import * as testInitialize from '../extension-initialize';
+import * as testUtils from '../test-utils';
 import * as vscodeMock from '../vscode-mock';
 
 import * as exec from '../../../scripts/execute-script';
@@ -24,11 +24,7 @@ function checkOutput(outputChannel: vscodeMock.MockOutputChannel, expected: stri
 suite('Execute', function () {
     this.timeout(20000);
 
-    let getConfigurationStub: sinon.SinonStub;
-    let stubGetOutputChannel: sinon.SinonStub;
-
     let editor: vscode.TextEditor;
-
     let mobuOutputChannel: vscodeMock.MockOutputChannel;
 
     const execName = "vscode-test";
@@ -39,28 +35,25 @@ suite('Execute', function () {
     });
 
     setup(async () => {
-        testInitialize.initializeExtension();
+        testUtils.initializeExtension();
 
-        const filepath = testInitialize.getPythonTestFilepath("hello_world.py");
+        const filepath = testUtils.getPythonTestFilepath("hello_world.py");
         const document = await vscode.workspace.openTextDocument(filepath);
         editor = await vscode.window.showTextDocument(document);
 
-
-        getConfigurationStub = vscodeMock.stubGetConfiguration({
+        vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
         });
 
         mobuOutputChannel = new vscodeMock.MockOutputChannel();
-        stubGetOutputChannel = sinon.stub(utils, "getOutputChannel").returns(mobuOutputChannel);
+        sinon.stub(utils, "getOutputChannel").returns(mobuOutputChannel);
     });
 
     teardown(async () => {
-        getConfigurationStub.restore();
-        stubGetOutputChannel.restore();
+        sinon.restore();
+        extensionConfig.reset();
 
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-
-        extensionConfig.reset();
     });
 
     test('Execute File', async function () {

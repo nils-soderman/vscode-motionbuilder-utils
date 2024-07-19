@@ -6,14 +6,12 @@ import * as wiki from '../../../modules/extension-wiki';
 
 
 suite('Extension Wiki', () => {
-    let stubOpenExternal: sinon.SinonStub;
-
     setup(() => {
-        stubOpenExternal = vscodeMock.mockOpenExternal();
+        vscodeMock.mockOpenExternal();
     });
 
     teardown(() => {
-        stubOpenExternal.restore();
+        sinon.restore();
     });
 
     test('Wiki Urls', async function () {

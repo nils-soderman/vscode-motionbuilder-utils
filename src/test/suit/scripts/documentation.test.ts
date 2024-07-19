@@ -4,40 +4,32 @@ import * as vscode from 'vscode';
 
 import sinon from 'sinon';
 
-import * as testInitialize from '../extension-initialize';
+import * as testUtils from '../test-utils';
 import * as vscodeMock from '../vscode-mock';
 
 import * as docs from '../../../scripts/documentation';
-
-import * as https from "https";
 
 const OPEN_IN_EDITOR_CONFIG = "documentation.openExamplesInEditor";
 
 
 suite('Documentation', () => {
-    let showQuickPickStub: sinon.SinonStub;
-    let getConfigurationStub: sinon.SinonStub;
-    let stubOpenExternal: sinon.SinonStub;
-
     const extensionConfig = new vscodeMock.ConfigMock({
         [OPEN_IN_EDITOR_CONFIG]: true
     });
 
     setup(() => {
-        testInitialize.initializeExtension();
+        testUtils.initializeExtension();
 
-        stubOpenExternal = vscodeMock.mockOpenExternal();
-        showQuickPickStub = vscodeMock.stubShowQuickPick();
+        vscodeMock.mockOpenExternal();
+        vscodeMock.stubShowQuickPick();
 
-        getConfigurationStub = vscodeMock.stubGetConfiguration({
+        vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
         });
     });
 
     teardown(async () => {
-        showQuickPickStub.restore();
-        getConfigurationStub.restore();
-        stubOpenExternal.restore();
+        sinon.restore();
 
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     });
