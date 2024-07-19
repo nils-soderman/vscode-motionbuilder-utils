@@ -48,9 +48,9 @@ interface IVersionQuickPick {
 /**
  * Make sure that the file at the given path is writable
  */
-function ensureWritable(path: string) {
-    if (fs.existsSync(path))
-        fs.chmodSync(path, 0o600);
+function ensureWritable(uri: vscode.Uri) {
+    if (fs.existsSync(uri.fsPath))
+        fs.chmodSync(uri.fsPath, 0o600);
 }
 
 
@@ -90,7 +90,7 @@ async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
     let data: string;
 
     try {
-        data = await utils.getRequest(url, GITHUB_API_HEADERS);
+        data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
     }
     catch (error) {
         const err = error as Error;
@@ -115,13 +115,13 @@ async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
  * @param destination The destination folder to save the files to
  * @returns An array of downloaded files
  */
-async function downloadStubFiles(version: IVersionQuickPick, destination: string) {
+async function downloadStubFiles(version: IVersionQuickPick, destination: vscode.Uri) {
     const url = `${GITHUB_API_URL}/${REPOSITORY_URL}/contents/${version.path}`;
 
     let data: string;
 
     try {
-        data = await utils.getRequest(url, GITHUB_API_HEADERS);
+        data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
     } catch (error) {
         const err = error as Error;
         logging.showErrorMessage(`Failed to fetch stub file for ${version.label}`, err.message);
@@ -135,18 +135,18 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: string
         if (file.type !== "file")
             continue;
 
-        const filename = path.join(destination, file.name);
+        const filename = vscode.Uri.joinPath(destination, file.name);
 
         try {
-            const fileData = await utils.getRequest(file.download_url, GITHUB_API_HEADERS);
+            const fileData = await utils.getRequest(file.download_url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
 
-            if (fs.existsSync(filename))
+            if (await utils.checkUriExists(filename))
                 ensureWritable(filename);
 
-            fs.writeFileSync(filename, fileData);
+            await vscode.workspace.fs.writeFile(filename, Buffer.from(fileData));
             downloadedFiles.push(filename);
 
-            logging.log(`Downloaded "${filename}"`);
+            logging.log(`Downloaded "${filename.fsPath}"`);
         }
         catch (error) {
             const err = error as Error;
@@ -162,38 +162,45 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: string
  * Copy local stub files that comes with the extension from 'resources/stub-files/' -> `targetDirectory`
  * @param targetDirectory The directory to copy the files into
  */
-function copyLocalStubFiles(targetDirectory: string): string[] {
+async function copyLocalStubFiles(targetDirectory: vscode.Uri): Promise<vscode.Uri[]> {
     const stubFilesSourceDirectory = getSourceStubFileDirectory();
 
-    const filesCopied: string[] = [];
+    const filesCopied: vscode.Uri[] = [];
+
+    const stubFilesSourceDirectoryUri = vscode.Uri.file(stubFilesSourceDirectory);
 
     // Loop through all of the files under the 'stub-files/XXXX/' folder
-    for (const filepath of fs.readdirSync(stubFilesSourceDirectory)) {
-        const targetFilepath = path.join(targetDirectory, filepath);
-        const sourceFilepath = path.join(stubFilesSourceDirectory, filepath);
+    for (const [name, type] of await vscode.workspace.fs.readDirectory(stubFilesSourceDirectoryUri)) {
+        if (type !== vscode.FileType.File)
+            continue;
 
-        if (fs.existsSync(targetFilepath)) {
+        const sourceFilepathUri = vscode.Uri.joinPath(stubFilesSourceDirectoryUri, name);
+        const targetFilepathUri = vscode.Uri.joinPath(targetDirectory, name);
+
+        if (await utils.checkUriExists(targetFilepathUri)) {
             // Check if the stub file we're about to copy is newer than the one we already have
-            if (fs.statSync(sourceFilepath).mtime <= fs.statSync(targetFilepath).mtime) {
-                logging.log(`"${targetFilepath}" already exists and is up to date`);
+            const statTarget = await vscode.workspace.fs.stat(targetFilepathUri);
+            const statSource = await vscode.workspace.fs.stat(sourceFilepathUri);
+            if (statSource.mtime <= statTarget.mtime) {
+                logging.log(`"${sourceFilepathUri.fsPath}" already exists and is up to date`);
                 continue;
             }
 
-            ensureWritable(targetFilepath);
+            ensureWritable(targetFilepathUri);
         }
 
         try {
-            fs.copyFileSync(sourceFilepath, targetFilepath);
+            await vscode.workspace.fs.copy(sourceFilepathUri, targetFilepathUri, { overwrite: true });
         }
         catch (error) {
             const err = error as Error;
-            logging.showErrorMessage(`Failed to copy file ${filepath}`, err.message);
+            logging.showErrorMessage(`Failed to copy file ${name}`, err.message);
             continue;
         }
 
-        filesCopied.push(targetFilepath);
+        filesCopied.push(targetFilepathUri);
 
-        logging.log(`Copied ${filepath} to ${targetFilepath}`);
+        logging.log(`Copied ${name} to ${targetFilepathUri.fsPath}`);
     }
 
     return filesCopied;
@@ -204,19 +211,19 @@ function copyLocalStubFiles(targetDirectory: string): string[] {
  * Ensure that the given .pyi files has a corresponding .py file in the same directory
  * If not generate an empty .py file.
  */
-function ensurePyFilesExist(files: string[]) {
+async function ensurePyFilesExist(files: vscode.Uri[]) {
     for (const file of files) {
-        if (!file.endsWith(".pyi")) {
+        if (!file.path.endsWith(".pyi")) {
             continue;
         }
-        const pyFile = file.replace(".pyi", ".py");
-        if (!fs.existsSync(pyFile)) {
+        const pyFile = file.with({ path: file.path.replace(".pyi", ".py") });
+        if (!await utils.checkUriExists(pyFile)) {
             try {
-                fs.writeFileSync(pyFile, "");
+                await vscode.workspace.fs.writeFile(pyFile, Buffer.from(""));
             }
             catch (error) {
                 const err = error as Error;
-                logging.showErrorMessage(`Failed to create .py file for ${file}`, err.message);
+                logging.showErrorMessage(`Failed to create .py file for ${file.fsPath}`, err.message);
                 continue;
             }
         }
@@ -291,7 +298,7 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
     catch (error) {
         const err = error as Error;
         logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err.message);
-        
+
         return false;
     }
 
@@ -311,14 +318,14 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
 
 
 export async function main(context: vscode.ExtensionContext) {
-    const defaultDestination = path.join(context.globalStorageUri.fsPath, "stubs");
+    const defaultDestination = vscode.Uri.joinPath(context.globalStorageUri, "stubs");
 
     const title = "MotionBuilder Code Completion Setup";
 
     const selectedDestination = await vscode.window.showQuickPick(
         [
             {
-                label: `$(extensions) ${defaultDestination}`,
+                label: `$(extensions) ${defaultDestination.fsPath}`,
                 index: 0
             },
             {
@@ -334,7 +341,7 @@ export async function main(context: vscode.ExtensionContext) {
     if (!selectedDestination)
         return;
 
-    let destination = "";
+    let destination: vscode.Uri;
     if (selectedDestination.index === 1) {
         const result = await vscode.window.showOpenDialog({
             canSelectFiles: false,
@@ -347,18 +354,18 @@ export async function main(context: vscode.ExtensionContext) {
             return;
         }
 
-        destination = result[0].fsPath;
+        destination = result[0];
     }
     else {
         destination = defaultDestination;
     }
 
-    if (!fs.existsSync(destination)) {
+    if (!await utils.checkUriExists(destination)) {
         try {
-            fs.mkdirSync(destination, { recursive: true });
+            await vscode.workspace.fs.createDirectory(destination);
         } catch (error) {
             const err = error as Error;
-            logging.showErrorMessage(`Failed to create directory ${destination}`, err.message);
+            logging.showErrorMessage(`Failed to create directory ${destination.fsPath}`, err.message);
             return;
         }
     }
@@ -372,7 +379,7 @@ export async function main(context: vscode.ExtensionContext) {
     if (!selectedVersion)
         return;
 
-    logging.log(`Placing stub files in: "${destination}"`);
+    logging.log(`Placing stub files in: "${destination.fsPath}"`);
 
     // Download the stub files
     const downloadedFiles = await downloadStubFiles(selectedVersion, destination);
@@ -382,15 +389,15 @@ export async function main(context: vscode.ExtensionContext) {
     }
 
     // Copy stub files
-    const copiedFiles = copyLocalStubFiles(destination);
+    const copiedFiles = await copyLocalStubFiles(destination);
 
     // Ensure that the .py files exists
     // These are needed for the python extension to not throw warnings
-    ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
+    await ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
 
     // Add path to python analysis
-    const result = await addPythonAnalysisPath(destination);
+    const result = await addPythonAnalysisPath(destination.fsPath);
     if (result == "exists") {
-        vscode.window.showInformationMessage(`Updated stub files in '${destination}'`);
+        vscode.window.showInformationMessage(`Updated stub files in '${destination.fsPath}'`);
     }
 }

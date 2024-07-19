@@ -63,6 +63,17 @@ export function getExtentionTempDir(bEnsureExists = true) {
 }
 
 
+/** Check if a filesystem file/directory exists at the given uri */
+export async function checkUriExists(uri: vscode.Uri): Promise<boolean> {
+    try {
+        const stat = await vscode.workspace.fs.stat(uri);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+
 // -----------------------------------------------------------------------------------------
 //                                     Extension
 // -----------------------------------------------------------------------------------------
@@ -181,9 +192,9 @@ export function isPathsSame(a: string, b: string) {
  * Do a web get-request
  * @param url The url whose content to fetch
 */
-export function getRequest(url: string, headers?: any): Promise<string> {
+export function getRequest(url: string, options: https.RequestOptions = {}): Promise<string> {
     return new Promise((resolve, reject) => {
-        https.get(url, { headers }, (res) => {
+        https.get(url, options, (res) => {
             let data = '';
             res.on('data', (chunk) => {
                 data += chunk;
@@ -201,6 +212,12 @@ export function getRequest(url: string, headers?: any): Promise<string> {
             res.on('error', (err) => {
                 reject(err);
             });
+
+            res.on("close", (stream: any) => {
+                console.log(stream);
+            });
+        }).on("error", (err: Error) => {
+            reject(err);
         });
     });
 }
