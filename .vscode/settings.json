@@ -11,7 +11,8 @@
     "search.exclude": {
         "media/**": true,
         "**/**ignore": true,
-        "resources/**": true
+        "resources/**": true,
+        "out/**": true
     },
 
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
