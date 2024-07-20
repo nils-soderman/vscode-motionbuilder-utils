@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 import * as crypto from 'crypto';
-import * as path from 'path';
 
 import * as logging from '../modules/logging';
 
@@ -14,7 +13,7 @@ import * as utils from '../modules/utils';
  * @param filename The name of the script
  */
 function getDebugScriptPath(filename: string) {
-    return path.join(utils.getPythonDir(), "attach", filename);
+    return vscode.Uri.joinPath(utils.getPythonDir(), "attach", filename);
 }
 
 
@@ -59,14 +58,14 @@ function checkForSuccess(response: string[] | null, successId: string, failId: s
  * Check if debugpy python module is installed
  * @param pythonPackageDir The path to the extension can install python packages
  */
-export async function isDebugpyInstalled(pythonPackageDir: string) {
+export async function isDebugpyInstalled(pythonPackageDir: vscode.Uri) {
     logging.log("Checking if debugpy is installed");
 
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: pythonPackageDir,  // eslint-disable-line @typescript-eslint/naming-convention
+        ext_packages_dir: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -83,14 +82,13 @@ export async function isDebugpyInstalled(pythonPackageDir: string) {
  * Install the debugpy python module
  * @param target The directory to install the module in
  */
-export async function installDebugpy(target: string) {
-    logging.log(`Installing debugpy in ${target}`);
-
+export async function installDebugpy(target: vscode.Uri) {
+    logging.log(`Installing debugpy in ${target.fsPath}`);
 
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: target, // eslint-disable-line @typescript-eslint/naming-convention
+        ext_packages_dir: target.fsPath, // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -104,7 +102,7 @@ export async function installDebugpy(target: string) {
  * @param pythonPackageDir The path to the extension can install python packages
  * @returns True if the server was started successfully
  */
-async function startDebugpyServer(port: number, pythonPackageDir: string) {
+async function startDebugpyServer(port: number, pythonPackageDir: vscode.Uri) {
     const scriptPath = getDebugScriptPath("start_debugpy_server.py");
 
     const successId = crypto.randomUUID();
@@ -113,7 +111,7 @@ async function startDebugpyServer(port: number, pythonPackageDir: string) {
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
         vsc_port: port,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_ext_packages_dir: pythonPackageDir,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_ext_packages_dir: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -184,7 +182,7 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
         logging.log(`debugpy is running on port ${port}`);
     }
     else {
-        const pythonPackageDir = path.join(context.globalStorageUri.fsPath, "site-packages");
+        const pythonPackageDir = vscode.Uri.joinPath(context.globalStorageUri, "site-packages");
 
         // Make sure debugpy is installed
         const bIsDebugpyInstalled = await isDebugpyInstalled(pythonPackageDir);

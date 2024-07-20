@@ -11,7 +11,7 @@ import * as attach from './scripts/attach';
 
 
 export function activate(context: vscode.ExtensionContext) {
-	utils.setExtensionDir(context.extensionPath);
+	utils.setExtensionUri(context.extensionUri);
 
 	// Run Scripts
 	context.subscriptions.push(
@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 
-export function deactivate() {
+export async function deactivate() {
 	// Remove all temp files created by this extension
-	utils.cleanupTempFiles();
+	await utils.cleanupTempFiles();
 }

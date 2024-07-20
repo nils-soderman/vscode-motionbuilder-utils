@@ -14,7 +14,7 @@ async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.Not
         const baseFilename = executeScript.getExecBaseFilename(id);
 
         const code = cell.document.getText();
-        const filepath = utils.saveTempFile(baseFilename, code);
+        const filepath = await utils.saveTempFile(baseFilename, code);
 
         const execution = controller.createNotebookCellExecution(cell);
 

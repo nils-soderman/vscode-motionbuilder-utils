@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 
 import * as assert from 'assert';
-import * as path from 'path';
-import * as fs from 'fs';
 
 import sinon from 'sinon';
 
@@ -22,9 +20,9 @@ const EXPECTED_FILES = [
 const PYTHON_CONFIG_KEY = 'analysis.extraPaths';
 
 
-async function testAddPythonAnalysisPath(path: string) {
-    assert.strictEqual(await codeCompletion.addPythonAnalysisPath(path), "add");
-    assert.strictEqual(await codeCompletion.addPythonAnalysisPath(path), "exists");
+async function testAddPythonAnalysisPath(path: vscode.Uri) {
+    assert.strictEqual(await codeCompletion.addPythonAnalysisPath(path.fsPath), "add");
+    assert.strictEqual(await codeCompletion.addPythonAnalysisPath(path.fsPath), "exists");
 };
 
 
@@ -47,11 +45,10 @@ suite('Setup Code Completion', () => {
 
     teardown(async () => {
         sinon.restore();
+        pythonConfig.reset();
 
-        await vscode.workspace.fs.delete(
-            vscode.Uri.file(extensionContext.globalStorageUri.fsPath),
-            { recursive: true }
-        );
+        if (await testUtils.uriExists(extensionContext.globalStorageUri))
+            await vscode.workspace.fs.delete(extensionContext.globalStorageUri, { recursive: true });
     });
 
     test('Setup Code Completion', async function () {
@@ -59,27 +56,25 @@ suite('Setup Code Completion', () => {
 
         await codeCompletion.main(extensionContext);
 
-        const stubFolder = path.join(extensionContext.globalStorageUri.fsPath, 'stubs');
-        assert.ok(fs.existsSync(stubFolder));
+        const stubFolder = vscode.Uri.joinPath(extensionContext.globalStorageUri, 'stubs');
+        assert.ok(testUtils.uriExists(stubFolder));
 
         // Make sure all files have been created
         for (const file of EXPECTED_FILES) {
-            const filePathPy = path.join(stubFolder, file + '.py');
-            const filePathPyi = path.join(stubFolder, file + '.pyi');
-            assert.ok(fs.existsSync(filePathPy));
-            assert.ok(fs.existsSync(filePathPyi));
+            const filePathPy = vscode.Uri.joinPath(stubFolder, file + '.py');
+            const filePathPyi = vscode.Uri.joinPath(stubFolder, file + '.pyi');
+            assert.ok(testUtils.uriExists(filePathPy));
+            assert.ok(testUtils.uriExists(filePathPyi));
         }
 
         // Make sure the path has been added to the python configuration
         const paths = pythonConfig.get(PYTHON_CONFIG_KEY);
         assert.strictEqual(paths.length, 1);
-        assert.strictEqual(paths[0], stubFolder);
+        assert.strictEqual(paths[0], stubFolder.fsPath);
     });
     
     test('addPythonAnalysisPath - global', async function () {
-        pythonConfig.reset();
-
-        testAddPythonAnalysisPath(extensionContext.globalStorageUri.fsPath);
+        await testAddPythonAnalysisPath(extensionContext.globalStorageUri);
 
         assert.strictEqual(pythonConfig.globalValue[PYTHON_CONFIG_KEY].length, 1);
     });
@@ -87,7 +82,7 @@ suite('Setup Code Completion', () => {
     test('addPythonAnalysisPath - workspace', async function () {
         pythonConfig.workspaceValue[PYTHON_CONFIG_KEY] = ['helloWorld'];
 
-        testAddPythonAnalysisPath(extensionContext.globalStorageUri.fsPath);
+        await testAddPythonAnalysisPath(extensionContext.globalStorageUri);
 
         assert.strictEqual(pythonConfig.workspaceValue[PYTHON_CONFIG_KEY].length, 2);
     });
@@ -95,7 +90,7 @@ suite('Setup Code Completion', () => {
     test('addPythonAnalysisPath - workspaceFolder', async function () {
         pythonConfig.workspaceFolderValue[PYTHON_CONFIG_KEY] = ['helloWorld'];
 
-        testAddPythonAnalysisPath(extensionContext.globalStorageUri.fsPath);
+        await testAddPythonAnalysisPath(extensionContext.globalStorageUri);
 
         assert.strictEqual(pythonConfig.workspaceFolderValue[PYTHON_CONFIG_KEY].length, 2);
     });

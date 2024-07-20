@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 
-import * as path from 'path';
-
 import { MotionBuilderSocket } from 'motionbuilder-socket';
 
 import * as extensionWiki from './extension-wiki';
@@ -74,7 +72,7 @@ async function onSocketConnected(socket: MotionBuilderSocket) {
         }
 
         if (foldersToAddToPath.length > 0) {
-            const scriptPath = path.join(utils.getPythonDir(), "add_sys_path.py");
+            const scriptPath = vscode.Uri.joinPath(utils.getPythonDir(), "add_sys_path.py");
 
             const response = await executeFile(
                 scriptPath,
@@ -111,11 +109,11 @@ export async function runCommand(command: string) {
  * @param variables Global variables to set before executing the file
  * @returns Python output e.g: print statements or errors
  */
-export async function executeFile(filepath: string, variables: { [key: string]: any } = {}) {
+export async function executeFile(filepath: vscode.Uri, variables: { [key: string]: any } = {}) {
     const socket = await getSocket();
     if (!socket)
         return null;
 
-    const response = await socket.execFile(filepath, variables);
+    const response = await socket.execFile(filepath.fsPath, variables);
     return response;
 }

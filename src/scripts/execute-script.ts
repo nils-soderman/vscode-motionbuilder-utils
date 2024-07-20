@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 
 import * as crypto from 'crypto';
-import * as path from 'path';
-import * as fs from 'fs';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as vsCodeExec from '../modules/code-exec';
@@ -16,13 +14,13 @@ export function getExecBaseFilename(id: string) {
 }
 
 
-function getExecAbsFilepath(id: string) {
-    return path.join(utils.getExtentionTempDir(), getExecBaseFilename(id));
+async function getExecAbsFilepath(id: string) {
+    return vscode.Uri.joinPath(await utils.getExtentionTempDir(), getExecBaseFilename(id));
 }
 
 
-function getOutputFilepath(id: string) {
-    return path.join(utils.getExtentionTempDir(), `exec-out-${id}.txt`);
+async function getOutputFilepath(id: string) {
+    return vscode.Uri.joinPath(await utils.getExtentionTempDir(), `exec-out-${id}.txt`);
 }
 
 
@@ -64,8 +62,8 @@ export async function executeCurrentDocument() {
 
     const activeDocuemt = vscode.window.activeTextEditor.document;
 
-    const tempFilepath = getExecAbsFilepath(id);
-    const fileToExecute = vsCodeExec.getFileToExecute(tempFilepath);
+    const tempFilepath = await getExecAbsFilepath(id);
+    const fileToExecute = await vsCodeExec.getFileToExecute(tempFilepath);
     if (!fileToExecute)
         return;
 
@@ -84,12 +82,12 @@ export async function executeCurrentDocument() {
  * @param bIsDebugging If true, the python script will assume debugpy handles the output
  * @returns The output from the python script
  */
-export async function executeFile(filepath: string, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
+export async function executeFile(filepath: vscode.Uri, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
     const extConfig = utils.getExtensionConfig();
 
     /* eslint-disable @typescript-eslint/naming-convention */
     const globals = {
-        "vsc_file": filepath,
+        "vsc_file": filepath.fsPath,
         "vsc_is_debugging": bIsDebugging,
         "vsc_filename": filename,
         "vsc_name": extConfig.get("execute.name"),
@@ -98,17 +96,17 @@ export async function executeFile(filepath: string, filename: string, id: string
     };
     /* eslint-enable @typescript-eslint/naming-convention */
 
-    const pythonExecFile = path.join(utils.getPythonDir(), "execute.py");
+    const pythonExecFile = vscode.Uri.joinPath(utils.getPythonDir(), "execute.py");
     let response = await motionBuilderConsole.executeFile(pythonExecFile, globals);
     if (response === null)
         return null;
 
     // If the response was written to a file use that instead
-    const outputFilepath = getOutputFilepath(id);
-    if (fs.existsSync(outputFilepath)) {
-        response = fs.readFileSync(outputFilepath, { encoding: "utf-8" }).toString();
+    const outputFilepath = await getOutputFilepath(id);
+    if (await utils.uriExists(outputFilepath)) {
+        response = (await vscode.workspace.fs.readFile(outputFilepath)).toString();
         response = response.replace(/\r\n/g, "\n");
-        fs.unlink(outputFilepath, () => { });  // Delete the file
+        vscode.workspace.fs.delete(outputFilepath);
     }
 
     return response;

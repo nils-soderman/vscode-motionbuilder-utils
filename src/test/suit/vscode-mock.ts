@@ -149,8 +149,9 @@ export function mockOpenExternal() {
 }
 
 
-export function getTempDir(name: string): string {
-    return path.resolve(path.join(os.tmpdir(), "mobu-utils-test-" + TEST_UUID, name));
+export function getTempDir(name: string): vscode.Uri {
+    const tmpDir = vscode.Uri.file(os.tmpdir());
+    return vscode.Uri.joinPath(tmpDir, "mobu-utils-test-" + TEST_UUID, name);
 }
 
 
@@ -158,6 +159,6 @@ export function getExtensionContext() {
     const globalStorageTempDir = getTempDir("globalStorage");
 
     return {
-        globalStorageUri: vscode.Uri.parse(globalStorageTempDir),
+        globalStorageUri: globalStorageTempDir,
     } as vscode.ExtensionContext;
 }

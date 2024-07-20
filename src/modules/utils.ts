@@ -4,7 +4,6 @@ import * as tcpPortUsed from 'tcp-port-used';
 import * as https from 'https';
 import * as path from 'path';
 import * as os from 'os';
-import * as fs from 'fs';
 
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
@@ -15,56 +14,61 @@ export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
 //                                 Extension Directories
 // -----------------------------------------------------------------------------------------
 
-let _extensionDir: string | undefined; // Stores the absolute path to this extension's directory, set on activation
+let _extensionUri: vscode.Uri | undefined; // Stores the absolute path to this extension's directory, set on activation
 
 /**
  * This function should only be called once, on activation
- * @param dir Should be: `ExtensionContext.extensionPath`
+ * @param uri Should be: `ExtensionContext.extensionPath`
  */
-export function setExtensionDir(dir: string) {
-    _extensionDir = dir;
+export function setExtensionUri(uri: vscode.Uri) {
+    _extensionUri = uri;
 }
 
 /**
  * This function cannot be called in top-level. It must be called after the extension has been activated
  * @returns The absolute path to this extension's directory
  */
-export function getExtensionDir() {
-    if (!_extensionDir) {
+export function getExtensionUri(): vscode.Uri {
+    if (!_extensionUri) {
         throw Error("Extension Dir hasn't been set yet! This should be set on activation. This function cannot be called in top-level.");
     }
-    return _extensionDir;
+    return _extensionUri;
 }
 
 /**
  * @returns The absolute path to this extension's python directory
  */
 export function getPythonDir() {
-    return path.join(getExtensionDir(), "python");
+    return vscode.Uri.joinPath(getExtensionUri(), "python");
 }
 
 /**
  * @returns The absolute path to this extension's resources directory
  */
 export function getResourcesDir() {
-    return path.join(getExtensionDir(), "resources");
+    return vscode.Uri.joinPath(getExtensionUri(), "resources");
 }
 
 /**
  * @param bEnsureExists If folder doesn't exist, create it
  * @returns absolute path to this extensions tempdir
  */
-export function getExtentionTempDir(bEnsureExists = true) {
-    const tempDir = path.join(os.tmpdir(), EXTENSION_DATA_FOLDER_NAME);
-    if (bEnsureExists && !fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir);
+export async function getExtentionTempDir(bEnsureExists = true) {
+    const tmpDir = vscode.Uri.joinPath(
+        vscode.Uri.file(os.tmpdir()),
+        EXTENSION_DATA_FOLDER_NAME
+    );
+
+    if (bEnsureExists && !await uriExists(tmpDir)) {
+        vscode.workspace.fs.createDirectory(tmpDir);
     }
-    return tempDir;
+
+    return tmpDir;
 }
 
 
 /** Check if a filesystem file/directory exists at the given uri */
-export async function checkUriExists(uri: vscode.Uri): Promise<boolean> {
+export async function uriExists(uri: vscode.Uri): Promise<boolean> {
     try {
         const stat = await vscode.workspace.fs.stat(uri);
         return true;
@@ -130,9 +134,9 @@ function getDeprecatedConfig<T>(key: string, deprecatedKey: string): T | undefin
  * @param text Text to write to the file
  * @returns the absolute filepath of the file
  */
-export function saveTempFile(filename: string, text: string) {
-    const filepath = path.join(getExtentionTempDir(), filename);
-    fs.writeFileSync(filepath, text);
+export async function saveTempFile(filename: string, text: string) {
+    const filepath = vscode.Uri.joinPath(await getExtentionTempDir(), filename);
+    await vscode.workspace.fs.writeFile(filepath, Buffer.from(text));
     return filepath;
 }
 
@@ -140,10 +144,11 @@ export function saveTempFile(filename: string, text: string) {
 /**
  * Delete the temp folder created by this extension (and all of the files inside of it)
  */
-export function cleanupTempFiles() {
-    const tempDir = getExtentionTempDir();
-    if (fs.existsSync(tempDir)) {
-        fs.rmSync(tempDir, { recursive: true });
+export async function cleanupTempFiles() {
+    const tmpDir = await getExtentionTempDir(false);
+
+    if (await uriExists(tmpDir)) {
+        vscode.workspace.fs.delete(tmpDir, { recursive: true, useTrash: false });
     }
 }
 
@@ -152,8 +157,8 @@ export function cleanupTempFiles() {
  * @param filepath the absoulte filepath to the json file
  * @returns the parsed data as a object
  */
-export function readJson(filepath: string) {
-    const fileContent = fs.readFileSync(filepath);
+export async function readJson(filepath: vscode.Uri) {
+    const fileContent = await vscode.workspace.fs.readFile(filepath);
     return JSON.parse(fileContent.toString());
 }
 

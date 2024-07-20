@@ -2,8 +2,6 @@ import * as assert from 'assert';
 
 import * as vscode from 'vscode';
 
-import * as path from 'path';
-
 import sinon from 'sinon';
 
 import * as testUtils from '../test-utils';
@@ -27,17 +25,18 @@ suite('Attach', function () {
     });
 
     let extensionContext: vscode.ExtensionContext;
-    let tempDebugpyInstallDir: string;
-    
+    let tempDebugpyInstallDir: vscode.Uri;
+
     suiteTeardown(async () => {
-        await vscode.workspace.fs.delete(vscode.Uri.file(tempDebugpyInstallDir), { recursive: true });
+        if (await testUtils.uriExists(tempDebugpyInstallDir))
+            await vscode.workspace.fs.delete(tempDebugpyInstallDir, { recursive: true });
     });
     
     setup(() => {
         testUtils.initializeExtension();
 
         extensionContext = vscodeMock.getExtensionContext();
-        tempDebugpyInstallDir = path.join(extensionContext.globalStorageUri.fsPath, "site-packages");
+        tempDebugpyInstallDir = vscode.Uri.joinPath(extensionContext.globalStorageUri, "site-packages");
 
         vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
@@ -56,7 +55,7 @@ suite('Attach', function () {
         assert.ok(await attach.isDebugpyInstalled(tempDebugpyInstallDir));
         
         // We expect to see a single folder with the Python version here, e.g. "Python311"
-        const folderContent = await vscode.workspace.fs.readDirectory(vscode.Uri.file(tempDebugpyInstallDir));
+        const folderContent = await vscode.workspace.fs.readDirectory(tempDebugpyInstallDir);
         assert.equal(folderContent.length, 1);
 
         const [name, type] = folderContent[0];
@@ -64,8 +63,8 @@ suite('Attach', function () {
         assert.strictEqual(type, vscode.FileType.Directory);
 
         // Check that the debugpy module is present
-        const debugpyPath = path.join(tempDebugpyInstallDir, name, "debugpy");
-        assert.ok(await vscode.workspace.fs.stat(vscode.Uri.file(debugpyPath)));
+        const debugpyPath = vscode.Uri.joinPath(tempDebugpyInstallDir, name, "debugpy");
+        assert.ok(await vscode.workspace.fs.stat(debugpyPath));
 
     });
 

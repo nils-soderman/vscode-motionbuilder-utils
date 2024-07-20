@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-import * as path from 'path';
 import * as fs from 'fs';
 
 import * as logging from '../modules/logging';
@@ -61,7 +60,7 @@ function ensureWritable(uri: vscode.Uri) {
  * @param version MotionBuilder version, if version is undefined the folder containing all versions will be returned.
  */
 function getSourceStubFileDirectory() {
-    return path.join(utils.getResourcesDir(), RESOURCES_STUBS_FOLDER_NAME);
+    return vscode.Uri.joinPath(utils.getResourcesDir(), RESOURCES_STUBS_FOLDER_NAME);
 }
 
 
@@ -140,7 +139,7 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: vscode
         try {
             const fileData = await utils.getRequest(file.download_url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
 
-            if (await utils.checkUriExists(filename))
+            if (await utils.uriExists(filename))
                 ensureWritable(filename);
 
             await vscode.workspace.fs.writeFile(filename, Buffer.from(fileData));
@@ -163,13 +162,11 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: vscode
  * @param targetDirectory The directory to copy the files into
  */
 async function copyLocalStubFiles(targetDirectory: vscode.Uri): Promise<vscode.Uri[]> {
-    const stubFilesSourceDirectory = getSourceStubFileDirectory();
-
     const filesCopied: vscode.Uri[] = [];
 
-    const stubFilesSourceDirectoryUri = vscode.Uri.file(stubFilesSourceDirectory);
+    const stubFilesSourceDirectoryUri = getSourceStubFileDirectory();
 
-    // Loop through all of the files under the 'stub-files/XXXX/' folder
+    // Loop through all of the files under the 'stub-files/' folder
     for (const [name, type] of await vscode.workspace.fs.readDirectory(stubFilesSourceDirectoryUri)) {
         if (type !== vscode.FileType.File)
             continue;
@@ -177,7 +174,7 @@ async function copyLocalStubFiles(targetDirectory: vscode.Uri): Promise<vscode.U
         const sourceFilepathUri = vscode.Uri.joinPath(stubFilesSourceDirectoryUri, name);
         const targetFilepathUri = vscode.Uri.joinPath(targetDirectory, name);
 
-        if (await utils.checkUriExists(targetFilepathUri)) {
+        if (await utils.uriExists(targetFilepathUri)) {
             // Check if the stub file we're about to copy is newer than the one we already have
             const statTarget = await vscode.workspace.fs.stat(targetFilepathUri);
             const statSource = await vscode.workspace.fs.stat(sourceFilepathUri);
@@ -217,7 +214,7 @@ async function ensurePyFilesExist(files: vscode.Uri[]) {
             continue;
         }
         const pyFile = file.with({ path: file.path.replace(".pyi", ".py") });
-        if (!await utils.checkUriExists(pyFile)) {
+        if (!await utils.uriExists(pyFile)) {
             try {
                 await vscode.workspace.fs.writeFile(pyFile, Buffer.from(""));
             }
@@ -360,9 +357,9 @@ export async function main(context: vscode.ExtensionContext) {
         destination = defaultDestination;
     }
 
-    if (!await utils.checkUriExists(destination)) {
+    if (!await utils.uriExists(defaultDestination)) {
         try {
-            await vscode.workspace.fs.createDirectory(destination);
+            await vscode.workspace.fs.createDirectory(defaultDestination);
         } catch (error) {
             const err = error as Error;
             logging.showErrorMessage(`Failed to create directory ${destination.fsPath}`, err.message);

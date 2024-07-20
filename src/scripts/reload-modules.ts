@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 
-import * as path from 'path';
-
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
@@ -11,7 +9,7 @@ export async function main() {
 
     const disposableStatusMessage = vscode.window.setStatusBarMessage("$(sync~spin) Reloading modules...", 10000);
 
-    const reloadScriptPath = path.join(utils.getPythonDir(), "reload_modules.py");
+    const reloadScriptPath = vscode.Uri.joinPath(utils.getPythonDir(), "reload_modules.py");
     const response = await motionBuilderConsole.executeFile(
         reloadScriptPath,
         {

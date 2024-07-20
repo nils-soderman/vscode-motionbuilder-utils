@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
 
 import * as htmlParser from 'node-html-parser';
-import * as path from 'path';
 
-import * as utils from '../modules/utils';
 import * as logging from '../modules/logging';
+import * as utils from '../modules/utils';
 
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
@@ -36,7 +35,7 @@ function getDocumentationPageURL(version: number, relativePageURL: string) {
  * Get the directory where the documentation is stored.
  */
 function getDocumentationDirectory() {
-    return path.join(utils.getResourcesDir(), "documentation");
+    return vscode.Uri.joinPath(utils.getResourcesDir(), "documentation");
 }
 
 /**
@@ -44,11 +43,9 @@ function getDocumentationDirectory() {
  * @param type The type of documentation file to parse, should be one of the options in the struct: `FDOCTYPE`
  * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
  */
-function parseGeneratedDocumentationFile(type: string): {
-    items: IDocumentationQuickPickItem[],
-} {
-    const filepath = path.join(getDocumentationDirectory(), `${type}.json`);
-    return utils.readJson(filepath);
+async function parseGeneratedDocumentationFile(type: string): Promise<{ items: IDocumentationQuickPickItem[]; }> {
+    const filepath = vscode.Uri.joinPath(getDocumentationDirectory(), `${type}.json`);
+    return await utils.readJson(filepath);
 }
 
 
@@ -88,9 +85,8 @@ async function openExampleInVSCode(url: string, filename: string) {
         content += line.text + "\n";
     }
 
-    const filepath = utils.saveTempFile(filename, content);
-    const openPath = vscode.Uri.file(filepath);
-    const doc = await vscode.workspace.openTextDocument(openPath);
+    const filepath = await utils.saveTempFile(filename, content);
+    const doc = await vscode.workspace.openTextDocument(filepath);
 
     return await vscode.window.showTextDocument(doc);
 }
@@ -103,7 +99,7 @@ async function openExampleInVSCode(url: string, filename: string) {
 async function browseDocumentation(type: string, bExampels = false) {
     const placeHolder = bExampels ? `Search the MotionBuilder examples` : `Search the MotionBuilder ${type} documentation`;
 
-    const data = parseGeneratedDocumentationFile(type);
+    const data = await parseGeneratedDocumentationFile(type);
     const selection = await vscode.window.showQuickPick(data.items, {
         placeHolder
     });
