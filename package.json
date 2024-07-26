@@ -36,7 +36,7 @@
     "url": "https://github.com/nils-soderman/vscode-motionbuilder/issues"
   },
   "homepage": "https://nilssoderman.com/downloads/vscode/motionbuilder-utils/",
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "activationEvents": [
     "onNotebook:jupyter-notebook"
   ],
@@ -172,7 +172,7 @@
   "scripts": {
     "vscode:uninstall": "node ./out/hooks/uninstall-hook",
     "vscode:prepublish": "npm run esbuild-base -- --minify",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "watch": "npm run esbuild-base -- --sourcemap --watch",
     "lint": "eslint src --ext ts",

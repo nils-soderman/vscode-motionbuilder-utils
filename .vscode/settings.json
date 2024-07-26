@@ -1,6 +1,7 @@
 {
     "files.exclude": {
         "node_modules": true,
+        "dist": true,
         "**/**.vsix": true,
         "package-lock.json": true,
         "**/__pycache__": true,

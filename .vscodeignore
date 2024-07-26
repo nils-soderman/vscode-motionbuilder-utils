@@ -5,6 +5,7 @@
 debug-workspace/**
 media/demo/**
 dev/**
+out/**
 src/**
 
 .github/**
@@ -20,9 +21,6 @@ src/**
 **/*.map
 **/*.ts
 **/**.vsix
-
-out/**
-!out/extension.js
 
 node_modules/
 !node_modules/**/[lL][iI][cC][eE][nN][sS][eE]*
