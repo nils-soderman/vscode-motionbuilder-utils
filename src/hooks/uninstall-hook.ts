@@ -5,26 +5,18 @@
  */
 
 import * as path from 'path';
-import * as fs   from 'fs';
+import * as fs from 'fs';
 
 
-/** --------------------------------------------------------------------------
- *                      Functions lifted from Utils
- * -------------------------------------------------------------------------- */
-
-
-export function getAppDataFolder() {
+function getAppDataFolder() {
     return process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
 }
 
-export function getExtensionAppdataFolder() {
+
+function getExtensionAppdataFolder() {
     return path.join(getAppDataFolder(), "Code", "User", "globalStorage", "nilssoderman.mobu-utils");
 }
 
-
-/** --------------------------------------------------------------------------
- *                                  Main
- * -------------------------------------------------------------------------- */
 
 function main() {
     // Cleanup all files placed in the extension's appdata folder

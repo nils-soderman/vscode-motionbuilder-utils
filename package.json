@@ -170,11 +170,12 @@
     "vscode": "^1.90.0"
   },
   "scripts": {
-    "vscode:uninstall": "node ./out/hooks/uninstall-hook",
-    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "vscode:uninstall": "node ./dist/hooks/uninstall-hook",
+    "vscode:prepublish": "npm run esbuild-base -- --minify && npm run build-hooks",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "watch": "npm run esbuild-base -- --sourcemap --watch",
+    "build-hooks": "tsc ./src/hooks/uninstall-hook.ts --outDir ./dist/hooks --removeComments",
     "lint": "eslint src --ext ts",
     "test": "tsc -p ./ && vscode-test"
   },
