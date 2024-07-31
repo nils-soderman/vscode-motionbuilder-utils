@@ -117,3 +117,9 @@ export async function executeFile(filepath: vscode.Uri, variables: { [key: strin
     const response = await socket.execFile(filepath.fsPath, variables);
     return response;
 }
+
+
+export function closeSocket() {
+    if (gSocket)
+        gSocket.close();
+}

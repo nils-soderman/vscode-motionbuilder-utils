@@ -8,12 +8,14 @@ import * as testUtils from '../test-utils';
 import * as vscodeMock from '../vscode-mock';
 
 import * as exec from '../../../scripts/execute-script';
+import * as mobuConsole from '../../../modules/motionbuilder-console';
 import * as utils from '../../../modules/utils';
 
 const config = {
     showOutput: "execute.showOutput",
     clearOutput: "execute.clearOutput",
-    name: "execute.name"
+    name: "execute.name",
+    addWorkspaceToPath: "environment.addWorkspaceToPath"
 };
 
 function checkOutput(outputChannel: vscodeMock.MockOutputChannel, expected: string) {
@@ -32,6 +34,7 @@ suite('Execute', function () {
         [config.name]: execName,
         [config.showOutput]: true,
         [config.clearOutput]: true,
+        [config.addWorkspaceToPath]: true
     });
 
     setup(async () => {
@@ -54,6 +57,20 @@ suite('Execute', function () {
         extensionConfig.reset();
 
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+    });
+
+    test("Sys Path", async function () {
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+        assert.ok(workspaceFolder);
+        
+        // Restart connection with 'addWorkspaceToPath' set to true
+        mobuConsole.closeSocket();
+
+        const result = await mobuConsole.runCommand("import sys;print(';'.join(sys.path))");
+        assert.ok(result);
+
+        const paths = result.split(";");
+        assert.ok(paths.includes(workspaceFolder.uri.fsPath), `${workspaceFolder.uri.fsPath} not in:\n${paths.join("\n")}`);    
     });
 
     test('Execute File', async function () {
@@ -116,7 +133,7 @@ suite('Execute', function () {
     });
 
     test('Large Unsaved Output', async function () {
-        const utf8String = "你好世界-öäå";
+        const utf8String = "abc-你好世界-öäå";
 
         await editor.edit(editBuilder => {
             const fullRange = new vscode.Range(

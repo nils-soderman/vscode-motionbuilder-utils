@@ -4,7 +4,6 @@
 import * as vscode from 'vscode';
 
 import * as https from 'https';
-import * as path from 'path';
 import * as os from 'os';
 
 import sinon from 'sinon';
