@@ -12,9 +12,9 @@
         "@typescript-eslint/naming-convention": "warn",
         "@typescript-eslint/semi": "warn",
         "curly": "off",
-        "eqeqeq": "off",
+        "eqeqeq": "error",
         "no-throw-literal": "warn",
-        "semi": "off"
+        "semi": "warn"
     },
     "ignorePatterns": [
         "out",

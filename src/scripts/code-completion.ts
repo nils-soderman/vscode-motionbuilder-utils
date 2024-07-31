@@ -347,7 +347,7 @@ export async function main(context: vscode.ExtensionContext) {
             openLabel: "Select"
         });
 
-        if (!result || result.length == 0) {
+        if (!result || result.length === 0) {
             return;
         }
 
@@ -394,7 +394,7 @@ export async function main(context: vscode.ExtensionContext) {
 
     // Add path to python analysis
     const result = await addPythonAnalysisPath(destination.fsPath);
-    if (result == "exists") {
+    if (result === "exists") {
         vscode.window.showInformationMessage(`Updated stub files in '${destination.fsPath}'`);
     }
 }

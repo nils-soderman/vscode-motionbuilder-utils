@@ -24,6 +24,6 @@ export async function showErrorMessage(message: string, fullError: string) {
     log(fullError);
 
     const selectedValue = await vscode.window.showErrorMessage(message, "Show log");
-    if (selectedValue == "Show log")
+    if (selectedValue === "Show log")
         showLog();
 }

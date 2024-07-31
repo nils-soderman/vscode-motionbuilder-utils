@@ -87,7 +87,7 @@ export function isDebuggingMotionBuilder() {
     if (!vscode.debug.activeDebugSession) {
         return false;
     }
-    return vscode.debug.activeDebugSession.name == DEBUG_SESSION_NAME;
+    return vscode.debug.activeDebugSession.name === DEBUG_SESSION_NAME;
 }
 
 export function getActiveWorkspaceFolder(): vscode.WorkspaceFolder | undefined {
@@ -185,7 +185,7 @@ export function ensureForwardSlashes(path: string) {
  * Regardless of case sensitivity, forward or backward slashes etc. 
  */
 export function isPathsSame(a: string, b: string) {
-    return path.resolve(a).toLowerCase() == path.resolve(b).toLowerCase();
+    return path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase();
 }
 
 
