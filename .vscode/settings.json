@@ -1,19 +1,18 @@
 {
     "files.exclude": {
+        ".vscode-test": true,
         "node_modules": true,
         "dist": true,
-        "**/**.vsix": true,
-        "package-lock.json": true,
         "**/__pycache__": true,
+        "*.vsix": true,
+        "package-lock.json": true,
         "LICENSE": true,
-        ".vscode-test": true,
-        "debug-workspace": true
     },
     "search.exclude": {
-        "media/**": true,
-        "**/**ignore": true,
-        "resources/**": true,
-        "out/**": true
+        "media": true,
+        "resources": true,
+        "out": true,
+        "test": true
     },
 
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
@@ -30,6 +29,6 @@
 
     "python.analysis.extraPaths": [
         "./build-scripts/python/site-packages",
-        "resources/stub-files/2024"
+        "resources/stub-files"
     ]
 }

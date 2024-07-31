@@ -2,8 +2,8 @@
 .vscode-test/**
 .vscode-test.*
 
-debug-workspace/**
 media/demo/**
+test/**
 dev/**
 out/**
 src/**
