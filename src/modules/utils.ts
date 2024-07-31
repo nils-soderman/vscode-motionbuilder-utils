@@ -217,10 +217,6 @@ export function getRequest(url: string, options: https.RequestOptions = {}): Pro
             res.on('error', (err) => {
                 reject(err);
             });
-
-            res.on("close", (stream: any) => {
-                console.log(stream);
-            });
         }).on("error", (err: Error) => {
             reject(err);
         });
