@@ -4,3 +4,4 @@ dist
 out
 *.vsix
 **/__pycache__
+dev/python/site-packages
