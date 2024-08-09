@@ -10,8 +10,8 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"${workspaceFolder}/debug-workspace/",
-				"${workspaceFolder}/debug-workspace/test.py",
+				"${workspaceFolder}/test/debug-workspace/",
+				"${workspaceFolder}/test/debug-workspace/test.py",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
