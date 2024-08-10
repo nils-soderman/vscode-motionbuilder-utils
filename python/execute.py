@@ -8,8 +8,11 @@ import sys
 import os
 import re
 
-from io import StringIO
-
+if sys.version_info[0] >= 3:
+    from io import StringIO
+else:
+    from StringIO import StringIO
+    from codecs import open
 
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 
@@ -44,14 +47,17 @@ def get_output_filepath(command_id):
 def get_exec_globals():
     """ Get globals to be used in the exec function when executing user scripts """
     if "__VsCodeVariables__" not in globals():
-        globals()["__VsCodeVariables__"] = {"__builtins__": __builtins__, "__IsVsCodeExec__": True}
+        globals()["__VsCodeVariables__"] = {
+            "__builtins__": __builtins__,
+            "__IsVsCodeExec__": True
+        }
     return globals()["__VsCodeVariables__"]
 
 
 def find_package(filepath):
     """ Find the expected __package__ value for the executed file, so relative imports work """
     normalized_filepath = os.path.normpath(filepath).lower()
-    
+
     valid_packages = []
     for path in sys.path:
         normalized_path = os.path.normpath(path).lower()
@@ -114,8 +120,10 @@ def execute_code(code, filename, use_colors):
     try:
         exec(compile(code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-
-        traceback_message = format_exception(caught_exception, code)
+        if sys.version_info.major >= 3:
+            traceback_message = format_exception(caught_exception, code)
+        else:
+            traceback_message = traceback.format_exc()
 
         # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
         if use_colors:
@@ -145,18 +153,13 @@ def main():
     exec_globals["__package__"] = find_package(filename)
 
     # Read the code file and execute it
-    if sys.version_info.major >= 3:  # Python 3
-        with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
-            if not vscode_debugging:
-                with OutputRedirector(command_id):
-                    execute_code(vs_code_in_file.read(), filename, use_colors)
-            else:
+    with open(filepath, 'r', encoding='utf-8') as vs_code_in_file:
+        if not vscode_debugging:
+            with OutputRedirector(command_id):
                 execute_code(vs_code_in_file.read(), filename, use_colors)
-                print(">>>")
-
-    else:  # Python 2
-        with open(filepath, 'r') as vs_code_in_file:  # pylint: disable=unspecified-encoding
+        else:
             execute_code(vs_code_in_file.read(), filename, use_colors)
+            print(">>>")
 
 
 main()
