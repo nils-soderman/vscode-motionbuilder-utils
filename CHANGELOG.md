@@ -1,5 +1,20 @@
 # Change Log
 
+## [2025.1.1] - 2024-08-10
+
+### Fixed:
+- Python 2.7: [#11](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues//11)
+    - Error when adding workspace folders to sys.path
+    - Errors not being handled correctly
+    - Failing to intalling debugpy
+    - Large outputs being corrupted
+- Added a timeout when downloading stub files or examples
+
+### Changed:
+- Use VS Code's API for dealing with the filesystem
+- Use VS Code's API for opening external URLs
+
+
 ## [2025.1.0] - 2024-07-07
 
 ### Added:
