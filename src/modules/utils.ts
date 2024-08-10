@@ -149,7 +149,7 @@ export async function cleanupTempFiles() {
     const tmpDir = await getExtentionTempDir(false);
     
     if (fs.existsSync(tmpDir.fsPath)) {
-        fs.rmdirSync(tmpDir.fsPath, { recursive: true });
+        fs.rmSync(tmpDir.fsPath, { recursive: true });
     }
 }
 
