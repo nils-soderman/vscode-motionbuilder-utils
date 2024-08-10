@@ -22,7 +22,7 @@
         "--rcfile=.pylintrc",
     ],
 
-    "python.formatting.autopep8Args": [
+    "autopep8.args": [
         "--max-line-length=120",
         "--ignore=E402",
     ],
