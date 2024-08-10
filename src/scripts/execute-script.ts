@@ -14,7 +14,7 @@ export function getExecBaseFilename(id: string) {
 }
 
 
-async function getExecAbsFilepath(id: string) {
+async function getTmpExecUri(id: string) {
     return vscode.Uri.joinPath(await utils.getExtentionTempDir(), getExecBaseFilename(id));
 }
 
@@ -62,32 +62,34 @@ export async function executeCurrentDocument() {
 
     const activeDocuemt = vscode.window.activeTextEditor.document;
 
-    const tempFilepath = await getExecAbsFilepath(id);
-    const fileToExecute = await vsCodeExec.getFileToExecute(tempFilepath);
-    if (!fileToExecute)
+    const tempUri = await getTmpExecUri(id);
+    const executeUri = await vsCodeExec.getFileToExecute(tempUri);
+    if (!executeUri)
         return;
 
     const bIsDebugging = utils.isDebuggingMotionBuilder();
-    const response = await executeFile(fileToExecute, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
-    if (response !== null) {
+    const response = await executeFile(executeUri, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
+    if (response !== null)
         handleResponse(response, id);
-    }
+
+    if (executeUri === tempUri)
+        vscode.workspace.fs.delete(tempUri, { recursive: false });
 }
 
 
 /**
- * @param filepath The absolute filepath to the file containing the code to execute
+ * @param scriptUri The absolute filepath to the file containing the code to execute
  * @param filename The absolute filepath to use as the __file__ variable in the python script
  * @param id UUID to use for the output file
  * @param bIsDebugging If true, the python script will assume debugpy handles the output
  * @returns The output from the python script
  */
-export async function executeFile(filepath: vscode.Uri, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
+export async function executeFile(scriptUri: vscode.Uri, filename: string, id: string, bIsDebugging: boolean, bUseColors: boolean) {
     const extConfig = utils.getExtensionConfig();
 
     /* eslint-disable @typescript-eslint/naming-convention */
     const globals = {
-        "vsc_file": filepath.fsPath,
+        "vsc_file": scriptUri.fsPath,
         "vsc_is_debugging": bIsDebugging,
         "vsc_filename": filename,
         "vsc_name": extConfig.get("execute.name"),
