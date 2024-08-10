@@ -7,11 +7,11 @@ export class Pages {
     static readonly failedToConnect = "Failed-to-connect-to-MotionBuilder-%5BTroubleshooting%5D";
 }
 
-export function getPageUrl(page: string) {
-    return WIKI_URL + page;
+function getPageUri(page: string): vscode.Uri {
+    return vscode.Uri.parse(WIKI_URL + page);
 }
 
 export async function openPageInBrowser(page: string) {
-    const url = getPageUrl(page);
-    return await vscode.env.openExternal(vscode.Uri.parse(url));
+    const uri = getPageUri(page);
+    return await vscode.env.openExternal(uri);
 }
