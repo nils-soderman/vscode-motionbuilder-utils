@@ -3,7 +3,7 @@
 ## [2025.1.1] - 2024-08-10
 
 ### Fixed:
-- Python 2.7: [#11](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues//11)
+- Python 2.7: [#11](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/11)
     - Error when adding workspace folders to sys.path
     - Errors not being handled correctly
     - Failing to intalling debugpy
