@@ -4,6 +4,7 @@ import * as tcpPortUsed from 'tcp-port-used';
 import * as https from 'https';
 import * as path from 'path';
 import * as os from 'os';
+import * as fs from 'fs';
 
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
@@ -146,9 +147,9 @@ export async function saveTempFile(filename: string, text: string) {
  */
 export async function cleanupTempFiles() {
     const tmpDir = await getExtentionTempDir(false);
-
-    if (await uriExists(tmpDir)) {
-        vscode.workspace.fs.delete(tmpDir, { recursive: true, useTrash: false });
+    
+    if (fs.existsSync(tmpDir.fsPath)) {
+        fs.rmdirSync(tmpDir.fsPath, { recursive: true });
     }
 }
 
