@@ -33,6 +33,8 @@ class OutputRedirector():
         # If output is larger than 955 bytes, it'll get corruped when transfered over the socket, so write to a file instead
         # MotionBuilder 2023 (Python 3.9) also has a bug where the output isn't transfered unless the Python Editor window is open.
         if sys.getsizeof(output_str) >= 950 or (sys.version_info.major == 3 and sys.version_info.minor == 9):
+            if sys.version_info.major == 2:
+                output_str = output_str.decode("utf-8")
             output_filepath = get_output_filepath(self.command_id)
             with open(output_filepath, 'w', encoding="utf-8") as out_file:
                 out_file.write(output_str)
