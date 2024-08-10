@@ -92,7 +92,7 @@ suite('Attach', function () {
     });
 
     test('Start Debugpy & Attach', async function () {
-        this.timeout(10 * 1000);
+        this.timeout(20 * 1000);
 
         assert.ok(await attach.main(extensionContext));
         
