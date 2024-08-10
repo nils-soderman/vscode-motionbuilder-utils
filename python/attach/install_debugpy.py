@@ -14,6 +14,7 @@ try:
 except NameError:
     ModuleNotFoundError = ImportError
 
+
 def is_pip_installed():
     """ Check if pip is installed """
     try:
@@ -37,7 +38,8 @@ def install_pip():
 
     temp_installation_dir = os.path.join(VSCODE_MOBU_TEMPDIR, "TempPipInstall")
 
-    process = subprocess.Popen([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root", temp_installation_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root",
+                               temp_installation_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
     print(stdout.decode())
@@ -72,7 +74,7 @@ def install_debugpy(target=""):
             print("Failed to install pip")
             return False
 
-        args.extend([pip_module_path])
+        args.append('"%s"' % pip_module_path)
     else:
         args.extend(("-m", "pip"))
 

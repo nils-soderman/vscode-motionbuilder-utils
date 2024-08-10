@@ -17,7 +17,7 @@ const CONFIG_KEYS = {
 
 
 suite('Attach', function () {
-    this.timeout(30 * 1000);
+    this.timeout(5 * 1000);
 
     const extensionConfig = new vscodeMock.ConfigMock({
         [CONFIG_KEYS.port]: 4243,
@@ -51,6 +51,8 @@ suite('Attach', function () {
     });
 
     test('Install Debugpy', async function () {
+        this.timeout(30 * 1000);
+
         assert.ok(await attach.installDebugpy(tempDebugpyInstallDir));
         assert.ok(await attach.isDebugpyInstalled(tempDebugpyInstallDir));
         
@@ -90,6 +92,8 @@ suite('Attach', function () {
     });
 
     test('Start Debugpy & Attach', async function () {
+        this.timeout(10 * 1000);
+
         assert.ok(await attach.main(extensionContext));
         
         assert.ok(utils.isDebuggingMotionBuilder());
