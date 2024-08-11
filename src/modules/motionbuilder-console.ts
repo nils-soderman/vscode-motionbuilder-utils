@@ -23,7 +23,7 @@ async function getSocket() {
     const socket = new MotionBuilderSocket();
 
     try {
-        await socket.open(10);
+        await socket.open(10_000);
     }
     catch (e: any) {
         if (e.code === "ECONNREFUSED") {
