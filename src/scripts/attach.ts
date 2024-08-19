@@ -201,7 +201,7 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
 
             if (selectedInstallOption === "Install") {
                 if (!await installDebugpy(pythonPackageDir)) {
-                    logging.showErrorMessage("Failed to install debugpy", "Failed to install debugpy");
+                    logging.showErrorMessage("Failed to install debugpy", new Error("Failed to install debugpy"));
                     return false;
                 }
             }

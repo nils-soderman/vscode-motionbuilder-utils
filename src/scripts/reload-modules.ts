@@ -25,7 +25,7 @@ export async function main() {
     if (response.startsWith("Traceback")) {
         logging.showErrorMessage(
             "Failed to reload modules, ran into an unexpected error.",
-            `${reloadScriptPath}\n${response}`
+            new Error(`${reloadScriptPath}\n${response}`)
         );
         return;
     }

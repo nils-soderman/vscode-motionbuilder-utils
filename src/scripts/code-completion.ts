@@ -72,9 +72,9 @@ function parseGitHubApiContent(data: string): Array<IGitHubApiContent> {
         return JSON.parse(data) as Array<IGitHubApiContent>;
     }
     catch (error) {
-        const err = error as Error;
-        logging.showErrorMessage("Failed to parse available versions", `${err.message}\nJSON:\n${data}`);
-        throw err;
+        logging.log(data);
+        logging.showErrorMessage("Failed to parse available versions", error as Error);
+        throw error;
     }
 }
 
@@ -92,9 +92,8 @@ async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
         data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
     }
     catch (error) {
-        const err = error as Error;
-        logging.showErrorMessage("Failed to fetch available versions", err.message);
-        throw err;
+        logging.showErrorMessage("Failed to fetch available versions", error as Error);
+        throw error;
     }
 
     const parsedData = parseGitHubApiContent(data);
@@ -122,9 +121,8 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: vscode
     try {
         data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
     } catch (error) {
-        const err = error as Error;
-        logging.showErrorMessage(`Failed to fetch stub file for ${version.label}`, err.message);
-        throw err;
+        logging.showErrorMessage(`Failed to fetch stub file for ${version.label}`, error as Error);
+        throw error;
     }
 
     const parsedData = parseGitHubApiContent(data);
@@ -148,8 +146,7 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: vscode
             logging.log(`Downloaded "${filename.fsPath}"`);
         }
         catch (error) {
-            const err = error as Error;
-            logging.showErrorMessage(`Failed to download file ${file.name}`, err.message);
+            logging.showErrorMessage(`Failed to download file ${file.name}`, error as Error);
         }
     }
 
@@ -190,8 +187,7 @@ async function copyLocalStubFiles(targetDirectory: vscode.Uri): Promise<vscode.U
             await vscode.workspace.fs.copy(sourceFilepathUri, targetFilepathUri, { overwrite: true });
         }
         catch (error) {
-            const err = error as Error;
-            logging.showErrorMessage(`Failed to copy file ${name}`, err.message);
+            logging.showErrorMessage(`Failed to copy file ${name}`, error as Error);
             continue;
         }
 
@@ -219,8 +215,7 @@ async function ensurePyFilesExist(files: vscode.Uri[]) {
                 await vscode.workspace.fs.writeFile(pyFile, Buffer.from(""));
             }
             catch (error) {
-                const err = error as Error;
-                logging.showErrorMessage(`Failed to create .py file for ${file.fsPath}`, err.message);
+                logging.showErrorMessage(`Failed to create .py file for ${file.fsPath}`, error as Error);
                 continue;
             }
         }
@@ -243,7 +238,7 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
 
     let extraPathsConfig = pythonConfig.inspect<string[]>(EXTRA_PATHS_CONFIG);
     if (!extraPathsConfig) {
-        logging.showErrorMessage(`Failed to get the config '${fullConfigName}'`, `Failed to inspect config: '${fullConfigName}'`);
+        logging.showErrorMessage(`Failed to get the config '${fullConfigName}'`, new Error(`Failed to inspect config: '${fullConfigName}'`));
         return false;
     }
 
@@ -307,7 +302,7 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
             });
         }
         else
-            logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err.message);
+            logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err);
 
         return false;
     }
@@ -375,7 +370,7 @@ export async function main(context: vscode.ExtensionContext) {
             await vscode.workspace.fs.createDirectory(defaultDestination);
         } catch (error) {
             const err = error as Error;
-            logging.showErrorMessage(`Failed to create directory ${destination.fsPath}`, err.message);
+            logging.showErrorMessage(`Failed to create directory ${destination.fsPath}`, err);
             return;
         }
     }
