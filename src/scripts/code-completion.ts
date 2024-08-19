@@ -294,7 +294,20 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
     }
     catch (error) {
         const err = error as Error;
-        logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err.message);
+
+        if (err.name === "CodeExpectedError" && err.message.includes("is not a registered configuration")) {
+            logging.log(err.message);
+
+            vscode.window.showErrorMessage(
+                `[ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) not installed. Could not update the 'python.analysis.extraPaths' setting.`,
+                "Show Pylance"
+            ).then((value) => {
+                if (value === "Show Pylance")
+                    vscode.env.openExternal(vscode.Uri.parse(`${vscode.env.uriScheme}:extension/ms-python.vscode-pylance`));
+            });
+        }
+        else
+            logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err.message);
 
         return false;
     }

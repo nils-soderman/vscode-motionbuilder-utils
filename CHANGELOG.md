@@ -1,5 +1,11 @@
 # Change Log
 
+## [2025.1.2] - UNRELEASED
+
+### Fixed:
+- Better error message if [ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) is not installed and "Setup Code Completion" is run [#12](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/12)
+
+
 ## [2025.1.1] - 2024-08-10
 
 ### Fixed:
