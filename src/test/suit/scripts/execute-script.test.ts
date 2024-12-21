@@ -19,7 +19,7 @@ const config = {
 };
 
 function checkOutput(outputChannel: vscodeMock.MockOutputChannel, expected: string) {
-    assert.equal(outputChannel.output.length, 1);
+    assert.equal(outputChannel.output.length, 1, `Expected one output line, got:\n${outputChannel.output.length}:`);
     assert.equal(outputChannel.output[0], expected + "\n>>>\n");
 }
 
@@ -59,10 +59,22 @@ suite('Execute', function () {
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     });
 
+    let runCode = async (code: string) => {
+        await editor.edit(editBuilder => {
+            const fullRange = new vscode.Range(
+                editor.document.positionAt(0),
+                editor.document.positionAt(editor.document.getText().length)
+            );
+            editBuilder.replace(fullRange, code);
+        });
+
+        await exec.executeCurrentDocument();
+    };
+
     test("Sys Path", async function () {
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
         assert.ok(workspaceFolder);
-        
+
         // Restart connection with 'addWorkspaceToPath' set to true
         mobuConsole.closeSocket();
 
@@ -70,7 +82,7 @@ suite('Execute', function () {
         assert.ok(result);
 
         const paths = result.split(";");
-        assert.ok(paths.includes(workspaceFolder.uri.fsPath), `${workspaceFolder.uri.fsPath} not in:\n${paths.join("\n")}`);    
+        assert.ok(paths.includes(workspaceFolder.uri.fsPath), `${workspaceFolder.uri.fsPath} not in:\n${paths.join("\n")}`);
     });
 
     test('Execute File', async function () {
@@ -119,15 +131,8 @@ suite('Execute', function () {
 
     test('UTF-8 Characters', async function () {
         const utf8String = "你好世界-öäå";
-        await editor.edit(editBuilder => {
-            const fullRange = new vscode.Range(
-                editor.document.positionAt(0),
-                editor.document.positionAt(editor.document.getText().length)
-            );
-            editBuilder.replace(fullRange, `print('${utf8String}')`);
-        });
 
-        await exec.executeCurrentDocument();
+        await runCode(`print('${utf8String}')`);
 
         checkOutput(mobuOutputChannel, utf8String);
     });
@@ -135,15 +140,7 @@ suite('Execute', function () {
     test('Large Unsaved Output', async function () {
         const utf8String = "abc-你好世界-öäå";
 
-        await editor.edit(editBuilder => {
-            const fullRange = new vscode.Range(
-                editor.document.positionAt(0),
-                editor.document.positionAt(editor.document.getText().length)
-            );
-            editBuilder.replace(fullRange, `for i in range(1000):\n    print('${utf8String}')`);
-        });
-
-        await exec.executeCurrentDocument();
+        await runCode(`for i in range(1000):\n    print('${utf8String}')`);
 
         const expectedOutput = `${utf8String}\n`.repeat(1000).trimEnd();
         checkOutput(mobuOutputChannel, expectedOutput);
@@ -154,5 +151,16 @@ suite('Execute', function () {
         await exec.executeCurrentDocument();
 
         assert.equal(mobuOutputChannel.output.length, 0);
+    });
+
+    test('Print Last Expression', async function () {
+        await runCode("5\n10");
+        checkOutput(mobuOutputChannel, "10");
+
+        await runCode("def test():\n\treturn None\ntest()");
+        assert.equal(mobuOutputChannel.output[0], ">>>\n");
+
+        await runCode("def test():\n\treturn 5\ntest()");
+        checkOutput(mobuOutputChannel, "5");
     });
 });
