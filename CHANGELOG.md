@@ -1,5 +1,9 @@
 # Change Log
 
+## [2025.2.0] - UNRELEASED
+
+- Automatically print the last expression when executing code, similar to the native python REPL.
+
 ## [2025.1.1] - 2024-08-10
 
 ### Fixed:

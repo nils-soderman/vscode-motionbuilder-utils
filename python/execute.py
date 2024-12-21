@@ -6,10 +6,10 @@ import traceback
 import tempfile
 import sys
 import os
-import re
 
 if sys.version_info[0] >= 3:
     from io import StringIO
+    import ast
 else:
     from StringIO import StringIO
     from codecs import open
@@ -30,7 +30,7 @@ class OutputRedirector():
         sys.stdout = self.original_output
         output_str = self.output.getvalue().rstrip()
 
-        # If output is larger than 955 bytes, it'll get corruped when transfered over the socket, so write to a file instead
+        # If output is larger than 955 bytes, it'll get corrupted when transferred over the socket, so write to a file instead
         # MotionBuilder 2023 (Python 3.9) also has a bug where the output isn't transfered unless the Python Editor window is open.
         if sys.getsizeof(output_str) >= 950 or (sys.version_info.major == 3 and sys.version_info.minor == 9):
             if sys.version_info.major == 2:
@@ -75,7 +75,7 @@ def find_package(filepath):
     return ""
 
 
-def format_exception(exception, code):
+def format_exception(exception, code, num_ignore_tracebacks=0):
     messages = []
 
     seen_exceptions = set()
@@ -92,6 +92,10 @@ def format_exception(exception, code):
         traceback_stack = []
         for frame_summary in traceback.extract_tb(exception.__traceback__):
             if frame_summary.filename == "<string>" and frame_summary.name == execute_code.__name__:
+                continue
+
+            if num_ignore_tracebacks > 0:
+                num_ignore_tracebacks -= 1
                 continue
 
             if frame_summary.filename.endswith(".ipynb"):
@@ -118,20 +122,80 @@ def format_exception(exception, code):
     return "\nDuring handling of the above exception, another exception occurred:\n\n".join(reversed(messages))
 
 
+def handle_exception(exception, code, use_colors, num_ignore_tracebacks=0):
+    if sys.version_info.major >= 3:
+        traceback_message = format_exception(exception, code, num_ignore_tracebacks)
+    else:
+        traceback_message = traceback.format_exc()
+
+    # Color the message red (this is only supported by 'Debug Console' in VsCode, and not 'Output' log)
+    if use_colors:
+        traceback_message = '\033[91m' + traceback_message + '\033[0m'
+
+    print(traceback_message)
+
+
+def add_print_for_last_expr(parsed_code):
+    """
+    Modify the ast to print the last expression if it isn't None.
+    """
+    if parsed_code.body:
+        last_expr = parsed_code.body[-1]
+        if isinstance(last_expr, ast.Expr):
+            temp_var = "__mobu_vscode_temp__"
+
+            # Assign the last expression to a temporary variable
+            temp_var_assign = ast.Assign(
+                targets=[ast.Name(id=temp_var, ctx=ast.Store(),
+                                  lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
+                value=last_expr.value,
+                lineno=last_expr.lineno,
+                col_offset=last_expr.col_offset
+            )
+
+            # If the temporary variable isn't None, print it
+            print_stmt = ast.IfExp(
+                test=ast.Compare(
+                    left=ast.Name(id=temp_var, ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset),
+                    ops=[ast.IsNot()],
+                    comparators=[ast.Constant(value=None, lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
+                    lineno=last_expr.lineno,
+                    col_offset=last_expr.col_offset
+                ),
+                body=ast.Call(
+                    func=ast.Name(id='print', ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset),
+                    args=[ast.Name(id=temp_var, ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
+                    keywords=[],
+                    lineno=last_expr.lineno,
+                    col_offset=last_expr.col_offset
+                ),
+                orelse=ast.Constant(value=None, lineno=last_expr.lineno, col_offset=last_expr.col_offset),
+                lineno=last_expr.lineno,
+                col_offset=last_expr.col_offset
+            )
+
+            parsed_code.body[-1] = temp_var_assign
+            parsed_code.body.append(ast.Expr(value=print_stmt, lineno=last_expr.lineno, col_offset=last_expr.col_offset))
+
+    return parsed_code
+
+
 def execute_code(code, filename, use_colors):
+    if sys.version_info[0] >= 3:
+        try:
+            parsed_code = ast.parse(code, filename)
+        except (SyntaxError, ValueError) as caught_exception:
+            handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=1)
+            return
+
+        parsed_code = add_print_for_last_expr(parsed_code)
+    else:
+        parsed_code = code
+
     try:
-        exec(compile(code, filename, "exec"), get_exec_globals())
+        exec(compile(parsed_code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-        if sys.version_info.major >= 3:
-            traceback_message = format_exception(caught_exception, code)
-        else:
-            traceback_message = traceback.format_exc()
-
-        # Color the message red (this is only supported by 'Debug Console' in VsCode, and not not 'Output' log)
-        if use_colors:
-            traceback_message = '\033[91m' + traceback_message + '\033[0m'
-
-        print(traceback_message)
+        handle_exception(caught_exception, code, use_colors)
 
 
 def main():
