@@ -70,8 +70,8 @@ async function openExampleInVSCode(url: string, filename: string) {
     try {
         data = await utils.getRequest(url, { timeout: 10_000 });
     }
-    catch (err: any) {
-        logging.showErrorMessage(`Failed to get: ${url}`, err.message);
+    catch (error) {
+        logging.showErrorMessage(`Failed to get: ${url}`, error as Error);
         return;
     }
 

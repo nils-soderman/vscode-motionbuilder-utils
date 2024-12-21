@@ -20,8 +20,8 @@ export function log(message: string) {
     outputChannel.appendLine(message);
 }
 
-export async function showErrorMessage(message: string, fullError: string) {
-    log(fullError);
+export async function showErrorMessage(message: string, err: Error) {
+    log(`${err.name}: ${err.message}`);
 
     const selectedValue = await vscode.window.showErrorMessage(message, "Show log");
     if (selectedValue === "Show log")

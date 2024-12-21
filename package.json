@@ -195,7 +195,7 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "motionbuilder-socket": "^1.0.1",
+    "motionbuilder-socket": "^2.0.4",
     "node-html-parser": "^6.1.13",
     "tcp-port-used": "^1.0.2"
   }

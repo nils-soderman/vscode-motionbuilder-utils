@@ -23,7 +23,7 @@ async function getSocket() {
     const socket = new MotionBuilderSocket();
 
     try {
-        await socket.open(10);
+        await socket.open(10_000);
     }
     catch (e: any) {
         if (e.code === "ECONNREFUSED") {
@@ -37,7 +37,7 @@ async function getSocket() {
             vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
         }
         else {
-            logging.showErrorMessage(`Failed to connect to MotionBuilder with error code: ${e.code}`, JSON.stringify(e));
+            logging.showErrorMessage(`Failed to connect to MotionBuilder with error code: ${e.code}`, e);
             return null;
         }
 
