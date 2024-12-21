@@ -2,9 +2,8 @@
 
 ## [2025.2.0] - UNRELEASED
 
+### Added:
 - Automatically print the last expression when executing code, similar to the native python REPL.
-
-## [2025.1.2] - UNRELEASED
 
 ### Fixed:
 - Better error message if [ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) is not installed and "Setup Code Completion" is run [#12](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/12)
