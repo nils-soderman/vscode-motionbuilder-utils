@@ -1,6 +1,4 @@
-""" 
-Script to add the given paths to sys.path
-"""
+""" Script to add the given paths to sys.path """
 
 import sys
 import os

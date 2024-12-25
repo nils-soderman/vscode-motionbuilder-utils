@@ -5,7 +5,7 @@ import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
 
 export async function main() {
-    const ignorePatterns = utils.getExtensionConfig().get<Array<string>>("reload.ignore") || [];
+    const ignorePatterns = utils.getExtensionConfig().get<Array<string>>("reload.ignore") ?? [];
 
     const disposableStatusMessage = vscode.window.setStatusBarMessage("$(sync~spin) Reloading modules...", 10000);
 

@@ -15,16 +15,16 @@ export function getExecBaseFilename(id: string) {
 
 
 async function getTmpExecUri(id: string) {
-    return vscode.Uri.joinPath(await utils.getExtentionTempDir(), getExecBaseFilename(id));
+    return vscode.Uri.joinPath(await utils.getExtensionTempDir(), getExecBaseFilename(id));
 }
 
 
 async function getOutputFilepath(id: string) {
-    return vscode.Uri.joinPath(await utils.getExtentionTempDir(), `exec-out-${id}.txt`);
+    return vscode.Uri.joinPath(await utils.getExtensionTempDir(), `exec-out-${id}.txt`);
 }
 
 
-/** Handle data recived from the MotionBuilder python server */
+/** Handle data received from the MotionBuilder python server */
 function handleResponse(response: string, id: string) {
     // If user is debugging MB, all output will automatically be appended to the debug console
     if (utils.isDebuggingMotionBuilder()) {
@@ -60,7 +60,7 @@ export async function executeCurrentDocument() {
 
     const id = crypto.randomUUID();
 
-    const activeDocuemt = vscode.window.activeTextEditor.document;
+    const activeDocument = vscode.window.activeTextEditor.document;
 
     const tempUri = await getTmpExecUri(id);
     const executeUri = await vsCodeExec.getFileToExecute(tempUri);
@@ -68,7 +68,7 @@ export async function executeCurrentDocument() {
         return;
 
     const bIsDebugging = utils.isDebuggingMotionBuilder();
-    const response = await executeFile(executeUri, activeDocuemt.uri.fsPath, id, bIsDebugging, bIsDebugging);
+    const response = await executeFile(executeUri, activeDocument.uri.fsPath, id, bIsDebugging, bIsDebugging);
     if (response !== null)
         handleResponse(response, id);
 

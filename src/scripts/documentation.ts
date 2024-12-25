@@ -14,6 +14,24 @@ interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
     url: string;
 }
 
+/**
+ * Construct a valid filename from the selection label
+ * @param label The label from which to construct the filename
+ */
+function constructPythonFilename(label: string): string {
+    let filename = label.replace(/[/\\]/g, "_");
+
+    if (!filename.endsWith(".py")) {
+        filename += ".py";
+    }
+
+    if (filename.includes(":")) {
+        filename = filename.split(":")[1].trimStart();
+    }
+
+    return filename;
+}
+
 
 /** Documentation table of content types */
 const FDOCTYPE = {
@@ -54,9 +72,9 @@ async function parseGeneratedDocumentationFile(type: string): Promise<{ items: I
  * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
  * @param version MotionBuilder version
  */
-async function openPageInBrowser(relativePageURL: string, version: number) {
+function openPageInBrowser(relativePageURL: string, version: number) {
     const url = getDocumentationPageURL(version, relativePageURL);
-    return await vscode.env.openExternal(vscode.Uri.parse(url));
+    return vscode.env.openExternal(vscode.Uri.parse(url));
 }
 
 
@@ -77,13 +95,12 @@ async function openExampleInVSCode(url: string, filename: string) {
 
     const parsedHtml = htmlParser.parse(data);
 
-    let content = "";
-    for (const line of parsedHtml.querySelectorAll(".line")) {
-        // Remove line numbers
-        line.querySelectorAll(".lineno").forEach(e => e.remove());
+    const lines = parsedHtml.querySelectorAll(".line");
 
-        content += line.text + "\n";
-    }
+    const content = lines.map(line => {
+        line.querySelectorAll(".lineno").forEach(e => e.remove());
+        return line.text;
+    }).join("\n");
 
     const filepath = await utils.saveTempFile(filename, content);
     const doc = await vscode.workspace.openTextDocument(filepath);
@@ -96,8 +113,8 @@ async function openExampleInVSCode(url: string, filename: string) {
  * List all pages from one or multiple documentation types, and open up the page selected by the user
  * @param type List of types to include, types should be of `FDOCTYPE`
  */
-async function browseDocumentation(type: string, bExampels = false) {
-    const placeHolder = bExampels ? `Search the MotionBuilder examples` : `Search the MotionBuilder ${type} documentation`;
+async function browseDocumentation(type: string, bExample = false) {
+    const placeHolder = bExample ? `Search the MotionBuilder examples` : `Search the MotionBuilder ${type} documentation`;
 
     const data = await parseGeneratedDocumentationFile(type);
     const selection = await vscode.window.showQuickPick(data.items, {
@@ -109,18 +126,10 @@ async function browseDocumentation(type: string, bExampels = false) {
 
     const relativePageUrl = selection.url;
 
-    if (bExampels && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
+    if (bExample && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
         // Open in VSCode
         const url = getDocumentationPageURL(MOTIONBUILDER_VERSION, relativePageUrl);
-
-        // Construct a filename
-        let filename = selection.label.replace(/[/\\]/g, "_");
-        if (!filename.endsWith(".py")) {
-            filename += ".py";
-        }
-        if (filename.includes(":")) {
-            filename = filename.split(":")[1].trimStart();
-        }
+        const filename = constructPythonFilename(selection.label);
 
         await openExampleInVSCode(url, "Example_" + filename);
     }

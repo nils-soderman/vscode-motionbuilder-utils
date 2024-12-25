@@ -11,7 +11,7 @@ function getPageUri(page: string): vscode.Uri {
     return vscode.Uri.parse(WIKI_URL + page);
 }
 
-export async function openPageInBrowser(page: string) {
+export function openPageInBrowser(page: string) {
     const uri = getPageUri(page);
-    return await vscode.env.openExternal(uri);
+    return vscode.env.openExternal(uri);
 }

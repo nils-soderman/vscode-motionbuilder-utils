@@ -106,7 +106,7 @@ export async function runCommand(command: string) {
 /**
  * Execute a file in MotionBuilder
  * @param filepath Absolute path to the file
- * @param variables Global variables to set before executing the file
+ * @param variables An object containing key-value pairs of global variables to set before executing the file. The keys should be strings representing the variable names, and the values can be of any serializable type.
  * @returns Python output e.g: print statements or errors
  */
 export async function executeFile(filepath: vscode.Uri, variables: { [key: string]: any } = {}) {
@@ -120,6 +120,11 @@ export async function executeFile(filepath: vscode.Uri, variables: { [key: strin
 
 
 export function closeSocket() {
-    if (gSocket)
-        gSocket.close();
+    if (gSocket) {
+        try {
+            gSocket.close();
+        } catch (error: any) {
+            logging.showErrorMessage("Error closing the socket", error);
+        }
+    }
 }

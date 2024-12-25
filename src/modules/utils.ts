@@ -6,6 +6,8 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 
+import * as logging from './logging';
+
 // Variables
 const EXTENSION_DATA_FOLDER_NAME = "VSCode-MotionBuilder-Utils";
 export const DEBUG_SESSION_NAME = "MotionBuilder Utils";
@@ -54,15 +56,14 @@ export function getResourcesDir() {
  * @param bEnsureExists If folder doesn't exist, create it
  * @returns absolute path to this extensions tempdir
  */
-export async function getExtentionTempDir(bEnsureExists = true) {
+export async function getExtensionTempDir(bEnsureExists = true) {
     const tmpDir = vscode.Uri.joinPath(
         vscode.Uri.file(os.tmpdir()),
         EXTENSION_DATA_FOLDER_NAME
     );
 
-    if (bEnsureExists && !await uriExists(tmpDir)) {
-        vscode.workspace.fs.createDirectory(tmpDir);
-    }
+    if (bEnsureExists)
+        createDirectoryIfNotExists(tmpDir);
 
     return tmpDir;
 }
@@ -93,15 +94,15 @@ export function isDebuggingMotionBuilder() {
 
 export function getActiveWorkspaceFolder(): vscode.WorkspaceFolder | undefined {
     if (vscode.window.activeTextEditor) {
-        const activeDocumenet = vscode.window.activeTextEditor.document;
-        return vscode.workspace.getWorkspaceFolder(activeDocumenet.uri);
+        const activeDocument = vscode.window.activeTextEditor.document;
+        return vscode.workspace.getWorkspaceFolder(activeDocument.uri);
     }
 }
 
 /**
  * @returns The workspace configuration for this extension _('motionbuilder')_
  */
-export function getExtensionConfig() {
+export function getExtensionConfig(): vscode.WorkspaceConfiguration {
     // Try to get the active workspace folder first, to have it read Folder Settings
     const activeWorkspaceFolder = getActiveWorkspaceFolder()?.uri;
     return vscode.workspace.getConfiguration("motionbuilder", activeWorkspaceFolder);
@@ -125,9 +126,23 @@ function getDeprecatedConfig<T>(key: string, deprecatedKey: string): T | undefin
     return value;
 }
 
+
 // -----------------------------------------------------------------------------------------
 //                                    Filesystem
 // -----------------------------------------------------------------------------------------
+
+export async function createDirectoryIfNotExists(directory: vscode.Uri) {
+    if (!await uriExists(directory)) {
+        try {
+            await vscode.workspace.fs.createDirectory(directory);
+        } catch (error) {
+            logging.showErrorMessage(`Failed to create directory ${directory.fsPath}`, error as Error);
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /**
  * Write a temp file inside of this extensions temp directory
@@ -136,7 +151,7 @@ function getDeprecatedConfig<T>(key: string, deprecatedKey: string): T | undefin
  * @returns the absolute filepath of the file
  */
 export async function saveTempFile(filename: string, text: string) {
-    const filepath = vscode.Uri.joinPath(await getExtentionTempDir(), filename);
+    const filepath = vscode.Uri.joinPath(await getExtensionTempDir(), filename);
     await vscode.workspace.fs.writeFile(filepath, Buffer.from(text));
     return filepath;
 }
@@ -146,7 +161,7 @@ export async function saveTempFile(filename: string, text: string) {
  * Delete the temp folder created by this extension (and all of the files inside of it)
  */
 export async function cleanupTempFiles() {
-    const tmpDir = await getExtentionTempDir(false);
+    const tmpDir = await getExtensionTempDir(false);
     
     if (fs.existsSync(tmpDir.fsPath)) {
         fs.rmSync(tmpDir.fsPath, { recursive: true });
@@ -230,7 +245,7 @@ export function getRequest(url: string, options: https.RequestOptions = {}): Pro
  * @param port The port to check
  * @param host The ip, will default to localhost
 */
-export async function isPortAvailable(port: number, host?: string) {
+export async function isPortAvailable(port: number, host?: string): Promise<boolean> {
     return !await tcpPortUsed.check(port, host);
 }
 

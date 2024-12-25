@@ -49,7 +49,11 @@ interface IVersionQuickPick {
  */
 function ensureWritable(uri: vscode.Uri) {
     if (fs.existsSync(uri.fsPath))
-        fs.chmodSync(uri.fsPath, 0o600);
+        try {
+            fs.chmodSync(uri.fsPath, 0o600);
+        } catch (error) {
+            logging.showErrorMessage(`Failed to set writable permissions for ${uri.fsPath}`, error as Error);
+        }
 }
 
 
@@ -322,11 +326,7 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
 }
 
 
-export async function main(context: vscode.ExtensionContext) {
-    const defaultDestination = vscode.Uri.joinPath(context.globalStorageUri, "stubs");
-
-    const title = "MotionBuilder Code Completion Setup";
-
+async function selectDestination(defaultDestination: vscode.Uri, title: string): Promise<vscode.Uri | undefined> {
     const selectedDestination = await vscode.window.showQuickPick(
         [
             {
@@ -340,13 +340,13 @@ export async function main(context: vscode.ExtensionContext) {
         ],
         {
             placeHolder: "Select where to place the stub files",
-            title: `${title} (1/2)`,
+            title: title
         }
     );
-    if (!selectedDestination)
-        return;
 
-    let destination: vscode.Uri;
+    if (!selectedDestination)
+        return undefined;
+
     if (selectedDestination.index === 1) {
         const result = await vscode.window.showOpenDialog({
             canSelectFiles: false,
@@ -355,52 +355,52 @@ export async function main(context: vscode.ExtensionContext) {
             openLabel: "Select"
         });
 
-        if (!result || result.length === 0) {
-            return;
-        }
+        if (!result || result.length === 0)
+            return undefined;
 
-        destination = result[0];
-    }
-    else {
-        destination = defaultDestination;
+        return result[0];
+
     }
 
-    if (!await utils.uriExists(defaultDestination)) {
-        try {
-            await vscode.workspace.fs.createDirectory(defaultDestination);
-        } catch (error) {
-            const err = error as Error;
-            logging.showErrorMessage(`Failed to create directory ${destination.fsPath}`, err);
-            return;
-        }
-    }
+    return defaultDestination;
+}
 
-    // Ask user to select a version
+
+async function selectVersion(title: string): Promise<IVersionQuickPick | undefined> {
     const availableVersions = await getAvailableVersions();
-    const selectedVersion = await vscode.window.showQuickPick(availableVersions, {
+    return vscode.window.showQuickPick(availableVersions, {
         placeHolder: "Select the MotionBuilder version to use for code completion",
-        title: `${title} (2/2)`,
+        title: title
     });
+}
+
+
+export async function main(context: vscode.ExtensionContext) {
+    const defaultDestination = vscode.Uri.joinPath(context.globalStorageUri, "stubs");
+    const title = "MotionBuilder Code Completion Setup";
+
+    const destination = await selectDestination(defaultDestination, `${title} (1/2)`);
+    if (!destination)
+        return;
+
+    if (!await utils.createDirectoryIfNotExists(destination))
+        return;
+
+    const selectedVersion = await selectVersion(`${title} (2/2)`);
     if (!selectedVersion)
         return;
 
     logging.log(`Placing stub files in: "${destination.fsPath}"`);
 
-    // Download the stub files
     const downloadedFiles = await downloadStubFiles(selectedVersion, destination);
     if (downloadedFiles.length === 0) {
         logging.log("No stub files were downloaded.");
         return;
     }
 
-    // Copy stub files
     const copiedFiles = await copyLocalStubFiles(destination);
-
-    // Ensure that the .py files exists
-    // These are needed for the python extension to not throw warnings
     await ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
 
-    // Add path to python analysis
     const result = await addPythonAnalysisPath(destination.fsPath);
     if (result === "exists") {
         vscode.window.showInformationMessage(`Updated stub files in '${destination.fsPath}'`);

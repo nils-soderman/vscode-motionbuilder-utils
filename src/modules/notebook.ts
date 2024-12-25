@@ -9,6 +9,8 @@ import * as utils from '../modules/utils';
 
 
 async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) {
+    const textEncoder = new TextEncoder();
+
     for (let cell of cells) {
         const id = crypto.randomUUID();
         const baseFilename = executeScript.getExecBaseFilename(id);
@@ -28,7 +30,7 @@ async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.Not
 
         const executionStopTime = new Date().getTime();
 
-        const outputItem = new vscode.NotebookCellOutputItem(new TextEncoder().encode(rawResponse), 'text/plain');
+        const outputItem = new vscode.NotebookCellOutputItem(textEncoder.encode(rawResponse), 'text/plain');
 
         // And then create a new output with that item
         const output = new vscode.NotebookCellOutput([outputItem]);
@@ -41,12 +43,12 @@ async function executeHandler(cells: vscode.NotebookCell[], notebook: vscode.Not
 
 
 /**
- * Setup the notebook controller
- * @param context The extension context
+ * Create a new notebook controller for MotionBuilder
  */
-export function setupNotebook(context: vscode.ExtensionContext) {
+export function createNotebookController() {
     const controller = vscode.notebooks.createNotebookController("mobu-utils.notebook", "jupyter-notebook", "MotionBuilder", executeHandler);
     controller.supportsExecutionOrder = true;
+    controller.description = "Executes the code in MotionBuilder";
 
-    context.subscriptions.push(controller);
+    return controller;    
 }

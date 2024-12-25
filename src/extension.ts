@@ -16,42 +16,43 @@ export function activate(context: vscode.ExtensionContext) {
 	// Run Scripts
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.execute', () => {
-			execute.executeCurrentDocument();
+			return execute.executeCurrentDocument();
 		})
 	);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.reloadModules', () => {
-			reloadModules.main();
+			return reloadModules.main();
 		})
 	);
 
 	// Debugging
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.attach', () => {
-			attach.main(context);
+			return attach.main(context);
 		})
 	);
 
 	// Setup Code Completion
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.setupCodeCompletion', () => {
-			codeCompletion.main(context);
+			return codeCompletion.main(context);
 		})
 	);
 
 	// Documentation
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationPython', () => {
-			documentation.browsePython();
-		})
-	);
-	context.subscriptions.push(
-		vscode.commands.registerCommand('motionbuilder.browseDocumentationExamples', () => {
-			documentation.browseExamples();
+			return documentation.browsePython();
 		})
 	);
 
-	notebook.setupNotebook(context);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('motionbuilder.browseDocumentationExamples', () => {
+			return documentation.browseExamples();
+		})
+	);
+
+	context.subscriptions.push(notebook.createNotebookController());
 }
 
 
