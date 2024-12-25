@@ -32,8 +32,8 @@ def is_module_installed(module, extra_sys_path=""):
 
 
 def main():
-    ext_packages_dir = globals().get("ext_packages_dir")
-    debugpy_install_dir = os.path.join(ext_packages_dir, "Python%s%s" %(sys.version_info.major, sys.version_info.minor))
+    vsc_target = globals().get("vsc_target")
+    debugpy_install_dir = os.path.join(vsc_target, "Python%s%s" %(sys.version_info.major, sys.version_info.minor))
     installed = is_module_installed("debugpy", debugpy_install_dir)
 
     # output is sent back to VS Code

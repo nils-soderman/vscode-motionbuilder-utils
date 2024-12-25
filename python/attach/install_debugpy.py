@@ -1,4 +1,4 @@
-""" Moudle to install Debugpy """
+""" Module to install Debugpy """
 
 import subprocess
 import tempfile
@@ -40,10 +40,14 @@ def install_pip():
 
     process = subprocess.Popen([MOBU_PYTHON_EXECUTABLE, "-m", "ensurepip", "--root",
                                temp_installation_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-
-    print(stdout.decode())
-    print(stderr.decode())
+    try:
+        stdout, stderr = process.communicate()
+        print(stdout.decode())
+        print(stderr.decode())
+    finally:
+        process.stdout.close()
+        process.stderr.close()
+        process.wait()
 
     # Find the pip module path
     pip_module_path = ""
@@ -64,7 +68,7 @@ def install_debugpy(target=""):
     ### Parameters:
         - target: The target directory to install the module to 
     """
-    args = ['"%s"' % MOBU_PYTHON_EXECUTABLE]
+    args = [MOBU_PYTHON_EXECUTABLE]
 
     # Make sure pip is installed
     if not is_pip_installed():
@@ -74,7 +78,7 @@ def install_debugpy(target=""):
             print("Failed to install pip")
             return False
 
-        args.append('"%s"' % pip_module_path)
+        args.append(pip_module_path)
     else:
         args.extend(("-m", "pip"))
 
@@ -85,25 +89,29 @@ def install_debugpy(target=""):
 
     args.extend(("install", package))
     if target:
-        args.append('--target="%s"' % target)
+        args.extend(("--target", target))
 
     print("installing debugpy")
 
-    process = subprocess.Popen(" ".join(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-
-    print(stdout.decode())
-    print(stderr.decode())
+    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        stdout, stderr = process.communicate()
+        print(stdout.decode())
+        print(stderr.decode())
+    finally:
+        process.stdout.close()
+        process.stderr.close()
+        process.wait()
 
     return process.returncode == 0
 
 
 def main():
-    ext_packages_dir = globals().get("ext_packages_dir")
-    install_dir = os.path.join(ext_packages_dir, "Python%s%s" % (sys.version_info.major, sys.version_info.minor))
+    vsc_target = globals().get("vsc_target")
+    install_dir = os.path.join(vsc_target, "Python%s%s" % (sys.version_info.major, sys.version_info.minor))
 
     if install_debugpy(install_dir):
-        return globals().get("vsc_suceess_id")
+        return globals().get("vsc_suceess_id", "'vsc_suceess_id' not found")
 
     return False
 

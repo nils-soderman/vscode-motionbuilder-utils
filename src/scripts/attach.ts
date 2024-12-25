@@ -65,7 +65,7 @@ export async function isDebugpyInstalled(pythonPackageDir: vscode.Uri) {
     const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_target: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -88,7 +88,7 @@ export async function installDebugpy(target: vscode.Uri) {
     const successId = crypto.randomUUID();
     const scriptPath = getDebugScriptPath("install_debugpy.py");
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        ext_packages_dir: target.fsPath, // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_target: target.fsPath, // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
     });
 
@@ -111,7 +111,7 @@ async function startDebugpyServer(port: number, pythonPackageDir: vscode.Uri) {
 
     const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
         vsc_port: port,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_ext_packages_dir: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
+        vsc_target: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
         vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
     });
 
