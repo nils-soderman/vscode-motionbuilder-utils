@@ -5,6 +5,9 @@
 ### Added:
 - Automatically print the last expression when executing code, similar to the native python REPL.
 
+### Changed:
+- All stub files are now downloaded from [pyfbsdk-stub-generator](https://github.com/nils-soderman/pyfbsdk-stub-generator) when setting up code completion.
+
 ### Fixed:
 - Better error message if [ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) is not installed and "Setup Code Completion" is run [#12](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/12)
 
