@@ -8,7 +8,6 @@ import * as utils from '../modules/utils';
 
 const PYTHON_CONFIG = "python";
 const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
-const RESOURCES_STUBS_FOLDER_NAME = "stub-files";
 
 const GITHUB_API_URL = "https://api.github.com/repos";
 const GITHUB_API_HEADERS = {
@@ -54,17 +53,6 @@ function ensureWritable(uri: vscode.Uri) {
         } catch (error) {
             logging.showErrorMessage(`Failed to set writable permissions for ${uri.fsPath}`, error as Error);
         }
-}
-
-
-/**
- * Get the path to where the stub files provided by this extension are located.  
- * This is the source path and no configurations should point to this path!
- * Instead the files located here can be copied elsewhere on disk.
- * @param version MotionBuilder version, if version is undefined the folder containing all versions will be returned.
- */
-function getSourceStubFileDirectory() {
-    return vscode.Uri.joinPath(utils.getResourcesDir(), RESOURCES_STUBS_FOLDER_NAME);
 }
 
 
@@ -155,52 +143,6 @@ async function downloadStubFiles(version: IVersionQuickPick, destination: vscode
     }
 
     return downloadedFiles;
-}
-
-
-/**
- * Copy local stub files that comes with the extension from 'resources/stub-files/' -> `targetDirectory`
- * @param targetDirectory The directory to copy the files into
- */
-async function copyLocalStubFiles(targetDirectory: vscode.Uri): Promise<vscode.Uri[]> {
-    const filesCopied: vscode.Uri[] = [];
-
-    const stubFilesSourceDirectoryUri = getSourceStubFileDirectory();
-
-    // Loop through all of the files under the 'stub-files/' folder
-    for (const [name, type] of await vscode.workspace.fs.readDirectory(stubFilesSourceDirectoryUri)) {
-        if (type !== vscode.FileType.File)
-            continue;
-
-        const sourceFilepathUri = vscode.Uri.joinPath(stubFilesSourceDirectoryUri, name);
-        const targetFilepathUri = vscode.Uri.joinPath(targetDirectory, name);
-
-        if (await utils.uriExists(targetFilepathUri)) {
-            // Check if the stub file we're about to copy is newer than the one we already have
-            const statTarget = await vscode.workspace.fs.stat(targetFilepathUri);
-            const statSource = await vscode.workspace.fs.stat(sourceFilepathUri);
-            if (statSource.mtime <= statTarget.mtime) {
-                logging.log(`"${sourceFilepathUri.fsPath}" already exists and is up to date`);
-                continue;
-            }
-
-            ensureWritable(targetFilepathUri);
-        }
-
-        try {
-            await vscode.workspace.fs.copy(sourceFilepathUri, targetFilepathUri, { overwrite: true });
-        }
-        catch (error) {
-            logging.showErrorMessage(`Failed to copy file ${name}`, error as Error);
-            continue;
-        }
-
-        filesCopied.push(targetFilepathUri);
-
-        logging.log(`Copied ${name} to ${targetFilepathUri.fsPath}`);
-    }
-
-    return filesCopied;
 }
 
 
@@ -398,8 +340,7 @@ export async function main(context: vscode.ExtensionContext) {
         return;
     }
 
-    const copiedFiles = await copyLocalStubFiles(destination);
-    await ensurePyFilesExist([...downloadedFiles, ...copiedFiles]);
+    await ensurePyFilesExist(downloadedFiles);
 
     const result = await addPythonAnalysisPath(destination.fsPath);
     if (result === "exists") {
