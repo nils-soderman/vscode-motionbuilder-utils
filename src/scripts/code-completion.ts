@@ -6,8 +6,8 @@ import * as logging from '../modules/logging';
 import * as utils from '../modules/utils';
 
 
-const PYTHON_CONFIG = "python";
-const EXTRA_PATHS_CONFIG = "analysis.extraPaths";
+const CONFIG_PYTHON = "python";
+const CONFIG_KEY_EXTRA_PATHS = "analysis.extraPaths";
 
 const GITHUB_API_URL = "https://api.github.com/repos";
 const GITHUB_API_HEADERS = {
@@ -43,16 +43,33 @@ interface IVersionQuickPick {
 }
 
 
+interface IExtraPathsScopeConfigDetails {
+    scopeName: string;
+    paths: string[] | undefined;
+    scope: vscode.ConfigurationTarget;
+    openSettingsCommand: string;
+}
+
+
+interface IExtraPathsConfig {
+    workspaceFolderValue?: string[];
+    workspaceValue?: string[];
+    globalValue?: string[];
+    defaultValue?: string[];
+}
+
+
 /**
  * Make sure that the file at the given path is writable
  */
 function ensureWritable(uri: vscode.Uri) {
-    if (fs.existsSync(uri.fsPath))
+    if (fs.existsSync(uri.fsPath)) {
         try {
             fs.chmodSync(uri.fsPath, 0o600);
         } catch (error) {
             logging.showErrorMessage(`Failed to set writable permissions for ${uri.fsPath}`, error as Error);
         }
+    }
 }
 
 
@@ -169,43 +186,53 @@ async function ensurePyFilesExist(files: vscode.Uri[]) {
 }
 
 
+
 /**
- * Add a path to the `python.analysis.extraPaths` configuration.
- * @param pathToAdd The path to add
- * @returns "add" if the path was added, "exists" if the path already exists, false if the path could not be added
+ * Check if the 'ms-python.vscode-pylance' extension is installed, and if not prompt the user to install it.
+ * @returns 
  */
-export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | "add" | "exists"> {
-    const fullConfigName = `${PYTHON_CONFIG}.${EXTRA_PATHS_CONFIG}`;
+function validatePylanceExtension(): boolean {
+    const PYLANCE_EXTENSION_ID = "ms-python.vscode-pylance";
+    const PYLANCE_EXTENSION_URL = "https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance";
+    const SHOW_PYLANCE = "Show Pylance";
 
-    const activeWorkspaceFolder = utils.getActiveWorkspaceFolder();
-    const pythonConfig = vscode.workspace.getConfiguration(PYTHON_CONFIG, activeWorkspaceFolder?.uri);
+    // Pylance is the extension that provides the 'python.analysis.extraPaths' setting
+    const pylanceExtension = vscode.extensions.getExtension(PYLANCE_EXTENSION_ID);
+    if (!pylanceExtension) {
+        vscode.window.showErrorMessage(
+            `[${PYLANCE_EXTENSION_ID}](${PYLANCE_EXTENSION_URL}) not installed. Could not update the '${CONFIG_PYTHON}.${CONFIG_KEY_EXTRA_PATHS}' setting.`,
+            SHOW_PYLANCE
+        ).then((value) => {
+            if (value === SHOW_PYLANCE)
+                vscode.commands.executeCommand("extension.open", PYLANCE_EXTENSION_ID);
+        });
 
-    const bHasWorkspaceFileOpen = vscode.workspace.workspaceFile !== undefined;
-
-    let extraPathsConfig = pythonConfig.inspect<string[]>(EXTRA_PATHS_CONFIG);
-    if (!extraPathsConfig) {
-        logging.showErrorMessage(`Failed to get the config '${fullConfigName}'`, new Error(`Failed to inspect config: '${fullConfigName}'`));
         return false;
     }
 
-    // Use the global scope as default
-    let settingsInfo = {
-        niceName: "User",
-        paths: extraPathsConfig.globalValue,
-        scope: vscode.ConfigurationTarget.Global,
-        openSettingsCommand: "workbench.action.openSettings"
-    };
+    return true;
+}
 
+
+/**
+ * Get the settings info for the `python.analysis.extraPaths` configuration.
+ * This function will figure out wich scope to use and the current value of the configuration (in that scope).
+ * @param extraPathsConfig 
+ * @returns 
+ */
+function getConfigForCurrentScope(extraPathsConfig: IExtraPathsConfig): IExtraPathsScopeConfigDetails {
     // Search through the different scopes to find the first one that has a custom value
+    const bHasWorkspaceFileOpen = vscode.workspace.workspaceFile !== undefined;
+
     const valuesToCheck = [
         {
-            niceName: "Folder",
+            scopeName: "Folder",
             paths: extraPathsConfig.workspaceFolderValue,
             scope: vscode.ConfigurationTarget.WorkspaceFolder,
             openSettingsCommand: bHasWorkspaceFileOpen ? "workbench.action.openFolderSettings" : "workbench.action.openWorkspaceSettings"
         },
         {
-            niceName: "Workspace",
+            scopeName: "Workspace",
             paths: extraPathsConfig.workspaceValue,
             scope: vscode.ConfigurationTarget.Workspace,
             openSettingsCommand: "workbench.action.openWorkspaceSettings"
@@ -214,58 +241,75 @@ export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | 
 
     for (const value of valuesToCheck) {
         if (value.paths && value.paths !== extraPathsConfig.defaultValue) {
-            settingsInfo = value;
-            break;
+            return value;
         }
     }
 
+    return {
+        scopeName: "User",
+        paths: extraPathsConfig.globalValue,
+        scope: vscode.ConfigurationTarget.Global,
+        openSettingsCommand: "workbench.action.openSettings"
+    };
+}
+
+
+/**
+ * Add a path to the `python.analysis.extraPaths` configuration.
+ * @param pathToAdd The path to add
+ * @returns "add" if the path was added, "exists" if the path already exists, false if the path could not be added
+ */
+export async function addPythonAnalysisPath(pathToAdd: string): Promise<false | "add" | "exists"> {
+    if (!validatePylanceExtension())
+        return false;
+
+    const extraPathsConfigName = `${CONFIG_PYTHON}.${CONFIG_KEY_EXTRA_PATHS}`;
+
+    const activeWorkspaceFolder = utils.getActiveWorkspaceFolder();
+    const pythonConfig = vscode.workspace.getConfiguration(CONFIG_PYTHON, activeWorkspaceFolder?.uri);
+
+    const extraPathsConfig = pythonConfig.inspect<string[]>(CONFIG_KEY_EXTRA_PATHS);
+    if (!extraPathsConfig) {
+        logging.showErrorMessage(`Failed to get the config '${extraPathsConfigName}'`, new Error(`Failed to inspect config: '${extraPathsConfigName}'`));
+        return false;
+    }
+
+    // Get the config from current scope
+    const currentScopeConfig = getConfigForCurrentScope(extraPathsConfig);
+
     // Create a new list that will contain the old paths and the new one
-    let newPathsValue = settingsInfo.paths ? [...settingsInfo.paths] : [];
+    let newExtraPathsValue = currentScopeConfig.paths ? [...currentScopeConfig.paths] : [];
 
     // Check if the path already exists
-    if (newPathsValue.some(path => utils.isPathsSame(path, pathToAdd))) {
-        logging.log(`Path "${pathToAdd}" already exists in '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
+    if (newExtraPathsValue.some(path => utils.isPathsSame(path, pathToAdd))) {
+        logging.log(`Path "${pathToAdd}" already exists in '${extraPathsConfigName}' in ${currentScopeConfig.scopeName} settings.`);
         return "exists";
     }
 
     // Add the new path and update the configuration
-    newPathsValue.push(pathToAdd);
+    newExtraPathsValue.push(pathToAdd);
     try {
-        await pythonConfig.update(EXTRA_PATHS_CONFIG, newPathsValue, settingsInfo.scope);
+        await pythonConfig.update(CONFIG_KEY_EXTRA_PATHS, newExtraPathsValue, currentScopeConfig.scope);
     }
     catch (error) {
-        const err = error as Error;
-
-        if (err.name === "CodeExpectedError" && err.message.includes("is not a registered configuration")) {
-            logging.log(err.message);
-
-            vscode.window.showErrorMessage(
-                `[ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) not installed. Could not update the 'python.analysis.extraPaths' setting.`,
-                "Show Pylance"
-            ).then((value) => {
-                if (value === "Show Pylance")
-                    vscode.env.openExternal(vscode.Uri.parse(`${vscode.env.uriScheme}:extension/ms-python.vscode-pylance`));
-            });
-        }
-        else
-            logging.showErrorMessage(`Failed to update '${fullConfigName}' in ${settingsInfo.niceName} settings.`, err);
-
+        logging.showErrorMessage(`Failed to update '${extraPathsConfigName}' in ${currentScopeConfig.scopeName} settings.`, error as Error);
         return false;
     }
 
     // Show a message to the user
-    logging.log(`Added path "${pathToAdd}" to '${fullConfigName}' in ${settingsInfo.niceName} settings.`);
+    logging.log(`Added path "${pathToAdd}" to '${extraPathsConfigName}' in ${currentScopeConfig.scopeName} settings.`);
 
-    vscode.window.showInformationMessage(`Updated '${fullConfigName}' in ${settingsInfo.niceName} settings.`, "Show Setting").then(
+    vscode.window.showInformationMessage(`Updated '${extraPathsConfigName}' in ${currentScopeConfig.scopeName} settings.`, "Show Setting").then(
         (value) => {
             if (value === "Show Setting") {
-                vscode.commands.executeCommand(settingsInfo.openSettingsCommand, `${fullConfigName}`);
+                vscode.commands.executeCommand(currentScopeConfig.openSettingsCommand, `${extraPathsConfigName}`);
             }
         }
     );
 
     return "add";
 }
+
 
 
 async function selectDestination(defaultDestination: vscode.Uri, title: string): Promise<vscode.Uri | undefined> {
