@@ -162,5 +162,8 @@ suite('Execute', function () {
 
         await runCode("def test():\n\treturn 5\ntest()");
         checkOutput(mobuOutputChannel, "5");
+
+        await runCode("print(_)");
+        checkOutput(mobuOutputChannel, "5");
     });
 });
