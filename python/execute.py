@@ -142,7 +142,7 @@ def add_print_for_last_expr(parsed_code):
     if parsed_code.body:
         last_expr = parsed_code.body[-1]
         if isinstance(last_expr, ast.Expr):
-            temp_var = "__mobu_vscode_temp__"
+            temp_var = "_"
 
             # Assign the last expression to a temporary variable
             temp_var_assign = ast.Assign(
