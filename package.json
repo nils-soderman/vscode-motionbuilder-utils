@@ -14,8 +14,7 @@
     "python",
     "pyfbsdk",
     "autodesk",
-    "debug",
-    "intellisense"
+    "debug"
   ],
   "icon": "media/icon.png",
   "galleryBanner": {
