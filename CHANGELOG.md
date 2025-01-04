@@ -3,7 +3,7 @@
 ## [2025.2.0] - 2025-01-04
 
 ### New:
-- Automatically print the last expression when executing code, similar to the native Python REPL
+- Automatically print the last expression when executing code, similar to the Python REPL
 
 ### Changed:
 - All stub files are now downloaded from [pyfbsdk-stub-generator](https://github.com/nils-soderman/pyfbsdk-stub-generator) when setting up code completion
