@@ -60,14 +60,11 @@ Keyboard Shortcut _(to browse the Python docs)_: <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 #### Note:
 Commands can be run from VS Code's command palette, `Show All Commands` _(Default shortcut: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>)_
 
-<br><br>
+<br>
 
 # Contact
 
-If you have any questions, feature requests or run into any bugs, don't hesitate to get in contact with me:
-
-[Personal Website](https://nilssoderman.com)<br>
-[Report an issue](https://github.com/nils-soderman/vscode-motionbuilder/issues "Report a bug on the GitHub repository")
+If you have any questions, suggestions or run into issues, please [open an issue](https://github.com/nils-soderman/vscode-motionbuilder/issues "GitHub issues") on the GitHub repository.
 
 <br>
 
