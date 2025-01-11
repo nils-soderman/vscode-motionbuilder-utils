@@ -76,7 +76,7 @@ def find_package(filepath):
 
 
 
-def format_exception(exception_in: BaseException, code: str, num_ignore_tracebacks: int = 0) -> str:
+def format_exception(exception_in, code, num_ignore_tracebacks = 0):
     seen_exceptions = set()
     messages = []
     lines = code.splitlines()
@@ -110,7 +110,7 @@ def format_exception(exception_in: BaseException, code: str, num_ignore_tracebac
 
             traceback_stack.append(
                 traceback.FrameSummary(
-                    f"{frame_summary.filename}:{frame_summary.lineno}",
+                    "%s:%s" % (frame_summary.filename, frame_summary.lineno),
                     frame_summary.lineno,
                     frame_summary.name,
                     lookup_line=False,
