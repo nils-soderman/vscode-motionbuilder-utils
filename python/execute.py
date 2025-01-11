@@ -7,7 +7,7 @@ import tempfile
 import sys
 import os
 
-if sys.version_info[0] >= 3:
+if sys.version_info.major >= 3:
     from io import StringIO
     import ast
 else:
@@ -32,7 +32,7 @@ class OutputRedirector():
 
         # If output is larger than 955 bytes, it'll get corrupted when transferred over the socket, so write to a file instead
         # MotionBuilder 2023 (Python 3.9) also has a bug where the output isn't transfered unless the Python Editor window is open.
-        if sys.getsizeof(output_str) >= 950 or (sys.version_info.major == 3 and sys.version_info.minor == 9):
+        if sys.getsizeof(output_str) >= 950 or sys.version_info[:2] == (3, 9):
             if sys.version_info.major == 2:
                 output_str = output_str.decode("utf-8")
             output_filepath = get_output_filepath(self.command_id)
@@ -75,41 +75,50 @@ def find_package(filepath):
     return ""
 
 
-def format_exception(exception, code, num_ignore_tracebacks=0):
-    messages = []
 
+def format_exception(exception_in: BaseException, code: str, num_ignore_tracebacks: int = 0) -> str:
     seen_exceptions = set()
+    messages = []
+    lines = code.splitlines()
+
+    exception = exception_in
     while exception:
         if id(exception) in seen_exceptions:
             break
         seen_exceptions.add(id(exception))
 
-        if isinstance(exception, SyntaxError):
-            exception.text = code.splitlines()[exception.lineno - 1]
-            exception.filename += ":%s" % exception.lineno
-
-        # For each traceback, we want to append the exception message
         traceback_stack = []
         for frame_summary in traceback.extract_tb(exception.__traceback__):
-            if frame_summary.filename == "<string>" and frame_summary.name == execute_code.__name__:
-                continue
-
             if num_ignore_tracebacks > 0:
                 num_ignore_tracebacks -= 1
                 continue
 
-            if frame_summary.filename.endswith(".ipynb"):
-                linenum = frame_summary.lineno
-
-                code_lines = code.splitlines()
-                code_line = code_lines[linenum - 1]
-
-                frame_summary._line = code_line + "\n"
-
+            if frame_summary.lineno is not None and 0 < frame_summary.lineno <= len(lines):
+                line = lines[frame_summary.lineno - 1]
             else:
-                frame_summary.filename += ":%s" % frame_summary.lineno
+                line = frame_summary.line
 
-            traceback_stack.append(frame_summary)
+            # These attributes were added in Python 3.11
+            if sys.version_info >= (3, 11):
+                col_info = {
+                    "end_lineno": frame_summary.end_lineno,
+                    "colno": frame_summary.colno,
+                    "end_colno": frame_summary.end_colno,
+                }
+            else:
+                col_info = {}
+
+            traceback_stack.append(
+                traceback.FrameSummary(
+                    f"{frame_summary.filename}:{frame_summary.lineno}",
+                    frame_summary.lineno,
+                    frame_summary.name,
+                    lookup_line=False,
+                    locals=frame_summary.locals,
+                    line=line,
+                    **col_info
+                )
+            )
 
         text = "Traceback (most recent call last):\n"
         text += "".join(traceback.format_list(traceback_stack))
@@ -181,11 +190,11 @@ def add_print_for_last_expr(parsed_code):
 
 
 def execute_code(code, filename, use_colors):
-    if sys.version_info[0] >= 3:
+    if sys.version_info.major >= 3:
         try:
             parsed_code = ast.parse(code, filename)
         except (SyntaxError, ValueError) as caught_exception:
-            handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=1)
+            handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=2)
             return
 
         parsed_code = add_print_for_last_expr(parsed_code)
@@ -195,7 +204,7 @@ def execute_code(code, filename, use_colors):
     try:
         exec(compile(parsed_code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-        handle_exception(caught_exception, code, use_colors)
+        handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=1)
 
 
 def main():
