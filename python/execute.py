@@ -75,8 +75,7 @@ def find_package(filepath):
     return ""
 
 
-
-def format_exception(exception_in, code, num_ignore_tracebacks = 0):
+def format_exception(exception_in, filename, code, num_ignore_tracebacks=0):
     seen_exceptions = set()
     messages = []
     lines = code.splitlines()
@@ -93,7 +92,8 @@ def format_exception(exception_in, code, num_ignore_tracebacks = 0):
                 num_ignore_tracebacks -= 1
                 continue
 
-            if frame_summary.lineno is not None and 0 < frame_summary.lineno <= len(lines):
+            if frame_summary.filename == filename and \
+                    (frame_summary.lineno is not None and 0 < frame_summary.lineno <= len(lines)):
                 line = lines[frame_summary.lineno - 1]
             else:
                 line = frame_summary.line
@@ -131,9 +131,9 @@ def format_exception(exception_in, code, num_ignore_tracebacks = 0):
     return "\nDuring handling of the above exception, another exception occurred:\n\n".join(reversed(messages))
 
 
-def handle_exception(exception, code, use_colors, num_ignore_tracebacks=0):
+def handle_exception(exception, filename, code, use_colors, num_ignore_tracebacks=0):
     if sys.version_info.major >= 3:
-        traceback_message = format_exception(exception, code, num_ignore_tracebacks)
+        traceback_message = format_exception(exception, filename, code, num_ignore_tracebacks)
     else:
         traceback_message = traceback.format_exc()
 
@@ -194,7 +194,7 @@ def execute_code(code, filename, use_colors):
         try:
             parsed_code = ast.parse(code, filename)
         except (SyntaxError, ValueError) as caught_exception:
-            handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=2)
+            handle_exception(caught_exception, filename, code, use_colors, num_ignore_tracebacks=2)
             return
 
         parsed_code = add_print_for_last_expr(parsed_code)
@@ -204,7 +204,7 @@ def execute_code(code, filename, use_colors):
     try:
         exec(compile(parsed_code, filename, "exec"), get_exec_globals())
     except Exception as caught_exception:
-        handle_exception(caught_exception, code, use_colors, num_ignore_tracebacks=1)
+        handle_exception(caught_exception, filename, code, use_colors, num_ignore_tracebacks=1)
 
 
 def main():
