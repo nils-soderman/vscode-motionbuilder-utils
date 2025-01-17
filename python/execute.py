@@ -153,38 +153,42 @@ def add_print_for_last_expr(parsed_code):
         if isinstance(last_expr, ast.Expr):
             temp_var = "_"
 
+            line_info = {
+                "lineno": last_expr.lineno,
+                "col_offset": last_expr.col_offset
+            }
+
+            if sys.version_info >= (3, 8):
+                line_info["end_lineno"] = last_expr.end_lineno
+                line_info["end_col_offset"] = last_expr.end_col_offset
+
             # Assign the last expression to a temporary variable
             temp_var_assign = ast.Assign(
-                targets=[ast.Name(id=temp_var, ctx=ast.Store(),
-                                  lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
+                targets=[ast.Name(id=temp_var, ctx=ast.Store(), **line_info)],
                 value=last_expr.value,
-                lineno=last_expr.lineno,
-                col_offset=last_expr.col_offset
+                **line_info
             )
 
             # If the temporary variable isn't None, print it
             print_stmt = ast.IfExp(
                 test=ast.Compare(
-                    left=ast.Name(id=temp_var, ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset),
+                    left=ast.Name(id=temp_var, ctx=ast.Load(), **line_info),
                     ops=[ast.IsNot()],
-                    comparators=[ast.Constant(value=None, lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
-                    lineno=last_expr.lineno,
-                    col_offset=last_expr.col_offset
+                    comparators=[ast.Constant(value=None, **line_info)],
+                    **line_info
                 ),
                 body=ast.Call(
-                    func=ast.Name(id='print', ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset),
-                    args=[ast.Name(id=temp_var, ctx=ast.Load(), lineno=last_expr.lineno, col_offset=last_expr.col_offset)],
+                    func=ast.Name(id='print', ctx=ast.Load(), **line_info),
+                    args=[ast.Name(id=temp_var, ctx=ast.Load(), **line_info)],
                     keywords=[],
-                    lineno=last_expr.lineno,
-                    col_offset=last_expr.col_offset
+                    **line_info
                 ),
-                orelse=ast.Constant(value=None, lineno=last_expr.lineno, col_offset=last_expr.col_offset),
-                lineno=last_expr.lineno,
-                col_offset=last_expr.col_offset
+                orelse=ast.Constant(value=None, **line_info),
+                **line_info
             )
 
             parsed_code.body[-1] = temp_var_assign
-            parsed_code.body.append(ast.Expr(value=print_stmt, lineno=last_expr.lineno, col_offset=last_expr.col_offset))
+            parsed_code.body.append(ast.Expr(value=print_stmt, **line_info))
 
     return parsed_code
 
