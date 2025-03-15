@@ -18,9 +18,8 @@ async function getSocket() {
         return gSocket;
     }
 
-    logging.log("Connecting to MotionBuilder...");
-
     const socket = new MotionBuilderSocket();
+    logging.log(`Connecting to MotionBuilder at ${socket.ip}:${socket.port}`);
 
     try {
         await socket.open(10_000);
@@ -35,13 +34,14 @@ async function getSocket() {
         }
         else if (e.code === "ETIMEDOUT") {
             vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
+            logging.logError("Connection timed out, this is usually caused by MotionBuilder being minimized");
         }
         else {
             logging.showErrorMessage(`Failed to connect to MotionBuilder with error code: ${e.code}`, e);
             return null;
         }
 
-        logging.log(JSON.stringify(e));
+        logging.logError(JSON.stringify(e));
         return null;
     }
 
