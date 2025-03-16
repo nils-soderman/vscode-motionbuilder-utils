@@ -5,6 +5,10 @@
 ### Changed:
 - The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, leading to improved readability
 
+### Fixed:
+- User SyntaxErrors not printed correctly when executing unsaved files
+
+
 ## [2025.2.0] - 2025-01-04
 
 ### New:
