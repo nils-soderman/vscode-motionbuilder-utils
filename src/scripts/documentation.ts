@@ -8,7 +8,7 @@ import * as utils from '../modules/utils';
 
 const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
 const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
-const MOTIONBUILDER_VERSION = 2025;
+const MOTIONBUILDER_VERSION = 2026;
 
 interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
     url: string;

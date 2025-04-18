@@ -1,12 +1,13 @@
 # Change Log
 
-## [2025.3.0] - UNRELEASED
+## [2026.0.0] - UNRELEASED
+
+**NOTE:** Version 2026.x will be the last version supporting Python 2 _(>= MotionBuilder 2022)_.
 
 ### Changed:
+- `MotionBuilder: Browse Documentation` now browses the 2026 documentation
 - The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, leading to improved readability
-
-### Fixed:
-- User SyntaxErrors not printed correctly when executing unsaved files
+- Fixed user SyntaxErrors not printed correctly when executing unsaved files
 
 
 ## [2025.2.0] - 2025-01-04
