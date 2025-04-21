@@ -5,4 +5,4 @@ out
 *.vsix
 **/__pycache__
 **/**.pyc
-dev/python/site-packages
+documentation/generator/site-packages

@@ -3,19 +3,30 @@ Build the table of contents for the online documentation, these are located unde
 """
 from __future__ import annotations
 
+import subprocess
 import warnings
+import typing
+import enum
 import time
 import json
 import sys
 import os
 
-from importlib import reload
-
-import pyfbsdk
+try:
+    import pyfbsdk
+except ImportError:
+    raise ImportError("pyfbsdk is not available, please run this script from within MotionBuilder")
 
 # Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
 SITEPACKAGES_DIR = os.path.join(CURRENT_DIR, "site-packages")
+
+if not os.path.isdir(SITEPACKAGES_DIR):
+    # Install the site-packages directory
+    mobupy = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
+    subprocess.check_call([
+        mobupy, "-m", "pip", "install", "-r", os.path.join(CURRENT_DIR, "requirements.txt"), "--target", SITEPACKAGES_DIR
+    ])
 
 if SITEPACKAGES_DIR not in sys.path:
     sys.path.append(SITEPACKAGES_DIR)
@@ -26,14 +37,14 @@ import js2py
 
 import pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.table_of_contents as docScraper
 from pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.page_parser import MemberItem
-reload(docScraper)
+from pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.documentation_urls import DOCUMENTATION_URL, GetPythonPageContentsUrl
 
 
 # ------------------------------------------
-#            Structs & Enums
+#            Types & Enums
 # ------------------------------------------
 
-class EIcons:
+class EIcons(enum.StrEnum):
     """ 
     VSCode icons (All icons can be found here: https://microsoft.github.io/vscode-codicons/dist/codicon.html)
     """
@@ -45,9 +56,15 @@ class EIcons:
     ENUM_MEMBER = "symbol-enum-member"
 
 
-class EVsCodeItemData:
-    URL = "url"
-    LABEL = "label"
+class ItemDataT(typing.TypedDict):
+    url: str
+    label: str
+
+
+class TableOfContentT(typing.TypedDict):
+    version: int
+    base_url: str
+    items: list[ItemDataT]
 
 
 # ------------------------------------------
@@ -59,20 +76,24 @@ def get_motionbuilder_version():
     return int(2000 + pyfbsdk.FBSystem().Version / 1000)
 
 
-def get_output_directory():
-    return os.path.join(CURRENT_DIR, "..", "..", "resources", "documentation")
+def get_output_directory(version: int):
+    return os.path.join(CURRENT_DIR, "..", "toc", str(version))
 
 
-def save_items(filename, items: list):
-    directory = get_output_directory()
+def save_items(filename: str, version: int, base_url: str, items: list[ItemDataT]):
+    directory = get_output_directory(version)
     if not os.path.isdir(directory):
         os.makedirs(directory)
 
-    data = {"items": items}
+    data: TableOfContentT = {
+        "version": version,
+        "base_url": base_url,
+        "items": items
+    }
 
     filepath = os.path.join(directory, filename)
     with open(filepath, "w+", encoding="utf-8") as file:
-        json.dump(data, file)
+        json.dump(data, file, separators=(',', ':'))
 
 
 # ------------------------------------------
@@ -80,11 +101,9 @@ def save_items(filename, items: list):
 # ------------------------------------------
 
 def generate_examples_toc(version: int):
-    if version <= 2024:
-        examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MotionBuilder-SDK/py_ref/examples.js"  # url used for 2024 and below
-    else:
-        examples_toc_url = f"https://help.autodesk.com/cloudhelp/{version}/ENU/MOBU-PYTHON-API-REF/examples.js"
-    examples_response = requests.get(examples_toc_url, timeout=10)  
+    examples_toc_url = GetPythonPageContentsUrl("examples.js", version)
+
+    examples_response = requests.get(examples_toc_url, timeout=10)
     if examples_response.status_code != 200:
         # Log a warning:
         warnings.warn(
@@ -93,14 +112,17 @@ def generate_examples_toc(version: int):
 
     parsed_examples = js2py.eval_js(examples_response.text)
 
-    items = []
+    items: list[ItemDataT] = []
     for title, url, children in parsed_examples:
         items.append({
-            EVsCodeItemData.LABEL: title,
-            EVsCodeItemData.URL: url
+            "label": title,
+            "url": url
         })
 
-    save_items("examples.json", items)
+    save_items("examples.json",
+               base_url=GetPythonPageContentsUrl("", version),
+               version=version,
+               items=items)
 
 
 # ------------------------------------------
@@ -132,7 +154,7 @@ def is_method(item: docScraper.TableOfContentItem, child: MemberItem):
 def generate_python_toc(version: int):
     python_docs = docScraper.Documentation("pyfbsdk", version, bUseCache=True)
 
-    items = []
+    items: list[ItemDataT] = []
     items_name_map = set()
     for item in python_docs.TableOfContents:
         is_function = item.RelativeUrl.startswith("namespacepyfbsdk.html")
@@ -148,8 +170,8 @@ def generate_python_toc(version: int):
             continue
 
         items.append({
-            EVsCodeItemData.LABEL: f"$({icon}) {item.Name}",
-            EVsCodeItemData.URL: item.RelativeUrl
+            "label": f"$({icon}) {item.Name}",
+            "url": item.RelativeUrl
         })
         items_name_map.add(item.Name)
 
@@ -181,11 +203,14 @@ def generate_python_toc(version: int):
 
             child_url = item.RelativeUrl + child.RelativeUrl
             items.append({
-                EVsCodeItemData.LABEL: f"$({child_icon}) {title}",
-                EVsCodeItemData.URL: child_url
+                "label": f"$({child_icon}) {title}",
+                "url": child_url
             })
 
-    save_items("python.json", items)
+    save_items("python.json",
+               base_url=GetPythonPageContentsUrl("", version),
+               version=version,
+               items=items)
 
 
 # ------------------------------------------
