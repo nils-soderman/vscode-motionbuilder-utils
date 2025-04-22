@@ -7,6 +7,7 @@
         "*.vsix": true,
         "package-lock.json": true,
         "LICENSE": true,
+        "**/site-packages": true,
     },
     "search.exclude": {
         "media": true,
@@ -28,7 +29,11 @@
     ],
 
     "python.analysis.extraPaths": [
-        "./build-scripts/python/site-packages",
-        "resources/stub-files"
-    ]
+        "./documentation/generator/site-packages",
+        "resources/stub-files",
+        "C:\\Program Files\\Autodesk\\MotionBuilder 2026\\bin\\x64\\python",
+        "c:\\Users\\nils\\AppData\\Roaming\\Code\\User\\globalStorage\\nilssoderman.mobu-utils\\stubs"
+    ],
+    "python.analysis.autoImportCompletions": false,
+    "python.analysis.typeCheckingMode": "standard"
 }
