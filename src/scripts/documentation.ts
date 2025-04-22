@@ -3,78 +3,120 @@ import * as vscode from 'vscode';
 import * as htmlParser from 'node-html-parser';
 
 import * as logging from '../modules/logging';
+import * as mobu from '../modules/motionbuilder-console';
 import * as utils from '../modules/utils';
 
+import * as github from '../modules/github';
 
-const AUTODESK_DOCS_URL = "https://help.autodesk.com/cloudhelp/";
-const PYTHON_REF = "ENU/MOBU-PYTHON-API-REF/";
-const MOTIONBUILDER_VERSION = 2026;
+
+// Constants
+const GITHUB_EXTENSION_REPOSITORY_NAME = "nils-soderman/vscode-motionbuilder-utils";
+const DOCUMENTATION_FOLDER = "documentation/table_of_contents";
+let gCurrentVersion: number | null = null;
+
 
 interface IDocumentationQuickPickItem extends vscode.QuickPickItem {
     url: string;
 }
 
-/**
- * Construct a valid filename from the selection label
- * @param label The label from which to construct the filename
- */
-function constructPythonFilename(label: string): string {
-    let filename = label.replace(/[/\\]/g, "_");
-
-    if (!filename.endsWith(".py")) {
-        filename += ".py";
-    }
-
-    if (filename.includes(":")) {
-        filename = filename.split(":")[1].trimStart();
-    }
-
-    return filename;
+interface IDocumentationToc {
+    version: number;
+    base_url: string;
+    items: IDocumentationQuickPickItem[];
 }
 
-
 /** Documentation table of content types */
-const FDOCTYPE = {
-    example: "examples",
-    python: "python"
+export enum EDocType {
+    example = "examples.json",
+    python = "python.json"
 };
 
 
-/**
- * Get the full URL to the location of the documentation page, from a url relative to the ENU folder.
- * @param version MotionBuilder version
- * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
- */
-function getDocumentationPageURL(version: number, relativePageURL: string) {
-    return `${AUTODESK_DOCS_URL}${version}/${PYTHON_REF}${relativePageURL}`;
+async function getCurrentVersion(): Promise<number | null> {
+    if (gCurrentVersion === null) {
+        const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "info.py");
+        gCurrentVersion = await mobu.evaluateFunction(filepath, "version");
+    }
+
+    return gCurrentVersion;
 }
 
-/**
- * Get the directory where the documentation is stored.
- */
-function getDocumentationDirectory() {
-    return vscode.Uri.joinPath(utils.getResourcesDir(), "documentation");
+function getDocumentationDirectory(context: vscode.ExtensionContext): vscode.Uri {
+    return vscode.Uri.joinPath(context.globalStorageUri, "documentation");
 }
 
-/**
- * Parse one of the generated json table of content files.
- * @param type The type of documentation file to parse, should be one of the options in the struct: `FDOCTYPE`
- * @returns a dictionary object that looks like: {"My Page": {"url": "myPage.html"}}
- */
-async function parseGeneratedDocumentationFile(type: string): Promise<{ items: IDocumentationQuickPickItem[]; }> {
-    const filepath = vscode.Uri.joinPath(getDocumentationDirectory(), `${type}.json`);
-    return await utils.readJson(filepath);
+async function getDocumentationTableOfContentsUri(context: vscode.ExtensionContext, type: EDocType, version: number | null): Promise<vscode.Uri> {
+    const cacheDir = getDocumentationDirectory(context);
+    if (version === null) {
+        let directories = (await vscode.workspace.fs.readDirectory(cacheDir));
+        directories.sort(([aName], [bName]) => aName.localeCompare(bName));
+        for (const [name, type] of directories) {
+            if (type === vscode.FileType.Directory) {
+                const folderVersion = parseInt(name);
+                const filepath = vscode.Uri.joinPath(cacheDir, name, type.toString());
+                if (!isNaN(folderVersion) && await utils.uriExists(filepath)) {
+                    return filepath;
+                }
+            }
+        }
+
+        // Get the latest version
+        const latestVersion = await getAvailableVersions();
+        if (latestVersion.length === 0) {
+            throw new Error("No documentation found!");
+        }
+
+        version = latestVersion[latestVersion.length - 1].version;
+    }
+
+    // Check if version already exists
+    const filepath = vscode.Uri.joinPath(cacheDir, version.toString(), type.toString());
+    if (await utils.uriExists(filepath)) {
+        return filepath;
+    }
+
+    // Check if version exists on GitHub
+    const availableVersions = await getAvailableVersions();
+    let versionInfo = availableVersions.find(v => v.version === version);
+    if (!versionInfo) {
+        // Get the closest version
+        versionInfo = availableVersions.reduce((closest, current) => {
+            return Math.abs(current.version - version) < Math.abs(closest.version - version) ? current : closest;
+        });
+    }
+
+    // Download the documentation
+    const contentList = await github.getContents(GITHUB_EXTENSION_REPOSITORY_NAME, versionInfo.path);
+    const file = contentList.find(content => content.name === type.toString());
+    if (!file) {
+        throw new Error(`Documentation file not found for version ${version}`);
+    }
+    const content = await github.getRequest(file.download_url, 10_000);
+
+    vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(cacheDir, versionInfo.version.toString()));
+    await vscode.workspace.fs.writeFile(filepath, Buffer.from(content));
+
+    return filepath;
 }
 
 
-/**
- * Open a MoBu documentation page in the default web-browser app
- * @param relativePageURL The page URL relative to the ENU folder, as stored in the json toc.
- * @param version MotionBuilder version
- */
-function openPageInBrowser(relativePageURL: string, version: number) {
-    const url = getDocumentationPageURL(version, relativePageURL);
-    return vscode.env.openExternal(vscode.Uri.parse(url));
+async function getDocumentationTableOfContents(context: vscode.ExtensionContext, type: EDocType, version: number | null): Promise<IDocumentationToc> {
+    const filepath = await getDocumentationTableOfContentsUri(context, type, version);
+    const data = await vscode.workspace.fs.readFile(filepath);
+    return JSON.parse(data.toString()) as IDocumentationToc;
+}
+
+
+async function getAvailableVersions(): Promise<{ version: number; path: string; }[]> {
+    const folderContents = await github.getContents(GITHUB_EXTENSION_REPOSITORY_NAME, DOCUMENTATION_FOLDER);
+    return folderContents
+        .filter(content => content.type === "dir")
+        .map(content => ({
+            version: parseInt(content.name),
+            path: content.path
+        }))
+        .filter(content => !isNaN(content.version))
+        .sort((a, b) => a.version - b.version);
 }
 
 
@@ -83,10 +125,10 @@ function openPageInBrowser(relativePageURL: string, version: number) {
  * @param url The full URL to the example documentation web-page
  * @param filename The abs filepath where to save the file on disk
  */
-async function openExampleInVSCode(url: string, filename: string) {
+async function openExampleInVSCode(url: string) {
     let data: string;
     try {
-        data = await utils.getRequest(url, { timeout: 10_000 });
+        data = await utils.httpsGetRequest(url, { timeout: 10_000 });
     }
     catch (error) {
         logging.showErrorMessage(`Failed to get: ${url}`, error as Error);
@@ -102,8 +144,7 @@ async function openExampleInVSCode(url: string, filename: string) {
         return line.text;
     }).join("\n");
 
-    const filepath = await utils.saveTempFile(filename, content);
-    const doc = await vscode.workspace.openTextDocument(filepath);
+    const doc = await vscode.workspace.openTextDocument({ content, language: 'python' });
 
     return await vscode.window.showTextDocument(doc);
 }
@@ -113,37 +154,22 @@ async function openExampleInVSCode(url: string, filename: string) {
  * List all pages from one or multiple documentation types, and open up the page selected by the user
  * @param type List of types to include, types should be of `FDOCTYPE`
  */
-async function browseDocumentation(type: string, bExample = false) {
-    const placeHolder = bExample ? `Search the MotionBuilder examples` : `Search the MotionBuilder ${type} documentation`;
+export async function browseDocumentation(context: vscode.ExtensionContext, type: EDocType) {
+    const currentVersion = await getCurrentVersion();
+    const tableOfContents = await getDocumentationTableOfContents(context, type, currentVersion);
 
-    const data = await parseGeneratedDocumentationFile(type);
-    const selection = await vscode.window.showQuickPick(data.items, {
-        placeHolder
+    const selection = await vscode.window.showQuickPick(tableOfContents.items, {
+        placeHolder: "Select a page to open",
     });
     if (!selection) {
         return;
     }
 
-    const relativePageUrl = selection.url;
-
-    if (bExample && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
+    if (type == EDocType.example && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
         // Open in VSCode
-        const url = getDocumentationPageURL(MOTIONBUILDER_VERSION, relativePageUrl);
-        const filename = constructPythonFilename(selection.label);
-
-        await openExampleInVSCode(url, "Example_" + filename);
+        await openExampleInVSCode(tableOfContents.base_url + selection.url);
     }
     else {
-        await openPageInBrowser(relativePageUrl, MOTIONBUILDER_VERSION);
+        await vscode.env.openExternal(vscode.Uri.parse(tableOfContents.base_url + selection.url));
     }
-}
-
-
-export async function browseExamples() {
-    return browseDocumentation(FDOCTYPE.example, true);
-}
-
-
-export async function browsePython() {
-    return browseDocumentation(FDOCTYPE.python);
 }

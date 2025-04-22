@@ -45,12 +45,6 @@ export function getPythonDir() {
     return vscode.Uri.joinPath(getExtensionUri(), "python");
 }
 
-/**
- * @returns The absolute path to this extension's resources directory
- */
-export function getResourcesDir() {
-    return vscode.Uri.joinPath(getExtensionUri(), "resources");
-}
 
 /**
  * @param bEnsureExists If folder doesn't exist, create it
@@ -213,7 +207,7 @@ export function isPathsSame(a: string, b: string) {
  * Do a web get-request
  * @param url The url whose content to fetch
 */
-export function getRequest(url: string, options: https.RequestOptions = {}): Promise<string> {
+export function httpsGetRequest(url: string, options: https.RequestOptions = {}): Promise<string> {
     return new Promise((resolve, reject) => {
         https.get(url, options, (res) => {
             let data = '';

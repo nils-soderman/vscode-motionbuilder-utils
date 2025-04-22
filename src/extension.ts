@@ -42,13 +42,13 @@ export function activate(context: vscode.ExtensionContext) {
 	// Documentation
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationPython', () => {
-			return documentation.browsePython();
+			return documentation.browseDocumentation(context, documentation.EDocType.python);
 		})
 	);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationExamples', () => {
-			return documentation.browseExamples();
+			return documentation.browseDocumentation(context, documentation.EDocType.example);
 		})
 	);
 
