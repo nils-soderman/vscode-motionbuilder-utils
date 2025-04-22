@@ -3,38 +3,15 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 
 import * as logging from '../modules/logging';
+import * as github from '../modules/github';
 import * as utils from '../modules/utils';
 
 
 const CONFIG_PYTHON = "python";
 const CONFIG_KEY_EXTRA_PATHS = "analysis.extraPaths";
 
-const GITHUB_API_URL = "https://api.github.com/repos";
-const GITHUB_API_HEADERS = {
-    'User-Agent': 'VSCode-MotionBuilder-Extension'  // eslint-disable-line @typescript-eslint/naming-convention
-};
-
-const REPOSITORY_URL = "nils-soderman/pyfbsdk-stub-generator";
-const REPOSITORY_GENERATED_FILES_DIR = "generated-stub-files";
-
-
-/* eslint-disable @typescript-eslint/naming-convention */
-interface IGitHubApiContent {
-    name: string;
-    path: string;
-    sha: string;
-    size: number;
-    url: string;
-    git_url: string;
-    download_url: string;
-    type: string;
-    _links: {
-        self: string;
-        git: string;
-        html: string;
-    };
-}
-/* eslint-enable @typescript-eslint/naming-convention */
+const PYFBSDK_GEN_REPOSITORY = "nils-soderman/pyfbsdk-stub-generator";
+const PYFBSDK_GEN_REPOSITORY_FOLDER = "generated-stub-files";
 
 
 interface IVersionQuickPick {
@@ -74,40 +51,12 @@ function ensureWritable(uri: vscode.Uri) {
 
 
 /**
- * Parse the data from the GitHub API into an array of IGitHubApiContent objects.
- */
-function parseGitHubApiContent(data: string): Array<IGitHubApiContent> {
-    try {
-        return JSON.parse(data) as Array<IGitHubApiContent>;
-    }
-    catch (error) {
-        logging.log(data);
-        logging.showErrorMessage("Failed to parse available versions", error as Error);
-        throw error;
-    }
-}
-
-
-/**
  * Get the available versions of the stub files from the GitHub repository.
  * @returns A QuickPick friendly array of available versions
  */
 async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
-    const url = `${GITHUB_API_URL}/${REPOSITORY_URL}/contents/${REPOSITORY_GENERATED_FILES_DIR}`;
-
-    let data: string;
-
-    try {
-        data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
-    }
-    catch (error) {
-        logging.showErrorMessage("Failed to fetch available versions", error as Error);
-        throw error;
-    }
-
-    const parsedData = parseGitHubApiContent(data);
-
-    return parsedData
+    const folderContents = await github.getContents(PYFBSDK_GEN_REPOSITORY, PYFBSDK_GEN_REPOSITORY_FOLDER);
+    return folderContents
         .filter(content => content.type === "dir")
         .map(content => ({
             label: content.name.split("-")[1],
@@ -123,28 +72,17 @@ async function getAvailableVersions(): Promise<Array<IVersionQuickPick>> {
  * @returns An array of downloaded files
  */
 async function downloadStubFiles(version: IVersionQuickPick, destination: vscode.Uri) {
-    const url = `${GITHUB_API_URL}/${REPOSITORY_URL}/contents/${version.path}`;
-
-    let data: string;
-
-    try {
-        data = await utils.getRequest(url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
-    } catch (error) {
-        logging.showErrorMessage(`Failed to fetch stub file for ${version.label}`, error as Error);
-        throw error;
-    }
-
-    const parsedData = parseGitHubApiContent(data);
+    const contentList = await github.getContents(PYFBSDK_GEN_REPOSITORY, version.path);
 
     let downloadedFiles = [];
-    for (const file of parsedData) {
+    for (const file of contentList) {
         if (file.type !== "file")
             continue;
 
         const filename = vscode.Uri.joinPath(destination, file.name);
 
         try {
-            const fileData = await utils.getRequest(file.download_url, { headers: GITHUB_API_HEADERS, timeout: 10_000 });
+            const fileData = await github.getRequest(file.download_url);
 
             if (await utils.uriExists(filename))
                 ensureWritable(filename);
