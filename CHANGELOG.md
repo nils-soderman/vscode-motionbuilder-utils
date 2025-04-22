@@ -4,7 +4,6 @@
 
 **NOTE:** Version 2026.x will be the last version supporting Python 2 _(>= MotionBuilder 2022)_.
 
-### Changed:
 - `MotionBuilder: Browse Documentation` now browses the 2026 documentation
 - The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, leading to improved readability
 - Fixed user SyntaxErrors not printed correctly when executing unsaved files
@@ -12,127 +11,90 @@
 
 ## [2025.2.0] - 2025-01-04
 
-### New:
 - Automatically print the last expression when executing code, similar to the Python REPL
-
-### Changed:
 - All stub files are now downloaded from [pyfbsdk-stub-generator](https://github.com/nils-soderman/pyfbsdk-stub-generator) when setting up code completion
 - Improved error message if [ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) is not installed and "Setup Code Completion" is run [#12](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/12)
 
 ## [2025.1.1] - 2024-08-10
 
-### Fixed:
-- Python 2.7: [#11](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/11)
+- Python 2.7 fixes: [#11](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/11)
     - Error when adding workspace folders to sys.path
     - User errors not being handled correctly
     - Failing to install debugpy
     - Large outputs being corrupted
 - Added a timeout when downloading stub files or examples
-
-### Changed:
 - Use VS Code's API for dealing with the filesystem
 - Use VS Code's API for opening external URLs
 
 ## [2025.1.0] - 2024-07-07
 
-### Added:
-- Notebook controller that executes the cells in MotionBuilder
-
-### Changed:
+- Added Notebook controller that executes the cells in MotionBuilder
 - Renamed setting `motionbuilder.execute.addWorkspaceToPath` to `motionbuilder.environment.addWorkspaceToPath`
 - `motionbuilder.environment.addWorkspaceToPath` now defaults to `true`
-- Workspace paths are now added to sys.path when VS Code first connects to MotionBuilder
+- Workspace paths are now added to `sys.path` when VS Code first connects to MotionBuilder
 - Added a timeout of 10 seconds when connecting to MotionBuilder
-
-### Fixed:
-- `motionbuilder.setupCodeCompletion`'s "Show Setting" button not always showing the correct setting
-- Stepping over indented code not always working correctly
-
-### Removed:
-- Deprecated settings: `motionbuilder.debug.port` & `motionbuilder.debug.autoPort`
+- Fixed `motionbuilder.setupCodeCompletion`'s "Show Setting" button not always showing the correct setting
+- Fixed atepping over indented code not always working correctly
+- Removed deprecated settings: `motionbuilder.debug.port` & `motionbuilder.debug.autoPort`
 
 ## [2025.0.2] - 2024-05-05
 
-### Added:
-- `motionbuilder.execute.addWorkspaceToPath` setting which will add the workspace folder(s) to sys.path. Defaults to `false`
-
-### Fixed:
+- Added `motionbuilder.execute.addWorkspaceToPath` setting which will add the workspace folder(s) to sys.path. Defaults to `false`
 - `motionbuilder.setupCodeCompletion` will now correctly insert the path in the correct setting scope _(user/workspace/folder)_
-- Traceback messages potentially having the wrong line number in the clickable URL
+- Fixed traceback messages potentially having the wrong line number in the clickable URL
 
 
 ## [2025.0.1] - 2024-04-17
 
-### Fixed:
-- `motionbuilder.setupCodeCompletion` failing to create the default directory for the stub files [#9](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/9)
+- Fixed `motionbuilder.setupCodeCompletion` failing to create the default directory for the stub files [#9](https://github.com/nils-soderman/vscode-motionbuilder-utils/issues/9)
 
 ## [2025.0.0] - 2024-04-13
 
-### Changed:
 - Renamed setting:
     - `motionbuilder.debug.port` -> `motionbuilder.attach.port`
     - `motionbuilder.debug.autoPort` -> `motionbuilder.attach.autoPort`
 - `motionbuilder.setupCodeCompletion` now downloads the latest stubs from [pyfbsdk-stub-generator/generated-stub-files](https://github.com/nils-soderman/pyfbsdk-stub-generator/tree/main/generated-stub-files)
 - The documentation & examples now browses the 2025 docs
 - Extension appdata is now stored in VS Code's user-data folder
-
-### Fixed:
-- Bug preventing VS Code from attaching to MoBu 2025
-- Folder settings potentially being ignored when a workspace is opened.
+- Fixed bug preventing VS Code from attaching to MoBu 2025
+- Fixed folder settings potentially being ignored when a workspace is opened.
 - Python 2.7 support for `motionbuilder.attach`
 
 ## [2024.1.0] - 2024-01-01
 
-### Added:
-- Command `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
-- Setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ignore when reloading modules.
-
-### Changed:
+- Added command `motionbuilder.reloadModules` which reloads all imported python modules (excluding default site-packages).
+- Added setting `motionbuilder.reload.ignore`, a list of glob patterns of files to ignore when reloading modules.
 - Renamed output channel to "MotionBuilder Output"
 - Updated 2024 stub files
 
 ## [2024.0.0] - 2023-07-21
 
-### Changed:
-- Versioning scheme to match the currently latest version of MotionBuilder that the extension officially supports
+- Changed versioning scheme to match the currently latest version of MotionBuilder that the extension officially supports
 - Bundle the compiled code using esbuild for faster startup time & smaller file size
 
 ## [1.4.0] - 2023-07-18
 
-### Changed:
 - Updated stub files
 - If trying to attach without `debugpy` being installed, the extension will now ask before installing the module
 - How data is handled between the extension and MotionBuilder
   - Most data is now sent through the socket instead of being written to disk
   - [motionbuilder-socket](https://www.npmjs.com/package/motionbuilder-socket) is now a standalone NodeJS module
-
-### Fixed:
-- Running multiple commands too fast either resulting in an error or output not correctly shown.
+- Fixed running multiple commands too fast either resulting in an error or output not correctly shown.
 
 ## [1.3.1] - 2023-04-29
 
-### Added:
 - Icons to items when browsing the documentation
-
-### Fixed:
-- Opening examples in the editor not working
+- Fixed opening examples in the editor not working
 
 ## [1.3.0] - 2023-04-25
 
-### Added: 
-- MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_ 
+- Added MotionBuilder 2024 stub files & documentation _(Use the new command "MotionBuilder: Setup Code Completion" to update your stub files)_ 
 - Added command "MotionBuilder: Setup Code Completion" `motionbuilder.setupCodeCompletion` which can be used setup code completion.
-
-### Changed:
 - Stub files are no longer automatically copied on startup.
 - Extension is now enabled when a MotionBuilder command is used, instead of on startup.
 - Renamed command title "Browse Documentation (Examples)" -> "Browse Examples"
-
-### Fixed:
-- Execution of selected code failing if first line is empty and second line is indented.
-- Browse examples not working with 2022 & 2023 due to examples missing from those documentation versions.
-
-### Removed:
+- Fixed execution of selected code failing if first line is empty and second line is indented.
+- Fixed browse examples not working with 2022 & 2023 due to examples missing from those documentation versions.
 - Removed Configurations:
     - `motionbuilder.execute.enableShortcut`
     - `motionbuilder.stubFiles.copyOnStartup`
@@ -144,28 +106,21 @@
 
 ## [1.2.5] - 2023-02-12
 
-### Changed:
 - Stub files are now named .pyi
 - Improved pyfbsdk stub file
 - "MotionBuilder: Browse Documentation (Python)" is now the default command mapped to <kbd>Ctrl</kbd> + <kbd>F1</kbd>
 
 ## [1.2.4] - 2022-11-28
 
-### Fixed:
 - Encode/decode text sent between MotionBuilder & VS Code using UTF-8
-- Folder settings beeing ignored
+- Fixed folder settings beeing ignored
 
 ## [1.2.3] - 2022-10-02
 
-### Added: 
 - Added configuration `motionbuilder.execute.enableShortcut` which can be used to disable the `motionbuilder.execute` shortcut in spesific workspaces
 - Added a _"Help"_ button when VS Code fails to connect to MotionBuilder, that will take the user to a troubleshooting web page
-
-### Changed:
 - The command `motionbuilder.execute` is now only enabled when a Python file is opened
 - Sorted the configurations into categories
-
-### Fixed:
 - Mac & Linux support for opening documentation in web-browser
 
 ## [1.2.2] - 2022-09-18
