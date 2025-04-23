@@ -7,6 +7,8 @@
 - `MotionBuilder: Browse Documentation` now browses the 2026 documentation
 - The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, leading to improved readability
 - Fixed user SyntaxErrors not printed correctly when executing unsaved files
+- `motionbuilder.reloadModules` now only reloads modules located in the workspace folder(s)
+- Removed the `motionbuilder.reload.ignore` setting
 
 
 ## [2025.2.0] - 2025-01-04

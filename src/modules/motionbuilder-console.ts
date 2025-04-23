@@ -123,7 +123,7 @@ export async function executeFile(filepath: vscode.Uri, variables: { [key: strin
 }
 
 
-export async function evaluateFunction(uri: vscode.Uri, functionName: string, kwargs: any = {}) {
+export async function evaluateFunction(uri: vscode.Uri, functionName: string, kwargs: any = {}): Promise<any> {
     if (!bHasCreatedEvalFunction) {
         const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "vsc_eval.py");
         if (await executeFile(filepath) === null)

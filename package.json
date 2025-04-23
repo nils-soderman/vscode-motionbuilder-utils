@@ -68,7 +68,7 @@
       },
       {
         "command": "motionbuilder.reloadModules",
-        "title": "Reload Imported Modules",
+        "title": "Reload Modules",
         "category": "MotionBuilder",
         "enablement": "editorLangId==python"
       }
@@ -101,15 +101,6 @@
             "description": "Open up the example files in editor, instead of the web-browser.",
             "scope": "resource",
             "order": 1
-          },
-          "motionbuilder.reload.ignore": {
-            "type": "array",
-            "default": [
-              "*/site-packages/*"
-            ],
-            "description": "Glob patterns for files to ignore when reloading modules. Pattern will be matched against the full filepath of the module.",
-            "scope": "resource",
-            "order": 2
           }
         }
       },
