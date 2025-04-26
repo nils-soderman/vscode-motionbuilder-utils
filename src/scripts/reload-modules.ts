@@ -18,7 +18,7 @@ export async function main() {
     const workspaceFolders = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath) || [];
 
     const reloadScriptPath = vscode.Uri.joinPath(utils.getPythonDir(), "reload_modules.py");
-    const response: IReloadModulesResponse | null = await motionBuilderConsole.evaluateFunction(
+    const response = await motionBuilderConsole.evaluateFunction<IReloadModulesResponse>(
         reloadScriptPath,
         "reload",
         {

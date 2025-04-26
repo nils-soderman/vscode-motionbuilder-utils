@@ -35,7 +35,7 @@ export enum EDocType {
 async function getCurrentVersion(): Promise<number | null> {
     if (gCurrentVersion === null) {
         const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "info.py");
-        gCurrentVersion = await mobu.evaluateFunction(filepath, "version");
+        gCurrentVersion = await mobu.evaluateFunction<number>(filepath, "version");
     }
 
     return gCurrentVersion;
