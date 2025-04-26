@@ -79,9 +79,7 @@ async function onSocketConnected(socket: MotionBuilderSocket) {
 
         if (foldersToAddToPath.length > 0) {
             const scriptPath = vscode.Uri.joinPath(utils.getPythonDir(), "add_sys_path.py");
-            const response = await evaluateFunction(scriptPath, "main", { paths: foldersToAddToPath });
-            if (response)
-                logging.log(response);
+            await evaluateFunction<null>(scriptPath, "main", { paths: foldersToAddToPath });
         }
     }
 }
@@ -123,7 +121,7 @@ export async function executeFile(filepath: vscode.Uri, variables: { [key: strin
 }
 
 
-export async function evaluateFunction(uri: vscode.Uri, functionName: string, kwargs: any = {}): Promise<any> {
+export async function evaluateFunction<T>(uri: vscode.Uri, functionName: string, kwargs: any = {}): Promise<T | null> {
     if (!bHasCreatedEvalFunction) {
         const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "vsc_eval.py");
         if (await executeFile(filepath) === null)
@@ -156,7 +154,7 @@ export async function evaluateFunction(uri: vscode.Uri, functionName: string, kw
         logging.log(parsedResponse.output.trimEnd());
 
     if (parsedResponse.error) {
-        logging.showErrorMessage("Error executing function in MotionBuilder", Error(parsedResponse.error));
+        logging.showErrorMessage("Error executing function in MotionBuilder", Error(`${uri.fsPath} : ${functionName}\n${parsedResponse.error}`));
         return null;
     }
 

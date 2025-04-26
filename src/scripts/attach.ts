@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 
-import * as crypto from 'crypto';
-
 import * as logging from '../modules/logging';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
@@ -9,133 +7,53 @@ import * as utils from '../modules/utils';
 
 
 /**
- * Get the abs path to a debug script
- * @param filename The name of the script
+ * Get the abs path to the attach.py script
  */
-function getDebugScriptPath(filename: string) {
-    return vscode.Uri.joinPath(utils.getPythonDir(), "attach", filename);
-}
-
-
-/**
- * Split the response into lines and return an array of lines
- */
-function parseResponse(responseRaw: string | null) {
-    const response = responseRaw?.split("\n");
-    if (!response) {
-        return null;
-    }
-    return response;
-}
-
-
-/**
- * Check if the response contains the successId, and log all other lines
- * @param response The parsed response from MotionBuilder
- * @param successId if this string is found in the response, return true
- * @param failId don't log this string
- * @param bLog Log all lines that are not the successId/failId
- * @returns True if the successId was found in the response
- */
-function checkForSuccess(response: string[] | null, successId: string, failId: string = "False", bLog: boolean = true) {
-    if (!response) {
-        return false;
-    }
-
-    let bSuccess = false;
-    for (const line of response) {
-        if (line === successId)
-            bSuccess = true;
-        else if (bLog && line !== failId)
-            logging.log(line);
-    }
-
-    return bSuccess;
+function getAttachScript() {
+    return vscode.Uri.joinPath(utils.getPythonDir(), "attach.py");
 }
 
 
 /**
  * Check if debugpy python module is installed
- * @param pythonPackageDir The path to the extension can install python packages
  */
-export async function isDebugpyInstalled(pythonPackageDir: vscode.Uri) {
-    logging.log("Checking if debugpy is installed");
-
-    const successId = crypto.randomUUID();
-    const scriptPath = getDebugScriptPath("is_debugpy_installed.py");
-
-    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        vsc_target: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
-    });
-
-    // In Mobu 2023, the response might be empty if the Python Editor window is not open
-    if (!responseRaw) {
-        return "MoBu2023";
-    }
-
-    return checkForSuccess(parseResponse(responseRaw), successId);
+export function isDebugpyInstalled() {
+    return motionBuilderConsole.evaluateFunction<number>(getAttachScript(), "is_debugpy_installed");
 }
 
 
 /**
  * Install the debugpy python module
- * @param target The directory to install the module in
  */
-export async function installDebugpy(target: vscode.Uri) {
-    logging.log(`Installing debugpy in ${target.fsPath}`);
+export async function installDebugpy() {
+    logging.log(`Installing debugpy `);
 
-    const successId = crypto.randomUUID();
-    const scriptPath = getDebugScriptPath("install_debugpy.py");
-    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        vsc_target: target.fsPath, // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_suceess_id: successId // eslint-disable-line @typescript-eslint/naming-convention
-    });
-
-    return checkForSuccess(parseResponse(responseRaw), successId);
+    return await motionBuilderConsole.evaluateFunction<boolean>(getAttachScript(), "install_debugpy") == true;
 }
 
 
 /**
  * Start the debugpy server in MotionBuilder
  * @param port The port to start the server on
- * @param pythonPackageDir The path to the extension can install python packages
  * @returns True if the server was started successfully
  */
-async function startDebugpyServer(port: number, pythonPackageDir: vscode.Uri) {
-    const scriptPath = getDebugScriptPath("start_debugpy_server.py");
-
-    const successId = crypto.randomUUID();
-
+async function startDebugpyServer(port: number) {
     logging.log(`Starting debugpy server on port ${port}`);
 
-    const responseRaw = await motionBuilderConsole.executeFile(scriptPath, {
-        vsc_port: port,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_target: pythonPackageDir.fsPath,  // eslint-disable-line @typescript-eslint/naming-convention
-        vsc_suceess_id: successId  // eslint-disable-line @typescript-eslint/naming-convention
-    });
+    return await motionBuilderConsole.evaluateFunction<boolean>(
+        getAttachScript(),
+        "start_debugpy_server",
+        { port }
+    ) == true;
 
-    return checkForSuccess(parseResponse(responseRaw), successId);
 }
 
 
 /**
  * Check if debugpy is already running in MotionBuilder, and if so return the port it's using
  */
-export async function getCurrentDebugPort() {
-    const scriptPath = getDebugScriptPath("get_current_debug_port.py");
-    const responseRaw = await motionBuilderConsole.executeFile(scriptPath);
-    const lines = parseResponse(responseRaw);
-    if (!lines)
-        return null;
-
-    for (const line of lines) {
-        const port = parseInt(line);
-        if (port)
-            return port;
-    }
-
-    return null;
+export function getCurrentDebugPort() {
+    return motionBuilderConsole.evaluateFunction<number>(getAttachScript(), "get_current_debugpy_port");
 }
 
 
@@ -182,15 +100,8 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
         logging.log(`debugpy is running on port ${port}`);
     }
     else {
-        const pythonPackageDir = vscode.Uri.joinPath(context.globalStorageUri, "site-packages");
-
         // Make sure debugpy is installed
-        const bIsDebugpyInstalled = await isDebugpyInstalled(pythonPackageDir);
-        if (bIsDebugpyInstalled === "MoBu2023") {
-            // In Mobu 2023, the response might be empty if the Python Editor window is not open
-            vscode.window.showErrorMessage('Due to a bug in MoBu 2023 the MotionBuilder window "Python Editor" must be open before attaching.');
-            return false;
-        }
+        const bIsDebugpyInstalled = await isDebugpyInstalled();
 
         if (!bIsDebugpyInstalled) {
             logging.log("debugpy is not installed");
@@ -200,7 +111,7 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
             );
 
             if (selectedInstallOption === "Install") {
-                if (!await installDebugpy(pythonPackageDir)) {
+                if (!await installDebugpy()) {
                     logging.showErrorMessage("Failed to install debugpy", new Error("Failed to install debugpy"));
                     return false;
                 }
@@ -208,7 +119,6 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
             else {
                 return false;
             }
-
         }
 
         port = await getWantedPort();
@@ -216,7 +126,7 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
             return false;
         }
 
-        if (!await startDebugpyServer(port, pythonPackageDir)) {
+        if (!await startDebugpyServer(port)) {
             return false;
         }
     }

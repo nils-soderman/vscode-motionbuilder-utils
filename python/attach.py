@@ -8,8 +8,7 @@ MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.e
 VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 
 
-
-def is_debugpy_installed() -> bool:
+def is_debugpy_installed():
     """
     Tries to import debugpy to check if it is installed.
     """
@@ -18,7 +17,8 @@ def is_debugpy_installed() -> bool:
         return True
     except ModuleNotFoundError:
         return False
-    
+
+
 def is_pip_installed():
     """ Check if pip is installed """
     try:
@@ -67,7 +67,7 @@ def install_pip():
     return pip_module_path
 
 
-def install_debugpy() -> bool:
+def install_debugpy():
     """
     Installs debugpy using the current Unreal Python interpreter.
     """
@@ -103,7 +103,7 @@ def install_debugpy() -> bool:
     return True
 
 
-def start_debugpy_server(port: int) -> bool:
+def start_debugpy_server(port):
     """ Starts a debugpy server on the specified port """
     import debugpy
 
@@ -115,6 +115,9 @@ def start_debugpy_server(port: int) -> bool:
     return True
 
 
-def get_current_debugpy_port() -> int:
-    """ Returns the current debugpy server port or -1 if it is not set """
-    return int(os.environ.get(VSCODE_DEBUG_SERVER_ENV_VAR, -1))
+def get_current_debugpy_port():
+    """ Returns the current debugpy server port or None if it is not set """
+    if VSCODE_DEBUG_SERVER_ENV_VAR in os.environ:
+        return int(os.environ[VSCODE_DEBUG_SERVER_ENV_VAR])
+
+    return None
