@@ -143,7 +143,7 @@ export async function evaluateFunction<T>(uri: vscode.Uri, functionName: string,
 
     let parsedResponse;
     try {
-        parsedResponse = JSON.parse(response.replace(/\\\\/g, "\\").slice(1, -1)) as IEvalOutput;
+        parsedResponse = JSON.parse(response.replace(/\\\\/g, "\\").replace(/\\\'/g, "'").slice(1, -1)) as IEvalOutput;
     } catch (error) {
         logging.log(response);
         logging.showErrorMessage("Failed to parse JSON response from MotionBuilder", error as Error);
