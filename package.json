@@ -140,7 +140,7 @@
             "default": 4243,
             "description": "The port to run the debugpy server on",
             "minimum": 0,
-            "maximum": 65353,
+            "maximum": 65536,
             "scope": "resource",
             "order": 0
           },
