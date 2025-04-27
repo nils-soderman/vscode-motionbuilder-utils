@@ -6,7 +6,6 @@ from __future__ import annotations
 import subprocess
 import warnings
 import typing
-import enum
 import time
 import json
 import sys
@@ -17,6 +16,11 @@ try:
 except ImportError:
     raise ImportError("pyfbsdk is not available, please run this script from within MotionBuilder")
 
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    StrEnum = object
+
 # Append current site-packages path
 CURRENT_DIR = os.path.dirname(__file__)
 SITEPACKAGES_DIR = os.path.join(CURRENT_DIR, "site-packages")
@@ -25,7 +29,8 @@ if not os.path.isdir(SITEPACKAGES_DIR):
     # Install the site-packages directory
     mobupy = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
     subprocess.check_call([
-        mobupy, "-m", "pip", "install", "-r", os.path.join(CURRENT_DIR, "requirements.txt"), "--target", SITEPACKAGES_DIR
+        mobupy, "-m", "pip", "install", "-r", os.path.join(CURRENT_DIR,
+                                                           "requirements.txt"), "--target", SITEPACKAGES_DIR
     ])
 
 if SITEPACKAGES_DIR not in sys.path:
@@ -44,8 +49,8 @@ from pyfbsdk_stub_generator.plugins.online_documentation.documentation_scraper.d
 #            Types & Enums
 # ------------------------------------------
 
-class EIcons(enum.StrEnum):
-    """ 
+class EIcons(StrEnum):
+    """
     VSCode icons (All icons can be found here: https://microsoft.github.io/vscode-codicons/dist/codicon.html)
     """
     FUNCTION = "symbol-function"
@@ -76,12 +81,9 @@ def get_motionbuilder_version():
     return int(2000 + pyfbsdk.FBSystem().Version / 1000)
 
 
-def get_output_directory(version: int):
-    return os.path.join(CURRENT_DIR, "..", "toc", str(version))
-
-
 def save_items(filename: str, version: int, base_url: str, items: list[ItemDataT]):
-    directory = get_output_directory(version)
+    directory = os.path.join(CURRENT_DIR, "..", "table_of_contents")
+
     if not os.path.isdir(directory):
         os.makedirs(directory)
 
@@ -119,7 +121,7 @@ def generate_examples_toc(version: int):
             "url": url
         })
 
-    save_items("examples.json",
+    save_items(f"examples_{version}.json",
                base_url=GetPythonPageContentsUrl("", version),
                version=version,
                items=items)
@@ -207,7 +209,7 @@ def generate_python_toc(version: int):
                 "url": child_url
             })
 
-    save_items("python.json",
+    save_items(f"{version}.json",
                base_url=GetPythonPageContentsUrl("", version),
                version=version,
                items=items)
