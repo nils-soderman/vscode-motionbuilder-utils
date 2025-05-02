@@ -1,15 +1,16 @@
 # Change Log
 
-## [2026.0.0] - UNRELEASED
+## [2026.0.0] - 2025-05-02
 
-**NOTE:** Version 2026.x will be the last version supporting Python 2 _(>= MotionBuilder 2022)_.
+**NOTE:** Version 2026.x will be the last version to support Python 2.7 _(<= MotionBuilder 2020)_.
 
-- `MotionBuilder: Browse Documentation` now browses the 2026 documentation
-- The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, leading to improved readability
-- Fixed user SyntaxErrors not printed correctly when executing unsaved files
+- Attaching to MotionBuilder now uses the _"debugpy"_ configuration type, instead of _"python"_ which has been deprecated
 - `motionbuilder.reloadModules` now only reloads modules located in the workspace folder(s)
 - Removed the `motionbuilder.reload.ignore` setting
-
+- `MotionBuilder: Browse Documentation` now browses the documentation for the currently used version of MotionBuilder
+- Fixed user SyntaxErrors not formatted correctly when executing unsaved files
+- The 'MotionBuilder Log' output channel is now of type `LogOutputChannel`, for improved readability
+- MotionBuilder 2023 will now automatically open up the Python Editor when the extension needs to talk to Mobu _(due to a bug in mobu 2023 requiring the Python Editor to be open for the output to be flushed)_
 
 ## [2025.2.0] - 2025-01-04
 
