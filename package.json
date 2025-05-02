@@ -156,7 +156,7 @@
     ]
   },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.99.1"
   },
   "scripts": {
     "vscode:uninstall": "node ./dist/hooks/uninstall-hook",
@@ -173,13 +173,13 @@
     "@types/node": "20.x",
     "@types/sinon": "^17.0.4",
     "@types/tcp-port-used": "^1.0.4",
-    "@types/vscode": "^1.90.0",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
+    "@types/vscode": "^1.99.1",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.5.2",
-    "esbuild": "^0.25.2",
-    "eslint": "^9.24.0",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
     "sinon": "^20.0.0",
     "typescript": "^5.8.3"
   },
