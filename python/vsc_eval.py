@@ -48,7 +48,7 @@ def vsc_eval(filepath, function_name, **kwargs):
     if function_name in exec_globals:
         function = exec_globals[function_name]
     else:
-        raise ValueError(f"Function '{function_name}' not found in file '{filepath}'")
+        raise ValueError("Function '%s' not found in file '{filepath}'" % function_name)
 
     with CaptureOutputContext() as output:
         try:

@@ -1,5 +1,6 @@
 import subprocess
 import tempfile
+import site
 import sys
 import os
 
@@ -7,6 +8,12 @@ VSCODE_DEBUG_SERVER_ENV_VAR = "vscode_debugpy_server_port"
 MOBU_PYTHON_EXECUTABLE = os.path.join(os.path.dirname(sys.executable), "mobupy.exe")
 VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 
+# Ensure the user site package directory is in sys.path
+if site.getusersitepackages() not in sys.path:
+    sys.path.append(site.getusersitepackages())
+
+if sys.version_info.major < 3:
+    ModuleNotFoundError = ImportError
 
 def is_debugpy_installed():
     """
@@ -84,21 +91,38 @@ def install_debugpy():
     else:
         debugpy_install_args.extend(("-m", "pip"))
 
-    debugpy_install_args.extend(("install", "-q", "--no-warn-script-location", "debugpy"))
+    if sys.version_info.major == 2:
+        package = "debugpy==1.5.1"
+    else:
+        package = "debugpy"
 
+    debugpy_install_args.extend(("install", "--user", package))
+
+    process = subprocess.Popen(debugpy_install_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
-        result = subprocess.run(debugpy_install_args, capture_output=True, check=True, text=True)
-        print(result.stdout)
-        print(result.stderr)
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install debugpy: {e}")
-        print(e.stdout)
-        print(e.stderr)
-    except Exception as e:
-        print(f"Failed to install debugpy: {e}")
+        stdout, stderr = process.communicate()
+        print(stdout.decode())
+        print(stderr.decode())
+    finally:
+        process.stdout.close()
+        process.stderr.close()
+        process.wait()
+
+    return process.returncode == 0
+
+    # try:
+    #     result = subprocess.run(debugpy_install_args, capture_output=True, check=True, text=True)
+    #     print(result.stdout)
+    #     print(result.stderr)
+    # except subprocess.CalledProcessError as e:
+    #     print("Failed to install debugpy: %s" % e)
+    #     print(e.stdout)
+    #     print(e.stderr)
+    # except Exception as e:
+    #     print("Failed to install debugpy: %s" % e)
 
     # Make sure the installation was successful by trying to import debugpy
-    import debugpy
+    # import debugpy
 
     return True
 
