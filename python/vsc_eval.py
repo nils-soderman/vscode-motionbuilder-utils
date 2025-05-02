@@ -44,7 +44,12 @@ def vsc_eval(filepath, function_name, **kwargs):
 
     # Find the function
     exec_globals = {}
-    exec(compile(code, filepath, 'exec'), exec_globals)
+    try:
+        exec(compile(code, filepath, 'exec'), exec_globals)
+    except Exception as e:
+        error_traceback = traceback.format_exc()
+        return json.dumps({"error": str(error_traceback)}, separators=(',', ':'))
+
     if function_name in exec_globals:
         function = exec_globals[function_name]
     else:

@@ -11,7 +11,7 @@ let gSocket: MotionBuilderSocket | null = null;
 let bHasCreatedEvalFunction = false;
 
 interface IEvalOutput {
-    output: string;
+    output?: string;
     result?: any;
     error?: string;
 }
