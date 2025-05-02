@@ -4,7 +4,7 @@
 
 **NOTE:** Version 2026.x will be the last version to support Python 2.7 _(<= MotionBuilder 2020)_.
 
-- Attaching to MotionBuilder now uses the _"debugpy"_ configuration type, instead of _"python"_ which has been deprecated
+- Attaching to MotionBuilder now uses the _"debugpy"_ configuration type, instead of _"python"_ which is deprecated
 - `motionbuilder.reloadModules` now only reloads modules within the workspace folder(s)
 - Removed `motionbuilder.reload.ignore` setting
 - `MotionBuilder: Browse Documentation` now opens documentation for the currently opened MotionBuilder version
