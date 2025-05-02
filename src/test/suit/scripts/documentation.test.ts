@@ -17,10 +17,13 @@ suite('Documentation', () => {
         [OPEN_IN_EDITOR_CONFIG]: true
     });
 
+    const extensionContext = vscodeMock.getExtensionContext();
+    let openExternalStub: sinon.SinonStub;
+
     setup(() => {
         testUtils.initializeExtension();
 
-        vscodeMock.mockOpenExternal();
+        openExternalStub = vscodeMock.mockOpenExternal();
         vscodeMock.stubShowQuickPick();
 
         vscodeMock.stubGetConfiguration({
@@ -31,23 +34,30 @@ suite('Documentation', () => {
     teardown(async () => {
         sinon.restore();
 
+        await vscode.workspace.fs.delete(extensionContext.globalStorageUri, { recursive: true });
         await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     });
 
-    test('Open Example In Editor', async function () {
-        await docs.browseExamples();
+    test('Examples', async function () {
+        await docs.browseExamples(extensionContext);
 
         // Check the currently open text editor
         const editor = vscode.window.activeTextEditor;
         assert.ok(editor);
         assert.ok(editor.document.languageId === 'python');
         assert.ok(editor.document.lineCount > 0);
-    });
 
-    test("Open in Webbrowser", async function () {
-        await docs.browsePython();
+        await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
 
+        // Open external browser
         extensionConfig.update(OPEN_IN_EDITOR_CONFIG, false);
-        await docs.browseExamples();
+        await docs.browseExamples(extensionContext);
+        assert.ok(vscode.window.activeTextEditor === undefined, "Editor was not closed");
+        assert.ok(openExternalStub.calledOnce, "Open external was not called once");
+    });
+    
+    test("pyfbsdk documentation", async function () {
+        await docs.browseDocumentation(extensionContext);
+        assert.ok(openExternalStub.calledOnce, "Open external was not called once");
     });
 });

@@ -25,18 +25,11 @@ suite('Attach', function () {
     });
 
     let extensionContext: vscode.ExtensionContext;
-    let tempDebugpyInstallDir: vscode.Uri;
 
-    suiteTeardown(async () => {
-        if (await testUtils.uriExists(tempDebugpyInstallDir))
-            await vscode.workspace.fs.delete(tempDebugpyInstallDir, { recursive: true });
-    });
-    
     setup(() => {
         testUtils.initializeExtension();
 
         extensionContext = vscodeMock.getExtensionContext();
-        tempDebugpyInstallDir = vscode.Uri.joinPath(extensionContext.globalStorageUri, "site-packages");
 
         vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
@@ -53,21 +46,8 @@ suite('Attach', function () {
     test('Install Debugpy', async function () {
         this.timeout(30 * 1000);
 
-        assert.ok(await attach.installDebugpy(tempDebugpyInstallDir));
-        assert.ok(await attach.isDebugpyInstalled(tempDebugpyInstallDir));
-        
-        // We expect to see a single folder with the Python version here, e.g. "Python311"
-        const folderContent = await vscode.workspace.fs.readDirectory(tempDebugpyInstallDir);
-        assert.equal(folderContent.length, 1);
-
-        const [name, type] = folderContent[0];
-        assert.ok(name.startsWith("Python"));
-        assert.strictEqual(type, vscode.FileType.Directory);
-
-        // Check that the debugpy module is present
-        const debugpyPath = vscode.Uri.joinPath(tempDebugpyInstallDir, name, "debugpy");
-        assert.ok(await vscode.workspace.fs.stat(debugpyPath));
-
+        assert.ok(await attach.installDebugpy());
+        assert.ok(await attach.isDebugpyInstalled());
     });
 
     test('Get Wanted Port', async function () {
@@ -86,7 +66,7 @@ suite('Attach', function () {
         extensionConfig.update(CONFIG_KEYS.port, 4242);
         const wantedPort = await attach.getWantedPort();
         assert.ok(wantedPort && wantedPort > 4242);
-        
+
         extensionConfig.update(CONFIG_KEYS.autoPort, false);
         assert.ok(await attach.getWantedPort() === null);
     });
@@ -95,20 +75,20 @@ suite('Attach', function () {
         this.timeout(20 * 1000);
 
         assert.ok(await attach.main(extensionContext));
-        
+
         assert.ok(utils.isDebuggingMotionBuilder());
-        
+
         // Re-attach should not start a new session
         assert.ok(await attach.main(extensionContext));
     });
-    
-    test('Re-attach', async function() {
+
+    test('Re-attach', async function () {
         assert.ok(await attach.getCurrentDebugPort());
-        
+
         assert.ok(!utils.isDebuggingMotionBuilder());
         assert.ok(await attach.main(extensionContext));
 
         assert.ok(utils.isDebuggingMotionBuilder());
     });
-    
+
 });
