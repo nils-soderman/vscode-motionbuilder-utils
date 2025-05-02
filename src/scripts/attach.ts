@@ -133,7 +133,7 @@ export async function main(context: vscode.ExtensionContext): Promise<boolean> {
 
     const configuration: vscode.DebugConfiguration = {
         "name": utils.DEBUG_SESSION_NAME,
-        "type": "python",
+        "type": "debugpy",
         "request": "attach",
         "connect": {
             "host": "localhost",
