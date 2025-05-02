@@ -19,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return execute.executeCurrentDocument();
 		})
 	);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.reloadModules', () => {
 			return reloadModules.main();
@@ -39,16 +40,17 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
-	// Documentation
+	// Browse pyfbsdk Documentation
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationPython', () => {
-			return documentation.browseDocumentation(context, documentation.EDocType.python);
+			return documentation.browseDocumentation(context);
 		})
 	);
 
+	// Browse Examples
 	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.browseDocumentationExamples', () => {
-			return documentation.browseDocumentation(context, documentation.EDocType.example);
+			return documentation.browseExamples(context);
 		})
 	);
 

@@ -25,17 +25,16 @@ interface IDocumentationToc {
     items: IDocumentationQuickPickItem[];
 }
 
-/** Documentation table of content types */
 export enum EDocType {
-    example = "examples.json",
-    python = "python.json"
+    example = 0,
+    python = 1
 };
 
 
 async function getCurrentVersion(): Promise<number | null> {
     if (gCurrentVersion === null) {
         const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "info.py");
-        gCurrentVersion = await mobu.evaluateFunction<number>(filepath, "version");
+        gCurrentVersion = await mobu.evaluateFunction<number>(filepath, "version", {}, true);
     }
 
     return gCurrentVersion;
@@ -45,19 +44,32 @@ function getDocumentationDirectory(context: vscode.ExtensionContext): vscode.Uri
     return vscode.Uri.joinPath(context.globalStorageUri, "documentation");
 }
 
-async function getDocumentationTableOfContentsUri(context: vscode.ExtensionContext, type: EDocType, version: number | null): Promise<vscode.Uri> {
+// -------------------------------------------------------
+//               Python SDK Table of Contents
+// -------------------------------------------------------
+
+async function getAvailableVersions(): Promise<{ version: number; download_url: string; }[]> {
+    const folderContents = await github.getContents(GITHUB_EXTENSION_REPOSITORY_NAME, DOCUMENTATION_FOLDER);
+    return folderContents
+        .filter(content => content.type === "file" && content.name.endsWith(".json") && !content.name.includes("examples"))
+        .map(content => ({
+            version: parseInt(content.name),
+            download_url: content.download_url,
+        }))
+        .filter(content => !isNaN(content.version))
+        .sort((a, b) => a.version - b.version);
+}
+
+async function getDocumentationTableOfContentsUri(context: vscode.ExtensionContext, version: number | null): Promise<vscode.Uri> {
     const cacheDir = getDocumentationDirectory(context);
     if (version === null) {
-        let directories = (await vscode.workspace.fs.readDirectory(cacheDir));
-        directories.sort(([aName], [bName]) => aName.localeCompare(bName));
-        for (const [name, type] of directories) {
-            if (type === vscode.FileType.Directory) {
-                const folderVersion = parseInt(name);
-                const filepath = vscode.Uri.joinPath(cacheDir, name, type.toString());
-                if (!isNaN(folderVersion) && await utils.uriExists(filepath)) {
-                    return filepath;
-                }
-            }
+        const files = (await vscode.workspace.fs.readDirectory(cacheDir))
+            .filter(([name, type]) => type === vscode.FileType.File && !name.includes("examples"))
+            .sort(([aName], [bName]) => aName.localeCompare(bName));
+        if (files.length > 0) {
+            // Get the latest version from the cache
+            const latestFile = files[files.length - 1][0];
+            return vscode.Uri.joinPath(cacheDir, latestFile);
         }
 
         // Get the latest version
@@ -70,9 +82,9 @@ async function getDocumentationTableOfContentsUri(context: vscode.ExtensionConte
     }
 
     // Check if version already exists
-    const filepath = vscode.Uri.joinPath(cacheDir, version.toString(), type.toString());
-    if (await utils.uriExists(filepath)) {
-        return filepath;
+    const targetFilepath = vscode.Uri.joinPath(cacheDir, `${version}.json`);
+    if (await utils.uriExists(targetFilepath)) {
+        return targetFilepath;
     }
 
     // Check if version exists on GitHub
@@ -85,47 +97,135 @@ async function getDocumentationTableOfContentsUri(context: vscode.ExtensionConte
         });
     }
 
-    // Download the documentation
-    const contentList = await github.getContents(GITHUB_EXTENSION_REPOSITORY_NAME, versionInfo.path);
-    const file = contentList.find(content => content.name === type.toString());
-    if (!file) {
-        throw new Error(`Documentation file not found for version ${version}`);
-    }
-    const content = await github.getRequest(file.download_url, 10_000);
+    const content = await github.getRequest(versionInfo.download_url, 10_000);
 
-    vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(cacheDir, versionInfo.version.toString()));
-    await vscode.workspace.fs.writeFile(filepath, Buffer.from(content));
+    const outFilepath = vscode.Uri.joinPath(cacheDir, `${versionInfo.version}.json`);
+    await vscode.workspace.fs.writeFile(outFilepath, Buffer.from(content));
 
-    return filepath;
+    return outFilepath;
 }
 
-
-async function getDocumentationTableOfContents(context: vscode.ExtensionContext, type: EDocType, version: number | null): Promise<IDocumentationToc> {
-    const filepath = await getDocumentationTableOfContentsUri(context, type, version);
+async function getDocumentationTableOfContents(context: vscode.ExtensionContext, version: number | null): Promise<IDocumentationToc> {
+    const filepath = await getDocumentationTableOfContentsUri(context, version);
     const data = await vscode.workspace.fs.readFile(filepath);
     return JSON.parse(data.toString()) as IDocumentationToc;
 }
 
 
-async function getAvailableVersions(): Promise<{ version: number; path: string; }[]> {
+/**
+ * List all pages from one or multiple documentation types, and open up the page selected by the user
+ * @param type List of types to include, types should be of `FDOCTYPE`
+ */
+export async function browseDocumentation(context: vscode.ExtensionContext) {
+    const currentVersion = await getCurrentVersion();
+    const tableOfContents = await getDocumentationTableOfContents(context, currentVersion);
+
+    const selection = await vscode.window.showQuickPick(tableOfContents.items, {
+        placeHolder: "Select a page to open",
+        title: `MotionBuilder ${tableOfContents.version} Documentation`,
+    });
+    if (!selection) {
+        return;
+    }
+
+    await vscode.env.openExternal(vscode.Uri.parse(tableOfContents.base_url + selection.url));
+}
+
+
+
+// -------------------------------------------------------
+//                        Examples
+// -------------------------------------------------------
+
+/**
+ * Get the latest example from the GitHub repository
+ */
+async function getLatestExample() {
     const folderContents = await github.getContents(GITHUB_EXTENSION_REPOSITORY_NAME, DOCUMENTATION_FOLDER);
-    return folderContents
-        .filter(content => content.type === "dir")
-        .map(content => ({
-            version: parseInt(content.name),
-            path: content.path
-        }))
-        .filter(content => !isNaN(content.version))
-        .sort((a, b) => a.version - b.version);
+    const exampleFiles = folderContents.filter(content => content.type === "file" && content.name.endsWith(".json") && content.name.includes("examples"));
+    if (exampleFiles.length === 0)
+        return null;
+
+    return exampleFiles[0];
+}
+
+
+let gCachedExamplesUri: vscode.Uri | null = null;
+
+async function getExamplesTableOfContentsUri(context: vscode.ExtensionContext): Promise<vscode.Uri | null> {
+    if (gCachedExamplesUri) {
+        return gCachedExamplesUri;
+    }
+
+    const currentVersion = await getCurrentVersion();
+    const cacheDir = getDocumentationDirectory(context);
+
+    // Check for cached examples on disk
+    let cachedVersion = -1;
+    let cachedExampleFilename = null;
+    const exampleFiles = (await vscode.workspace.fs.readDirectory(cacheDir))
+        .filter(([name, type]) => type === vscode.FileType.File && name.includes("examples"));
+    if (exampleFiles.length > 0) {
+        cachedExampleFilename = exampleFiles[0][0];
+        cachedVersion = parseInt(cachedExampleFilename.split("_")[0]);
+        gCachedExamplesUri = vscode.Uri.joinPath(cacheDir, cachedExampleFilename);
+        if (currentVersion === null || currentVersion <= cachedVersion) {
+            return gCachedExamplesUri;
+        }
+    }
+
+    // Get the latest version
+    const latestVersionContent = await getLatestExample();
+    if (!latestVersionContent) {
+        logging.showErrorMessage("No example files found in the GitHub repository.", Error(`No example files found at ${GITHUB_EXTENSION_REPOSITORY_NAME}/${DOCUMENTATION_FOLDER}`));
+        return null;
+    }
+
+    const latestVersion = parseInt(latestVersionContent.name.split("_")[0]);
+    if (isNaN(latestVersion)) {
+        logging.showErrorMessage("Failed to parse the latest version from the example files.", Error(`Failed to parse the latest version from ${latestVersionContent.name}`));
+        return null;
+    }
+
+    if (cachedVersion < latestVersion) {
+        // Download the latest version
+        const content = await github.getRequest(latestVersionContent.download_url, 10_000);
+        const outFilepath = vscode.Uri.joinPath(cacheDir, latestVersionContent.name);
+
+        await vscode.workspace.fs.writeFile(outFilepath, Buffer.from(content));
+
+        // Delete all other cached examples
+        for (const [name, type] of exampleFiles) {
+            if (name !== latestVersionContent.name) {
+                const filepath = vscode.Uri.joinPath(cacheDir, name);
+                await vscode.workspace.fs.delete(filepath, { useTrash: false });
+            }
+        }
+
+        gCachedExamplesUri = outFilepath;
+    }
+
+    return gCachedExamplesUri;
+}
+
+
+async function getExamplesTableOfContents(context: vscode.ExtensionContext): Promise<IDocumentationToc | null> {
+    const filepath = await getExamplesTableOfContentsUri(context);
+    if (!filepath) {
+        return null;
+    }
+
+    const data = await vscode.workspace.fs.readFile(filepath);
+    return JSON.parse(data.toString()) as IDocumentationToc;
 }
 
 
 /**
  * Open the code from a MotionBuilder example inside the editor
  * @param url The full URL to the example documentation web-page
- * @param filename The abs filepath where to save the file on disk
+ * @param title The title of the example, will be inserted as a header in the code
  */
-async function openExampleInVSCode(url: string) {
+async function openExampleInVSCode(url: string, title: string): Promise<vscode.TextEditor | undefined> {
     let data: string;
     try {
         data = await utils.httpsGetRequest(url, { timeout: 10_000 });
@@ -137,12 +237,15 @@ async function openExampleInVSCode(url: string) {
 
     const parsedHtml = htmlParser.parse(data);
 
-    const lines = parsedHtml.querySelectorAll(".line");
-
-    const content = lines.map(line => {
+    let lines = parsedHtml.querySelectorAll(".line").map(line => {
         line.querySelectorAll(".lineno").forEach(e => e.remove());
         return line.text;
-    }).join("\n");
+    });
+
+    // The first line will be used as the tab title for unsaved documents
+    lines.unshift(`# ${title}\n`);
+
+    const content = lines.join("\n");
 
     const doc = await vscode.workspace.openTextDocument({ content, language: 'python' });
 
@@ -150,26 +253,21 @@ async function openExampleInVSCode(url: string) {
 }
 
 
-/**
- * List all pages from one or multiple documentation types, and open up the page selected by the user
- * @param type List of types to include, types should be of `FDOCTYPE`
- */
-export async function browseDocumentation(context: vscode.ExtensionContext, type: EDocType) {
-    const currentVersion = await getCurrentVersion();
-    const tableOfContents = await getDocumentationTableOfContents(context, type, currentVersion);
+export async function browseExamples(context: vscode.ExtensionContext) {
+    const tableOfContents = await getExamplesTableOfContents(context);
+    if (!tableOfContents)
+        return;
 
     const selection = await vscode.window.showQuickPick(tableOfContents.items, {
-        placeHolder: "Select a page to open",
+        placeHolder: "Select an example to open",
+        title: `MotionBuilder ${tableOfContents.version} Examples`,
     });
     if (!selection) {
         return;
     }
 
-    if (type == EDocType.example && utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor")) {
-        // Open in VSCode
-        await openExampleInVSCode(tableOfContents.base_url + selection.url);
-    }
-    else {
+    if (utils.getExtensionConfig().get<boolean>("documentation.openExamplesInEditor"))
+        await openExampleInVSCode(tableOfContents.base_url + selection.url, selection.label);
+    else
         await vscode.env.openExternal(vscode.Uri.parse(tableOfContents.base_url + selection.url));
-    }
 }

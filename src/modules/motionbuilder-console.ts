@@ -20,7 +20,7 @@ interface IEvalOutput {
 /**
  * Get a global socket connection to MotionBuilder
  */
-async function getSocket() {
+async function getSocket(bSilentFail: boolean = false): Promise<MotionBuilderSocket | null> {
     if (gSocket) {
         // TODO: Validate connection, may not be needed. As if we drop connection we now set gSocket to be undefined
         return gSocket;
@@ -34,11 +34,14 @@ async function getSocket() {
     }
     catch (e: any) {
         if (e.code === "ECONNREFUSED") {
-            vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((selectedValue) => {
-                if (selectedValue === "Help") {
-                    extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
-                }
-            });
+            if (bSilentFail)
+                logging.logError("Failed to connect to MotionBuilder, connection refused");
+            else
+                vscode.window.showErrorMessage("Failed to connect to MotionBuilder.", "Help").then((selectedValue) => {
+                    if (selectedValue === "Help") {
+                        extensionWiki.openPageInBrowser(extensionWiki.Pages.failedToConnect);
+                    }
+                });
         }
         else if (e.code === "ETIMEDOUT") {
             vscode.window.showErrorMessage("Connection to MotionBuilder timed out, make sure MotionBuilder is not minimized.");
@@ -111,8 +114,8 @@ export async function runCommand(command: string) {
  * @param variables An object containing key-value pairs of global variables to set before executing the file. The keys should be strings representing the variable names, and the values can be of any serializable type.
  * @returns Python output e.g: print statements or errors
  */
-export async function executeFile(filepath: vscode.Uri, variables: { [key: string]: any } = {}): Promise<string | null> {
-    const socket = await getSocket();
+export async function executeFile(filepath: vscode.Uri, variables: { [key: string]: any } = {}, bSilentFail: boolean = false): Promise<string | null> {
+    const socket = await getSocket(bSilentFail);
     if (!socket)
         return null;
 
@@ -121,10 +124,10 @@ export async function executeFile(filepath: vscode.Uri, variables: { [key: strin
 }
 
 
-export async function evaluateFunction<T>(uri: vscode.Uri, functionName: string, kwargs: any = {}): Promise<T | null> {
+export async function evaluateFunction<T>(uri: vscode.Uri, functionName: string, kwargs: any = {}, bSilentFail: boolean = false): Promise<T | null> {
     if (!bHasCreatedEvalFunction) {
         const filepath = vscode.Uri.joinPath(utils.getPythonDir(), "vsc_eval.py");
-        if (await executeFile(filepath) === null)
+        if (await executeFile(filepath, {}, bSilentFail) === null)
             return null;
 
         bHasCreatedEvalFunction = true;
