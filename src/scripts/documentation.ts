@@ -12,6 +12,7 @@ import * as github from '../modules/github';
 // Constants
 const GITHUB_EXTENSION_REPOSITORY_NAME = "nils-soderman/vscode-motionbuilder-utils";
 const DOCUMENTATION_FOLDER = "documentation/table_of_contents";
+
 let gCurrentVersion: number | null = null;
 
 
@@ -25,11 +26,6 @@ interface IDocumentationToc {
     items: IDocumentationQuickPickItem[];
 }
 
-export enum EDocType {
-    example = 0,
-    python = 1
-};
-
 
 async function getCurrentVersion(): Promise<number | null> {
     if (gCurrentVersion === null) {
@@ -40,8 +36,12 @@ async function getCurrentVersion(): Promise<number | null> {
     return gCurrentVersion;
 }
 
-function getDocumentationDirectory(context: vscode.ExtensionContext): vscode.Uri {
-    return vscode.Uri.joinPath(context.globalStorageUri, "documentation");
+async function getDocumentationDirectory(context: vscode.ExtensionContext): Promise<vscode.Uri> {
+    const uri = vscode.Uri.joinPath(context.globalStorageUri, "documentation");
+    if (!await utils.uriExists(uri)) {
+        await vscode.workspace.fs.createDirectory(uri);
+    }
+    return uri;
 }
 
 // -------------------------------------------------------
@@ -60,8 +60,8 @@ async function getAvailableVersions(): Promise<{ version: number; download_url: 
         .sort((a, b) => a.version - b.version);
 }
 
-async function getDocumentationTableOfContentsUri(context: vscode.ExtensionContext, version: number | null): Promise<vscode.Uri> {
-    const cacheDir = getDocumentationDirectory(context);
+export async function getDocumentationTableOfContentsUri(context: vscode.ExtensionContext, version: number | null): Promise<vscode.Uri> {
+    const cacheDir = await getDocumentationDirectory(context);
     if (version === null) {
         const files = (await vscode.workspace.fs.readDirectory(cacheDir))
             .filter(([name, type]) => type === vscode.FileType.File && !name.includes("examples"))
@@ -114,7 +114,6 @@ async function getDocumentationTableOfContents(context: vscode.ExtensionContext,
 
 /**
  * List all pages from one or multiple documentation types, and open up the page selected by the user
- * @param type List of types to include, types should be of `FDOCTYPE`
  */
 export async function browseDocumentation(context: vscode.ExtensionContext) {
     const currentVersion = await getCurrentVersion();
@@ -158,7 +157,7 @@ async function getExamplesTableOfContentsUri(context: vscode.ExtensionContext): 
     }
 
     const currentVersion = await getCurrentVersion();
-    const cacheDir = getDocumentationDirectory(context);
+    const cacheDir = await getDocumentationDirectory(context);
 
     // Check for cached examples on disk
     let cachedVersion = -1;
