@@ -1,5 +1,10 @@
 # Change Log
 
+## [2026.1.0] - UNRELEASED
+
+- Improved error logging when a module fails to reload using `motionbuilder.reloadModules`
+- Fixed Python 2 support for `motionbuilder.reloadModules`
+
 ## [2026.0.0] - 2025-05-02
 
 **NOTE:** Version 2026.x will be the last version to support Python 2.7 _(<= MotionBuilder 2020)_.

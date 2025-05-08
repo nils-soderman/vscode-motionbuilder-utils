@@ -3,6 +3,7 @@ Reloads all imported modules that are not standard library modules
 """
 
 import importlib
+import traceback
 import time
 import sys
 import os
@@ -29,7 +30,7 @@ def reload(workspace_folders):
         try:
             importlib.reload(variable)
         except Exception as e:
-            print(f"Failed to reload {variable.__name__}: {e}")
+            print('Failed to reload "%s":\n%s' % (filepath, traceback.format_exc()))
             num_failed += 1
             continue
 
@@ -37,6 +38,6 @@ def reload(workspace_folders):
 
     elapsed_time_ms = int((time.perf_counter() - start_time) * 1000)
 
-    print(f"Reloaded {num_reloads} modules in {elapsed_time_ms}ms")
+    print("Reloaded %s modules in %sms" %(num_reloads, elapsed_time_ms))
 
     return {"num_reloads": num_reloads, "time": elapsed_time_ms, "num_failed": num_failed}
