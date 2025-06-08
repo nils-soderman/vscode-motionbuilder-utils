@@ -44,15 +44,26 @@
         {
           "id": "motionbuilder-pyfbsdk-api",
           "title": "MotionBuilder Pyfbsdk API",
-          "icon": "resources/angelscript_unreal.png"
+          "icon": "media/icon.png"
         }
       ]
     },
     "views": {
       "motionbuilder-pyfbsdk-api": [
         {
+          "id": "motionbuilder.pyfbsdk-api.search",
+          "name": "Search",
+          "type": "webview"
+        },
+        {
           "id": "motionbuilder.pyfbsdk-api.content",
-          "name": "Content"
+          "name": "Content",
+          "type": "tree"
+        },
+        {
+          "id": "motionbuilder.pyfbsdk-api.details",
+          "name": "Details",
+          "type": "webview"
         }
       ]
     },

@@ -57,10 +57,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(notebook.createNotebookController());
 
-	vscode.window.registerTreeDataProvider(
-		'motionbuilder.pyfbsdk-api.content',
-		new docs.PyfbsdkTreeProvider()
-	);
+	const treeProvider = new docs.PyfbsdkTreeProvider();
+	
+	const searchProvider = new docs.PyfbsdkApiSearchProvider(context.extensionUri);
+	searchProvider.onInputChange(treeProvider.applyFilter.bind(treeProvider));
+
+
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(
+			'motionbuilder.pyfbsdk-api.search',
+			searchProvider
+		));
+
+	context.subscriptions.push(
+		vscode.window.registerTreeDataProvider(
+			'motionbuilder.pyfbsdk-api.content',
+			treeProvider
+		));
 }
 
 
