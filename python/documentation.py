@@ -56,12 +56,23 @@ def construct_enum_type(ref: type) -> DocumentationItemT:
 
 def construct_class_type(ref: type) -> DocumentationItemT:
     children: list[DocumentationItemT] = []
+
+    # Collect class enums first, to filter out enum members from the class properties
+    class_enums: list[type] = []
+    for attr_name, attr_value in ref.__dict__.items():
+        if type(attr_value) == type:
+            class_enums.append(attr_value)
+            children.append(construct_enum_type(attr_value))
+
     for attr_name, attr_value in ref.__dict__.items():
         if attr_name.startswith('__') and not attr_name == '__init__':
             continue
 
-        if type(attr_value) == type:
-            children.append(construct_enum_type(attr_value))
+        if attr_value in class_enums:
+            continue
+
+        elif type(attr_value) in class_enums:
+            continue
 
         elif callable(attr_value):
             children.append({
