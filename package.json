@@ -39,6 +39,23 @@
     "onNotebook:jupyter-notebook"
   ],
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "motionbuilder-pyfbsdk-api",
+          "title": "MotionBuilder Pyfbsdk API",
+          "icon": "resources/angelscript_unreal.png"
+        }
+      ]
+    },
+    "views": {
+      "motionbuilder-pyfbsdk-api": [
+        {
+          "id": "motionbuilder.pyfbsdk-api.content",
+          "name": "Content"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "motionbuilder.execute",

@@ -8,6 +8,7 @@ import * as documentation from './scripts/documentation';
 import * as reloadModules from './scripts/reload-modules';
 import * as execute from './scripts/execute-script';
 import * as attach from './scripts/attach';
+import * as docs from './modules/documentation';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -55,6 +56,11 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(notebook.createNotebookController());
+
+	vscode.window.registerTreeDataProvider(
+		'motionbuilder.pyfbsdk-api.content',
+		new docs.PyfbsdkTreeProvider()
+	);
 }
 
 
