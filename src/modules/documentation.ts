@@ -44,6 +44,12 @@ class PyfbsdkTreeItem extends vscode.TreeItem {
         this.id = `${parent?.label}-${item.label}-${defaultCollapsibleState}`;
         this.type = item.type;
 
+        this.command = {
+            "title": `Show Details`,
+            "command": "motionbuilder.pyfbsdk-api.view-details",
+            "arguments": [item], // Assuming version 2025 for now
+        }
+
         this.children = item.children?.map(child => new PyfbsdkTreeItem(child, defaultCollapsibleState, this));
         this.iconPath = iconMap[item.type];
     }
@@ -185,6 +191,47 @@ export class PyfbsdkApiSearchProvider implements vscode.WebviewViewProvider {
 }
 
 
+export class PyfbsdkDetailsProvider implements vscode.WebviewViewProvider {
+
+    private _view?: vscode.WebviewView;
+
+    constructor(private readonly _extensionUri: vscode.Uri) {
+        this._view = undefined;
+    }
+
+    resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext, token: vscode.CancellationToken): Thenable<void> | void {
+        this._view = webviewView;
+        webviewView.webview.html = "<em>Select something to see details...</em>";
+    }
+
+    async showDetails(item: IPyfbsdkItemData, version: number) {
+        const details = await getUrlContent(version, item);
+        if (this._view) {
+            this._view.webview.html = details;
+        }
+    }
+}
+
+
+function getUrl(version: number, item: IPyfbsdkItemData): string {
+    const baseUrl = `https://help.autodesk.com/cloudhelp/${version}/ENU/MOBU-PYTHON-API-REF/`;
+    const itemType = item.type.toLowerCase();
+    const itemName = item.label?.replace(/([a-zA-Z0-9])([A-Z])/g, '$1_$2').replace(/([a-zA-Z0-9])([A-Z])/g, '$1_$2').toLowerCase();
+    return `${baseUrl}classpyfbsdk_1_1_${itemName}.html`;
+}
+
+async function getUrlContent(version: number, item: IPyfbsdkItemData) {
+    const url = getUrl(version, item);
+    console.log("url: " + url);
+
+    let html = await utils.httpsGetRequest(url);
+    if (html.includes("Detailed Description</h2>")) {
+        html = html.split("Detailed Description</h2>")[1];
+    }
+    return html;
+}
+
+// https://help.autodesk.com/view/MOBU/2025/ENU/MOBU-PYTHON-API-REF/classpyfbsdk_1_1_f_b_actor.html
 // https://help.autodesk.com/cloudhelp/2025/ENU/MOBU-PYTHON-API-REF/classpyfbsdk_1_1_f_b_actor.html#a2588621fd23bed7d99e01afcc70b12fb
 // https://help.autodesk.com/cloudhelp/2025/ENU/MOBU-PYTHON-API-REF/classpyfbsdk_1_1_f_b_body_node_id.html#a3aff0e391469e95d84217cae0e62450a
 // https://help.autodesk.com/cloudhelp/2025/ENU/MOBU-PYTHON-API-REF/namespacepyfbsdk.html#abd10ff8451ab44da23aac4fd9ce644e5
