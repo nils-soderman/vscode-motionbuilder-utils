@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import subprocess
 import tempfile
 import site
@@ -12,10 +14,8 @@ VSCODE_MOBU_TEMPDIR = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-
 if site.getusersitepackages() not in sys.path:
     sys.path.append(site.getusersitepackages())
 
-if sys.version_info.major < 3:
-    ModuleNotFoundError = ImportError
 
-def is_debugpy_installed():
+def is_debugpy_installed() -> bool:
     """
     Tries to import debugpy to check if it is installed.
     """
@@ -26,7 +26,7 @@ def is_debugpy_installed():
         return False
 
 
-def is_pip_installed():
+def is_pip_installed() -> bool:
     """ Check if pip is installed """
     try:
         import pip
@@ -36,7 +36,7 @@ def is_pip_installed():
     return True
 
 
-def install_pip():
+def install_pip() -> str | None:
     """ 
     Install pip module 
     Returns the path to the installed pip module
@@ -74,7 +74,7 @@ def install_pip():
     return pip_module_path
 
 
-def install_debugpy():
+def install_debugpy() -> bool:
     """
     Installs debugpy using the current Unreal Python interpreter.
     """
@@ -91,12 +91,7 @@ def install_debugpy():
     else:
         debugpy_install_args.extend(("-m", "pip"))
 
-    if sys.version_info.major == 2:
-        package = "debugpy==1.5.1"
-    else:
-        package = "debugpy"
-
-    debugpy_install_args.extend(("install", "--user", package))
+    debugpy_install_args.extend(("install", "--user", "debugpy"))
 
     process = subprocess.Popen(debugpy_install_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
@@ -127,7 +122,7 @@ def install_debugpy():
     return True
 
 
-def start_debugpy_server(port):
+def start_debugpy_server(port) -> bool:
     """ Starts a debugpy server on the specified port """
     import debugpy
 
@@ -139,7 +134,7 @@ def start_debugpy_server(port):
     return True
 
 
-def get_current_debugpy_port():
+def get_current_debugpy_port() -> int | None:
     """ Returns the current debugpy server port or None if it is not set """
     if VSCODE_DEBUG_SERVER_ENV_VAR in os.environ:
         return int(os.environ[VSCODE_DEBUG_SERVER_ENV_VAR])

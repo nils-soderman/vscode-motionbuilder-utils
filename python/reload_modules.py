@@ -1,6 +1,7 @@
 """
 Reloads all imported modules that are not standard library modules
 """
+from __future__ import annotations
 
 import importlib
 import traceback
@@ -9,7 +10,7 @@ import sys
 import os
 
 
-def reload(workspace_folders):
+def reload(workspace_folders: list[str]) -> dict[str, int | str]:
     start_time = time.perf_counter()
 
     num_reloads = 0
@@ -30,7 +31,7 @@ def reload(workspace_folders):
         try:
             importlib.reload(variable)
         except Exception as e:
-            print('Failed to reload "%s":\n%s' % (filepath, traceback.format_exc()))
+            print(f'Failed to reload "{filepath}":\n{traceback.format_exc()}')
             num_failed += 1
             continue
 
@@ -38,6 +39,6 @@ def reload(workspace_folders):
 
     elapsed_time_ms = int((time.perf_counter() - start_time) * 1000)
 
-    print("Reloaded %s modules in %sms" %(num_reloads, elapsed_time_ms))
+    print(f"Reloaded {num_reloads} modules in {elapsed_time_ms}ms")
 
     return {"num_reloads": num_reloads, "time": elapsed_time_ms, "num_failed": num_failed}
