@@ -128,6 +128,13 @@
             "markdownDescription": "The value for the Python variable `__name__` when executing code",
             "scope": "resource",
             "order": 3
+          },
+          "motionbuilder.execute.script": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "Default path for executing scripts",
+            "scope": "resource",
+            "order": 4
           }
         }
       },
@@ -138,7 +145,7 @@
           "motionbuilder.attach.port": {
             "type": "integer",
             "default": 4243,
-            "description": "The port to run the debugpy server on",
+            "description": "运行调试服务器的端口",
             "minimum": 0,
             "maximum": 65536,
             "scope": "resource",
@@ -147,7 +154,7 @@
           "motionbuilder.attach.autoPort": {
             "type": "boolean",
             "default": true,
-            "description": "Automatically find a free port to run the debugpy server on",
+            "description": "自动查找运行调试服务器的可用端口",
             "scope": "resource",
             "order": 1
           }
@@ -178,7 +185,7 @@
     "@typescript-eslint/parser": "^8.31.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.5.2",
-    "esbuild": "^0.25.3",
+    "esbuild": "^0.25.12",
     "eslint": "^9.25.1",
     "sinon": "^20.0.0",
     "typescript": "^5.8.3"
@@ -186,6 +193,7 @@
   "dependencies": {
     "motionbuilder-socket": "^2.0.4",
     "node-html-parser": "^7.0.1",
-    "tcp-port-used": "^1.0.2"
+    "tcp-port-used": "^1.0.2",
+    "vsce": "^2.15.0"
   }
 }

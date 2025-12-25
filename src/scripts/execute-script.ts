@@ -88,10 +88,22 @@ export async function executeFile(scriptUri: vscode.Uri, filename: string, id: s
     const extConfig = utils.getExtensionConfig();
 
     /* eslint-disable @typescript-eslint/naming-convention */
+    
+    let script = extConfig.get<string>("execute.script");
+    if (script === "") {
+        script = scriptUri.fsPath;
+    }
+    else{
+        const workspaceFolder = utils.getActiveWorkspaceFolder()?.uri.fsPath;
+        if (script && script.includes(":") == false && workspaceFolder){
+            script= workspaceFolder+"\\"+script?.replace("./","");
+        }
+    }
+
     const globals = {
-        "vsc_file": scriptUri.fsPath,
+        "vsc_file": script,
         "vsc_is_debugging": bIsDebugging,
-        "vsc_filename": filename,
+        "vsc_filename": script,
         "vsc_name": extConfig.get("execute.name"),
         "vsc_id": id,
         "vsc_use_colors": bUseColors
