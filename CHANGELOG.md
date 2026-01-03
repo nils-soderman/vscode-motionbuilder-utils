@@ -4,6 +4,10 @@
 
 - Improved error logging when a module fails to reload using `motionbuilder.reloadModules`
 - Fixed Python 2 support for `motionbuilder.reloadModules`
+- Added `motionbuilder.executeEntryPoint` command to execute a predefined entry point script.  
+    - Useful for running the main script in tools split across multiple files.  
+    The entry point is set via the `motionbuilder.execute.entryPointPath` setting. If undefined, a QuickPick prompt will appear to select a file.  
+    Additionally, the `motionbuilder.execute.entryPointReload` setting can be used to reload all workspace modules before executing the entry point script.
 
 ## [2026.0.0] - 2025-05-02
 

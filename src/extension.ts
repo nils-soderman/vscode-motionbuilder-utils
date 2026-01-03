@@ -21,6 +21,12 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand('motionbuilder.executeEntryPoint', () => {
+			return execute.executeEntryPoint();
+		})
+	);
+
+	context.subscriptions.push(
 		vscode.commands.registerCommand('motionbuilder.reloadModules', () => {
 			return reloadModules.main();
 		})

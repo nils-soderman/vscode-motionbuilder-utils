@@ -1,10 +1,15 @@
 import * as vscode from 'vscode';
 
 import * as crypto from 'crypto';
+import * as path from 'path';
 
 import * as motionBuilderConsole from '../modules/motionbuilder-console';
 import * as vsCodeExec from '../modules/code-exec';
+import * as logging from '../modules/logging';
+import * as reload from './reload-modules';
 import * as utils from '../modules/utils';
+
+let cachedEntryPointPath: vscode.Uri | null = null;
 
 
 export function getExecBaseFilename(id: string) {
@@ -54,6 +59,11 @@ function handleResponse(response: string, id: string) {
     }
 }
 
+
+/**
+ * Execute the currently active document
+ * If anything is selected in the document, only the selected code will be executed
+ */
 export async function executeCurrentDocument() {
     if (!vscode.window.activeTextEditor)
         return;
@@ -67,13 +77,84 @@ export async function executeCurrentDocument() {
     if (!executeUri)
         return;
 
-    const bIsDebugging = utils.isDebuggingMotionBuilder();
-    const response = await executeFile(executeUri, activeDocument.uri.fsPath, id, bIsDebugging, bIsDebugging);
+    const isDebugging = utils.isDebuggingMotionBuilder();
+    const response = await executeFile(executeUri, activeDocument.uri.fsPath, id, isDebugging, isDebugging);
     if (response !== null)
         handleResponse(response, id);
 
     if (executeUri === tempUri)
         vscode.workspace.fs.delete(tempUri, { recursive: false });
+}
+
+
+/**
+ * Execute a predefined entry point script
+ */
+export async function executeEntryPoint() {
+    const extConfig = utils.getExtensionConfig();
+    const entryPointPath = extConfig.get<string>("execute.entryPointPath");
+
+    let fileUri: vscode.Uri | undefined = undefined;
+    if (entryPointPath) {
+        if (path.isAbsolute(entryPointPath)) {
+            fileUri = vscode.Uri.file(entryPointPath);
+        }
+        else {
+            const workspaceFolders = vscode.workspace.workspaceFolders;
+            for (const folder of workspaceFolders || []) {
+                const possiblePath = path.join(folder.uri.fsPath, entryPointPath);
+                if (await utils.uriExists(vscode.Uri.file(possiblePath))) {
+                    fileUri = vscode.Uri.file(possiblePath);
+                    break;
+                }
+            }
+        }
+
+        if (!fileUri || !await utils.uriExists(fileUri)) {
+            logging.logError(`Entry point path does not exist: ${entryPointPath}`);
+            vscode.window.showErrorMessage(`Entry point path does not exist: ${entryPointPath}`);
+            return;
+        }
+
+    }
+    else if (cachedEntryPointPath && await utils.uriExists(cachedEntryPointPath)) {
+        fileUri = cachedEntryPointPath;
+    }
+    else {
+        const files = await vscode.workspace.findFiles('**/*.py', '**/env/**');
+        const items = files.map(file => {
+            let label = file.fsPath;
+            const workspaceFolder = vscode.workspace.getWorkspaceFolder(file);
+            if (workspaceFolder) {
+                label = vscode.workspace.asRelativePath(file);
+            }
+            return { label: label, description: file.fsPath };
+        });
+
+        const selected = await vscode.window.showQuickPick(items, {
+            placeHolder: "Select a entry point to execute",
+            canPickMany: false,
+            title: "Execute Entry Point"
+        });
+
+        if (!selected) {
+            return;
+        }
+
+        cachedEntryPointPath = vscode.Uri.file(selected.description);
+        fileUri = cachedEntryPointPath;
+    }
+
+    const id = crypto.randomUUID();
+
+    if (extConfig.get<boolean>("execute.entryPointReload")) {
+        await reload.main();
+    }
+
+    const isDebugging = utils.isDebuggingMotionBuilder();
+    const response = await executeFile(fileUri, fileUri.fsPath, id, isDebugging, isDebugging);
+    if (response !== null)
+        handleResponse(response, id);
 }
 
 

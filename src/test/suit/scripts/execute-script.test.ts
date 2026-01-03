@@ -15,7 +15,8 @@ const config = {
     showOutput: "execute.showOutput",
     clearOutput: "execute.clearOutput",
     name: "execute.name",
-    addWorkspaceToPath: "environment.addWorkspaceToPath"
+    addWorkspaceToPath: "environment.addWorkspaceToPath",
+    entryPointPath: "execute.entryPointPath"
 };
 
 function checkOutput(outputChannel: vscodeMock.MockOutputChannel, expected: string) {
@@ -34,7 +35,7 @@ suite('Execute', function () {
         [config.name]: execName,
         [config.showOutput]: true,
         [config.clearOutput]: true,
-        [config.addWorkspaceToPath]: true
+        [config.addWorkspaceToPath]: true,
     });
 
     setup(async () => {
@@ -47,6 +48,8 @@ suite('Execute', function () {
         vscodeMock.stubGetConfiguration({
             "motionbuilder": extensionConfig
         });
+
+        vscodeMock.stubShowQuickPick();
 
         mobuOutputChannel = new vscodeMock.MockOutputChannel();
         sinon.stub(utils, "getOutputChannel").returns(mobuOutputChannel);
@@ -165,5 +168,12 @@ suite('Execute', function () {
 
         await runCode("print(_)");
         checkOutput(mobuOutputChannel, "5");
+    });
+
+    test('Entry Point', async function () {
+        extensionConfig.update(config.entryPointPath, "entry_point.py");
+        await exec.executeEntryPoint();
+
+        checkOutput(mobuOutputChannel, "Executing entry point script");
     });
 });

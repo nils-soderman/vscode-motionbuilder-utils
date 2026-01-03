@@ -47,6 +47,12 @@
         "enablement": "editorLangId==python && activeEditor != workbench.editor.notebook"
       },
       {
+        "command": "motionbuilder.executeEntryPoint",
+        "title": "Execute Entry Point",
+        "category": "MotionBuilder",
+        "enablement": "editorLangId==python"
+      },
+      {
         "command": "motionbuilder.attach",
         "title": "Attach",
         "category": "MotionBuilder"
@@ -128,6 +134,20 @@
             "markdownDescription": "The value for the Python variable `__name__` when executing code",
             "scope": "resource",
             "order": 3
+          },
+          "motionbuilder.execute.entryPointPath": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "The file to execute when running the command `Motionbuilder: Execute Entry Point`.",
+            "scope": "resource",
+            "order": 4
+          },
+          "motionbuilder.execute.entryPointReload": {
+            "type": "boolean",
+            "default": false,
+            "markdownDescription": "Reload all workspace modules before executing the entry point script",
+            "scope": "resource",
+            "order": 5
           }
         }
       },
