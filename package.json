@@ -3,7 +3,7 @@
   "publisher": "NilsSoderman",
   "displayName": "MotionBuilder Utils",
   "description": "Features to assist when writing Python code for Autodesk MotionBuilder.",
-  "version": "2026.0.0",
+  "version": "2026.1.0",
   "categories": [
     "Other",
     "Debuggers"
@@ -190,17 +190,17 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "@types/sinon": "^17.0.4",
+    "@types/node": "22.x",
+    "@types/sinon": "^21.0.0",
     "@types/tcp-port-used": "^1.0.4",
     "@types/vscode": "^1.99.1",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
-    "esbuild": "^0.25.3",
+    "esbuild": "^0.27.2",
     "eslint": "^9.25.1",
-    "sinon": "^20.0.0",
+    "sinon": "^21.0.1",
     "typescript": "^5.8.3"
   },
   "dependencies": {
