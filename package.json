@@ -49,8 +49,7 @@
       {
         "command": "motionbuilder.executeEntryPoint",
         "title": "Execute Entry Point",
-        "category": "MotionBuilder",
-        "enablement": "editorLangId==python"
+        "category": "MotionBuilder"
       },
       {
         "command": "motionbuilder.attach",

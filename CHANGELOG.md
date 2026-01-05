@@ -1,5 +1,10 @@
 # Change Log
 
+## [2026.2.0] - unreleased
+
+- Command `motionbuilder.executeEntryPoint` is now always enabled, regardless of the active file type.
+
+
 ## [2026.1.0] - 2026-01-03
 
 - Improved error logging when a module fails to reload using `motionbuilder.reloadModules`
