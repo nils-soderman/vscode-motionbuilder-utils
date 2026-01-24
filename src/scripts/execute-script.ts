@@ -122,26 +122,25 @@ export async function executeEntryPoint() {
     }
     else {
         const files = await vscode.workspace.findFiles('**/*.py', '**/env/**');
-        const items = files.map(file => {
-            let label = file.fsPath;
-            const workspaceFolder = vscode.workspace.getWorkspaceFolder(file);
-            if (workspaceFolder) {
-                label = vscode.workspace.asRelativePath(file);
-            }
-            return { label: label, description: file.fsPath };
+        const items: vscode.QuickPickItem[] = files.map(file => {
+            return {
+                label: '',
+                resourceUri: file,
+                iconPath: vscode.ThemeIcon.File
+            };
         });
 
         const selected = await vscode.window.showQuickPick(items, {
-            placeHolder: "Select a entry point to execute",
+            prompt: "Select a Python script to use as the entry point",
             canPickMany: false,
             title: "Execute Entry Point"
         });
 
-        if (!selected) {
+        if (!selected?.resourceUri) {
             return;
         }
 
-        cachedEntryPointPath = vscode.Uri.file(selected.description);
+        cachedEntryPointPath = selected.resourceUri;
         fileUri = cachedEntryPointPath;
     }
 
