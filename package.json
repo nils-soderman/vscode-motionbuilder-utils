@@ -175,7 +175,7 @@
     ]
   },
   "engines": {
-    "vscode": "^1.108.1"
+    "vscode": "^1.110.0"
   },
   "scripts": {
     "vscode:uninstall": "node ./dist/hooks/uninstall-hook",
@@ -192,19 +192,19 @@
     "@types/node": "22.x",
     "@types/sinon": "^21.0.0",
     "@types/tcp-port-used": "^1.0.4",
-    "@types/vscode": "^1.108.1",
-    "@typescript-eslint/eslint-plugin": "^8.53.1",
-    "@typescript-eslint/parser": "^8.53.1",
+    "@types/vscode": "^1.110.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.2",
+    "@typescript-eslint/parser": "^8.57.2",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
-    "esbuild": "^0.27.2",
-    "eslint": "^9.39.2",
-    "sinon": "^21.0.1",
+    "esbuild": "^0.27.4",
+    "eslint": "^10.1.0",
+    "sinon": "^21.0.3",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "motionbuilder-socket": "^2.0.4",
-    "node-html-parser": "^7.0.2",
+    "node-html-parser": "^7.1.0",
     "tcp-port-used": "^1.0.2"
   }
 }
