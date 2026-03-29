@@ -1,13 +1,10 @@
+from __future__ import annotations
+
 import traceback
 import json
 import sys
 
-
-if sys.version_info.major < 3:
-    from StringIO import StringIO
-    from codecs import open
-else:
-    from io import StringIO
+from io import StringIO
 
 
 class CaptureOutputContext():
@@ -29,7 +26,7 @@ class CaptureOutputContext():
         return self.output.getvalue().rstrip()
 
 
-def vsc_eval(filepath, function_name, **kwargs):
+def vsc_eval(filepath: str, function_name: str, **kwargs) -> str:
     """
     Evaluate a function in a Python file, and return the function's return value
     This function is used to evaluate VS Code python files and return the result to the Extension
@@ -53,7 +50,7 @@ def vsc_eval(filepath, function_name, **kwargs):
     if function_name in exec_globals:
         function = exec_globals[function_name]
     else:
-        raise ValueError("Function '%s' not found in file '{filepath}'" % function_name)
+        raise ValueError(f"Function '{function_name}' not found in file '{filepath}'")
 
     with CaptureOutputContext() as output:
         try:

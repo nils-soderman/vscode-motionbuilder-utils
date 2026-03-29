@@ -1,24 +1,21 @@
 """
 Module for executing python code in MotionBuilder
 """
+from __future__ import annotations
 
 import traceback
 import tempfile
+import ast
 import sys
 import os
 
-if sys.version_info.major >= 3:
-    from io import StringIO
-    import ast
-else:
-    from StringIO import StringIO
-    from codecs import open
+from io import StringIO
 
 TEMP_FOLDERPATH = os.path.join(tempfile.gettempdir(), "VSCode-MotionBuilder-Utils")
 
 
 class OutputRedirector():
-    def __init__(self, command_id):
+    def __init__(self, command_id: str):
         self.command_id = command_id
         self.output = StringIO()
         self.original_output = sys.stdout
@@ -33,8 +30,6 @@ class OutputRedirector():
         # If output is larger than 955 bytes, it'll get corrupted when transferred over the socket, so write to a file instead
         # MotionBuilder 2023 (Python 3.9) also has a bug where the output isn't transfered unless the Python Editor window is open.
         if sys.getsizeof(output_str) >= 950 or sys.version_info[:2] == (3, 9):
-            if sys.version_info.major == 2:
-                output_str = output_str.decode("utf-8")
             output_filepath = get_output_filepath(self.command_id)
             with open(output_filepath, 'w', encoding="utf-8") as out_file:
                 out_file.write(output_str)
@@ -42,11 +37,11 @@ class OutputRedirector():
             print(output_str)
 
 
-def get_output_filepath(command_id):
-    return os.path.join(TEMP_FOLDERPATH, "exec-out-%s.txt" % command_id)
+def get_output_filepath(command_id: str) -> str:
+    return os.path.join(TEMP_FOLDERPATH, f"exec-out-{command_id}.txt")
 
 
-def get_exec_globals():
+def get_exec_globals() -> dict:
     """ Get globals to be used in the exec function when executing user scripts """
     if "__VsCodeVariables__" not in globals():
         globals()["__VsCodeVariables__"] = {
@@ -56,7 +51,7 @@ def get_exec_globals():
     return globals()["__VsCodeVariables__"]
 
 
-def find_package(filepath):
+def find_package(filepath: str) -> str:
     """ Find the expected __package__ value for the executed file, so relative imports work """
     normalized_filepath = os.path.normpath(filepath).lower()
 
@@ -75,7 +70,7 @@ def find_package(filepath):
     return ""
 
 
-def format_exception(exception_in, filename, code, num_ignore_tracebacks=0):
+def format_exception(exception_in: Exception, filename: str, code: str, num_ignore_tracebacks: int = 0) -> str:
     seen_exceptions = set()
     messages = []
     lines = code.splitlines()
@@ -110,7 +105,7 @@ def format_exception(exception_in, filename, code, num_ignore_tracebacks=0):
 
             traceback_stack.append(
                 traceback.FrameSummary(
-                    "%s:%s" % (frame_summary.filename, frame_summary.lineno),
+                    f"{frame_summary.filename}:{frame_summary.lineno}",
                     frame_summary.lineno,
                     frame_summary.name,
                     lookup_line=False,
@@ -122,7 +117,7 @@ def format_exception(exception_in, filename, code, num_ignore_tracebacks=0):
 
         if isinstance(exception, SyntaxError):
             if exception.filename == filename:
-                exception.filename = "%s:%s" % (exception.filename, exception.lineno)
+                exception.filename = f"{exception.filename}:{exception.lineno}"
                 if exception.lineno is not None and 0 < exception.lineno <= len(lines):
                     line = lines[exception.lineno - 1]
                     exception.text = line
@@ -138,11 +133,8 @@ def format_exception(exception_in, filename, code, num_ignore_tracebacks=0):
     return "\nDuring handling of the above exception, another exception occurred:\n\n".join(reversed(messages))
 
 
-def handle_exception(exception, filename, code, use_colors, num_ignore_tracebacks=0):
-    if sys.version_info.major >= 3:
-        traceback_message = format_exception(exception, filename, code, num_ignore_tracebacks)
-    else:
-        traceback_message = traceback.format_exc()
+def handle_exception(exception: Exception, filename: str, code: str, use_colors: bool, num_ignore_tracebacks: int = 0) -> None:
+    traceback_message = format_exception(exception, filename, code, num_ignore_tracebacks)
 
     # Color the message red (this is only supported by 'Debug Console' in VsCode, and not 'Output' log)
     if use_colors:
@@ -151,7 +143,7 @@ def handle_exception(exception, filename, code, use_colors, num_ignore_traceback
     print(traceback_message)
 
 
-def add_print_for_last_expr(parsed_code):
+def add_print_for_last_expr(parsed_code: ast.Module) -> ast.Module:
     """
     Modify the ast to print the last expression if it isn't None.
     """
@@ -200,17 +192,14 @@ def add_print_for_last_expr(parsed_code):
     return parsed_code
 
 
-def execute_code(code, filename, use_colors):
-    if sys.version_info.major >= 3:
-        try:
-            parsed_code = ast.parse(code, filename)
-        except (SyntaxError, ValueError) as caught_exception:
-            handle_exception(caught_exception, filename, code, use_colors, num_ignore_tracebacks=2)
-            return
+def execute_code(code: str, filename: str, use_colors: bool) -> None:
+    try:
+        parsed_code = ast.parse(code, filename)
+    except (SyntaxError, ValueError) as caught_exception:
+        handle_exception(caught_exception, filename, code, use_colors, num_ignore_tracebacks=2)
+        return
 
-        parsed_code = add_print_for_last_expr(parsed_code)
-    else:
-        parsed_code = code
+    parsed_code = add_print_for_last_expr(parsed_code)
 
     try:
         exec(compile(parsed_code, filename, "exec"), get_exec_globals())
