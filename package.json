@@ -1,8 +1,8 @@
 {
   "name": "mobu-utils",
   "publisher": "NilsSoderman",
-  "displayName": "MotionBuilder Utils",
-  "description": "Features to assist when writing Python code for Autodesk MotionBuilder.",
+  "displayName": "MotionBuilder Python",
+  "description": "Tools to assist when writing Python code for Autodesk MotionBuilder",
   "version": "2026.1.0",
   "categories": [
     "Other",
