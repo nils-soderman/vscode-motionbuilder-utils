@@ -1,5 +1,5 @@
 > [!WARNING]  
-> This repository has been moved to: https://codeberg.org/nils-soderman/vscode-motionbuilder-python  
+> This repository has moved to: https://codeberg.org/nils-soderman/vscode-motionbuilder-python  
 > Please visit the new repository for the latest updates, to report issues or to contribute.
 
 # MotionBuilder Utils (Visual Studio Code)
