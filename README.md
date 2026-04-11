@@ -1,3 +1,7 @@
+> [!WARNING]  
+> This repository has been moved to: https://codeberg.org/nils-soderman/vscode-motionbuilder-python  
+> Please visit the new repository for the latest updates, to report issues or to contribute.
+
 # MotionBuilder Utils (Visual Studio Code)
 
 Editor features to assist when writing Python code for Autodesk MotionBuilder.
@@ -64,7 +68,7 @@ Commands can be run from VS Code's command palette, `Show All Commands` _(Defaul
 
 # Contact
 
-If you have any questions, suggestions or run into issues, please [open an issue](https://github.com/nils-soderman/vscode-motionbuilder/issues "GitHub issues") on the GitHub repository.
+If you have any questions, suggestions or run into issues, please [open an issue](https://codeberg.org/nils-soderman/vscode-motionbuilder-python/issues) on the Codeberg repository.
 
 <br>
 

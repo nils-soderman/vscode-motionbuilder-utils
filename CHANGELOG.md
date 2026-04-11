@@ -1,17 +1,7 @@
+> [!WARNING]
+> This repository has moved to: https://codeberg.org/nils-soderman/vscode-motionbuilder-python
+
 # Change Log
-
-## [2027.0.0] - unreleased
-
-⚠️ **Breaking:**  
-- This extension no longer supports Python 2.7.  
-If you're using MotionBuilder 2020 or earlier, continue using version `2026.1.0` of this extension.  
-
-
-**Changes:**
-- Changed extension name from _"MotionBuilder Utils"_ to _"MotionBuilder Python"_
-- Changed extension icon
-- Command `motionbuilder.executeEntryPoint` is now always enabled, regardless of the active file type.
-
 
 ## [2026.1.0] - 2026-01-03
 
